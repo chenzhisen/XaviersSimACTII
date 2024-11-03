@@ -315,6 +315,107 @@
         }
       ],
       "epoch_year": 2035
+    },
+    "2040": {
+      "emerging_technologies": [
+        {
+          "name": "Emotionally Synchronized Companion Robots",
+          "probability": 0.85,
+          "estimated_year": 2042,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Neural Feedback Companion Robots",
+            "Thought-Controlled Companion Robots"
+          ],
+          "impact_areas": [
+            "Personal Health",
+            "Mental Wellbeing",
+            "Companionship"
+          ],
+          "description": "Robots that can synchronize their emotional state with the human they are interacting with, enhancing the quality of companionship and emotional support.",
+          "societal_implications": "Potential to improve mental health by reducing loneliness, but raises questions about the authenticity of relationships and the psychological dependency on robots.",
+          "adoption_factors": "Adoption will depend on cultural acceptance of robots as emotional companions, privacy concerns, and the effectiveness of the technology in real-world scenarios."
+        },
+        {
+          "name": "Self-Replicating Space Robots",
+          "probability": 0.7,
+          "estimated_year": 2043,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Space-Adapted Personal Manufacturing Units",
+            "AI-Driven Exploration Companion Robots"
+          ],
+          "impact_areas": [
+            "Space Exploration",
+            "Off-World Colonization"
+          ],
+          "description": "Robots capable of using local materials on extraterrestrial bodies to replicate themselves, aiding in rapid expansion of space colonies.",
+          "societal_implications": "Facilitates sustainable space colonization, but brings up ethical considerations around autonomous replication and potential for uncontrolled spread.",
+          "adoption_factors": "Requires significant technological breakthroughs in AI, material science, and legal frameworks for space governance."
+        },
+        {
+          "name": "Neural-Linked Learning Ecosystems",
+          "probability": 0.9,
+          "estimated_year": 2044,
+          "innovation_type": "incremental",
+          "dependencies": [
+            "Neural-Linked Home Ecosystems",
+            "Personal Tutor Robots"
+          ],
+          "impact_areas": [
+            "Education",
+            "Personal Development"
+          ],
+          "description": "An integrated system where neural links facilitate personalized learning environments, adapting in real-time to the learner's cognitive needs.",
+          "societal_implications": "Could revolutionize education, making personalized learning ubiquitous, but also raises concerns about privacy, data security, and equitable access.",
+          "adoption_factors": "Adoption will be influenced by educational policy, societal acceptance of brain-computer interfaces, and the effectiveness of neural learning algorithms."
+        }
+      ],
+      "mainstream_technologies": [
+        {
+          "name": "Blockchain-Enabled Robot Identity Verification",
+          "from_emerging": true,
+          "original_emergence_year": 2032,
+          "maturity_year": 2041,
+          "impact_level": 8,
+          "description": "Widespread use of blockchain for securing and verifying robot identities, ensuring trust and security in human-robot interactions.",
+          "adoption_status": "Integrated into most personal and industrial robotics, with global standards for robot identity management."
+        },
+        {
+          "name": "Personal Space Habitat Robots",
+          "from_emerging": true,
+          "original_emergence_year": 2039,
+          "maturity_year": 2045,
+          "impact_level": 7,
+          "description": "Robots designed specifically for maintaining and assisting in personal habitats in space, becoming essential for space colonization efforts.",
+          "adoption_status": "Standard equipment in space habitats, with a growing market for customization and specialized tasks."
+        }
+      ],
+      "epoch_themes": [
+        {
+          "theme": "Deep Integration of Robotics in Daily Life",
+          "description": "Robots become not just assistants but integral parts of human daily routines, influencing how we live, work, and interact.",
+          "related_technologies": [
+            "Neural-Linked Home Ecosystems",
+            "Personal Health Monitoring Nanobots",
+            "Home Maintenance Robots"
+          ],
+          "societal_impact": "Alters job markets, family dynamics, and social interactions, potentially reducing human labor in many sectors but also raising concerns about dependency and loss of human skills.",
+          "global_trends": "Aligns with the trend towards automation, IoT integration, and the digital transformation of society."
+        },
+        {
+          "theme": "Human-Robot Symbiosis",
+          "description": "The relationship between humans and robots evolves from mere interaction to a symbiotic partnership where robots extend human capabilities and experiences.",
+          "related_technologies": [
+            "Thought-Controlled Companion Robots",
+            "Neural Feedback Companion Robots",
+            "Robo-Enhanced Human Augmentation"
+          ],
+          "societal_impact": "Enhances human productivity and quality of life but challenges traditional notions of identity, autonomy, and human rights.",
+          "global_trends": "Reflects advancements in AI, BCI technology, and a push towards transhumanism."
+        }
+      ],
+      "epoch_year": 2040
     }
   }
 }
