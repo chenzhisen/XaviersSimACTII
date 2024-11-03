@@ -302,6 +302,121 @@
         }
       ],
       "epoch_year": 2035
+    },
+    "2040": {
+      "emerging_technologies": [
+        {
+          "name": "Neural-Enhanced Virtual Reality (NEVR)",
+          "probability": 0.85,
+          "estimated_year": 2042,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Advanced Neural Integration for Learning",
+            "Basic Neural Feedback Devices"
+          ],
+          "impact_areas": [
+            "Education",
+            "Entertainment",
+            "Health"
+          ],
+          "description": "Virtual reality systems that integrate with neural feedback to provide immersive learning and therapeutic experiences.",
+          "societal_implications": "Could revolutionize education by providing experiential learning environments, potentially leading to issues of digital divide and psychological effects of immersion.",
+          "adoption_factors": "High initial costs, privacy concerns regarding neural data, and the need for societal acceptance of neural interfacing technologies."
+        },
+        {
+          "name": "Quantum Communication Networks",
+          "probability": 0.7,
+          "estimated_year": 2043,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Blockchain for Secure Transactions"
+          ],
+          "impact_areas": [
+            "Cybersecurity",
+            "Data Transmission"
+          ],
+          "description": "Utilizes quantum entanglement for ultra-secure, instantaneous communication across global networks.",
+          "societal_implications": "Enhances digital trust but could be a double-edged sword if quantum computing also advances in cyber attacks.",
+          "adoption_factors": "Technological complexity, cost of infrastructure, and global cooperation in standardization."
+        },
+        {
+          "name": "AI-Driven Synthetic Biology",
+          "probability": 0.65,
+          "estimated_year": 2044,
+          "innovation_type": "incremental",
+          "dependencies": [
+            "AI-Optimized Personal Health Ecosystem"
+          ],
+          "impact_areas": [
+            "Healthcare",
+            "Agriculture",
+            "Environment"
+          ],
+          "description": "AI designs and optimizes biological systems, from organisms to ecosystems, for enhanced functionality.",
+          "societal_implications": "Potential for creating new forms of life, raising ethical concerns about biosecurity and the definition of life.",
+          "adoption_factors": "Regulatory hurdles, public perception, and ethical debates."
+        },
+        {
+          "name": "Personalized Nanobot Health Systems",
+          "probability": 0.8,
+          "estimated_year": 2045,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Smart Wearable Health Monitors",
+            "AI-Optimized Personal Health Ecosystem"
+          ],
+          "impact_areas": [
+            "Healthcare",
+            "Biotechnology"
+          ],
+          "description": "Nanobots that can travel through the body to perform diagnostics, deliver drugs, and repair tissues at the cellular level.",
+          "societal_implications": "Addresses chronic diseases, but raises concerns about biohacking, privacy, and the potential for misuse.",
+          "adoption_factors": "Technological readiness, regulatory approval, and public trust in nanotech."
+        }
+      ],
+      "mainstream_technologies": [
+        {
+          "name": "AI-Driven Personalized Urban Transport",
+          "from_emerging": true,
+          "original_emergence_year": 2037,
+          "maturity_year": 2042,
+          "impact_level": 8,
+          "description": "Urban transport systems that adapt in real-time to individual needs, optimizing routes, and reducing congestion.",
+          "adoption_status": "Widely adopted in major cities, with significant improvements in urban mobility and reduced pollution."
+        },
+        {
+          "name": "Advanced Neural Integration for Learning",
+          "from_emerging": true,
+          "original_emergence_year": 2038,
+          "maturity_year": 2045,
+          "impact_level": 9,
+          "description": "Integration of neural interfaces in educational systems for enhanced learning experiences and cognitive enhancement.",
+          "adoption_status": "Integrated into advanced educational institutions and corporate training programs, with a growing acceptance in society."
+        }
+      ],
+      "epoch_themes": [
+        {
+          "theme": "Seamless Human-Tech Integration",
+          "description": "Focus on technologies that blur the lines between human cognition and digital systems.",
+          "related_technologies": [
+            "Neural-Enhanced Virtual Reality",
+            "Advanced Neural Integration for Learning"
+          ],
+          "societal_impact": "Enhances human capabilities but challenges traditional notions of privacy, autonomy, and identity.",
+          "global_trends": "Aligns with global trends towards AI augmentation, personalized experiences, and the need for advanced cybersecurity measures."
+        },
+        {
+          "theme": "Sustainable Urban Living",
+          "description": "Urban environments becoming more integrated with technology to enhance sustainability and livability.",
+          "related_technologies": [
+            "AI-Driven Personalized Urban Transport",
+            "AI-Enhanced Urban Traffic Management"
+          ],
+          "societal_impact": "Promotes eco-friendly lifestyles but might exacerbate urban-rural divides and raise issues of surveillance.",
+          "global_trends": "Part of the broader movement towards smart cities, green technology, and efficient resource management."
+        }
+      ],
+      "epoch_year": 2040
     }
   }
 }
