@@ -417,6 +417,126 @@
         }
       ],
       "epoch_year": 2040
+    },
+    "2045": {
+      "emerging_technologies": [
+        {
+          "name": "Neural-Enhanced Emotional Intelligence (NEEI)",
+          "probability": 0.8,
+          "estimated_year": 2047,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Advanced Neural Integration for Learning",
+            "AI-Optimized Personal Health Ecosystem"
+          ],
+          "impact_areas": [
+            "Healthcare",
+            "Education",
+            "Human Resources"
+          ],
+          "description": "A technology that leverages neural interfaces to enhance and understand human emotions, allowing for personalized emotional health management.",
+          "societal_implications": "Could lead to improved mental health outcomes, better interpersonal relationships, and more empathetic societies; raises ethical concerns about privacy and consent regarding emotional data.",
+          "adoption_factors": "High initial cost, privacy concerns, and the need for societal acceptance of emotional transparency."
+        },
+        {
+          "name": "AI-Enabled Nanobot Ecology",
+          "probability": 0.7,
+          "estimated_year": 2048,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Personalized Nanobot Health Systems",
+            "AI-Driven Synthetic Biology"
+          ],
+          "impact_areas": [
+            "Healthcare",
+            "Environment",
+            "Agriculture"
+          ],
+          "description": "AI-controlled nanobots designed to work in concert with biological systems to repair, enhance, or monitor health, ecosystems, and food production.",
+          "societal_implications": "Potential for significant health improvements, environmental restoration, and sustainable agriculture; concerns about biohacking, unintended ecological impacts, and control over these systems.",
+          "adoption_factors": "Regulatory hurdles, safety concerns, and the complexity of managing such advanced systems."
+        },
+        {
+          "name": "Quantum-Enhanced Cybersecurity",
+          "probability": 0.65,
+          "estimated_year": 2049,
+          "innovation_type": "incremental",
+          "dependencies": [
+            "Quantum Communication Networks",
+            "Blockchain for Secure Transactions"
+          ],
+          "impact_areas": [
+            "Security",
+            "Finance",
+            "Government"
+          ],
+          "description": "Leverages quantum computing for encryption and security protocols that are theoretically unbreakable by classical computers.",
+          "societal_implications": "Enhances security in critical infrastructure, financial systems, and personal data protection; potential for misuse in espionage and cyber warfare.",
+          "adoption_factors": "High cost of quantum computing infrastructure, need for widespread quantum literacy, and resistance from traditional security providers."
+        },
+        {
+          "name": "Personal Energy Harvesting Devices",
+          "probability": 0.75,
+          "estimated_year": 2046,
+          "innovation_type": "incremental",
+          "dependencies": [
+            "AI-Enhanced Urban Traffic Management",
+            "Smart Wearable Health Monitors"
+          ],
+          "impact_areas": [
+            "Energy",
+            "Wearables",
+            "Urban Planning"
+          ],
+          "description": "Wearable devices that capture kinetic, thermal, or solar energy from the body and environment to power personal electronics.",
+          "societal_implications": "Promotes energy independence, reduces environmental footprint, and could lead to new energy markets; potential health implications from constant energy harvesting.",
+          "adoption_factors": "Consumer interest in sustainability, advancements in energy storage, and fashion integration."
+        }
+      ],
+      "mainstream_technologies": [
+        {
+          "name": "AI-Driven Synthetic Biology",
+          "from_emerging": true,
+          "original_emergence_year": 2044,
+          "maturity_year": 2047,
+          "impact_level": 8,
+          "description": "AI tools for designing and engineering biological systems, now widely used in medicine, agriculture, and environmental management.",
+          "adoption_status": "Integrated into research, biotech industries, and some consumer products; becoming a staple in personalized healthcare and ecological restoration."
+        },
+        {
+          "name": "Neural-Enhanced Virtual Reality (NEVR)",
+          "from_emerging": true,
+          "original_emergence_year": 2042,
+          "maturity_year": 2048,
+          "impact_level": 9,
+          "description": "Advanced VR systems that integrate neural feedback for more immersive and realistic experiences.",
+          "adoption_status": "Widely used in entertainment, education, therapy, and remote work, with significant improvements in user interaction and presence."
+        }
+      ],
+      "epoch_themes": [
+        {
+          "theme": "Sustainable Living and Health",
+          "description": "A focus on technologies that promote sustainability, personal health management, and ecological balance.",
+          "related_technologies": [
+            "Personal Energy Harvesting Devices",
+            "AI-Enabled Nanobot Ecology",
+            "AI-Driven Synthetic Biology"
+          ],
+          "societal_impact": "Encourages a shift towards a circular economy, healthier lifestyles, and preservation of natural ecosystems, potentially reducing resource consumption and enhancing quality of life.",
+          "global_trends": "Aligns with global movements towards sustainability, green technology, and health-focused living."
+        },
+        {
+          "theme": "Enhanced Human Capabilities",
+          "description": "Technologies aimed at augmenting human abilities, both physically and cognitively.",
+          "related_technologies": [
+            "Neural-Enhanced Emotional Intelligence",
+            "Neural-Enhanced Virtual Reality"
+          ],
+          "societal_impact": "Could redefine what it means to be human, with implications for education, work, and personal identity. Ethical debates around enhancement versus natural human capabilities will intensify.",
+          "global_trends": "Reflects the ongoing trend towards human augmentation, seen in the growth of brain-computer interfaces, genetic engineering, and cybernetics."
+        }
+      ],
+      "epoch_year": 2045
     }
   }
 }
