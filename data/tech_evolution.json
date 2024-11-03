@@ -780,6 +780,107 @@
         }
       ],
       "epoch_year": 2055
+    },
+    "2060": {
+      "emerging_technologies": [
+        {
+          "name": "Quantum-Enhanced Teleportation Networks",
+          "probability": 0.65,
+          "estimated_year": 2062,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Quantum-Enhanced Machine Learning",
+            "Advanced Neural-Cloud Interfaces"
+          ],
+          "impact_areas": [
+            "Communications",
+            "Transportation",
+            "Entertainment"
+          ],
+          "description": "Quantum entanglement used for near-instantaneous data transfer, potentially enabling teleportation of small physical objects.",
+          "societal_implications": "This could revolutionize logistics, reduce physical travel, but also raises concerns about privacy, security, and the philosophical implications of object teleportation.",
+          "adoption_factors": "Requires significant advancements in quantum computing and error correction. Public acceptance hinges on trust in the technology's safety and security."
+        },
+        {
+          "name": "AI-Driven Genetic Optimization",
+          "probability": 0.7,
+          "estimated_year": 2063,
+          "innovation_type": "incremental",
+          "dependencies": [
+            "AI-Driven Ecological Restoration",
+            "Genetic Customization for Lifestyle"
+          ],
+          "impact_areas": [
+            "Healthcare",
+            "Agriculture",
+            "Environmental Conservation"
+          ],
+          "description": "AI systems that predict and optimize genetic modifications for health, environmental adaptation, and agricultural yield.",
+          "societal_implications": "Ethical debates around eugenics, potential for reducing genetic diversity, and the equitable distribution of such technologies.",
+          "adoption_factors": "Public and regulatory acceptance of genetic modifications, cost, and the need for long-term studies on genetic outcomes."
+        },
+        {
+          "name": "Atmospheric Resource Management AI",
+          "probability": 0.8,
+          "estimated_year": 2061,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Atmospheric Water Harvesting AI",
+            "Autonomous Ecosystem Management"
+          ],
+          "impact_areas": [
+            "Environment",
+            "Energy",
+            "Water Management"
+          ],
+          "description": "AI systems managing atmospheric conditions to control weather patterns, reduce pollutants, and harvest resources like water and energy.",
+          "societal_implications": "Potential to mitigate climate change effects but introduces new risks of geoengineering disasters or misuse for weather warfare.",
+          "adoption_factors": "Global cooperation, regulation, and the development of fail-safes to prevent unintended consequences."
+        }
+      ],
+      "mainstream_technologies": [
+        {
+          "name": "Emotion-Adaptive Learning Systems",
+          "from_emerging": true,
+          "original_emergence_year": 2038,
+          "maturity_year": 2060,
+          "impact_level": 7,
+          "description": "AI systems that adapt educational content and teaching methods based on the learner's emotional state.",
+          "adoption_status": "Widespread adoption in educational institutions, with personalized learning becoming the norm."
+        },
+        {
+          "name": "Urban Air Mobility",
+          "from_emerging": true,
+          "original_emergence_year": 2034,
+          "maturity_year": 2065,
+          "impact_level": 8,
+          "description": "Personal and public aerial vehicles for urban transport, reducing road traffic congestion.",
+          "adoption_status": "Integrated into urban planning with dedicated air corridors and landing zones; public trust in safety is high."
+        }
+      ],
+      "epoch_themes": [
+        {
+          "theme": "Quantum Leap in Connectivity",
+          "description": "The period sees a significant shift towards quantum-enhanced technologies for communication and data management.",
+          "related_technologies": [
+            "Quantum-Enhanced Teleportation Networks",
+            "Quantum-Enhanced Machine Learning"
+          ],
+          "societal_impact": "Enables unprecedented connectivity, potentially reshaping industries like logistics, travel, and entertainment, but also introduces new cybersecurity challenges.",
+          "global_trends": "Aligns with trends towards hyperconnectivity and the integration of quantum technology in daily life."
+        },
+        {
+          "theme": "Genetic and Environmental Harmony",
+          "description": "Focus on using technology to harmonize human life with the environment through genetic and ecological optimization.",
+          "related_technologies": [
+            "AI-Driven Genetic Optimization",
+            "Atmospheric Resource Management AI"
+          ],
+          "societal_impact": "Promotes sustainable living, addresses climate change, but raises ethical questions about genetic manipulation and environmental control.",
+          "global_trends": "Reflects a global push towards sustainability, with increasing acceptance of bioengineering and geoengineering solutions."
+        }
+      ],
+      "epoch_year": 2060
     }
   }
 }
