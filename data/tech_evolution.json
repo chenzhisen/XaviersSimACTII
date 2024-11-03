@@ -975,6 +975,189 @@
         }
       ],
       "epoch_year": 2055
+    },
+    "2060": {
+      "emerging_technologies": [
+        {
+          "name": "Interstellar Colony Genesis",
+          "probability": 0.85,
+          "estimated_year": 2061,
+          "innovation_type": "revolutionary",
+          "dependencies": [
+            "Interstellar Propulsion Systems",
+            "Self-Sustaining Nano-Bio Eco-Systems"
+          ],
+          "impact_areas": [
+            "Space Colonization",
+            "Sustainable Energy"
+          ],
+          "description": "A fully automated system designed to travel to nearby star systems, deploy, and establish self-sustaining human habitats. This technology uses advanced nano-bio-ecosystems to create environments that can support life indefinitely.",
+          "societal_implications": "Enables humanity to expand beyond the solar system, potentially ensuring species survival and broadening our understanding of the universe.",
+          "adoption_factors": "Requires interstellar travel capability, advanced AI for long-term mission management, and robust self-sustaining ecosystems.",
+          "contribution_to_goals": [
+            "Making humanity multi-planetary",
+            "Expanding human consciousness"
+          ]
+        },
+        {
+          "name": "Quantum Fusion Energy Grid",
+          "probability": 0.9,
+          "estimated_year": 2062,
+          "innovation_type": "revolutionary",
+          "dependencies": [
+            "Quantum Fusion Reactors",
+            "Quantum Energy Harvesting"
+          ],
+          "impact_areas": [
+            "Sustainable Energy",
+            "Energy Distribution"
+          ],
+          "description": "A global energy grid powered by quantum fusion reactors, capable of providing unlimited clean energy. It uses quantum entanglement to distribute energy instantaneously across the planet.",
+          "societal_implications": "Drastically reduces reliance on fossil fuels, significantly lowers carbon emissions, and provides an energy foundation for advanced technologies.",
+          "adoption_factors": "Development of quantum fusion technology, global political will, and extensive infrastructure investment.",
+          "contribution_to_goals": [
+            "Accelerating sustainable energy transition",
+            "Creating self-sustaining cities"
+          ]
+        },
+        {
+          "name": "Neural Hive-Mind Integration",
+          "probability": 0.7,
+          "estimated_year": 2063,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Neural Lace for Consciousness Expansion",
+            "Brain-Computer Interfaces (BCI)"
+          ],
+          "impact_areas": [
+            "Cognitive Enhancement",
+            "Human-AI Symbiosis"
+          ],
+          "description": "A technology allowing for the merging of human consciousness into a collective hive-mind, enhancing cognitive abilities and enabling shared experiences.",
+          "societal_implications": "Could redefine individuality, privacy, and social interactions, potentially leading to a new form of societal structure.",
+          "adoption_factors": "Advances in BCI, ethical considerations, and public acceptance of neural integration.",
+          "contribution_to_goals": [
+            "Expanding human consciousness and capabilities",
+            "Developing safe artificial general intelligence"
+          ]
+        },
+        {
+          "name": "Adaptive Interstellar Navigation AI",
+          "probability": 0.75,
+          "estimated_year": 2064,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Self-Evolving AI with Ethical Safeguards",
+            "Interstellar Propulsion Systems"
+          ],
+          "impact_areas": [
+            "Space Exploration",
+            "Autonomous Systems"
+          ],
+          "description": "An AI system capable of adapting to unforeseen challenges during interstellar travel, optimizing navigation, and ensuring mission success.",
+          "societal_implications": "Facilitates long-term space exploration with minimal human intervention, potentially leading to new discoveries.",
+          "adoption_factors": "Development of advanced AI with real-time adaptability and ethical considerations for autonomous decision-making.",
+          "contribution_to_goals": [
+            "Making humanity multi-planetary",
+            "Developing safe artificial general intelligence"
+          ]
+        },
+        {
+          "name": "Planetary-Scale Carbon Sequestration",
+          "probability": 0.85,
+          "estimated_year": 2065,
+          "innovation_type": "revolutionary",
+          "dependencies": [
+            "Carbon Capture and Atmospheric Management",
+            "Quantum Energy Harvesting"
+          ],
+          "impact_areas": [
+            "Environmental Sustainability",
+            "Climate Change Mitigation"
+          ],
+          "description": "Technologies for large-scale carbon dioxide extraction from the atmosphere, using quantum-enhanced processes for energy efficiency.",
+          "societal_implications": "Directly combats climate change, restoring Earth's atmospheric balance and supporting sustainable life.",
+          "adoption_factors": "Global cooperation, technological breakthroughs in carbon capture, and economic incentives for large-scale deployment.",
+          "contribution_to_goals": [
+            "Accelerating sustainable energy transition"
+          ]
+        }
+      ],
+      "mainstream_technologies": [
+        {
+          "name": "Planetary-Scale Terraforming",
+          "from_emerging": true,
+          "original_emergence_year": 2049,
+          "maturity_year": 2060,
+          "impact_level": 8,
+          "description": "Terraforming technologies capable of altering planetary environments on a global scale to make them habitable for humans.",
+          "adoption_status": "Widely implemented in Mars colonization efforts, with ongoing projects on other celestial bodies.",
+          "civilization_impact": "Enables the creation of new habitable worlds, crucial for multi-planetary existence."
+        },
+        {
+          "name": "Quantum-Driven Fusion Reactors",
+          "from_emerging": true,
+          "original_emergence_year": 2052,
+          "maturity_year": 2062,
+          "impact_level": 9,
+          "description": "Fusion reactors utilizing quantum computing to enhance reaction efficiency and energy output.",
+          "adoption_status": "Becoming the backbone of energy production on Earth and in space colonies.",
+          "civilization_impact": "Provides a virtually inexhaustible energy source, essential for advanced technology and space exploration."
+        },
+        {
+          "name": "Self-Evolving AI with Ethical Safeguards",
+          "from_emerging": true,
+          "original_emergence_year": 2055,
+          "maturity_year": 2060,
+          "impact_level": 7,
+          "description": "AI systems that evolve autonomously but with built-in ethical constraints to ensure human values are upheld.",
+          "adoption_status": "Integrated into most sectors for decision-making, research, and complex problem-solving.",
+          "civilization_impact": "Ensures AI remains a tool for human advancement while mitigating risks of uncontrolled AI development."
+        }
+      ],
+      "epoch_themes": [
+        {
+          "theme": "Interstellar Expansion",
+          "description": "The focus on extending human presence beyond the solar system, creating sustainable habitats and exploring new frontiers.",
+          "related_technologies": [
+            "Interstellar Colony Genesis",
+            "Adaptive Interstellar Navigation AI"
+          ],
+          "societal_impact": "Transforms human civilization into a truly multi-planetary species, potentially ensuring the survival of humanity.",
+          "global_trends": "Driven by the need to escape Earth's limitations and explore the cosmos, aligning with the goal of becoming a multi-planetary civilization.",
+          "challenges": [
+            "Long-term autonomous operation",
+            "Interstellar communication",
+            "Ethical considerations of colonization"
+          ],
+          "opportunities": [
+            "Discovering new resources",
+            "Understanding the universe",
+            "Expanding human knowledge and potential"
+          ]
+        },
+        {
+          "theme": "Sustainable Energy Utopia",
+          "description": "Achieving a world where energy is abundant, clean, and accessible, fundamentally changing how society functions.",
+          "related_technologies": [
+            "Quantum Fusion Energy Grid",
+            "Planetary-Scale Carbon Sequestration"
+          ],
+          "societal_impact": "Eliminates energy scarcity, reduces environmental impact, and enables new forms of industry and living.",
+          "global_trends": "Aligns with the goal of sustainable energy transition and creating self-sustaining cities.",
+          "challenges": [
+            "Global adoption of new technologies",
+            "Infrastructure overhaul",
+            "Equitable distribution of energy"
+          ],
+          "opportunities": [
+            "Global economic prosperity",
+            "Reduction in conflict over resources",
+            "New forms of social organization"
+          ]
+        }
+      ],
+      "epoch_year": 2060
     }
   }
 }
