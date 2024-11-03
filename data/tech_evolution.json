@@ -106,6 +106,107 @@
         }
       ],
       "epoch_year": 2025
+    },
+    "2030": {
+      "emerging_technologies": [
+        {
+          "name": "AI-Driven Personal Fabrication",
+          "probability": 0.8,
+          "estimated_year": 2032,
+          "innovation_type": "incremental",
+          "dependencies": [
+            "3D Printing",
+            "AI"
+          ],
+          "impact_areas": [
+            "Consumer Goods",
+            "Education",
+            "Healthcare"
+          ],
+          "description": "AI-enhanced 3D printers that can fabricate personalized items at home, from household objects to custom prosthetics.",
+          "societal_implications": "Potential for increased self-sufficiency and creativity, but also raises concerns about intellectual property rights, waste management, and the economic impact on traditional manufacturing.",
+          "adoption_factors": "The technology will depend on the affordability of 3D printers, availability of raw materials, and the development of user-friendly AI interfaces for design."
+        },
+        {
+          "name": "Urban Air Mobility",
+          "probability": 0.65,
+          "estimated_year": 2034,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Autonomous Vehicles",
+            "Battery Technology"
+          ],
+          "impact_areas": [
+            "Transportation",
+            "Urban Planning"
+          ],
+          "description": "Personal aerial vehicles for short-range urban travel, reducing congestion and improving commute times.",
+          "societal_implications": "Could transform urban landscapes, but faces regulatory, safety, and privacy challenges. It might exacerbate social inequalities if not accessible to all.",
+          "adoption_factors": "Widespread adoption hinges on regulatory approval, safety standards, and the integration with existing transportation infrastructure."
+        },
+        {
+          "name": "Smart Dust Networks",
+          "probability": 0.7,
+          "estimated_year": 2035,
+          "innovation_type": "incremental",
+          "dependencies": [
+            "IoT",
+            "Sensor Technology",
+            "Wireless Communication"
+          ],
+          "impact_areas": [
+            "Healthcare",
+            "Environmental Monitoring",
+            "Security"
+          ],
+          "description": "Tiny, wireless sensors forming networks to monitor environments, health, or security with minimal intrusion.",
+          "societal_implications": "Potential for enhancing health monitoring and environmental protection, but also significant privacy concerns regarding surveillance.",
+          "adoption_factors": "Adoption will be driven by advancements in micro-sensor technology, energy efficiency, and the ability to manage data privacy."
+        }
+      ],
+      "mainstream_technologies": [
+        {
+          "name": "Smart Household Robots",
+          "from_emerging": true,
+          "original_emergence_year": 2028,
+          "maturity_year": 2032,
+          "impact_level": 7,
+          "description": "Robots with increased autonomy for household chores, basic home maintenance, and elderly care.",
+          "adoption_status": "Integrated into daily life with high adoption rates in developed regions, supported by safety protocols and user-friendly interfaces."
+        },
+        {
+          "name": "Personalized AI Health Monitoring",
+          "from_emerging": true,
+          "original_emergence_year": 2027,
+          "maturity_year": 2031,
+          "impact_level": 8,
+          "description": "AI systems that provide continuous health monitoring, personalized health advice, and early detection of diseases.",
+          "adoption_status": "Widely accepted with integration into healthcare systems, insurance policies, and personal wellness routines."
+        }
+      ],
+      "epoch_themes": [
+        {
+          "theme": "Personalization at Scale",
+          "description": "Technologies that allow for highly customized products and services tailored to individual needs.",
+          "related_technologies": [
+            "AI-Driven Personal Fabrication",
+            "Personalized AI Health Monitoring"
+          ],
+          "societal_impact": "Promotes individual autonomy and creativity, potentially reducing mass production's environmental impact but might increase economic disparities.",
+          "global_trends": "Aligns with trends towards personalized medicine, education, and consumer goods, reflecting a broader move towards personalization in various sectors."
+        },
+        {
+          "theme": "Sustainable Urban Living",
+          "description": "Integration of technologies to make urban life more sustainable, focusing on reducing carbon footprints, energy consumption, and improving quality of life.",
+          "related_technologies": [
+            "Smart Dust Networks",
+            "Urban Air Mobility"
+          ],
+          "societal_impact": "Aims to enhance urban living conditions, reduce environmental degradation, but requires significant investment in infrastructure and regulatory frameworks.",
+          "global_trends": "Part of the global push towards smart cities and sustainable development goals, reflecting a trend towards eco-friendly urban planning."
+        }
+      ],
+      "epoch_year": 2030
     }
   }
 }
