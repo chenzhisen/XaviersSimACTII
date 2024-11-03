@@ -1,0 +1,109 @@
+{
+  "metadata": {
+    "generated_at": "2024-11-03T10:38:39.009283",
+    "base_year": 2025,
+    "end_year": 2080
+  },
+  "tech_trees": {
+    "2025": {
+      "emerging_technologies": [
+        {
+          "name": "Personal Robot Identity and Ownership",
+          "probability": 0.7,
+          "estimated_year": 2028,
+          "innovation_type": "incremental",
+          "dependencies": [
+            "blockchain",
+            "AI"
+          ],
+          "impact_areas": [
+            "Digital Trust",
+            "Personal Robotics"
+          ],
+          "description": "Integration of blockchain technology to provide secure and verifiable identity for personal robots, enabling ownership and control.",
+          "societal_implications": "This technology raises questions about robot rights, privacy, and the potential for misuse in identity theft or fraud.",
+          "adoption_factors": "Adoption will depend on regulatory frameworks for robot identity, consumer trust in blockchain, and the perceived benefits of ownership transparency."
+        },
+        {
+          "name": "Thought-Controlled Companion Robots",
+          "probability": 0.6,
+          "estimated_year": 2029,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Brain-Computer Interfaces",
+            "AI"
+          ],
+          "impact_areas": [
+            "Neural & Robotic Integration",
+            "Personal Robotics"
+          ],
+          "description": "Robots that can interpret and respond to human thoughts, enhancing the interaction between humans and machines.",
+          "societal_implications": "Potential for deeper human-robot bonds, but also concerns about privacy invasion, dependency, and the ethics of mental privacy.",
+          "adoption_factors": "Adoption hinges on the development of safe, reliable brain interfaces, public acceptance of thought control, and ethical guidelines for mental privacy."
+        },
+        {
+          "name": "Space-Based Personal Manufacturing Units",
+          "probability": 0.5,
+          "estimated_year": 2030,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "3D Printing",
+            "AI",
+            "Space Technology"
+          ],
+          "impact_areas": [
+            "Space Exploration & Personal Space Tech"
+          ],
+          "description": "Units designed for colonists to produce necessary items in space, reducing dependency on Earth supplies.",
+          "societal_implications": "Enhances the feasibility of space colonization but brings up issues of resource management, intellectual property in space, and the environmental impact of manufacturing in space.",
+          "adoption_factors": "Dependent on the progress of space travel, the establishment of colonies, and the technological maturity of in-space manufacturing."
+        }
+      ],
+      "mainstream_technologies": [
+        {
+          "name": "Home Maintenance Robots",
+          "from_emerging": true,
+          "original_emergence_year": 2022,
+          "maturity_year": 2027,
+          "impact_level": 6,
+          "description": "Robots capable of performing routine home maintenance tasks like cleaning, minor repairs, and basic gardening.",
+          "adoption_status": "Widely adopted in urban areas, especially among the middle and upper classes, with ongoing improvements in functionality and affordability."
+        },
+        {
+          "name": "Personal Health Monitoring Nanobots",
+          "from_emerging": true,
+          "original_emergence_year": 2023,
+          "maturity_year": 2028,
+          "impact_level": 8,
+          "description": "Tiny robots that monitor health parameters internally, providing real-time data for preventive care.",
+          "adoption_status": "Growing acceptance in healthcare, with regulatory bodies setting standards for safety and efficacy."
+        }
+      ],
+      "epoch_themes": [
+        {
+          "theme": "Personalization through Robotics",
+          "description": "A focus on tailoring robotic technology to individual needs, enhancing personal life through automation and companionship.",
+          "related_technologies": [
+            "Personal Robot Identity",
+            "Thought-Controlled Robots",
+            "Home Maintenance Robots"
+          ],
+          "societal_impact": "Shifts societal norms towards greater reliance on technology for personal care, companionship, and life management, potentially altering social structures and human relationships.",
+          "global_trends": "Aligns with trends towards personalization in all tech sectors, from health to entertainment, driven by AI and IoT."
+        },
+        {
+          "theme": "Ethical and Legal Frameworks for Robotics",
+          "description": "Development of laws and ethics to govern the increasing presence of robots in daily life.",
+          "related_technologies": [
+            "Personal Robot Identity",
+            "Robot Rights",
+            "Companion Robots"
+          ],
+          "societal_impact": "Necessitates a new legal framework for robot rights, ownership, privacy, and security, influencing how humans and robots coexist.",
+          "global_trends": "Part of a broader movement towards regulating AI and robotics to ensure ethical practices and safety standards."
+        }
+      ],
+      "epoch_year": 2025
+    }
+  }
+}
