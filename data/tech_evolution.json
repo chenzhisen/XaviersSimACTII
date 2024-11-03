@@ -103,6 +103,106 @@
         }
       ],
       "epoch_year": 2025
+    },
+    "2030": {
+      "emerging_technologies": [
+        {
+          "name": "Advanced Neural Feedback Systems",
+          "probability": 0.75,
+          "estimated_year": 2033,
+          "innovation_type": "incremental",
+          "dependencies": [
+            "Basic Neural Feedback Devices",
+            "AI-Powered Home Assistants"
+          ],
+          "impact_areas": [
+            "Health",
+            "Education",
+            "Accessibility"
+          ],
+          "description": "Devices that provide more nuanced feedback and control over neural activity for cognitive enhancement, stress management, and rehabilitation.",
+          "societal_implications": "Raises ethical concerns about privacy of thoughts, potential for cognitive inequality, and dependency on technology for mental health.",
+          "adoption_factors": "Adoption will depend on regulatory approval, public trust in neural technology, and integration with existing health systems."
+        },
+        {
+          "name": "AI-Enhanced Urban Traffic Management",
+          "probability": 0.8,
+          "estimated_year": 2032,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "AI-Powered Home Assistants",
+            "Autonomous Urban Delivery Drones"
+          ],
+          "impact_areas": [
+            "Transportation",
+            "Urban Planning"
+          ],
+          "description": "AI systems managing urban traffic flow in real-time, reducing congestion and optimizing transport networks.",
+          "societal_implications": "Improves quality of life through reduced commute times but might lead to job displacement for traffic managers and concerns over data privacy.",
+          "adoption_factors": "Requires extensive infrastructure investment, public acceptance of AI in public infrastructure, and seamless integration with existing transport systems."
+        },
+        {
+          "name": "Personal Autonomous Electric Vehicles (PAVs)",
+          "probability": 0.65,
+          "estimated_year": 2035,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Autonomous Urban Delivery Drones",
+            "Blockchain for Secure Transactions"
+          ],
+          "impact_areas": [
+            "Transportation",
+            "Environment"
+          ],
+          "description": "Small, personal vehicles designed for urban environments with full autonomous capabilities, focusing on sustainability.",
+          "societal_implications": "Could significantly reduce urban pollution, but raises issues around urban space allocation, safety protocols, and the digital divide.",
+          "adoption_factors": "Widespread adoption hinges on regulatory frameworks, public trust in autonomous driving, and the development of necessary urban infrastructure."
+        }
+      ],
+      "mainstream_technologies": [
+        {
+          "name": "Smart Wearable Health Monitors",
+          "from_emerging": true,
+          "original_emergence_year": 2027,
+          "maturity_year": 2032,
+          "impact_level": 8,
+          "description": "Integration with AI for real-time health analytics, early detection of health issues, and personalized medical advice.",
+          "adoption_status": "High adoption in health-conscious and elderly demographics; integration into national health systems ongoing."
+        },
+        {
+          "name": "Household Robots for Basic Tasks",
+          "from_emerging": false,
+          "original_emergence_year": 2025,
+          "maturity_year": 2030,
+          "impact_level": 6,
+          "description": "Robots performing simple household tasks like cleaning, minor repairs, and energy management, becoming a common sight in homes.",
+          "adoption_status": "Moderate to high adoption, particularly in developed countries; seen as a luxury but increasingly necessary for the elderly and busy households."
+        }
+      ],
+      "epoch_themes": [
+        {
+          "theme": "Integration of AI into Everyday Life",
+          "description": "AI systems are becoming more pervasive, enhancing personal and public services, making daily life more efficient and tailored.",
+          "related_technologies": [
+            "AI-Enhanced Urban Traffic Management",
+            "Advanced Neural Feedback Systems",
+            "AI-Powered Home Assistants"
+          ],
+          "societal_impact": "Shift towards a society where AI decision-making influences personal choices, requiring new frameworks for ethics, privacy, and human-AI interaction.",
+          "global_trends": "Aligns with global trends towards smart cities, personalized healthcare, and the Internet of Things (IoT)."
+        },
+        {
+          "theme": "Sustainable Urban Mobility",
+          "description": "Focus on reducing environmental impact through innovative transportation solutions and urban planning.",
+          "related_technologies": [
+            "Personal Autonomous Electric Vehicles",
+            "AI-Enhanced Urban Traffic Management"
+          ],
+          "societal_impact": "Promotes sustainability but brings challenges in urban planning, employment shifts, and social equity in access to technology.",
+          "global_trends": "In line with global efforts to combat climate change, reduce urban congestion, and improve air quality."
+        }
+      ],
+      "epoch_year": 2030
     }
   }
 }
