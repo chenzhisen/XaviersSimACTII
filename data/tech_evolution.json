@@ -315,6 +315,136 @@
         }
       ],
       "epoch_year": 2035
+    },
+    "2040": {
+      "emerging_technologies": [
+        {
+          "name": "Intelligent Urban Farming Systems",
+          "probability": 0.75,
+          "estimated_year": 2041,
+          "innovation_type": "incremental",
+          "dependencies": [
+            "Autonomous Energy Management",
+            "Smart Dust Networks"
+          ],
+          "impact_areas": [
+            "Agriculture",
+            "Sustainability",
+            "Urban Planning"
+          ],
+          "description": "Automated, AI-driven farming within urban environments using vertical farming techniques, smart dust for monitoring, and energy-efficient technologies.",
+          "societal_implications": "Reduces food miles, improves food security, and promotes local, sustainable food production. Ethical concerns include land use and the potential for exacerbating urban-rural divides.",
+          "adoption_factors": "Adoption depends on urban space availability, legislation, and investment in urban infrastructure."
+        },
+        {
+          "name": "Advanced Neural-Cloud Interfaces",
+          "probability": 0.6,
+          "estimated_year": 2042,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Neural Feedback Devices",
+            "AI-Driven Personal Fabrication"
+          ],
+          "impact_areas": [
+            "Education",
+            "Health",
+            "Entertainment"
+          ],
+          "description": "A direct interface between human neural activity and cloud-based AI systems for enhanced cognitive capabilities, learning, and entertainment.",
+          "societal_implications": "Could revolutionize education, work, and social interactions but raises significant ethical questions about privacy, data security, and the potential for cognitive inequality.",
+          "adoption_factors": "Widespread adoption hinges on safety, privacy assurances, and regulatory frameworks."
+        },
+        {
+          "name": "Micro-Fusion Reactors",
+          "probability": 0.55,
+          "estimated_year": 2045,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Autonomous Energy Management",
+            "AI-Driven Personal Fabrication"
+          ],
+          "impact_areas": [
+            "Energy",
+            "Industry",
+            "Space Exploration"
+          ],
+          "description": "Small-scale fusion reactors for localized energy production, potentially revolutionizing energy supply with minimal environmental impact.",
+          "societal_implications": "Promotes energy independence, reduces reliance on fossil fuels, but brings up concerns about proliferation of nuclear technology.",
+          "adoption_factors": "Adoption depends on technical breakthroughs, safety protocols, and public acceptance of nuclear technologies."
+        },
+        {
+          "name": "Emotion-Sensitive AI Companions",
+          "probability": 0.8,
+          "estimated_year": 2043,
+          "innovation_type": "incremental",
+          "dependencies": [
+            "Emotion-Adaptive Learning Systems",
+            "Personalized AI Health Monitoring"
+          ],
+          "impact_areas": [
+            "Mental Health",
+            "Elderly Care",
+            "Entertainment"
+          ],
+          "description": "AI companions that can interpret and respond to human emotions, providing companionship, mental health support, and entertainment.",
+          "societal_implications": "Improves quality of life for many, but could lead to over-reliance on AI for emotional support, raising questions about human interaction and mental health.",
+          "adoption_factors": "Adoption driven by an aging population, loneliness epidemic, and advancements in emotion recognition technology."
+        }
+      ],
+      "mainstream_technologies": [
+        {
+          "name": "Smart Household Robots",
+          "from_emerging": true,
+          "original_emergence_year": 2028,
+          "maturity_year": 2040,
+          "impact_level": 8,
+          "description": "Now ubiquitous in homes, these robots perform a wide range of household tasks with greater autonomy and efficiency.",
+          "adoption_status": "Integrated into daily life with high acceptance rates, particularly for cleaning, cooking, and basic home maintenance."
+        },
+        {
+          "name": "Urban Air Mobility",
+          "from_emerging": true,
+          "original_emergence_year": 2034,
+          "maturity_year": 2043,
+          "impact_level": 7,
+          "description": "Personal air vehicles are now a common sight in urban areas, reducing traffic congestion and offering new commuting options.",
+          "adoption_status": "Widely adopted in major cities, with infrastructure supporting takeoff and landing zones integrated into urban planning."
+        },
+        {
+          "name": "Nano-Medicine Delivery",
+          "from_emerging": true,
+          "original_emergence_year": 2036,
+          "maturity_year": 2044,
+          "impact_level": 9,
+          "description": "Nanoparticles are routinely used to deliver drugs with precision, improving treatment outcomes and reducing side effects.",
+          "adoption_status": "Standard practice in medicine, with extensive research and development continuing to expand its applications."
+        }
+      ],
+      "epoch_themes": [
+        {
+          "theme": "Personalized Life Integration",
+          "description": "Technologies are increasingly tailored to individual needs, enhancing personal experiences through AI, robotics, and personalized health.",
+          "related_technologies": [
+            "Advanced Neural-Cloud Interfaces",
+            "Emotion-Sensitive AI Companions",
+            "Personalized AI Health Monitoring"
+          ],
+          "societal_impact": "Fosters a highly personalized society where technology adapts to personal lifestyle, potentially increasing efficiency and well-being, but also raising issues of privacy and surveillance.",
+          "global_trends": "Aligns with global trends towards personalization, health, and well-being as key societal values."
+        },
+        {
+          "theme": "Sustainable Urban Living",
+          "description": "Urban environments are becoming more self-sufficient and environmentally friendly through advanced urban planning, vertical farming, and energy solutions.",
+          "related_technologies": [
+            "Intelligent Urban Farming Systems",
+            "Micro-Fusion Reactors",
+            "Autonomous Energy Management"
+          ],
+          "societal_impact": "Promotes sustainable living but requires significant changes in urban infrastructure, lifestyle, and economic models.",
+          "global_trends": "Reflects the global push towards sustainability, with cities leading the charge in climate change mitigation."
+        }
+      ],
+      "epoch_year": 2040
     }
   }
 }
