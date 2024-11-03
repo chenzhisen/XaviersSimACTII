@@ -310,6 +310,106 @@
         }
       ],
       "epoch_year": 2035
+    },
+    "2040": {
+      "emerging_technologies": [
+        {
+          "name": "Neural Swarm Robotics",
+          "probability": 0.7,
+          "estimated_year": 2041,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Neural-Cloud Integration",
+            "Blockchain-Enabled Robot Networks"
+          ],
+          "impact_areas": [
+            "Infrastructure",
+            "Personal Transportation",
+            "Healthcare"
+          ],
+          "description": "Swarm robotics utilizing neural networks for collective decision-making and problem-solving in various environments.",
+          "societal_implications": "Facilitates highly responsive and adaptive environments, potentially reducing human labor in maintenance and emergency services but raises questions about privacy and control over swarms.",
+          "adoption_factors": "High initial costs and infrastructure requirements; acceptance will depend on demonstrating clear benefits in safety and efficiency."
+        },
+        {
+          "name": "Bionic Symbiosis",
+          "probability": 0.6,
+          "estimated_year": 2043,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Neural Synchronization with Companion Robots",
+            "Bio-robotic Hybrid Systems"
+          ],
+          "impact_areas": [
+            "Healthcare",
+            "Personal Assistance"
+          ],
+          "description": "Direct integration of bionic limbs or organs with the human nervous system, controlled through neural interfaces.",
+          "societal_implications": "Could lead to significant improvements in quality of life for disabled individuals, but also raises ethical concerns about human enhancement and identity.",
+          "adoption_factors": "Acceptance of body modification and the cost-effectiveness of bionic solutions versus traditional medical treatments."
+        },
+        {
+          "name": "Eco-Robotic Systems",
+          "probability": 0.85,
+          "estimated_year": 2044,
+          "innovation_type": "incremental",
+          "dependencies": [
+            "Energy-Efficient Home Robot Systems",
+            "Sustainable Robot Manufacturing"
+          ],
+          "impact_areas": [
+            "Energy",
+            "Sustainable Living"
+          ],
+          "description": "Robots designed to live symbiotically with the environment, aiding in ecological balance through waste management, energy production, and pollution control.",
+          "societal_implications": "Promotes sustainability but might disrupt traditional job markets related to waste management and energy production.",
+          "adoption_factors": "Environmental consciousness, governmental incentives, and the need for scalable solutions."
+        }
+      ],
+      "mainstream_technologies": [
+        {
+          "name": "Autonomous Personal Fabricators",
+          "from_emerging": true,
+          "original_emergence_year": 2038,
+          "maturity_year": 2040,
+          "impact_level": 8,
+          "description": "Home devices capable of fabricating a wide range of items from raw materials, reducing the need for external manufacturing.",
+          "adoption_status": "Widely adopted in developed regions, with significant integration into smart homes for personalized production."
+        },
+        {
+          "name": "Neural-Cloud Integration",
+          "from_emerging": true,
+          "original_emergence_year": 2037,
+          "maturity_year": 2042,
+          "impact_level": 9,
+          "description": "Seamless integration of human neural activity with cloud computing for enhanced cognitive capabilities and remote robot control.",
+          "adoption_status": "Becoming standard in various sectors including healthcare, personal assistance, and education, with widespread public acceptance."
+        }
+      ],
+      "epoch_themes": [
+        {
+          "theme": "Personal Augmentation and Coexistence",
+          "description": "The period is marked by significant advancements in personal robotics, aiming at enhancing human capabilities and creating harmonious living environments with robots.",
+          "related_technologies": [
+            "Neural Swarm Robotics",
+            "Bionic Symbiosis",
+            "Neural-Cloud Integration"
+          ],
+          "societal_impact": "Shifts in employment, new social structures, and ethical debates on the role and rights of robots in society.",
+          "global_trends": "Aligns with global trends towards AI integration, sustainable living, and personalized technology, influencing policy and cultural adaptation globally."
+        },
+        {
+          "theme": "Sustainable and Autonomous Ecosystems",
+          "description": "A focus on creating self-sustaining environments where robots play a crucial role in maintaining ecological balance and personal sustainability.",
+          "related_technologies": [
+            "Eco-Robotic Systems",
+            "Self-Replicating Space Robots"
+          ],
+          "societal_impact": "Promotes a circular economy, reduces environmental impact, but also challenges traditional economic models and resource management.",
+          "global_trends": "Reflects growing global emphasis on sustainability, with technological solutions driving environmental policy and urban planning."
+        }
+      ],
+      "epoch_year": 2040
     }
   }
 }
