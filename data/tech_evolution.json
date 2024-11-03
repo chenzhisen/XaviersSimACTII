@@ -102,6 +102,114 @@
         }
       ],
       "epoch_year": 2025
+    },
+    "2030": {
+      "emerging_technologies": [
+        {
+          "name": "Blockchain-Enabled Robot Networks",
+          "probability": 0.75,
+          "estimated_year": 2033,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Decentralized Robot Identity",
+            "Smart Contracts"
+          ],
+          "impact_areas": [
+            "Digital Trust",
+            "Personal Robotics"
+          ],
+          "description": "A system where robots in a household or community network can autonomously manage and trade services using blockchain technology for secure, decentralized transactions.",
+          "societal_implications": "Enhances trust in robot-to-robot and human-robot interactions; raises questions about data privacy and the autonomy of AI systems.",
+          "adoption_factors": "Requires widespread adoption of blockchain for personal devices, regulatory acceptance of smart contracts, and public trust in robotic autonomy."
+        },
+        {
+          "name": "Neural Synchronization with Companion Robots",
+          "probability": 0.6,
+          "estimated_year": 2034,
+          "innovation_type": "incremental",
+          "dependencies": [
+            "Neuralink for Home Robots",
+            "Emotional Synchronization"
+          ],
+          "impact_areas": [
+            "Neural & Robotic Integration",
+            "Healthcare"
+          ],
+          "description": "Companion robots that can sync with human emotional states and thought patterns to provide tailored assistance and companionship.",
+          "societal_implications": "Could enhance personal well-being but raises ethical concerns about manipulation, consent, and the blurring lines between human and machine.",
+          "adoption_factors": "Public acceptance of brain-computer interfaces, advancements in neural technology, and ethical frameworks for emotional AI."
+        },
+        {
+          "name": "Self-Replicating Space Robots",
+          "probability": 0.5,
+          "estimated_year": 2035,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "AI-Driven Exploration Companions",
+            "Space-adapted Companion Robots"
+          ],
+          "impact_areas": [
+            "Space Exploration",
+            "Sustainable Living"
+          ],
+          "description": "Robots capable of self-replication in space environments, allowing for exponential growth in space exploration and colonization efforts.",
+          "societal_implications": "Enables long-term human presence in space but poses risks related to uncontrolled replication and resource management.",
+          "adoption_factors": "Technological breakthroughs in robotics, space law developments, and the economic feasibility of space colonization."
+        }
+      ],
+      "mainstream_technologies": [
+        {
+          "name": "Personal Autonomous Vehicles",
+          "from_emerging": true,
+          "original_emergence_year": 2028,
+          "maturity_year": 2032,
+          "impact_level": 7,
+          "description": "Vehicles capable of fully autonomous driving, integrated with smart city infrastructure for optimized transportation.",
+          "adoption_status": "Widespread in urban areas with appropriate infrastructure; suburban and rural areas are catching up with regulatory and infrastructural developments."
+        },
+        {
+          "name": "Smart Home Robots",
+          "from_emerging": false,
+          "original_emergence_year": 2026,
+          "maturity_year": 2030,
+          "impact_level": 8,
+          "description": "Robots that manage household tasks, interact with smart home systems, and provide basic companionship.",
+          "adoption_status": "Now a standard in middle to high-income households, enhancing home automation and lifestyle convenience."
+        }
+      ],
+      "epoch_themes": [
+        {
+          "theme": "Trust and Autonomy in Robotics",
+          "description": "A focus on establishing frameworks for trust and autonomous operation in robotic systems, particularly in personal and shared living spaces.",
+          "related_technologies": [
+            "Blockchain-Enabled Robot Networks",
+            "Decentralized Robot Identity"
+          ],
+          "societal_impact": "Shifts societal norms towards accepting robots as autonomous entities with rights and responsibilities, necessitating new legal and ethical frameworks.",
+          "global_trends": "Aligns with global trends towards decentralization, security, and the integration of AI in daily life."
+        },
+        {
+          "theme": "Human-Robot Emotional Connection",
+          "description": "The development of technologies aimed at creating deeper emotional bonds between humans and robots for companionship, care, and mental health support.",
+          "related_technologies": [
+            "Neural Synchronization with Companion Robots",
+            "Emotional Synchronization"
+          ],
+          "societal_impact": "Changes in social structures and relationships, with potential implications for mental health, loneliness, and human emotional development.",
+          "global_trends": "Responds to increasing needs for companionship in aging populations and the rise of mental health awareness."
+        },
+        {
+          "theme": "Sustainable Space Living",
+          "description": "Technological advancements focused on making space exploration and colonization sustainable through robotics and automation.",
+          "related_technologies": [
+            "Self-Replicating Space Robots",
+            "AI-Driven Exploration Companions"
+          ],
+          "societal_impact": "Pushes humanity towards multi-planetary living, with implications for resource allocation, space governance, and long-term human survival.",
+          "global_trends": "Part of a broader movement towards sustainability and the expansion of human presence beyond Earth."
+        }
+      ],
+      "epoch_year": 2030
     }
   }
 }
