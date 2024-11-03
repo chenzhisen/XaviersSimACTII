@@ -423,6 +423,132 @@
         }
       ],
       "epoch_year": 2035
+    },
+    "2040": {
+      "emerging_technologies": [
+        {
+          "name": "Interstellar Gateway Network",
+          "probability": 0.6,
+          "estimated_year": 2042,
+          "innovation_type": "revolutionary",
+          "dependencies": [
+            "Interstellar Propulsion System",
+            "Quantum Teleportation for Space Communication"
+          ],
+          "impact_areas": [
+            "Space Colonization & Transport",
+            "Digital Systems & Trust"
+          ],
+          "description": "A network of quantum-entangled gateways allowing for near-instantaneous travel and communication between star systems, using principles of quantum teleportation for both data and physical matter.",
+          "societal_implications": "This technology would drastically reduce the isolation of space colonies, enabling real-time communication and potentially faster colonization efforts.",
+          "adoption_factors": "Requires significant advancements in quantum physics, materials science, and energy efficiency; also requires global consensus on space governance.",
+          "contribution_to_goals": [
+            "Making humanity multi-planetary",
+            "Expanding human consciousness and capabilities"
+          ]
+        },
+        {
+          "name": "Global Brain",
+          "probability": 0.75,
+          "estimated_year": 2045,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "AI-Enhanced Neural Interfaces",
+            "Neural Symbiosis Interface"
+          ],
+          "impact_areas": [
+            "Neural Enhancement & AGI",
+            "Digital Systems & Trust"
+          ],
+          "description": "A collective intelligence network where human cognition is augmented and integrated with AI systems to enhance decision-making, creativity, and problem-solving on a planetary scale.",
+          "societal_implications": "Could lead to a new form of collective intelligence, potentially altering social structures, governance, and individual autonomy.",
+          "adoption_factors": "Ethical considerations, privacy concerns, and the need for robust cybersecurity to protect against misuse or hacking.",
+          "contribution_to_goals": [
+            "Expanding human consciousness and capabilities",
+            "Developing safe artificial general intelligence"
+          ]
+        },
+        {
+          "name": "Atmospheric Carbon Sequestration via Synthetic Photosynthesis",
+          "probability": 0.8,
+          "estimated_year": 2041,
+          "innovation_type": "incremental",
+          "dependencies": [
+            "Atmospheric Regeneration Technology",
+            "Fusion Energy Reactor"
+          ],
+          "impact_areas": [
+            "Sustainable Energy & Resources"
+          ],
+          "description": "A system where artificial leaves or similar structures capture CO2 and convert it into stable, storable carbon compounds, powered by fusion energy.",
+          "societal_implications": "A significant step towards reversing climate change by actively removing carbon from the atmosphere.",
+          "adoption_factors": "Scalability, energy efficiency, and integration into existing infrastructure.",
+          "contribution_to_goals": [
+            "Accelerating sustainable energy transition"
+          ]
+        }
+      ],
+      "mainstream_technologies": [
+        {
+          "name": "AI-Enhanced Neural Interfaces",
+          "from_emerging": true,
+          "original_emergence_year": 2029,
+          "maturity_year": 2040,
+          "impact_level": 9,
+          "description": "Highly integrated brain-computer interfaces that enable direct communication between human brain activity and digital systems, enhancing cognitive capabilities.",
+          "adoption_status": "Widely adopted in education, healthcare, and professional environments; becoming a standard for human-AI interaction.",
+          "civilization_impact": "Facilitates a deeper integration of AI into daily life, enhancing human decision-making and creativity, thereby contributing to all civilization-scale goals."
+        },
+        {
+          "name": "Interstellar Propulsion System",
+          "from_emerging": true,
+          "original_emergence_year": 2027,
+          "maturity_year": 2040,
+          "impact_level": 7,
+          "description": "Systems capable of accelerating spacecraft to significant fractions of light speed, enabling interstellar travel.",
+          "adoption_status": "Operational for deep space missions, with several prototype vessels already in use.",
+          "civilization_impact": "Enables humanity to explore and potentially colonize other star systems, a critical step in becoming multi-planetary."
+        }
+      ],
+      "epoch_themes": [
+        {
+          "theme": "Quantum Leap in Space Travel",
+          "description": "This period marks a quantum leap in our ability to travel and communicate across vast distances, transforming our understanding of space and time.",
+          "related_technologies": [
+            "Interstellar Gateway Network",
+            "Quantum Teleportation for Space Communication"
+          ],
+          "societal_impact": "Enables humanity to extend its reach beyond the solar system, potentially leading to a multi-planetary civilization.",
+          "global_trends": "Aligns with the goal of making humanity multi-planetary and expanding human consciousness.",
+          "challenges": [
+            "Technological limitations in energy efficiency and quantum entanglement stability",
+            "Ethical considerations for space colonization"
+          ],
+          "opportunities": [
+            "New frontiers for scientific discovery and resource exploitation",
+            "Potential for establishing human settlements beyond the solar system"
+          ]
+        },
+        {
+          "theme": "Cognitive Revolution",
+          "description": "Human cognition is significantly augmented through direct neural interfaces with AI, leading to a new era of collective intelligence.",
+          "related_technologies": [
+            "Global Brain",
+            "Neural Symbiosis Interface"
+          ],
+          "societal_impact": "Redefines education, work, and social interactions by enhancing human capabilities and integrating them with AI systems.",
+          "global_trends": "Supports the expansion of human consciousness, safe development of AGI, and sustainable energy transition through better decision-making.",
+          "challenges": [
+            "Ensuring privacy and security in neural data",
+            "Addressing potential cognitive disparities"
+          ],
+          "opportunities": [
+            "Unprecedented collaboration between humans and AI",
+            "Enhanced problem-solving on global issues like climate change"
+          ]
+        }
+      ],
+      "epoch_year": 2040
     }
   }
 }
