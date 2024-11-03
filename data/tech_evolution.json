@@ -219,6 +219,102 @@
         }
       ],
       "epoch_year": 2030
+    },
+    "2035": {
+      "emerging_technologies": [
+        {
+          "name": "Neural-Linked Home Ecosystems",
+          "probability": 0.85,
+          "estimated_year": 2037,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Neural Feedback Companion Robots",
+            "Brain-Computer Interfaces"
+          ],
+          "impact_areas": [
+            "Neural & Robotic Integration",
+            "Infrastructure & Personal Transportation"
+          ],
+          "description": "A fully integrated home system where all devices and robots are controlled via neural links, providing seamless interaction and control over the environment.",
+          "societal_implications": "This technology could significantly alter personal privacy, autonomy, and the nature of human-technology interaction, raising ethical concerns about mental privacy and control.",
+          "adoption_factors": "Adoption would depend on the maturity and safety of neural link technology, public acceptance of invasive brain interfaces, and the demonstrated benefits of such systems."
+        },
+        {
+          "name": "Personal Space Habitat Robots",
+          "probability": 0.7,
+          "estimated_year": 2039,
+          "innovation_type": "incremental",
+          "dependencies": [
+            "Space-Based Personal Manufacturing Units",
+            "AI-driven Exploration Robots"
+          ],
+          "impact_areas": [
+            "Space Exploration & Personal Space Tech"
+          ],
+          "description": "Robots designed for space habitats that can autonomously construct, maintain, and adapt living spaces for human colonists.",
+          "societal_implications": "Enables long-term human presence in space, potentially leading to new forms of social organization and community building outside Earth.",
+          "adoption_factors": "Requires significant advancements in robotics, AI, and space colonization initiatives, with adoption driven by space agencies and private space companies."
+        },
+        {
+          "name": "Robo-Enhanced Human Augmentation",
+          "probability": 0.75,
+          "estimated_year": 2038,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Neural Feedback Companion Robots",
+            "Robot-Assisted Genetic Optimization"
+          ],
+          "impact_areas": [
+            "Biological & Robotic Healthcare"
+          ],
+          "description": "Use of robotics to augment human physical and cognitive abilities, integrating biological enhancements with robotic systems.",
+          "societal_implications": "Could lead to new social divides based on access to enhancement technologies, ethical debates on what constitutes 'human', and potential for misuse.",
+          "adoption_factors": "Adoption will be influenced by ethical guidelines, regulatory frameworks, and public perception of body modification and enhancement."
+        }
+      ],
+      "mainstream_technologies": [
+        {
+          "name": "Personal Health Monitoring Nanobots",
+          "from_emerging": true,
+          "original_emergence_year": 2028,
+          "maturity_year": 2035,
+          "impact_level": 8,
+          "description": "Nanobots that monitor and manage health conditions internally, providing real-time data and therapeutic interventions.",
+          "adoption_status": "Widely adopted for preventive care and chronic disease management, integrated into routine healthcare with significant acceptance."
+        },
+        {
+          "name": "Space-Adapted Personal Manufacturing Units",
+          "from_emerging": true,
+          "original_emergence_year": 2034,
+          "maturity_year": 2040,
+          "impact_level": 7,
+          "description": "Manufacturing units capable of producing goods in space environments, tailored for personal needs of space colonists.",
+          "adoption_status": "Becoming standard in space missions, with growing interest from private sectors aiming to establish off-world colonies."
+        }
+      ],
+      "epoch_themes": [
+        {
+          "theme": "The Age of Neural Integration",
+          "description": "A period marked by the integration of neural technology into everyday life, transforming how we interact with technology and each other.",
+          "related_technologies": [
+            "Neural-Linked Home Ecosystems",
+            "Robo-Enhanced Human Augmentation"
+          ],
+          "societal_impact": "This theme explores the ethical, privacy, and social implications of neural interfaces, potentially leading to new forms of communication, control, and personal enhancement.",
+          "global_trends": "Reflects the broader trend towards human augmentation and the merging of biological and digital identities."
+        },
+        {
+          "theme": "Space Living and Autonomy",
+          "description": "Focus on developing technologies that enable self-sustaining and autonomous living environments in space.",
+          "related_technologies": [
+            "Personal Space Habitat Robots",
+            "Space-Adapted Personal Manufacturing Units"
+          ],
+          "societal_impact": "Could redefine human expansion and the concept of home, with significant implications for resource allocation, environmental sustainability, and the future of human evolution.",
+          "global_trends": "Aligns with the increasing interest in space travel, colonization, and the need for sustainable off-world habitats."
+        }
+      ],
+      "epoch_year": 2035
     }
   }
 }
