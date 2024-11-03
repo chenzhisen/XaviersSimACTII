@@ -149,6 +149,148 @@
         }
       ],
       "epoch_year": 2025
+    },
+    "2030": {
+      "emerging_technologies": [
+        {
+          "name": "Quantum Fusion Reactors",
+          "probability": 0.65,
+          "estimated_year": 2032,
+          "innovation_type": "revolutionary",
+          "dependencies": [
+            "Nuclear Fusion Power Plant",
+            "Quantum Computing Applications"
+          ],
+          "impact_areas": [
+            "Sustainable Energy & Resources",
+            "Transportation & Infrastructure"
+          ],
+          "description": "Utilization of quantum computing to enhance the efficiency and control of nuclear fusion reactions, aiming to create compact, high-output reactors for both terrestrial and space applications.",
+          "societal_implications": "Quantum Fusion Reactors could drastically reduce reliance on fossil fuels, offer near-limitless clean energy, and support the energy demands of a multi-planetary civilization.",
+          "adoption_factors": "Requires significant advancements in quantum computing, fusion physics, and materials science. Public acceptance and regulatory frameworks for space energy use are critical.",
+          "contribution_to_goals": [
+            "Accelerating sustainable energy transition",
+            "Creating self-sustaining cities on Mars"
+          ]
+        },
+        {
+          "name": "Interstellar Propulsion Systems",
+          "probability": 0.5,
+          "estimated_year": 2034,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Nuclear Fusion Power Plant",
+            "Space-Based Solar Power"
+          ],
+          "impact_areas": [
+            "Space Colonization & Transport"
+          ],
+          "description": "Development of propulsion systems capable of reaching interstellar destinations within a human lifetime, leveraging fusion energy or advanced ion drives.",
+          "societal_implications": "This technology could expand human exploration beyond the solar system, fundamentally altering our understanding of the universe and our place in it.",
+          "adoption_factors": "Requires breakthroughs in physics, materials science, and energy efficiency, along with political will and international cooperation.",
+          "contribution_to_goals": [
+            "Making humanity multi-planetary"
+          ]
+        },
+        {
+          "name": "Neural Lace for Consciousness Expansion",
+          "probability": 0.75,
+          "estimated_year": 2033,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Brain-Computer Interfaces (BCI)",
+            "Cognitive Enhancement Technologies"
+          ],
+          "impact_areas": [
+            "Neural Enhancement & AGI",
+            "Biotechnology & Longevity"
+          ],
+          "description": "A network of fine, biocompatible electrodes integrated into the brain to enhance cognitive capabilities, memory storage, and direct neural communication.",
+          "societal_implications": "Could lead to new forms of social interaction, education, and work, potentially reducing inequality through enhanced cognitive abilities.",
+          "adoption_factors": "Ethical considerations, privacy issues, and public acceptance of brain modification will be crucial.",
+          "contribution_to_goals": [
+            "Expanding human consciousness and capabilities",
+            "Developing safe artificial general intelligence"
+          ]
+        },
+        {
+          "name": "Autonomous In-Situ Resource Utilization (ISRU)",
+          "probability": 0.8,
+          "estimated_year": 2031,
+          "innovation_type": "incremental",
+          "dependencies": [
+            "Self-Replicating Robotics",
+            "Space-Based Manufacturing"
+          ],
+          "impact_areas": [
+            "Space Colonization & Transport"
+          ],
+          "description": "Robotic systems that autonomously extract and process resources on extraterrestrial bodies for construction, life support, and fuel production.",
+          "societal_implications": "Enables long-term, self-sustaining colonies by reducing the need for Earth-supplied resources, promoting a multi-planetary civilization.",
+          "adoption_factors": "Requires reliable AI for operation in harsh environments, and development of efficient resource extraction techniques.",
+          "contribution_to_goals": [
+            "Making humanity multi-planetary",
+            "Creating self-sustaining cities on Mars"
+          ]
+        }
+      ],
+      "mainstream_technologies": [
+        {
+          "name": "Autonomous Electric Vehicles (AEVs)",
+          "from_emerging": true,
+          "original_emergence_year": 2028,
+          "maturity_year": 2030,
+          "impact_level": 7,
+          "description": "Electric vehicles with full self-driving capabilities, integrated into smart city infrastructure for optimized transport.",
+          "adoption_status": "Widely adopted in urban areas, with increasing rural integration, supported by infrastructure like charging stations and traffic management systems.",
+          "civilization_impact": "Reduces carbon emissions, enhances urban mobility, and changes the landscape of transportation jobs and urban planning."
+        }
+      ],
+      "epoch_themes": [
+        {
+          "theme": "Energy Liberation",
+          "description": "A period where humanity unlocks nearly limitless, clean energy sources, transforming both terrestrial and space environments.",
+          "related_technologies": [
+            "Quantum Fusion Reactors",
+            "Space-Based Solar Power",
+            "Advanced Solar Capture"
+          ],
+          "societal_impact": "This theme ushers in an era of abundance, reducing energy scarcity as a barrier to growth, enabling new forms of space exploration, and altering economic models.",
+          "global_trends": "Aligns with goals of sustainable energy transition and multi-planetary expansion.",
+          "challenges": [
+            "Overcoming technical hurdles in fusion and quantum technologies",
+            "Developing infrastructure for energy distribution in space",
+            "Ethical and political issues regarding energy control and distribution"
+          ],
+          "opportunities": [
+            "Global energy equity",
+            "Reduction in environmental degradation",
+            "Support for ambitious space colonization projects"
+          ]
+        },
+        {
+          "theme": "Human Augmentation and Symbiosis",
+          "description": "Focus on enhancing human capabilities through technology, blurring the lines between biological and artificial intelligence.",
+          "related_technologies": [
+            "Neural Lace for Consciousness Expansion",
+            "Brain-Computer Interfaces (BCI)",
+            "Cognitive Enhancement Technologies"
+          ],
+          "societal_impact": "A shift in human identity, work, education, and communication, potentially leading to a more interconnected and capable society.",
+          "global_trends": "Contributes to expanding human consciousness, enhancing capabilities, and potentially integrating with AGI.",
+          "challenges": [
+            "Ethical dilemmas around enhancement and equality",
+            "Privacy and security concerns with neural integration",
+            "Balancing human evolution with technological progress"
+          ],
+          "opportunities": [
+            "New forms of social interaction and collaboration",
+            "Solving complex global problems through enhanced cognition",
+            "Creating a more empathetic and interconnected global community"
+          ]
+        }
+      ],
+      "epoch_year": 2030
     }
   }
 }
