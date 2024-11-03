@@ -207,6 +207,114 @@
         }
       ],
       "epoch_year": 2030
+    },
+    "2035": {
+      "emerging_technologies": [
+        {
+          "name": "Intelligent Urban Planning AI",
+          "probability": 0.75,
+          "estimated_year": 2037,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Smart Dust Networks",
+            "Blockchain for Digital Identity",
+            "Urban Air Mobility"
+          ],
+          "impact_areas": [
+            "Urban Development",
+            "Transportation",
+            "Environmental Sustainability"
+          ],
+          "description": "An AI system that uses real-time data from smart dust networks, urban mobility patterns, and environmental impact assessments to dynamically plan and optimize urban landscapes for sustainability, efficiency, and livability.",
+          "societal_implications": "Could lead to more resilient cities but raises concerns about privacy, data security, and the displacement of traditional urban planning jobs.",
+          "adoption_factors": "Requires significant investment in urban infrastructure, public acceptance of AI decision-making, and regulatory frameworks to manage ethical and privacy issues."
+        },
+        {
+          "name": "Emotion-Adaptive Learning Systems",
+          "probability": 0.6,
+          "estimated_year": 2038,
+          "innovation_type": "incremental",
+          "dependencies": [
+            "Personalized AI Health Monitoring",
+            "Augmented Reality in Education"
+          ],
+          "impact_areas": [
+            "Education",
+            "Mental Health"
+          ],
+          "description": "Educational software that adapts learning material based on the student's emotional state, detected through wearable devices and AR interfaces, to enhance learning efficiency and emotional well-being.",
+          "societal_implications": "Promotes personalized education but might exacerbate educational inequalities if not universally accessible.",
+          "adoption_factors": "Adoption hinges on the development of accurate emotion detection technology, educational policy support, and parental acceptance."
+        },
+        {
+          "name": "Nano-Medicine Delivery",
+          "probability": 0.8,
+          "estimated_year": 2036,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "AI-Driven Personal Fabrication",
+            "Smart Dust Networks"
+          ],
+          "impact_areas": [
+            "Healthcare",
+            "Biotechnology"
+          ],
+          "description": "Use of nanobots for targeted drug delivery, which can navigate through the body to deliver medication exactly where it's needed, reducing side effects and improving treatment efficacy.",
+          "societal_implications": "Could revolutionize treatment for chronic and acute conditions, but brings up ethical issues around human enhancement and nano-pollution.",
+          "adoption_factors": "Requires breakthroughs in nanotech safety, regulatory approval, and public trust in nanotechnology."
+        },
+        {
+          "name": "Autonomous Energy Management",
+          "probability": 0.9,
+          "estimated_year": 2039,
+          "innovation_type": "incremental",
+          "dependencies": [
+            "Smart Household Robots",
+            "AI-Driven Personal Fabrication"
+          ],
+          "impact_areas": [
+            "Energy Efficiency",
+            "Smart Homes"
+          ],
+          "description": "Systems that autonomously manage energy consumption and production in homes and buildings, integrating with smart grids for optimal energy use.",
+          "societal_implications": "Reduces energy waste, but might lead to job displacement in energy management sectors and concerns over grid security.",
+          "adoption_factors": "Dependent on smart grid development, IoT integration, and consumer willingness to relinquish control over energy management."
+        }
+      ],
+      "mainstream_technologies": [
+        {
+          "name": "Urban Air Mobility",
+          "from_emerging": true,
+          "original_emergence_year": 2034,
+          "maturity_year": 2038,
+          "impact_level": 7,
+          "description": "Personal and commercial air transport systems for urban areas, significantly reducing ground traffic congestion.",
+          "adoption_status": "Now mainstream in large cities with dedicated infrastructure; widespread public and commercial use, though still facing regulatory and safety challenges."
+        },
+        {
+          "name": "Neural Feedback Devices",
+          "from_emerging": true,
+          "original_emergence_year": 2030,
+          "maturity_year": 2037,
+          "impact_level": 6,
+          "description": "Devices that provide real-time feedback to enhance cognitive and physical performance, now commonly used in both medical and consumer markets.",
+          "adoption_status": "Widely adopted for health monitoring, therapy, and performance enhancement, with ethical guidelines for use in place."
+        }
+      ],
+      "epoch_themes": [
+        {
+          "theme": "Seamless Integration of AI and Robotics",
+          "description": "The period sees a significant increase in the integration of AI and robotics into daily life, enhancing efficiency, safety, and personal convenience.",
+          "related_technologies": [
+            "Smart Household Robots",
+            "AI-Driven Personal Fabrication",
+            "Autonomous Energy Management"
+          ],
+          "societal_impact": "Leads to a transformation in job markets, privacy concerns, and the need for new ethical frameworks for technology use.",
+          "global_trends": "Reflects the global push towards smart cities, sustainable living, and personalized services, aligning with trends in AI development and IoT expansion."
+        }
+      ],
+      "epoch_year": 2035
     }
   }
 }
