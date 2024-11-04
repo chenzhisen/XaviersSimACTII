@@ -356,6 +356,122 @@
         }
       ],
       "epoch_year": 2035
+    },
+    "2040": {
+      "emerging_technologies": [
+        {
+          "name": "AI-Driven Urban Planning",
+          "probability": 0.8,
+          "estimated_year": 2043,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Smart Urban Mobility Networks",
+            "AI-Enhanced Autonomous Medical Diagnostics"
+          ],
+          "impact_areas": [
+            "Urban Development",
+            "Public Health",
+            "Sustainability"
+          ],
+          "description": "AI systems that integrate real-time data from urban sensors, traffic, pollution levels, and health monitoring to optimize city layouts and infrastructure.",
+          "societal_implications": "This technology could lead to cities that are more responsive to residents' needs, reducing commute times, improving air quality, and enhancing public health. However, it raises concerns about privacy, surveillance, and the potential for AI to make decisions that might not align with human values.",
+          "adoption_factors": "Adoption will depend on the proven effectiveness in pilot projects, public trust in AI, and the willingness of city planners to relinquish some control to AI systems."
+        },
+        {
+          "name": "Quantum-Resistant Encryption",
+          "probability": 0.9,
+          "estimated_year": 2041,
+          "innovation_type": "incremental",
+          "dependencies": [
+            "Decentralized Digital Identity"
+          ],
+          "impact_areas": [
+            "Cybersecurity",
+            "Digital Trust"
+          ],
+          "description": "Development of encryption methods that are secure against quantum computing attacks, ensuring long-term data privacy and security.",
+          "societal_implications": "Essential for maintaining trust in digital systems as quantum computing advances, but could lead to a digital divide if not universally adopted or accessible.",
+          "adoption_factors": "Widespread adoption hinges on the development of quantum computers capable of breaking current encryption, regulatory support, and the need to secure sensitive data over long periods."
+        },
+        {
+          "name": "Integrated Neural-Enhanced Cognitive Augmentation",
+          "probability": 0.65,
+          "estimated_year": 2045,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Neural-Enhanced Learning Systems",
+            "AI-Enhanced Predictive Healthcare"
+          ],
+          "impact_areas": [
+            "Education",
+            "Health",
+            "Workforce"
+          ],
+          "description": "Systems that directly augment cognitive functions by integrating with the brain to enhance memory, learning speed, and cognitive flexibility.",
+          "societal_implications": "Could revolutionize education, work efficiency, and personal development but raises ethical questions about human enhancement, inequality, and the essence of human cognition.",
+          "adoption_factors": "Adoption will be influenced by ethical considerations, regulatory frameworks, public perception of brain augmentation, and the ability to address potential side effects."
+        },
+        {
+          "name": "Autonomous Disaster Response Robots",
+          "probability": 0.75,
+          "estimated_year": 2042,
+          "innovation_type": "incremental",
+          "dependencies": [
+            "Home Automation Robots",
+            "Urban Autonomous Recycling Robots"
+          ],
+          "impact_areas": [
+            "Emergency Services",
+            "Public Safety"
+          ],
+          "description": "Robots designed to autonomously respond to natural disasters, providing immediate aid, rescue operations, and infrastructure repair.",
+          "societal_implications": "Enhances emergency response capabilities, potentially saving lives, but requires robust AI ethics and safety protocols to prevent misuse or unintended consequences.",
+          "adoption_factors": "The adoption will be driven by the need for rapid response in disaster situations, funding for development, and the integration with existing emergency response systems."
+        }
+      ],
+      "mainstream_technologies": [
+        {
+          "name": "AI-Enhanced Health Monitoring Wearables",
+          "from_emerging": true,
+          "original_emergence_year": 2027,
+          "maturity_year": 2040,
+          "impact_level": 7,
+          "description": "Wearables that not only track health metrics but predict health issues and suggest preventive measures with high accuracy.",
+          "adoption_status": "Widely integrated into daily life, with significant adoption in both consumer markets and healthcare systems."
+        },
+        {
+          "name": "Smart Urban Mobility Networks",
+          "from_emerging": true,
+          "original_emergence_year": 2038,
+          "maturity_year": 2045,
+          "impact_level": 8,
+          "description": "A network of interconnected transport systems, including autonomous vehicles, public transit, and personal mobility devices, optimized for efficiency and sustainability.",
+          "adoption_status": "Becoming standard in urban planning with cities actively investing in and expanding these networks."
+        }
+      ],
+      "epoch_themes": [
+        {
+          "theme": "Human-AI Symbiosis",
+          "description": "Increasing integration of AI into daily human activities, enhancing cognitive and physical capabilities.",
+          "related_technologies": [
+            "Integrated Neural-Enhanced Cognitive Augmentation",
+            "AI-Driven Urban Planning"
+          ],
+          "societal_impact": "This theme could lead to a new era of human enhancement, potentially increasing productivity, reducing human error, and enhancing quality of life. However, it also poses risks of dependency on technology, privacy concerns, and the redefinition of what it means to be human.",
+          "global_trends": "Aligns with trends towards personalized technology, the rise of AI ethics, and the integration of AI in various sectors including health, education, and urban development."
+        },
+        {
+          "theme": "Resilient and Sustainable Cities",
+          "description": "Cities designed to be self-sustaining and resilient against environmental and infrastructural challenges.",
+          "related_technologies": [
+            "AI-Driven Urban Planning",
+            "Smart Urban Mobility Networks"
+          ],
+          "societal_impact": "Fosters urban environments that are more livable, reduce environmental impact, and are better prepared for climate change and natural disasters.",
+          "global_trends": "Part of the global push towards sustainability, smart cities, and the integration of technology to address urban challenges like congestion, pollution, and resource management."
+        }
+      ],
+      "epoch_year": 2040
     }
   }
 }
