@@ -1,0 +1,147 @@
+{
+  "metadata": {
+    "generated_at": "2024-11-04T15:50:05.747527",
+    "base_year": 2025,
+    "end_year": 2075
+  },
+  "tech_trees": {
+    "2025": {
+      "emerging_technologies": [
+        {
+          "name": "AI-Powered Personal Assistants",
+          "probability": 0.9,
+          "estimated_year": 2026,
+          "innovation_type": "incremental",
+          "dependencies": [
+            "Advanced Natural Language Processing",
+            "Edge AI"
+          ],
+          "impact_areas": [
+            "Consumer Electronics",
+            "Education",
+            "Healthcare"
+          ],
+          "description": "AI assistants capable of handling complex queries, scheduling, and providing real-time language translation.",
+          "societal_implications": "Increases efficiency in daily tasks, reduces digital divide by aiding those with disabilities or language barriers.",
+          "adoption_factors": "High due to integration into existing devices and services, privacy concerns might slow adoption."
+        },
+        {
+          "name": "Blockchain-based XVI Token Ecosystem",
+          "probability": 0.75,
+          "estimated_year": 2027,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Smart Contracts",
+            "Interoperability Protocols"
+          ],
+          "impact_areas": [
+            "Finance",
+            "Supply Chain",
+            "Digital Ownership"
+          ],
+          "description": "A decentralized ecosystem leveraging XVI tokens for secure, transparent transactions and smart contract executions.",
+          "societal_implications": "Promotes transparency and reduces fraud in transactions, potentially reshaping economic models.",
+          "adoption_factors": "Regulatory acceptance, integration with existing financial systems, user education on blockchain."
+        },
+        {
+          "name": "Quantum-Resistant Blockchain",
+          "probability": 0.55,
+          "estimated_year": 2029,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Post-Quantum Cryptography",
+            "Current Blockchain Infrastructure"
+          ],
+          "impact_areas": [
+            "Security",
+            "Cryptocurrency"
+          ],
+          "description": "Blockchain technologies that are secure against quantum computing attacks.",
+          "societal_implications": "Ensures long-term security for digital transactions and identities in the era of quantum computing.",
+          "adoption_factors": "Necessity due to advancements in quantum computing, requires significant upgrade in existing systems."
+        },
+        {
+          "name": "Neuralink Integration for Cognitive Enhancement",
+          "probability": 0.6,
+          "estimated_year": 2030,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Neural Interfaces",
+            "AI",
+            "Biocompatible Materials"
+          ],
+          "impact_areas": [
+            "Healthcare",
+            "Education",
+            "Workforce"
+          ],
+          "description": "Devices that integrate with the human brain to enhance cognitive capabilities, memory, and learning speed.",
+          "societal_implications": "Could lead to a cognitive divide, ethical considerations regarding enhancement vs. natural human capabilities.",
+          "adoption_factors": "Ethical debates, regulatory hurdles, public perception of cyborg enhancement."
+        },
+        {
+          "name": "Autonomous Delivery Drones",
+          "probability": 0.85,
+          "estimated_year": 2027,
+          "innovation_type": "incremental",
+          "dependencies": [
+            "Drone Technology",
+            "AI for Navigation",
+            "Regulatory Framework"
+          ],
+          "impact_areas": [
+            "Logistics",
+            "Retail",
+            "Emergency Services"
+          ],
+          "description": "Drones capable of fully autonomous delivery of goods, reducing delivery times and costs.",
+          "societal_implications": "Changes in urban planning, job displacement in delivery sectors, increased efficiency in logistics.",
+          "adoption_factors": "Regulatory approval, technological reliability, public acceptance of drone presence."
+        }
+      ],
+      "mainstream_technologies": [
+        {
+          "name": "5G Advanced",
+          "from_emerging": true,
+          "original_emergence_year": 2022,
+          "maturity_year": 2025,
+          "impact_level": 8,
+          "description": "An evolution of 5G with improved speed, capacity, and IoT integration.",
+          "adoption_status": "Widely adopted due to demand for faster connectivity, IoT expansion."
+        },
+        {
+          "name": "AI in Customer Service",
+          "from_emerging": true,
+          "original_emergence_year": 2019,
+          "maturity_year": 2026,
+          "impact_level": 7,
+          "description": "AI chatbots and virtual agents providing 24/7 customer support with high efficiency.",
+          "adoption_status": "Highly adopted in sectors like banking, retail, and telecom for cost efficiency and customer satisfaction."
+        }
+      ],
+      "epoch_themes": [
+        {
+          "theme": "Decentralization and Digital Sovereignty",
+          "description": "A shift towards decentralized systems, giving users control over their data and transactions.",
+          "related_technologies": [
+            "Blockchain-based XVI Token Ecosystem",
+            "Quantum-Resistant Blockchain"
+          ],
+          "societal_impact": "Empowers individuals, potentially disrupts traditional power structures, enhances privacy.",
+          "global_trends": "Increasing demand for privacy, regulatory moves towards data protection, growth in decentralized finance (DeFi)."
+        },
+        {
+          "theme": "Human Augmentation",
+          "description": "Technologies aimed at enhancing human capabilities through integration with machines.",
+          "related_technologies": [
+            "Neuralink Integration",
+            "AI-Powered Personal Assistants"
+          ],
+          "societal_impact": "Raises ethical questions about enhancement, potential for societal division based on access to technology.",
+          "global_trends": "Advances in neuroscience, increased focus on personal health and performance optimization."
+        }
+      ],
+      "epoch_year": 2025
+    }
+  }
+}
