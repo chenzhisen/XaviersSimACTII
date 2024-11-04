@@ -305,6 +305,109 @@
         }
       ],
       "epoch_year": 2035
+    },
+    "2040": {
+      "emerging_technologies": [
+        {
+          "name": "Adaptive Quantum Computing Networks",
+          "probability": 0.7,
+          "estimated_year": 2042,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Quantum Computing",
+            "AI-Enhanced Urban Planning Systems"
+          ],
+          "impact_areas": [
+            "Computing",
+            "AI",
+            "Urban Planning"
+          ],
+          "description": "Networks that dynamically adjust quantum computing resources based on real-time demand, enhancing efficiency in urban and industrial applications.",
+          "societal_implications": "Could revolutionize data processing, potentially leading to significant advancements in privacy, security, and economic distribution due to the ability to solve complex problems rapidly.",
+          "adoption_factors": "Requires significant infrastructure investment and widespread understanding of quantum mechanics; adoption depends on proving practical benefits over classical computing."
+        },
+        {
+          "name": "Biometric Blockchain Networks",
+          "probability": 0.8,
+          "estimated_year": 2040,
+          "innovation_type": "incremental",
+          "dependencies": [
+            "Blockchain for Secure Digital Identity",
+            "AI"
+          ],
+          "impact_areas": [
+            "Security",
+            "Healthcare",
+            "Identity Management"
+          ],
+          "description": "A blockchain system that uses biometric data for identity verification, enhancing security and reducing identity theft.",
+          "societal_implications": "Improves security but raises concerns about privacy, data ownership, and potential misuse of biometric data.",
+          "adoption_factors": "Adoption depends on regulatory frameworks for data protection and public trust in biometric security."
+        },
+        {
+          "name": "Personalized Environmental Control Systems",
+          "probability": 0.85,
+          "estimated_year": 2041,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Household Energy Management Robots",
+            "AI-Powered Home Maintenance Robots"
+          ],
+          "impact_areas": [
+            "Energy",
+            "Health",
+            "Comfort"
+          ],
+          "description": "Systems that automatically adjust indoor environments to optimize health, comfort, and energy efficiency based on real-time personal data.",
+          "societal_implications": "Enhances quality of life but could exacerbate energy consumption disparities if not managed equitably.",
+          "adoption_factors": "Adoption is driven by the demand for personalized health solutions and energy savings, though cost and integration with existing infrastructure might slow adoption."
+        }
+      ],
+      "mainstream_technologies": [
+        {
+          "name": "AI-Powered Home Maintenance Robots",
+          "from_emerging": true,
+          "original_emergence_year": 2032,
+          "maturity_year": 2040,
+          "impact_level": 7,
+          "description": "Robots that perform general maintenance tasks in homes with a high level of autonomy, adapting to homeowners' needs.",
+          "adoption_status": "Highly adopted in affluent regions, with widespread integration into smart home systems for both maintenance and energy management."
+        },
+        {
+          "name": "Augmented Reality Contact Lenses",
+          "from_emerging": true,
+          "original_emergence_year": 2033,
+          "maturity_year": 2043,
+          "impact_level": 8,
+          "description": "Contact lenses with integrated AR capabilities, enhancing visual information processing for daily tasks and entertainment.",
+          "adoption_status": "Increasingly common in developed regions, with advancements in comfort, battery life, and seamless integration with other technologies."
+        }
+      ],
+      "epoch_themes": [
+        {
+          "theme": "Seamless AI-Robot-Human Integration",
+          "description": "A period characterized by the seamless integration of AI, robotics, and human life, where technology anticipates and adapts to human needs in real-time.",
+          "related_technologies": [
+            "AI-Powered Home Maintenance Robots",
+            "Personalized Nutrition Delivery Bots",
+            "Adaptive Quantum Computing Networks"
+          ],
+          "societal_impact": "Enhances quality of life, increases productivity, but also raises questions about dependency on technology, job displacement, and ethical considerations in AI decision-making.",
+          "global_trends": "Aligns with global trends towards automation, personalized services, and the integration of AI in everyday life for efficiency and comfort."
+        },
+        {
+          "theme": "Sustainability through Technology",
+          "description": "A focus on using technology to reduce environmental impact, optimize resource use, and promote sustainable living practices.",
+          "related_technologies": [
+            "Personalized Environmental Control Systems",
+            "Energy Harvesting Wearables",
+            "Household Energy Management Robots"
+          ],
+          "societal_impact": "Promotes sustainable practices but might also lead to a digital divide based on access to green technology.",
+          "global_trends": "In line with global efforts towards sustainability, zero-waste initiatives, and reducing carbon footprints through technological innovation."
+        }
+      ],
+      "epoch_year": 2040
     }
   }
 }
