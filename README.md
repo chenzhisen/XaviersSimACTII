@@ -39,13 +39,13 @@ The system consists of three main components that work together to create a cohe
 
 ### Generation Flow
 ```mermaid
-graph TD
-    A[Start] --> B{Check Tech<br/>Evolution}
-    B -- Yes --> C[Generate<br/>Next Epoch]
-    B -- No --> D{Check<br/>Digest}
+graph LR
+    A[Start] --> B{Time for<br/>Tech Update?}
+    B -- Need Update --> C[Generate<br/>Tech Epoch]
+    B -- Skip --> D{Time for<br/>Digest?}
     C --> D
-    D -- Yes --> E[Update<br/>Digest]
-    D -- No --> F[Generate<br/>Tweet]
+    D -- Need Update --> E[Update<br/>Digest]
+    D -- Skip --> F[Generate<br/>Tweet]
     E --> F
     F --> G[Save State]
     G -->|Every 30min| B
