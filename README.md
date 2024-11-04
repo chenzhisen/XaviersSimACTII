@@ -40,14 +40,19 @@ The system consists of three main components that work together to create a cohe
 ### Generation Flow
 ```mermaid
 graph TD
-    A[Start Tweet Generation] --> B{Check Tech Evolution}
-    B -- Yes --> C[Generate Next Epoch]
-    B -- No --> D{Check Digest}
+    A[Start] --> B{Check Tech<br/>Evolution}
+    B -- Yes --> C[Generate<br/>Next Epoch]
+    B -- No --> D{Check<br/>Digest}
     C --> D
-    D -- Yes --> E[Update Digest]
-    D -- No --> F[Generate Tweet]
+    D -- Yes --> E[Update<br/>Digest]
+    D -- No --> F[Generate<br/>Tweet]
     E --> F
-    F --> G[Save & Update State]
+    F --> G[Save State]
+    G -->|Every 30min| B
+    
+    style A fill:#f9f,stroke:#333
+    style G fill:#bbf,stroke:#333
+    style F fill:#bfb,stroke:#333
 ```
 
 ### Key Interactions
