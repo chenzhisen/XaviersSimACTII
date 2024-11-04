@@ -408,6 +408,114 @@
         }
       ],
       "epoch_year": 2040
+    },
+    "2045": {
+      "emerging_technologies": [
+        {
+          "name": "Neuro-Enhanced Decision Making Systems",
+          "probability": 0.75,
+          "estimated_year": 2047,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Integrated Cognitive Enhancement Systems",
+            "AI-Enhanced Urban Planning Systems"
+          ],
+          "impact_areas": [
+            "Healthcare",
+            "Education",
+            "Business"
+          ],
+          "description": "Systems that use neural interfaces to enhance human decision-making by providing real-time data analysis and scenario simulations.",
+          "societal_implications": "Could lead to a divide between those with access to such technology and those without, raising ethical questions about fairness in decision-making processes.",
+          "adoption_factors": "High cost and ethical concerns regarding privacy and autonomy might slow adoption. Regulation on brain-computer interfaces will be crucial."
+        },
+        {
+          "name": "Self-Healing Urban Infrastructure",
+          "probability": 0.8,
+          "estimated_year": 2048,
+          "innovation_type": "incremental",
+          "dependencies": [
+            "AI-Enhanced Urban Planning Systems",
+            "Adaptive Quantum Computing Networks"
+          ],
+          "impact_areas": [
+            "Infrastructure",
+            "Sustainability"
+          ],
+          "description": "Infrastructure materials and systems that can repair themselves or adapt to damage, reducing maintenance costs and improving resilience.",
+          "societal_implications": "Enhances urban resilience but might also create a dependency on automated systems, potentially reducing human oversight in urban planning.",
+          "adoption_factors": "Cost-effective for cities, but adoption might be slow due to initial investment and the need for standardized protocols."
+        },
+        {
+          "name": "Quantum Energy Transfer Networks",
+          "probability": 0.6,
+          "estimated_year": 2050,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Adaptive Quantum Computing Networks"
+          ],
+          "impact_areas": [
+            "Energy",
+            "Space Exploration"
+          ],
+          "description": "Utilization of quantum entanglement for instant energy transfer over vast distances, potentially revolutionizing energy distribution.",
+          "societal_implications": "Could dramatically change global energy markets, reducing reliance on traditional power grids, but might also raise security concerns.",
+          "adoption_factors": "High technological barriers, significant infrastructure changes, and security protocols needed. Adoption might be driven by energy scarcity and geopolitical dynamics."
+        }
+      ],
+      "mainstream_technologies": [
+        {
+          "name": "AI-Powered Home Maintenance Robots",
+          "from_emerging": true,
+          "original_emergence_year": 2032,
+          "maturity_year": 2045,
+          "impact_level": 8,
+          "description": "Robots that autonomously maintain and repair household systems, from plumbing to electrical, with high reliability and efficiency.",
+          "adoption_status": "Widely adopted in developed countries, with increasing presence in middle-income nations. Integration into home security and energy systems is common."
+        },
+        {
+          "name": "Augmented Reality Contact Lenses",
+          "from_emerging": true,
+          "original_emergence_year": 2033,
+          "maturity_year": 2046,
+          "impact_level": 7,
+          "description": "Lenses that provide AR experiences, now widely used for both consumer and professional applications, enhancing everyday interactions with digital information.",
+          "adoption_status": "Standard in smart homes and workplaces, with significant penetration in entertainment and education sectors."
+        },
+        {
+          "name": "Personalized Environmental Control Systems",
+          "from_emerging": true,
+          "original_emergence_year": 2041,
+          "maturity_year": 2049,
+          "impact_level": 6,
+          "description": "Systems that dynamically adjust indoor environments based on personal health data, preferences, and external conditions.",
+          "adoption_status": "High adoption in affluent communities, with smart city initiatives driving broader use to enhance living quality and sustainability."
+        }
+      ],
+      "epoch_themes": [
+        {
+          "theme": "Seamless Integration of AI and Human Life",
+          "description": "A period where AI and robotics become deeply integrated into daily human activities, enhancing decision-making, personal care, and environmental control.",
+          "related_technologies": [
+            "Neuro-Enhanced Decision Making Systems",
+            "AI-Powered Home Maintenance Robots",
+            "Personalized Environmental Control Systems"
+          ],
+          "societal_impact": "Leads to increased efficiency but also raises questions about privacy, autonomy, and the nature of work.",
+          "global_trends": "Aligns with trends towards personalized services, automation, and a push towards sustainability."
+        },
+        {
+          "theme": "Urban Resilience and Sustainability",
+          "description": "Focus on making cities more resilient and sustainable through advanced materials, AI, and integrated infrastructure systems.",
+          "related_technologies": [
+            "Self-Healing Urban Infrastructure",
+            "AI-Enhanced Urban Planning Systems"
+          ],
+          "societal_impact": "Enhances quality of life, reduces environmental impact, but might increase urban-rural divide.",
+          "global_trends": "Part of global efforts to combat climate change and improve urban living conditions."
+        }
+      ],
+      "epoch_year": 2045
     }
   }
 }
