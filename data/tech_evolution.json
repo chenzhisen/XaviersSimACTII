@@ -106,6 +106,104 @@
         }
       ],
       "epoch_year": 2025
+    },
+    "2030": {
+      "emerging_technologies": [
+        {
+          "name": "Augmented Reality Contact Lenses",
+          "probability": 0.75,
+          "estimated_year": 2033,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Smart Glasses with AR Capabilities",
+            "Advanced Wearable Health Monitors"
+          ],
+          "impact_areas": [
+            "Entertainment",
+            "Education",
+            "Healthcare"
+          ],
+          "description": "Contact lenses with built-in AR displays, allowing for seamless integration of digital information into the user's field of view.",
+          "societal_implications": "Could revolutionize how we interact with technology, potentially reducing digital divide by providing universal access to information. Concerns about privacy and data security.",
+          "adoption_factors": "High cost initially, eye health concerns, and the need for advancements in micro-display technology could slow adoption."
+        },
+        {
+          "name": "Energy Harvesting Wearables",
+          "probability": 0.9,
+          "estimated_year": 2031,
+          "innovation_type": "incremental",
+          "dependencies": [
+            "Advanced Wearable Health Monitors",
+            "Household Energy Management Robots"
+          ],
+          "impact_areas": [
+            "Energy",
+            "Wearables"
+          ],
+          "description": "Wearable devices that can generate power from the user's movements or ambient energy sources.",
+          "societal_implications": "Promotes sustainability, reduces dependency on batteries, but might raise concerns about the environmental impact of disposing of these devices.",
+          "adoption_factors": "Consumer interest in sustainability, advancements in energy harvesting technology, and integration with existing wearable ecosystems."
+        },
+        {
+          "name": "AI-Powered Home Maintenance Robots",
+          "probability": 0.85,
+          "estimated_year": 2032,
+          "innovation_type": "incremental",
+          "dependencies": [
+            "Household Energy Management Robots"
+          ],
+          "impact_areas": [
+            "Home Management",
+            "Sustainability"
+          ],
+          "description": "Robots designed to perform routine home maintenance tasks like cleaning gutters, checking for leaks, or even simple repairs.",
+          "societal_implications": "Enhances home safety and efficiency, potentially reducing labor costs for maintenance. Ethical considerations include job displacement in service sectors.",
+          "adoption_factors": "Cost, reliability, and the ability to integrate with existing home automation systems will influence adoption rates."
+        }
+      ],
+      "mainstream_technologies": [
+        {
+          "name": "Smart Glasses with AR Capabilities",
+          "from_emerging": true,
+          "original_emergence_year": 2027,
+          "maturity_year": 2032,
+          "impact_level": 7,
+          "description": "Glasses that overlay digital information in real-time, now widely used for navigation, entertainment, and work-related tasks.",
+          "adoption_status": "Integrated into daily life for both professional and personal use, with widespread acceptance in various industries like logistics, healthcare, and education."
+        },
+        {
+          "name": "Blockchain for Secure Digital Identity",
+          "from_emerging": true,
+          "original_emergence_year": 2026,
+          "maturity_year": 2030,
+          "impact_level": 8,
+          "description": "Blockchain technology used to secure digital identities, preventing identity theft and ensuring secure transactions.",
+          "adoption_status": "Standard practice for online verification processes, banking, voting systems, and personal identity management."
+        }
+      ],
+      "epoch_themes": [
+        {
+          "theme": "Enhancing Human-Technology Interaction",
+          "description": "Focusing on technologies that make the interaction between humans and digital systems more intuitive and seamless.",
+          "related_technologies": [
+            "Augmented Reality Contact Lenses",
+            "Smart Glasses with AR Capabilities"
+          ],
+          "societal_impact": "This theme could lead to a significant shift in how we perceive and interact with technology, potentially increasing productivity and accessibility but also raising privacy and security concerns.",
+          "global_trends": "Aligns with the global push towards ubiquitous computing, smart cities, and the integration of digital services into everyday life."
+        },
+        {
+          "theme": "Sustainable Living through Technology",
+          "description": "Technologies aimed at reducing environmental impact through energy efficiency, waste reduction, and sustainable practices.",
+          "related_technologies": [
+            "Energy Harvesting Wearables",
+            "AI-Powered Home Maintenance Robots"
+          ],
+          "societal_impact": "Promotes sustainability, reduces carbon footprint, and could help mitigate climate change effects. However, it also introduces challenges in managing the lifecycle of these technologies.",
+          "global_trends": "Reflects the global movement towards sustainability, circular economy, and the reduction of non-renewable resource consumption."
+        }
+      ],
+      "epoch_year": 2030
     }
   }
 }
