@@ -1,0 +1,149 @@
+{
+  "metadata": {
+    "generated_at": "2024-11-04T13:43:03.655754",
+    "base_year": 2025,
+    "end_year": 2075
+  },
+  "tech_trees": {
+    "2025": {
+      "emerging_technologies": [
+        {
+          "name": "Advanced Brain-Computer Interfaces (BCI)",
+          "probability": 0.8,
+          "estimated_year": 2028,
+          "innovation_type": "incremental",
+          "dependencies": [
+            "Neural Networks",
+            "Quantum Computing"
+          ],
+          "impact_areas": [
+            "Healthcare",
+            "Accessibility",
+            "Gaming"
+          ],
+          "description": "BCI technology allowing more direct and intuitive control over digital devices, with applications in medical rehabilitation, accessibility for the disabled, and immersive gaming.",
+          "societal_implications": "Enhances human capabilities, raises privacy and autonomy issues, potential for misuse in surveillance or control.",
+          "adoption_factors": "Dependent on advancements in neural tech, ethical frameworks, and public acceptance of invasive technologies."
+        },
+        {
+          "name": "Quantum-Resistant Blockchain",
+          "probability": 0.75,
+          "estimated_year": 2027,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Quantum Computing",
+            "Cryptography"
+          ],
+          "impact_areas": [
+            "Digital Trust",
+            "Finance",
+            "Cybersecurity"
+          ],
+          "description": "Blockchain systems that are secure against potential quantum computing attacks, ensuring long-term security for digital transactions.",
+          "societal_implications": "Ensures the longevity of digital trust systems, might require significant infrastructure upgrades.",
+          "adoption_factors": "Need for forward-looking security, regulatory acceptance, and the pace of quantum computing development."
+        },
+        {
+          "name": "Autonomous Urban Transportation",
+          "probability": 0.9,
+          "estimated_year": 2029,
+          "innovation_type": "incremental",
+          "dependencies": [
+            "AI",
+            "Sensors",
+            "IoT"
+          ],
+          "impact_areas": [
+            "Infrastructure",
+            "Environment",
+            "Mobility"
+          ],
+          "description": "Fully autonomous vehicles designed for urban environments, reducing traffic congestion and pollution.",
+          "societal_implications": "Improves urban living conditions, creates job displacement in transportation sectors, potential privacy concerns with vehicle data.",
+          "adoption_factors": "Regulatory approval, public trust in autonomous systems, and infrastructure readiness."
+        },
+        {
+          "name": "AI-Driven Personalized Medicine",
+          "probability": 0.85,
+          "estimated_year": 2027,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "AI",
+            "Genomics",
+            "Big Data"
+          ],
+          "impact_areas": [
+            "Healthcare",
+            "Biotech"
+          ],
+          "description": "Using AI to analyze genetic data for tailoring medical treatments to individual genetic profiles.",
+          "societal_implications": "Enhances treatment efficacy, raises issues of genetic data privacy and potential discrimination.",
+          "adoption_factors": "Progress in AI and genomics, regulatory frameworks for genetic data, and patient acceptance."
+        },
+        {
+          "name": "Space Resource Utilization",
+          "probability": 0.6,
+          "estimated_year": 2030,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Robotics",
+            "AI",
+            "Materials Science"
+          ],
+          "impact_areas": [
+            "Space Technology",
+            "Sustainability"
+          ],
+          "description": "Technologies for mining and processing resources on other celestial bodies, primarily the Moon or asteroids.",
+          "societal_implications": "Expands human presence in space, environmental considerations, international space law implications.",
+          "adoption_factors": "Technological breakthroughs, international cooperation, and economic viability."
+        }
+      ],
+      "mainstream_technologies": [
+        {
+          "name": "Smart Cities",
+          "from_emerging": true,
+          "original_emergence_year": 2020,
+          "maturity_year": 2026,
+          "impact_level": 8,
+          "description": "Cities using IoT and data analytics to enhance efficiency, sustainability, and livability.",
+          "adoption_status": "Widespread adoption in developed urban areas, with ongoing integration in developing cities."
+        },
+        {
+          "name": "5G Networks",
+          "from_emerging": true,
+          "original_emergence_year": 2019,
+          "maturity_year": 2025,
+          "impact_level": 9,
+          "description": "Ubiquitous high-speed internet connectivity enabling new applications in various sectors.",
+          "adoption_status": "Global rollout completed, becoming the standard for mobile connectivity."
+        }
+      ],
+      "epoch_themes": [
+        {
+          "theme": "Ethical Tech Development",
+          "description": "Focus on creating technology that respects privacy, security, and human rights.",
+          "related_technologies": [
+            "Blockchain",
+            "BCI",
+            "AI"
+          ],
+          "societal_impact": "Promotes trust in technology, reduces potential for misuse, enhances social equity.",
+          "global_trends": "Increasing demand for ethical AI, regulations on data use, and public discourse on tech ethics."
+        },
+        {
+          "theme": "Sustainable Urbanization",
+          "description": "Development of cities that are self-sustaining, energy-efficient, and resilient to climate change.",
+          "related_technologies": [
+            "Smart Cities",
+            "Autonomous Transportation",
+            "Renewable Energy"
+          ],
+          "societal_impact": "Reduces environmental impact, improves quality of life, addresses urban sprawl.",
+          "global_trends": "Urban growth, climate action, and the rise of green building standards."
+        }
+      ],
+      "epoch_year": 2025
+    }
+  }
+}
