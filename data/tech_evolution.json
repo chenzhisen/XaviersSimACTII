@@ -113,6 +113,122 @@
         }
       ],
       "epoch_year": 2025
+    },
+    "2030": {
+      "emerging_technologies": [
+        {
+          "name": "AI-Enhanced Predictive Healthcare",
+          "probability": 0.9,
+          "estimated_year": 2033,
+          "innovation_type": "incremental",
+          "dependencies": [
+            "AI-Enhanced Health Monitoring Wearables",
+            "AI-Personal Assistants"
+          ],
+          "impact_areas": [
+            "Healthcare",
+            "AI"
+          ],
+          "description": "AI systems that not only monitor health metrics but also predict potential health issues, providing proactive medical advice.",
+          "societal_implications": "Could significantly reduce healthcare costs by preventing diseases before they manifest, but raises privacy concerns regarding health data.",
+          "adoption_factors": "Adoption will depend on trust in AI for health decisions, data security measures, and integration with existing healthcare systems."
+        },
+        {
+          "name": "Neural-Enhanced Learning Systems",
+          "probability": 0.6,
+          "estimated_year": 2035,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Brain-Computer Interfaces",
+            "AI-Personal Assistants"
+          ],
+          "impact_areas": [
+            "Education",
+            "AI",
+            "Neuroscience"
+          ],
+          "description": "Systems that use neural feedback to optimize learning by adapting content delivery to the individual's cognitive state.",
+          "societal_implications": "Potential to revolutionize education by personalizing learning experiences, but ethical issues around cognitive manipulation arise.",
+          "adoption_factors": "Requires advancements in BCI technology and acceptance of neural data usage for educational purposes."
+        },
+        {
+          "name": "Urban Autonomous Recycling Robots",
+          "probability": 0.75,
+          "estimated_year": 2032,
+          "innovation_type": "incremental",
+          "dependencies": [
+            "Home Automation Robots",
+            "Smart Grid Integration"
+          ],
+          "impact_areas": [
+            "Sustainability",
+            "Waste Management"
+          ],
+          "description": "Robots capable of sorting and processing household waste autonomously within urban environments.",
+          "societal_implications": "Promotes sustainability, reduces human labor in waste management, but could face opposition due to job displacement fears.",
+          "adoption_factors": "Adoption will be influenced by regulations on waste management, environmental consciousness, and infrastructure readiness."
+        },
+        {
+          "name": "Decentralized Energy Trading Platforms",
+          "probability": 0.8,
+          "estimated_year": 2034,
+          "innovation_type": "incremental",
+          "dependencies": [
+            "Decentralized Digital Identity",
+            "Smart Grid Integration"
+          ],
+          "impact_areas": [
+            "Energy",
+            "Blockchain"
+          ],
+          "description": "Platforms allowing individuals to trade excess energy from personal renewable sources using blockchain for secure transactions.",
+          "societal_implications": "Empowers energy consumers, promotes renewable energy use, but requires a robust digital identity system.",
+          "adoption_factors": "Depends on the maturity of blockchain technology, regulatory acceptance, and public trust in energy trading systems."
+        }
+      ],
+      "mainstream_technologies": [
+        {
+          "name": "Home Automation Robots",
+          "from_emerging": true,
+          "original_emergence_year": 2028,
+          "maturity_year": 2032,
+          "impact_level": 7,
+          "description": "Robots performing basic household tasks, now with enhanced AI for better task execution and safety.",
+          "adoption_status": "Widespread adoption in urban areas, with significant integration into smart home ecosystems."
+        },
+        {
+          "name": "AI-Enhanced Health Monitoring Wearables",
+          "from_emerging": true,
+          "original_emergence_year": 2027,
+          "maturity_year": 2030,
+          "impact_level": 8,
+          "description": "Wearables that provide real-time health analytics, now with AI for predictive health insights.",
+          "adoption_status": "Integrated into daily health routines, with high acceptance for health management and insurance incentives."
+        }
+      ],
+      "epoch_themes": [
+        {
+          "theme": "Proactive Health Management",
+          "description": "Shift from reactive to predictive healthcare through AI and wearable technology.",
+          "related_technologies": [
+            "AI-Enhanced Predictive Healthcare",
+            "AI-Enhanced Health Monitoring Wearables"
+          ],
+          "societal_impact": "Reduces healthcare costs, increases life expectancy, but increases scrutiny on data privacy.",
+          "global_trends": "Aligns with global trends towards personalized medicine and preventive care."
+        },
+        {
+          "theme": "Smart Urban Sustainability",
+          "description": "Integration of technology for sustainable urban living, focusing on energy efficiency and waste management.",
+          "related_technologies": [
+            "Urban Autonomous Recycling Robots",
+            "Decentralized Energy Trading Platforms"
+          ],
+          "societal_impact": "Promotes green cities, could lead to job shifts, requires urban planning and policy changes.",
+          "global_trends": "Responds to global calls for sustainability, urban densification, and smart city initiatives."
+        }
+      ],
+      "epoch_year": 2030
     }
   }
 }
