@@ -845,6 +845,125 @@
         }
       ],
       "epoch_year": 2055
+    },
+    "2060": {
+      "emerging_technologies": [
+        {
+          "name": "Sentient Digital Assistants",
+          "probability": 0.7,
+          "estimated_year": 2062,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "AI-Enhanced Predictive Healthcare",
+            "AI-Driven Emotional Well-being Interfaces"
+          ],
+          "impact_areas": [
+            "personal assistance",
+            "mental health",
+            "education"
+          ],
+          "description": "Digital assistants with the ability to simulate empathy and understand complex human emotions, offering personalized companionship and mental health support.",
+          "societal_implications": "Potential for increased social isolation or dependency on AI, ethical concerns about the nature of companionship, privacy issues with emotional data.",
+          "adoption_factors": "Widespread acceptance will depend on societal comfort with AI in intimate life roles, ethical guidelines, and regulatory frameworks."
+        },
+        {
+          "name": "Quantum Neurological Interfaces",
+          "probability": 0.65,
+          "estimated_year": 2063,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Quantum Photonic Computing",
+            "Quantum Neural Interfaces"
+          ],
+          "impact_areas": [
+            "healthcare",
+            "education",
+            "augmented reality"
+          ],
+          "description": "Interfaces that use quantum computing to enhance the speed and efficiency of brain-computer interactions, allowing for real-time cognitive augmentation.",
+          "societal_implications": "Ethical concerns regarding privacy of thoughts, potential for cognitive enhancement disparities, and implications for human identity.",
+          "adoption_factors": "Adoption will be driven by breakthroughs in quantum computing and societal readiness for invasive technologies."
+        },
+        {
+          "name": "AI-Driven Global Climate Management",
+          "probability": 0.85,
+          "estimated_year": 2061,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "AI-Driven Urban Planning",
+            "Personal Energy Ecosystems"
+          ],
+          "impact_areas": [
+            "environment",
+            "energy",
+            "urban development"
+          ],
+          "description": "AI systems designed to manage and mitigate climate change effects on a global scale, integrating with urban and rural ecosystems to optimize environmental outcomes.",
+          "societal_implications": "Potential for large-scale environmental benefits but also risks of unforeseen ecological disruptions, governance issues, and international cooperation challenges.",
+          "adoption_factors": "Global political will, technological maturity, and the urgency of climate change impacts."
+        },
+        {
+          "name": "Autonomous Disaster Mitigation Infrastructure",
+          "probability": 0.75,
+          "estimated_year": 2065,
+          "innovation_type": "incremental",
+          "dependencies": [
+            "Autonomous Disaster Response Robots",
+            "Self-Healing Infrastructure"
+          ],
+          "impact_areas": [
+            "urban planning",
+            "disaster response",
+            "infrastructure"
+          ],
+          "description": "Infrastructure with built-in AI and robotics for real-time disaster mitigation, including self-reconfiguration for flood control, earthquake resistance, and fire suppression.",
+          "societal_implications": "Increased resilience in urban areas but could lead to reliance on technology with potential failures, and questions about responsibility and insurance.",
+          "adoption_factors": "Government and municipal funding, public trust in autonomous systems, and integration with existing infrastructure."
+        }
+      ],
+      "mainstream_technologies": [
+        {
+          "name": "AI-Driven Urban Ecosystem Management",
+          "from_emerging": true,
+          "original_emergence_year": 2057,
+          "maturity_year": 2060,
+          "impact_level": 8,
+          "description": "Urban environments fully integrated with AI to manage resources, waste, and energy efficiently, creating self-sustaining ecosystems.",
+          "adoption_status": "Widely adopted in major cities worldwide, with ongoing integration into smaller urban centers."
+        },
+        {
+          "name": "Quantum-Resistant Encryption",
+          "from_emerging": true,
+          "original_emergence_year": 2041,
+          "maturity_year": 2062,
+          "impact_level": 9,
+          "description": "Encryption methods that are secure against quantum computing threats, ensuring long-term data security.",
+          "adoption_status": "Standardized globally, with all major data centers and government institutions adopting these protocols."
+        }
+      ],
+      "epoch_themes": [
+        {
+          "theme": "Cognitive and Emotional Augmentation",
+          "description": "A focus on technologies that enhance human cognition and emotional well-being through AI and neural interfaces.",
+          "related_technologies": [
+            "Sentient Digital Assistants",
+            "Quantum Neurological Interfaces"
+          ],
+          "societal_impact": "Shift towards a society where cognitive and emotional enhancements are common, potentially leading to new forms of inequality and ethical debates.",
+          "global_trends": "Aligns with global trends towards personalized medicine, mental health, and education through technology."
+        },
+        {
+          "theme": "Sustainable Urban Living",
+          "description": "Advances in urban planning and management to create sustainable, resilient, and self-sufficient cities.",
+          "related_technologies": [
+            "AI-Driven Global Climate Management",
+            "Autonomous Disaster Mitigation Infrastructure"
+          ],
+          "societal_impact": "Creation of cities that can adapt to climate change, reducing human impact on the environment and enhancing quality of life.",
+          "global_trends": "Reflects the global push for sustainability, resilience against natural disasters, and efficient urban living."
+        }
+      ],
+      "epoch_year": 2060
     }
   }
 }
