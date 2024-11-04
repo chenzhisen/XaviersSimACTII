@@ -1,0 +1,128 @@
+{
+  "metadata": {
+    "generated_at": "2024-11-04T16:20:52.313102",
+    "base_year": 2025,
+    "end_year": 2075
+  },
+  "tech_trees": {
+    "2025": {
+      "emerging_technologies": [
+        {
+          "name": "AI-Driven Smart Contract Framework",
+          "probability": 0.85,
+          "estimated_year": 2026,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Blockchain",
+            "AI Decision Making"
+          ],
+          "impact_areas": [
+            "Legal",
+            "Finance",
+            "Insurance"
+          ],
+          "description": "AI systems that can draft, validate, and execute smart contracts autonomously, ensuring compliance with legal frameworks and real-time adaptability.",
+          "societal_implications": "Reduces legal disputes, increases trust in digital agreements, and decreases the need for intermediaries.",
+          "adoption_factors": "Requires legal acceptance, technological integration with existing blockchain systems, and user trust in AI decision-making."
+        },
+        {
+          "name": "Decentralized Energy Grid Management",
+          "probability": 0.7,
+          "estimated_year": 2027,
+          "innovation_type": "incremental",
+          "dependencies": [
+            "Tokenized Energy Markets",
+            "Smart Grid Technology"
+          ],
+          "impact_areas": [
+            "Energy",
+            "Environment"
+          ],
+          "description": "A system where energy production, distribution, and consumption are managed through decentralized networks with blockchain-verified transactions.",
+          "societal_implications": "Promotes energy independence, reduces waste, and supports local energy economies.",
+          "adoption_factors": "Needs regulatory support, investment in smart grid infrastructure, and public education on decentralized energy concepts."
+        },
+        {
+          "name": "Neuro-Tech Identity Market",
+          "probability": 0.6,
+          "estimated_year": 2029,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Neural Interfaces",
+            "Blockchain"
+          ],
+          "impact_areas": [
+            "Security",
+            "Identity Management",
+            "Healthcare"
+          ],
+          "description": "A market where individuals can buy, sell, or lease parts of their neural data for various applications, secured by blockchain technology.",
+          "societal_implications": "Raises privacy concerns, could lead to new forms of inequality, but also offers personalized cognitive enhancements.",
+          "adoption_factors": "Requires ethical guidelines, privacy laws, and a robust security framework to protect neural data."
+        },
+        {
+          "name": "Interplanetary Settlement DAO",
+          "probability": 0.5,
+          "estimated_year": 2030,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Decentralized Space Operations",
+            "Space Resource Tokenization"
+          ],
+          "impact_areas": [
+            "Space Exploration",
+            "Economics"
+          ],
+          "description": "A Decentralized Autonomous Organization (DAO) that governs the establishment, operation, and expansion of human settlements on other planets.",
+          "societal_implications": "Facilitates cooperative space exploration, potentially reduces geopolitical tensions, but also poses legal and ethical challenges.",
+          "adoption_factors": "Dependent on international agreements, technological advancements in space travel, and public interest in extraterrestrial living."
+        }
+      ],
+      "mainstream_technologies": [
+        {
+          "name": "Tokenized AI Models",
+          "from_emerging": true,
+          "original_emergence_year": 2025,
+          "maturity_year": 2028,
+          "impact_level": 7,
+          "description": "AI models whose ownership, usage rights, and rewards are tokenized on the blockchain, allowing for transparent and decentralized AI development.",
+          "adoption_status": "Widely adopted in research, commercial, and open-source AI development sectors, with significant market growth."
+        },
+        {
+          "name": "Zero-Knowledge Proofs for Privacy",
+          "from_emerging": true,
+          "original_emergence_year": 2026,
+          "maturity_year": 2029,
+          "impact_level": 6,
+          "description": "Applications that leverage zero-knowledge proofs to enhance privacy in digital transactions and communications.",
+          "adoption_status": "Becoming standard in financial, healthcare, and governmental sectors for secure and private data handling."
+        }
+      ],
+      "epoch_themes": [
+        {
+          "theme": "Decentralization and Autonomy",
+          "description": "A shift towards systems that operate independently of centralized control, focusing on community governance and transparency.",
+          "related_technologies": [
+            "AI-Driven Smart Contract Framework",
+            "Decentralized Energy Grid Management",
+            "Interplanetary Settlement DAO"
+          ],
+          "societal_impact": "Empowerment of individuals and communities, potential for new governance models, but also risks of fragmentation and security.",
+          "global_trends": "Growing movements towards digital democracy, increased scrutiny on data privacy, and the rise of cooperative economies."
+        },
+        {
+          "theme": "Integration of Blockchain with Other Technologies",
+          "description": "Blockchain's integration with AI, IoT, and energy systems to create secure, transparent, and autonomous ecosystems.",
+          "related_technologies": [
+            "Tokenized AI Models",
+            "Neuro-Tech Identity Market",
+            "Zero-Knowledge Proofs for Privacy"
+          ],
+          "societal_impact": "Enhanced trust in digital systems, potential for reducing fraud, but also challenges in scaling and interoperability.",
+          "global_trends": "Expansion of blockchain use cases beyond finance, demand for regulatory clarity, and tech industry convergence."
+        }
+      ],
+      "epoch_year": 2025
+    }
+  }
+}
