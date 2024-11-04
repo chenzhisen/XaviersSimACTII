@@ -134,90 +134,70 @@ class TechEvolutionGenerator:
         years_from_base = epoch_year - self.base_year
         acceleration_factor = 1 + (years_from_base / 20)
         
-        prompt = f"""Generate realistic technological advancements and developments expected for the period {epoch_year} to {epoch_year + 5}. 
+        prompt = f"""Generate technological advancements for {epoch_year} to {epoch_year + 5}. 
 
-        Context:
-        - Current year being analyzed: {epoch_year}
-        - Years from base year (2025): {years_from_base}
-        - Technology acceleration factor: {acceleration_factor:.2f}x, indicating that advancements during this period are progressing {acceleration_factor:.2f} times faster than in 2025
-        - Previous emerging technologies include: {previous_tech['emerging']}
-        - Currently mainstream technologies include: {previous_tech['mainstream']}
+        CONTEXT:
+        - Current epoch: {epoch_year}
+        - Years from 2025: {years_from_base}
+        - Tech acceleration: {acceleration_factor:.2f}x faster than 2025
+        - Previous emerging tech: {previous_tech['emerging']}
+        - Current mainstream tech: {previous_tech['mainstream']}
         
-        Important Guidelines for Plausible Technological Development:
-        
-        1. **Advancement Level by Epoch**:
-           - In the period {epoch_year}-{epoch_year + 5}, we expect:
-             - **2025-2035**: Moderate, incremental developments and initial integrations of advanced technology in society.
-             - **2035-2050**: Significant breakthroughs with notable societal impact, emphasizing combined systems and smarter integrations.
-             - **2050+**: Revolutionary, transformative technologies with fundamental changes to human life, such as full automation and large-scale AI-human integration.
-        
-        2. **Practical Technology Implementation**:
-           - For earlier periods (e.g., 2025-2035), prioritize practical applications that enhance daily life, infrastructure, healthcare, and energy, focusing on:
-             - Enhancements to current devices (like wearables, medical devices, and home assistants)
-             - Early steps toward AI and robotics in household and urban settings
-             - Basic applications of brain-computer interfaces, digital identity management, and blockchain for secure transactions
-        
-        3. **Example Technology Areas**:
-           - **Digital Trust & Robotics**:
-             - Improved blockchain for secure digital identity verification
-             - Household assistant robots with limited autonomy and safety protocols
-             - Decentralized control systems and tokenized resources for households
-           - **Neural Integration**:
-             - Brain-computer interface applications for specialized tasks (e.g., medical support, accessibility)
-             - Simple neural-feedback devices for focused functions like cognitive enhancement and stress management
-           - **Infrastructure & Personal Transportation**:
-             - Limited personal autonomous vehicles for urban settings
-             - Robotic assistance in smart home management and minor repair work
-           - **Space Exploration** (as long-term planning, with limited advances for near-term epochs):
-             - Minimal applications like AI-driven remote monitoring and basic autonomous maintenance
-             - Robots adapted for simple habitat support (e.g., cleaning, resource allocation)
-           - **Healthcare Innovations**:
-             - Health-monitoring wearables integrated with AI analytics
-             - Basic medical robots for diagnostic support and preventive care
-             - AI-based genetic health screenings and personalized wellness tracking
-           - **Sustainability & Energy**:
-             - Household robots with energy-saving functionalities
-             - Smart home energy management integrated with urban infrastructure
-             - Basic autonomous recycling and waste management robots
+        DEVELOPMENT GUIDELINES:
 
-        4. **Technology Integration Level by Epoch**:
-           - **2025-2035**: Focused on individual improvements and practical integration into daily life.
-           - **2035-2050**: Greater convergence of tech systems; more seamless AI-robot-human collaboration.
-           - **2050+**: Fundamental transformations in human life, full adoption of highly integrated AI, robotics, and sustainable systems.
+        1. EPOCH CHARACTERISTICS:
+           - 2025-2035: Practical integration of current tech, incremental improvements
+           - 2035-2050: Major breakthroughs, system convergence, AI-human collaboration
+           - 2050+: Transformative changes, full automation, deep tech integration
 
-        Return your response in the following JSON structure:
+        2. FOCUS AREAS:
+           - Digital Trust & Robotics: blockchain, autonomous systems, digital identity
+           - Neural Integration: BCI, cognitive enhancement, medical applications
+           - Infrastructure: autonomous vehicles, smart cities, robotic maintenance
+           - Healthcare: AI diagnostics, personalized medicine, biotech
+           - Sustainability: clean energy, resource management, environmental tech
+           - Space Technology: habitat support, remote operations, resource utilization
+
+        3. DEVELOPMENT PRINCIPLES:
+           - Match epoch's advancement level
+           - Build on existing technologies
+           - Consider societal readiness
+           - Balance innovation with practical adoption
+           - Account for ethical implications
+
+        Return JSON:
         {{
             "emerging_technologies": [
                 {{
-                    "name": "new technology emerging in {epoch_year}-{epoch_year + 5}",
+                    "name": "technology name",
                     "probability": 0.0-1.0,
                     "estimated_year": YYYY,
                     "innovation_type": "incremental|breakthrough",
                     "dependencies": ["tech1", "tech2"],
                     "impact_areas": ["area1", "area2"],
                     "description": "brief description",
-                    "societal_implications": "analysis of social impact and ethical considerations",
-                    "adoption_factors": "analysis of societal readiness and adoption barriers"
+                    "societal_implications": "impact analysis",
+                    "adoption_factors": "adoption analysis"
                 }}
             ],
             "mainstream_technologies": [
                 {{
-                    "name": "technology maturing in {epoch_year}-{epoch_year + 5}",
+                    "name": "technology name",
                     "from_emerging": true,
                     "original_emergence_year": YYYY,
                     "maturity_year": YYYY,
                     "impact_level": 1-10,
                     "description": "brief description",
-                    "adoption_status": "description of societal adoption and integration"
+                    "adoption_status": "adoption analysis"
                 }}
             ],
             "epoch_themes": [
                 {{
-                    "theme": "major theme for {epoch_year}-{epoch_year + 5}",
+                    "theme": "theme name",
                     "description": "brief description",
                     "related_technologies": ["tech1", "tech2"],
-                    "societal_impact": "analysis of broader societal implications",
-                    "global_trends": "relationship to global technological trends"
+                    "societal_impact": "impact analysis",
+                    "global_trends": "trend analysis"
                 }}
             ]
         }}"""

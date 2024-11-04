@@ -201,197 +201,223 @@ class TweetGenerator:
         """Create a prompt for tweet generation"""
         current_year = context['current_year']
         tweet_count = context['tweet_count']
-        xavier_age = current_year - self.sim_start_year + 22  # Xavier starts at age 22 in 2025
+        xavier_age = current_year - self.sim_start_year + 22
 
-        # Special handling for the first tweet
-        if tweet_count == 0:
-            prompt = (
-                "Generate Xavier's first tweet as he transitions between Japan and New York. IMPORTANT:\n"
-                "- The tweet MUST be set in either:\n"
-                "  a) New York City, having just returned from his transformative trip to Japan\n"
-                "  b) His last moments in Japan before returning to New York\n"
-                "- If in New York: Focus on his reflections about Japan and how it's influenced his perspective\n"
-                "- If in Japan: Focus on his final experiences and thoughts about returning home\n"
-                "- Include specific location details (e.g., specific neighborhoods, stations, or landmarks)\n"
-                "- Show his emotional state about this transition period\n"
-                "- Maintain Xavier's characteristic wit and observational humor\n"
-                "- Reference his tech/crypto background subtly if relevant\n\n"
-                "Remember: This tweet sets up his character as someone deeply impacted by his time in Japan, "
-                "and hints at how this experience will influence his future decisions.\n\n"
-            )
-        else:
-            prompt = ""
-
-        # Calculate progress through the current year (0.0 to 1.0)
+        # Calculate current month
         year_progress = (tweet_count % self.tweets_per_year) / self.tweets_per_year
-        month_estimate = int(year_progress * 12) + 1  # 1-12
+        month_estimate = int(year_progress * 12) + 1
 
-        prompt += (
-            f"Xavier's story so far:\n"
+        # Get current tech context
+        tech_context = self.get_current_tech_context(context)
+        
+        # Base timeline info
+        prompt = (
             f"Current Timeline: {current_year} (around month {month_estimate})\n"
             f"Xavier's Age: {xavier_age}\n\n"
-            "IMPORTANT: Focus on Xavier's personal experiences, quirks, and emotional reflections. "
-            "Xavier is a New York native with a quick wit and playful curiosity, but he is also a real person who experiences the ups and downs of life. "
-            "Capture a range of emotions in his tweets, from lighthearted humor to deeper reflections, sometimes nostalgic, sometimes upbeat, and sometimes introspective. "
-            "Include $XVI only occasionally and indirectly, treating it as a subtle part of his digital life, and avoid mentions of wallets or specific transaction details.\n\n"
-            
-            "Examples of Xavier’s humor and realism:\n"
-            "1. Playfully wondering about quirky details, like celebrity trends or tech culture\n"
-            "2. Using irony to point out the absurdities of futuristic or tech-dominated situations\n"
-            "3. Sharing personal insights on life’s ups and downs, often with a humorous twist or wry observation\n\n"
-            
-            "Please consider Xavier's age and life phase:\n"
-            "1. **20s** (self-discovery, career-building, social observations): Xavier is curious, open-minded, and enthusiastic about tech and crypto.\n"
-            "2. **30s** (relationships, societal observations, personal growth): His interests broaden, with deeper reflections on relationships and technology's impact on society.\n"
-            "3. **40s+** (legacy, social impact, nostalgia): His tweets should include more thoughtful, introspective reflections on legacy, society, and the role of technology in a changing world.\n\n"
-            
-            "Use humor, curiosity, or irony when natural to make the tweet feel engaging and relatable. "
-            "Encourage reflections on how technology is reshaping societal norms, relationships, and daily life in subtle ways. "
-            "Structure tweets to feel natural, ranging from short one-liners to longer reflections between 16-1028 characters.\n\n"
-            
-            "Ensure the tweets develop a coherent story arc over time, following Xavier’s personal and professional journey. "
-            "Each tweet should build on past experiences or interactions to provide a sense of continuity and growth in his life story.\n\n"
         )
-        
-        # Provide a summary of the current technological background
-        tech_evolution = context['tech_evolution']
-        if tech_evolution and tech_evolution.get('tech_trees'):
-            epochs = [int(epoch) for epoch in tech_evolution['tech_trees'].keys()]
-            nearest_epoch = min(epochs, key=lambda x: abs(x - current_year), default=None)
-            
-            if nearest_epoch:
-                epoch_data = tech_evolution['tech_trees'][str(nearest_epoch)]
-                prompt += (
-                    f"Technological Context (as of {nearest_epoch}): Technologies influencing daily life include:\n"
-                    f"{json.dumps([tech['name'] for tech in epoch_data['mainstream_technologies']], indent=2)}\n\n"
-                )
 
-        # Story Digest and Recent Events
-        if context.get('digest'):
-            digest_content = context['digest'].get('content', '')
+        # Special case: First tweet
+        if tweet_count == 0:
             prompt += (
-                f"\nSTORY CONTEXT AND DIRECTION:\n{digest_content}\n\n"
-                "Use the story direction as inspiration for this tweet. You can:\n"
-                "1. Advance one of the suggested story arcs\n"
-                "2. Show progress in relationships or career\n"
-                "3. React to suggested challenges or opportunities\n"
-                "4. Build on emerging themes\n"
-                "But maintain natural, in-the-moment feel of social media.\n\n"
+                "Generate Xavier's first tweet transitioning between Japan and New York:\n"
+                "- Set in either final moments in Japan or first moments back in NYC\n"
+                "- Include specific location details\n"
+                "- Show emotional state about this transition\n"
+                "- Reference how Japan influenced his perspective\n\n"
+            )
+
+        # Add available technology context
+        if tech_context:
+            prompt += (
+                "AVAILABLE TECHNOLOGY:\n"
+                f"- Mainstream: {json.dumps([tech['name'] for tech in tech_context['mainstream']], indent=2)}\n"
+                f"- Recently Emerged: {json.dumps([tech['name'] for tech in tech_context['emerging']], indent=2)}\n"
+                f"- Current Themes: {json.dumps([theme['theme'] for theme in tech_context['themes']], indent=2)}\n\n"
+                "Only reference technologies and themes listed above.\n\n"
+            )
+
+        # Story Context
+        if context.get('digest'):
+            prompt += (
+                f"Story Context:\n{context['digest'].get('content', '')}\n\n"
+                "Use this context to:\n"
+                "- Advance story arcs naturally\n"
+                "- Show character growth\n"
+                "- React to ongoing situations\n"
+                "While maintaining an authentic social media voice\n\n"
             )
                 
+        # Recent Activity
         if context['recent_tweets']:
             prompt += f"Recent tweets:\n{json.dumps(context['recent_tweets'], indent=2)}\n\n"
                 
         if context['recent_comments']:
             prompt += f"Recent interactions:\n{json.dumps(context['recent_comments'], indent=2)}\n\n"
 
+        # Tweet Guidelines
         prompt += (
-            "Generate a tweet continuing Xavier's story. The tweet should:\n"
-            "1. Be written in first person as Xavier, with a tone that is entertaining, personal, and relatable\n"
-            "2. Vary in tone—sometimes upbeat, sometimes reflective, but always engaging\n"
-            "3. Use humor, curiosity, or irony when natural, even as he reflects on life's highs and lows\n"
-            "4. Mention specific technology only if it impacts his perspective or interactions in a natural way\n"
-            "5. Mention $XVI occasionally as a digital asset in his reflections on crypto, avoiding mentions of wallets or specific transactions\n"
-            "6. Usually be between 384-640 characters for rich, detailed reflections, but occasionally:\n"
-            "   - As short as 16 chars for quick, punchy thoughts\n"
-            "   - As long as 1028 chars for deeper, more complex musings\n"
-            "   Choose length based on the natural weight of the thought being expressed\n"
-            "7. Start with '[{current_year} | Age {xavier_age}]' to mark the timeline\n"
-            "8. Avoid hashtags unless they add to the humor or context\n\n"
+            "Tweet Requirements:\n"
+            "1. First-person perspective, entertaining and relatable\n"
+            "2. Use natural humor, curiosity, or irony when fitting\n"
+            "3. Length: Usually 384-640 chars, occasionally 16-1028 based on content weight\n"
+            "4. Format: Start with '[{current_year} | Age {xavier_age}]'\n"
+            "5. Style: Authentic social media voice, hashtags only if meaningful\n\n"
             "Tweet:"
         )
-        print(prompt)
         return prompt
+
+    def should_update_digest(self, context):
+        """Determine if digest needs updating based on tweet counts and content"""
+        try:
+            existing_digest = context['digest']
+            recent_tweets = context['recent_tweets']
+            
+            # Check if we have an existing digest
+            if not existing_digest or not existing_digest.get('content'):
+                return True
+                
+            # Get last processed tweet count
+            last_processed_count = existing_digest.get('last_tweet_count', 0)
+            current_count = context['tweet_count']
+            
+            # Always update for first few tweets to establish story
+            if current_count < 5:
+                return True
+                
+            # Update digest every ~12 tweets (about 1.5 months in story time)
+            if current_count - last_processed_count >= 12:
+                return True
+                
+            # Check for significant events since last digest
+            significant_events = 0
+            for tweet in recent_tweets:
+                content = tweet['content'].lower()
+                if any(marker in content for marker in [
+                    'decided to', 'realized', 'started', 'finished',
+                    'met with', 'moving to', 'leaving', 'joined',
+                    'launched', 'created', 'ended', 'beginning'
+                ]):
+                    significant_events += 1
+                    
+            # Update if we have enough significant events
+            if significant_events >= 3:
+                return True
+                
+            return False
+            
+        except Exception as e:
+            print(f"Error checking digest update criteria: {e}")
+            return True  # Default to updating on error
+
+    def should_update_tech_evolution(self, context):
+        """Determine if tech evolution needs updating"""
+        try:
+            tech_evolution = context.get('tech_evolution', {}).get('tech_trees', {})
+            tweet_count = context['tweet_count']
+            
+            # Get the latest epoch we have tech for
+            if not tech_evolution:
+                return True  # Generate first epoch if no tech exists
+                
+            # Calculate tweets per epoch (5 years)
+            tweets_per_epoch = self.tweets_per_year * 5  # 96 * 5 = 480 tweets per epoch
+            
+            # Calculate which epoch we're in
+            current_epoch_index = tweet_count // tweets_per_epoch
+            tweets_into_epoch = tweet_count % tweets_per_epoch
+            
+            # Generate next epoch when we're 60 tweets (~9 months) away from it
+            tweets_until_next_epoch = tweets_per_epoch - tweets_into_epoch
+            
+            if tweets_until_next_epoch <= 60:  # About 9 months before next epoch
+                next_epoch = self.sim_start_year + ((current_epoch_index + 1) * 5)
+                print(f"Approaching new tech epoch: {next_epoch}")
+                print(f"Tweets until next epoch: {tweets_until_next_epoch}")
+                return True
+                
+            return False
+            
+        except Exception as e:
+            print(f"Error checking tech evolution criteria: {e}")
+            return True
 
     def generate_tweet(self):
         """Generate a new tweet"""
-        if not self.should_generate_tweet():
-            print("Simulation is complete, no more tweets")
-            return None
-        
-        # Initialize files if they don't exist
-        self.initialize_file("ongoing_tweets.json", [])
-        self.initialize_file("comments.json", [])
-        self.initialize_file("digest.json", {})
-        self.initialize_file("simulation_state.json", {
-            "last_tweet_timestamp": None,
-            "tweet_count": 0,
-            "current_year": self.sim_start_year,
-            "is_complete": False
-        })
-        
-        # Get existing tweets and comments
-        tweets, _ = self.github_ops.get_file_content("ongoing_tweets.json")
-        comments, _ = self.github_ops.get_file_content("comments.json")
-        existing_digest, digest_sha = self.github_ops.get_file_content("digest.json")
-        
-        if not existing_digest or not existing_digest.get('content'):
-            # For first tweet, create initial digest from XaviersSim.json
-            print("Creating initial digest from XaviersSim.json")
-            initial_digest = self.digest_generator.process_digest()
-            if initial_digest:
-                self.github_ops.update_story_digest(
-                    new_tweets=[],
-                    new_comments=[],
-                    initial_content=initial_digest
-                )
-        else:
-            # For subsequent tweets, update digest with recent content
-            recent_tweets = tweets[-5:] if tweets else []
-            recent_comments = [
-                c for c in comments 
-                if any(t['id'] in c.get('tweet_id', '') for t in recent_tweets)
-            ]
-            
-            updated_digest = self.digest_generator.process_ongoing_digest(
-                existing_digest,
-                recent_tweets,
-                recent_comments
-            )
-            
-            if updated_digest:
-                self.github_ops.update_story_digest(
-                    new_tweets=recent_tweets,
-                    new_comments=recent_comments,
-                    initial_content=updated_digest
-                )
-                print("Updated digest with recent content")
-            
-        # Now get context with updated digest for tweet generation
-        context = self.get_context()
-        if not context:
-            return None
-        
-        prompt = self.create_tweet_prompt(context)
-        
         try:
-            message = self.client.messages.create(
-                model="grok-beta",
-                max_tokens=512,
-                system="You are Xavier, a young adult navigating life. Generate a single tweet that continues your story naturally.",
-                messages=[
-                    {
-                        "role": "user",
-                        "content": prompt,
-                    },
-                ],
-            )
-            
-            tweet_content = str(message.content)
-            
-            tweet = {
-                "id": f"tweet_{datetime.now().strftime('%Y%m%d_%H%M%S')}",
-                "content": tweet_content,
-                "timestamp": datetime.now().isoformat(),
-                "likes": 0,
-                "retweets": 0
-            }
-            
-            # Store tweet and update state
-            self.update_simulation_state(tweet)
-            print(f"Generated tweet #{context['tweet_count'] + 1}")
-            return tweet
+            # Get current context
+            context = self.get_context()
+            if not context:
+                return None
                 
+            # Check if tech evolution needs updating
+            if self.should_update_tech_evolution(context):
+                from src.generation.tech_evolution_generator import TechEvolutionGenerator
+                tech_gen = TechEvolutionGenerator()
+                next_epoch = max([int(year) for year in context['tech_evolution']['tech_trees'].keys()]) + 5
+                
+                print(f"Generating tech evolution for epoch {next_epoch}")
+                tree_data = tech_gen.generate_epoch_tech_tree(next_epoch)
+                
+                if tree_data:
+                    tech_gen.evolution_data['tech_trees'][str(next_epoch)] = tree_data
+                    tech_gen.save_evolution_data()
+                    # Refresh context with new tech data
+                    context = self.get_context()
+                
+            # Continue with digest and tweet generation
+            if self.should_update_digest(context):
+                updated_digest = self.digest_generator.process_ongoing_digest(
+                    context['digest'],
+                    context['recent_tweets'],
+                    context['recent_comments']
+                )
+                
+                if updated_digest:
+                    # Add tweet count to digest metadata
+                    updated_digest['last_tweet_count'] = context['tweet_count']
+                    
+                    self.github_ops.update_story_digest(
+                        new_tweets=context['recent_tweets'],
+                        new_comments=context['recent_comments'],
+                        initial_content=updated_digest
+                    )
+                    print(f"Updated digest at tweet #{context['tweet_count']}")
+                    # Refresh context with new digest
+                    context = self.get_context()
+                
+            prompt = self.create_tweet_prompt(context)
+            
+            try:
+                message = self.client.messages.create(
+                    model="grok-beta",
+                    max_tokens=512,
+                    system="You are Xavier, a young adult navigating life. Generate a single tweet that continues your story naturally.",
+                    messages=[
+                        {
+                            "role": "user",
+                            "content": prompt,
+                        },
+                    ],
+                )
+                
+                tweet_content = str(message.content)
+                
+                tweet = {
+                    "id": f"tweet_{datetime.now().strftime('%Y%m%d_%H%M%S')}",
+                    "content": tweet_content,
+                    "timestamp": datetime.now().isoformat(),
+                    "likes": 0,
+                    "retweets": 0
+                }
+                
+                # Store tweet and update state
+                self.update_simulation_state(tweet)
+                print(f"Generated tweet #{context['tweet_count'] + 1}")
+                return tweet
+                    
+            except Exception as e:
+                print(f"Error generating tweet: {str(e)}")
+                return None
         except Exception as e:
             print(f"Error generating tweet: {str(e)}")
             return None

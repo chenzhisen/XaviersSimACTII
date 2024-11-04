@@ -2,7 +2,7 @@
 .env
 
 # Local story generation script
-storytell.py
+storyteller.py
 
 # Python-specific ignores
 __pycache__/
