@@ -1,0 +1,125 @@
+{
+  "metadata": {
+    "generated_at": "2024-11-04T16:32:17.551824",
+    "base_year": 2025,
+    "end_year": 2075
+  },
+  "tech_trees": {
+    "2025": {
+      "emerging_technologies": [
+        {
+          "name": "AI-driven Smart Contracts",
+          "probability": 0.85,
+          "estimated_year": 2027,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "AI Development Tools",
+            "Blockchain Technology"
+          ],
+          "impact_areas": [
+            "Legal Tech",
+            "Finance"
+          ],
+          "description": "Contracts that automatically execute based on AI decision-making capabilities, reducing human error and bias.",
+          "societal_implications": "Enhances efficiency in legal and financial sectors, potentially reducing disputes but also raising concerns about AI bias and accountability.",
+          "adoption_factors": "Requires widespread acceptance of AI in legal frameworks and robust blockchain infrastructure."
+        },
+        {
+          "name": "Decentralized Transport Networks",
+          "probability": 0.75,
+          "estimated_year": 2028,
+          "innovation_type": "incremental",
+          "dependencies": [
+            "Blockchain Technology",
+            "IoT Sensors"
+          ],
+          "impact_areas": [
+            "Transportation",
+            "Logistics"
+          ],
+          "description": "A network where autonomous vehicles manage themselves through decentralized consensus mechanisms.",
+          "societal_implications": "Could revolutionize urban planning and mobility, reducing congestion but increasing the need for digital security.",
+          "adoption_factors": "Adoption depends on the development of autonomous vehicle technology, regulatory acceptance, and public trust in decentralized systems."
+        },
+        {
+          "name": "Tokenized Energy Markets",
+          "probability": 0.9,
+          "estimated_year": 2026,
+          "innovation_type": "incremental",
+          "dependencies": [
+            "Smart Grids",
+            "Blockchain Technology"
+          ],
+          "impact_areas": [
+            "Energy",
+            "Sustainability"
+          ],
+          "description": "Energy production and consumption tracked and traded via blockchain, enabling micro-transactions and peer-to-peer energy sharing.",
+          "societal_implications": "Promotes sustainable energy practices, but requires significant changes in energy policy and infrastructure.",
+          "adoption_factors": "High due to immediate benefits in energy efficiency, though regulatory frameworks must evolve."
+        },
+        {
+          "name": "Interplanetary Settlement DAOs",
+          "probability": 0.6,
+          "estimated_year": 2030,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Space Travel Technology",
+            "Blockchain for Governance"
+          ],
+          "impact_areas": [
+            "Space Exploration",
+            "Governance"
+          ],
+          "description": "Decentralized Autonomous Organizations managing the governance and economics of space settlements.",
+          "societal_implications": "Could democratize space exploration but faces challenges in legal frameworks and resource management.",
+          "adoption_factors": "Adoption hinges on advancements in space technology and international space law agreements."
+        }
+      ],
+      "mainstream_technologies": [
+        {
+          "name": "Zero-Knowledge Proof Applications",
+          "from_emerging": true,
+          "original_emergence_year": 2025,
+          "maturity_year": 2027,
+          "impact_level": 7,
+          "description": "Applications that verify transactions without revealing underlying data, enhancing privacy in blockchain systems.",
+          "adoption_status": "Widely adopted in financial sectors for secure transactions, with growing use in personal data protection."
+        },
+        {
+          "name": "Tokenized Cognitive Enhancements",
+          "from_emerging": true,
+          "original_emergence_year": 2026,
+          "maturity_year": 2029,
+          "impact_level": 5,
+          "description": "Cognitive enhancements through neural interfaces where enhancements are tokenized for trading or ownership.",
+          "adoption_status": "Slowly integrating into high-performance sectors like finance, gaming, and education."
+        }
+      ],
+      "epoch_themes": [
+        {
+          "theme": "Decentralization of Power",
+          "description": "A shift towards decentralized systems in governance, energy, and technology.",
+          "related_technologies": [
+            "Decentralized AI Governance",
+            "Tokenized Energy Markets",
+            "Interplanetary Settlement DAOs"
+          ],
+          "societal_impact": "Promotes individual empowerment but challenges existing power structures and requires new regulatory frameworks.",
+          "global_trends": "Increased focus on privacy, security, and self-sovereignty in response to global surveillance and data misuse concerns."
+        },
+        {
+          "theme": "Integration of AI and Blockchain",
+          "description": "Combining AI's decision-making with blockchain's immutable ledger for trustless systems.",
+          "related_technologies": [
+            "AI-driven Smart Contracts",
+            "Tokenized AI Models"
+          ],
+          "societal_impact": "Enhances automation and reduces fraud but brings concerns about AI ethics and control.",
+          "global_trends": "Drives towards more automated, transparent, and fair systems across various industries."
+        }
+      ],
+      "epoch_year": 2025
+    }
+  }
+}
