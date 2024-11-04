@@ -85,7 +85,7 @@ class DigestGenerator:
             return None
 
     def process_ongoing_digest(self, existing_digest, new_tweets, new_comments):
-        """Generate a digest using existing digest as context"""
+        """Generate a digest with both summary and future direction"""
         try:
             prompt = self.create_ongoing_prompt(existing_digest, new_tweets, new_comments)
             updated_digest = self.generate_digest(prompt)
@@ -93,7 +93,8 @@ class DigestGenerator:
             if updated_digest:
                 return {
                     "generated_at": datetime.now().isoformat(),
-                    "content": updated_digest
+                    "content": updated_digest,
+                    "last_processed_tweet": new_tweets[-1]["id"] if new_tweets else None
                 }
             return None
         except Exception as e:
@@ -101,11 +102,10 @@ class DigestGenerator:
             return None
 
     def create_ongoing_prompt(self, existing_digest, new_tweets, new_comments):
-        """Create a prompt that uses existing digest as context"""
+        """Create a prompt that uses existing digest as context and plans future developments"""
         prompt = (
-            "You are maintaining an ongoing digest of Xavier's story. Based on the existing "
-            "digest and recent updates, create a new comprehensive digest that captures "
-            "the entire story so far.\n\n"
+            "You are maintaining an ongoing digest of Xavier's story. Your role is both to summarize "
+            "past events and to outline potential near-future story developments.\n\n"
             
             "CURRENT STORY DIGEST:\n"
             f"{existing_digest.get('content', 'Story begins with Xavier at age 22 in 2025.')}\n\n"
@@ -117,16 +117,27 @@ class DigestGenerator:
             "Related Comments:\n"
             f"{json.dumps(new_comments, indent=2)}\n\n"
             
-            "Please create a new complete digest that:\n"
-            "1. Incorporates all important elements from the existing digest\n"
-            "2. Weaves in new developments naturally\n"
-            "3. Maintains character arcs and relationship developments\n"
-            "4. Preserves important plot threads and themes\n"
-            "5. Reads as a single coherent narrative\n"
-            "6. Provides proper context for future story developments\n"
+            "Please create a comprehensive digest with two sections:\n\n"
             
-            "The digest should be comprehensive but concise, focusing on key elements "
-            "that maintain story continuity and character development."
+            "SECTION 1 - STORY SO FAR:\n"
+            "1. Summarize the existing narrative and recent developments\n"
+            "2. Track ongoing relationships and character growth\n"
+            "3. Note significant life events and decisions\n"
+            "4. Highlight emerging themes and patterns\n\n"
+            
+            "SECTION 2 - STORY DIRECTION:\n"
+            "1. Outline potential story arcs for the next 3-6 months\n"
+            "2. Suggest natural developments in:\n"
+            "   - Career progression\n"
+            "   - Relationship dynamics\n"
+            "   - Personal growth opportunities\n"
+            "   - New York life experiences\n"
+            "3. Identify potential challenges or conflicts\n"
+            "4. Note seasonal or contextual opportunities (holidays, events, etc.)\n\n"
+            
+            "Keep the story direction subtle and open-ended, providing guidance while allowing "
+            "for natural tweet generation. Focus on creating situations and opportunities "
+            "rather than prescribing specific outcomes."
         )
         return prompt
 

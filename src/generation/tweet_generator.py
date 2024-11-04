@@ -267,22 +267,35 @@ class TweetGenerator:
                 )
 
         # Story Digest and Recent Events
-        prompt += f"Story Digest:\n{json.dumps(context['digest'], indent=2)}\n\n"
+        if context.get('digest'):
+            digest_content = context['digest'].get('content', '')
+            prompt += (
+                f"\nSTORY CONTEXT AND DIRECTION:\n{digest_content}\n\n"
+                "Use the story direction as inspiration for this tweet. You can:\n"
+                "1. Advance one of the suggested story arcs\n"
+                "2. Show progress in relationships or career\n"
+                "3. React to suggested challenges or opportunities\n"
+                "4. Build on emerging themes\n"
+                "But maintain natural, in-the-moment feel of social media.\n\n"
+            )
                 
         if context['recent_tweets']:
             prompt += f"Recent tweets:\n{json.dumps(context['recent_tweets'], indent=2)}\n\n"
                 
         if context['recent_comments']:
             prompt += f"Recent interactions:\n{json.dumps(context['recent_comments'], indent=2)}\n\n"
-            
+
         prompt += (
             "Generate a tweet continuing Xavier's story. The tweet should:\n"
             "1. Be written in first person as Xavier, with a tone that is entertaining, personal, and relatable\n"
             "2. Vary in tone—sometimes upbeat, sometimes reflective, but always engaging\n"
-            "3. Use humor, curiosity, or irony when natural, even as he reflects on life’s highs and lows\n"
+            "3. Use humor, curiosity, or irony when natural, even as he reflects on life's highs and lows\n"
             "4. Mention specific technology only if it impacts his perspective or interactions in a natural way\n"
             "5. Mention $XVI occasionally as a digital asset in his reflections on crypto, avoiding mentions of wallets or specific transactions\n"
-            "6. Be between 16-1028 characters, from short one-liners to more detailed reflections\n"
+            "6. Usually be between 384-640 characters for rich, detailed reflections, but occasionally:\n"
+            "   - As short as 16 chars for quick, punchy thoughts\n"
+            "   - As long as 1028 chars for deeper, more complex musings\n"
+            "   Choose length based on the natural weight of the thought being expressed\n"
             "7. Start with '[{current_year} | Age {xavier_age}]' to mark the timeline\n"
             "8. Avoid hashtags unless they add to the humor or context\n\n"
             "Tweet:"
