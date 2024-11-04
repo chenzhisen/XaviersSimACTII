@@ -26,12 +26,8 @@ class TechEvolutionGenerator:
         self.base_year = 2025
         self.end_year = 2080
         self.evolution_data = {
-            "metadata": {
-                "generated_at": datetime.now().isoformat(),
-                "base_year": self.base_year,
-                "end_year": self.end_year
-            },
-            "tech_trees": {}
+            "tech_trees": {},
+            "last_updated": datetime.now().isoformat()
         }
 
     def get_data_directory(self):
@@ -130,83 +126,106 @@ class TechEvolutionGenerator:
         return previous_tech
     
     def generate_epoch_tech_tree(self, epoch_year):
-        previous_tech = self.get_previous_technologies(epoch_year)
-        years_from_base = epoch_year - self.base_year
-        acceleration_factor = 1 + (years_from_base / 20)
-        
-        prompt = f"""Generate technological advancements for {epoch_year} to {epoch_year + 5}. 
-
-        CONTEXT:
-        - Current epoch: {epoch_year}
-        - Years from 2025: {years_from_base}
-        - Tech acceleration: {acceleration_factor:.2f}x faster than 2025
-        - Previous emerging tech: {previous_tech['emerging']}
-        - Current mainstream tech: {previous_tech['mainstream']}
-        
-        DEVELOPMENT GUIDELINES:
-
-        1. EPOCH CHARACTERISTICS:
-           - 2025-2035: Practical integration of current tech, incremental improvements
-           - 2035-2050: Major breakthroughs, system convergence, AI-human collaboration
-           - 2050+: Transformative changes, full automation, deep tech integration
-
-        2. FOCUS AREAS:
-           - Digital Trust & Robotics: blockchain, autonomous systems, digital identity
-           - Neural Integration: BCI, cognitive enhancement, medical applications
-           - Infrastructure: autonomous vehicles, smart cities, robotic maintenance
-           - Healthcare: AI diagnostics, personalized medicine, biotech
-           - Sustainability: clean energy, resource management, environmental tech
-           - Space Technology: habitat support, remote operations, resource utilization
-
-        3. DEVELOPMENT PRINCIPLES:
-           - Match epoch's advancement level
-           - Build on existing technologies
-           - Consider societal readiness
-           - Balance innovation with practical adoption
-           - Account for ethical implications
-
-        Return JSON:
-        {{
-            "emerging_technologies": [
-                {{
-                    "name": "technology name",
-                    "probability": 0.0-1.0,
-                    "estimated_year": YYYY,
-                    "innovation_type": "incremental|breakthrough",
-                    "dependencies": ["tech1", "tech2"],
-                    "impact_areas": ["area1", "area2"],
-                    "description": "brief description",
-                    "societal_implications": "impact analysis",
-                    "adoption_factors": "adoption analysis"
-                }}
-            ],
-            "mainstream_technologies": [
-                {{
-                    "name": "technology name",
-                    "from_emerging": true,
-                    "original_emergence_year": YYYY,
-                    "maturity_year": YYYY,
-                    "impact_level": 1-10,
-                    "description": "brief description",
-                    "adoption_status": "adoption analysis"
-                }}
-            ],
-            "epoch_themes": [
-                {{
-                    "theme": "theme name",
-                    "description": "brief description",
-                    "related_technologies": ["tech1", "tech2"],
-                    "societal_impact": "impact analysis",
-                    "global_trends": "trend analysis"
-                }}
-            ]
-        }}"""
-
         try:
+            previous_tech = self.get_previous_technologies(epoch_year)
+            years_from_base = epoch_year - self.base_year
+            acceleration_factor = 1 + (years_from_base / 20)
+            
+            prompt = f"""Generate technological advancements for {epoch_year} to {epoch_year + 5}. 
+
+            CONTEXT:
+            - Current epoch: {epoch_year}
+            - Years from 2025: {years_from_base}
+            - Tech acceleration: {acceleration_factor:.2f}x faster than 2025
+            - Previous emerging tech: {json.dumps(previous_tech.get('emerging', []))}
+            - Current mainstream tech: {json.dumps(previous_tech.get('mainstream', []))}
+            
+            DEVELOPMENT GUIDELINES:
+
+            1. FOCUS AREAS & INTEGRATIONS:
+               - AI & Robotics
+                 * AI-driven smart contracts
+                 * Decentralized AI governance
+                 * Tokenized AI models
+               
+               - Autonomous Systems
+                 * Blockchain-verified autonomous decisions
+                 * Decentralized transport networks
+                 * Token-incentivized infrastructure
+               
+               - Neural Interfaces
+                 * Blockchain identity and memory markets
+                 * Tokenized cognitive enhancements
+                 * DAO-governed neural networks
+               
+               - Space Technology
+                 * Decentralized space operations
+                 * Interplanetary settlement DAOs
+                 * Space resource tokenization
+               
+               - Sustainable Energy
+                 * Tokenized energy markets
+                 * Decentralized grid management
+                 * Green energy certificates
+               
+               - Digital Infrastructure
+                 * Zero-knowledge applications
+                 * Cross-chain innovations
+                 * Decentralized physical infrastructure
+
+            2. DEVELOPMENT PRINCIPLES:
+               - Focus on practical implementations
+               - Consider real-world constraints
+               - Balance innovation with reliability
+               - Account for societal adoption
+               - Emphasize blockchain integration
+
+            3. AVOID:
+               - Isolated technological developments
+               - Unrealistic breakthroughs
+               - Technologies without clear predecessors
+
+            Return JSON:
+            {{
+                "emerging_technologies": [
+                    {{
+                        "name": "technology name",
+                        "probability": 0.0-1.0,
+                        "estimated_year": YYYY,
+                        "innovation_type": "incremental|breakthrough",
+                        "dependencies": ["tech1", "tech2"],
+                        "impact_areas": ["area1", "area2"],
+                        "description": "brief description",
+                        "societal_implications": "impact analysis",
+                        "adoption_factors": "adoption analysis"
+                    }}
+                ],
+                "mainstream_technologies": [
+                    {{
+                        "name": "technology name",
+                        "from_emerging": true,
+                        "original_emergence_year": YYYY,
+                        "maturity_year": YYYY,
+                        "impact_level": 1-10,
+                        "description": "brief description",
+                        "adoption_status": "adoption analysis"
+                    }}
+                ],
+                "epoch_themes": [
+                    {{
+                        "theme": "theme name",
+                        "description": "brief description",
+                        "related_technologies": ["tech1", "tech2"],
+                        "societal_impact": "impact analysis",
+                        "global_trends": "trend analysis"
+                    }}
+                ]
+            }}"""
+            
+            print("\nSending request to API...")
             response = self.client.messages.create(
                 model=self.model,
                 max_tokens=4000,
-                system="You are a technology futurist helping to generate realistic technology evolution scenarios.",
                 messages=[
                     {
                         "role": "user",
@@ -215,47 +234,47 @@ class TechEvolutionGenerator:
                 ]
             )
             
-             # Handle TextBlock response format
-            if isinstance(response.content, list):
-                # Combine all text blocks into a single string
-                full_text = ''.join(block.text for block in response.content)
+            # Get the response content
+            if hasattr(response, 'content') and len(response.content) > 0:
+                # Extract text from the first content block
+                text_content = response.content[0].text
                 
-                # Extract JSON from the combined text
-                import re
-                json_match = re.search(r'\{.*\}', full_text, re.DOTALL)
-                if json_match:
-                    tree_data = json.loads(json_match.group())
-                else:
-                    raise ValueError("No valid JSON found in response")
+                # Clean up the response
+                clean_response = text_content.replace('```json\n', '').replace('```', '').strip()
+                
+                print("\nComplete response length:", len(clean_response))
+                print("First 200 chars:", clean_response[:200])
+                
+                try:
+                    tree_data = json.loads(clean_response)
+                    # Validate the structure
+                    required_keys = ['emerging_technologies', 'mainstream_technologies', 'epoch_themes']
+                    if not all(key in tree_data for key in required_keys):
+                        raise ValueError(f"Missing required keys in response. Got: {list(tree_data.keys())}")
+                    
+                    # Add epoch identifier and store the data
+                    tree_data["epoch_year"] = epoch_year
+                    self.evolution_data["tech_trees"][str(epoch_year)] = tree_data
+                    
+                    # Print summary
+                    print(f"\nGenerated for {epoch_year}:")
+                    print(f"- Emerging technologies: {len(tree_data['emerging_technologies'])}")
+                    print(f"- Mainstream technologies: {len(tree_data['mainstream_technologies'])}")
+                    print(f"- Epoch themes: {len(tree_data['epoch_themes'])}")
+                    
+                    return tree_data
+                    
+                except json.JSONDecodeError as e:
+                    print(f"JSON parse error: {e}")
+                    print("Clean response:", clean_response[:500])  # Print first 500 chars
+                    raise ValueError("Could not parse response as JSON")
             else:
-                tree_data = json.loads(response.content)
-            
-            # Validate the data is unique for this epoch
-            if str(epoch_year) in self.evolution_data["tech_trees"]:
-                existing_data = self.evolution_data["tech_trees"][str(epoch_year)]
-                if existing_data == tree_data:
-                    raise ValueError(f"Generated data for {epoch_year} is identical to existing data")
-            
-            # Add epoch identifier to the data
-            tree_data["epoch_year"] = epoch_year
-            
-            # Store the data
-            self.evolution_data["tech_trees"][str(epoch_year)] = tree_data
-            
-            # Print summary of generated data
-            print(f"Generated for {epoch_year}:")
-            print(f"- Emerging technologies: {len(tree_data['emerging_technologies'])}")
-            print(f"- Mainstream technologies: {len(tree_data['mainstream_technologies'])}")
-            print(f"- Epoch themes: {len(tree_data['epoch_themes'])}")
-            
-            return tree_data
-            
+                raise ValueError("No content received in response")
+                
         except Exception as e:
             print(f"Failed to generate tech tree for {epoch_year}: {e}")
-            if 'response' in locals():
-                print("Full response type:", type(response.content))
-                if isinstance(response.content, list):
-                    print("First few blocks:", response.content[:3])
+            if 'complete_response' in locals():
+                print("Full response:", complete_response)
             return None
 
     def save_evolution_data(self):
