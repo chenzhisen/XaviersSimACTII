@@ -1,0 +1,127 @@
+{
+  "metadata": {
+    "generated_at": "2024-11-05T18:41:38.512388",
+    "base_year": 2025,
+    "end_year": 2075
+  },
+  "tech_trees": {
+    "2025": {
+      "emerging_technologies": [
+        {
+          "name": "AI-driven Smart Contracts",
+          "probability": 0.8,
+          "estimated_year": 2027,
+          "innovation_type": "incremental",
+          "dependencies": [
+            "Blockchain",
+            "AI"
+          ],
+          "impact_areas": [
+            "Finance",
+            "Legal",
+            "Insurance"
+          ],
+          "description": "Smart contracts that can autonomously modify terms based on AI analysis of external data.",
+          "societal_implications": "Reduces human error and increases contract efficiency, potentially reducing legal disputes.",
+          "adoption_factors": "Legal acceptance, standardization, and integration with existing systems."
+        },
+        {
+          "name": "Decentralized Space Operations",
+          "probability": 0.55,
+          "estimated_year": 2029,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Blockchain",
+            "Satellite Tech"
+          ],
+          "impact_areas": [
+            "Space Industry",
+            "Government",
+            "Private Sector"
+          ],
+          "description": "A decentralized network for managing space missions, resource allocation, and data sharing.",
+          "societal_implications": "Democratizes space exploration and could foster international cooperation.",
+          "adoption_factors": "Regulatory hurdles, technological feasibility, and international agreements."
+        },
+        {
+          "name": "Tokenized Energy Markets",
+          "probability": 0.7,
+          "estimated_year": 2026,
+          "innovation_type": "incremental",
+          "dependencies": [
+            "Blockchain",
+            "Smart Grid Technology"
+          ],
+          "impact_areas": [
+            "Energy Sector",
+            "Utilities"
+          ],
+          "description": "Markets where energy units are tokenized, enabling direct peer-to-peer energy trading.",
+          "societal_implications": "Promotes renewable energy use, reduces reliance on centralized power grids.",
+          "adoption_factors": "Energy policy changes, consumer awareness, and infrastructure readiness."
+        },
+        {
+          "name": "Decentralized Autonomous Transport Networks",
+          "probability": 0.6,
+          "estimated_year": 2028,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Blockchain",
+            "Autonomous Vehicles",
+            "AI"
+          ],
+          "impact_areas": [
+            "Transportation",
+            "Urban Planning"
+          ],
+          "description": "A network where autonomous vehicles manage their routing and operations via blockchain consensus.",
+          "societal_implications": "Potential reduction in urban congestion, enhanced privacy in travel data.",
+          "adoption_factors": "Regulatory frameworks, public trust in autonomous systems, and tech maturity."
+        }
+      ],
+      "mainstream_technologies": [
+        {
+          "name": "Zero-Knowledge Applications",
+          "from_emerging": true,
+          "original_emergence_year": 2025,
+          "maturity_year": 2027,
+          "impact_level": 7,
+          "description": "Applications using zero-knowledge proofs for privacy and security.",
+          "adoption_status": "Widely adopted in finance, healthcare, and government for data privacy."
+        },
+        {
+          "name": "Cross-Chain Innovations",
+          "from_emerging": true,
+          "original_emergence_year": 2026,
+          "maturity_year": 2029,
+          "impact_level": 6,
+          "description": "Technologies enabling seamless interaction between different blockchain networks.",
+          "adoption_status": "Becoming standard for blockchain interoperability in various sectors."
+        }
+      ],
+      "epoch_themes": [
+        {
+          "theme": "Decentralized Infrastructure",
+          "description": "Shift towards systems that are managed by decentralized consensus mechanisms.",
+          "related_technologies": [
+            "Decentralized Autonomous Transport Networks",
+            "Decentralized Space Operations"
+          ],
+          "societal_impact": "Promotes resilience, reduces single points of failure, and fosters innovation through community governance.",
+          "global_trends": "Rise in blockchain governance models, increased focus on data sovereignty, and a push for transparent systems."
+        },
+        {
+          "theme": "Sustainability and Tokenization",
+          "description": "Integration of green technology with economic incentives through tokenization.",
+          "related_technologies": [
+            "Tokenized Energy Markets",
+            "Green Energy Certificates"
+          ],
+          "societal_impact": "Encourages environmentally friendly behaviors through economic benefits.",
+          "global_trends": "Increased environmental consciousness, regulatory push for sustainable practices, and technological advancements in renewable energy."
+        }
+      ],
+      "epoch_year": 2025
+    }
+  }
+}
