@@ -1,0 +1,146 @@
+{
+  "metadata": {
+    "generated_at": "2024-11-05T09:53:41.262736",
+    "base_year": 2025,
+    "end_year": 2075
+  },
+  "tech_trees": {
+    "2025": {
+      "emerging_technologies": [
+        {
+          "name": "AI-Driven Smart Contract Execution",
+          "probability": 0.8,
+          "estimated_year": 2026,
+          "innovation_type": "incremental",
+          "dependencies": [
+            "Blockchain Technology",
+            "Advanced AI Algorithms"
+          ],
+          "impact_areas": [
+            "Legal",
+            "Finance",
+            "Real Estate"
+          ],
+          "description": "Smart contracts that dynamically adapt based on AI analysis of real-time data.",
+          "societal_implications": "Increases efficiency and reduces human error in contract execution, but raises concerns about AI biases and accountability.",
+          "adoption_factors": "Adoption will depend on regulatory frameworks, trust in AI systems, and integration with existing legal systems."
+        },
+        {
+          "name": "Tokenized Energy Markets",
+          "probability": 0.7,
+          "estimated_year": 2027,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Blockchain",
+            "IoT",
+            "Smart Grids"
+          ],
+          "impact_areas": [
+            "Energy",
+            "Environment",
+            "Economics"
+          ],
+          "description": "Marketplaces where green energy production and consumption are tracked and traded via tokens on a blockchain.",
+          "societal_implications": "Promotes renewable energy use, democratizes energy access, but could lead to market volatility.",
+          "adoption_factors": "Government policies on energy, environmental consciousness, and the maturity of blockchain technology."
+        },
+        {
+          "name": "Neural Interface Marketplaces",
+          "probability": 0.5,
+          "estimated_year": 2029,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Neural Technology",
+            "Blockchain Identity Systems"
+          ],
+          "impact_areas": [
+            "Health",
+            "Education",
+            "Entertainment"
+          ],
+          "description": "Marketplaces where individuals can buy or sell cognitive enhancements or memory services via neural interfaces.",
+          "societal_implications": "Potential to enhance human capabilities, but raises ethical concerns about privacy, inequality, and identity.",
+          "adoption_factors": "Ethical guidelines, technological breakthroughs in neural interfaces, and public acceptance."
+        },
+        {
+          "name": "Decentralized Space Operations",
+          "probability": 0.6,
+          "estimated_year": 2028,
+          "innovation_type": "incremental",
+          "dependencies": [
+            "Satellite Technology",
+            "Blockchain"
+          ],
+          "impact_areas": [
+            "Space Exploration",
+            "Telecommunications"
+          ],
+          "description": "A network of satellites governed by DAOs for operations like data transmission and space resource management.",
+          "societal_implications": "Expands space exploration capabilities but requires international cooperation and regulation.",
+          "adoption_factors": "Space law development, advancements in satellite technology, and international consensus."
+        },
+        {
+          "name": "Blockchain-verified Autonomous Decisions",
+          "probability": 0.85,
+          "estimated_year": 2026,
+          "innovation_type": "incremental",
+          "dependencies": [
+            "Autonomous Vehicles",
+            "Blockchain"
+          ],
+          "impact_areas": [
+            "Transport",
+            "Logistics",
+            "Safety"
+          ],
+          "description": "Autonomous systems make decisions that are verified and recorded on a blockchain for transparency and accountability.",
+          "societal_implications": "Enhances trust in autonomous systems but requires robust cybersecurity to prevent manipulation.",
+          "adoption_factors": "Regulatory acceptance, public trust in autonomous systems, and blockchain security advancements."
+        }
+      ],
+      "mainstream_technologies": [
+        {
+          "name": "Decentralized Energy Grids",
+          "from_emerging": true,
+          "original_emergence_year": 2025,
+          "maturity_year": 2027,
+          "impact_level": 6,
+          "description": "Smart grids that operate on blockchain for decentralized energy management and distribution.",
+          "adoption_status": "Widely adopted in regions with supportive energy policies and high renewable energy usage."
+        },
+        {
+          "name": "Zero-Knowledge Proof Applications",
+          "from_emerging": true,
+          "original_emergence_year": 2025,
+          "maturity_year": 2028,
+          "impact_level": 7,
+          "description": "Applications that allow for transactions and data validations without revealing underlying information.",
+          "adoption_status": "Increasingly integrated into finance, privacy-focused tech, and identity verification systems."
+        }
+      ],
+      "epoch_themes": [
+        {
+          "theme": "Decentralized Governance and Operations",
+          "description": "Shift towards systems where control and decision-making are distributed rather than centralized.",
+          "related_technologies": [
+            "Decentralized Space Operations",
+            "Decentralized Energy Grids"
+          ],
+          "societal_impact": "Enhances democracy and transparency but requires new governance models.",
+          "global_trends": "Growing movement towards decentralization in various sectors, driven by blockchain technology and a desire for autonomy."
+        },
+        {
+          "theme": "AI and Blockchain Integration",
+          "description": "The synergy between AI's decision-making capabilities and blockchain's transparency and security.",
+          "related_technologies": [
+            "AI-Driven Smart Contracts",
+            "Blockchain-verified Autonomous Decisions"
+          ],
+          "societal_impact": "Promotes trust in AI systems through verifiable actions, but also introduces new complexities in system design.",
+          "global_trends": "Increasing interest in using blockchain to enhance AI's accountability and ethical operations."
+        }
+      ],
+      "epoch_year": 2025
+    }
+  }
+}
