@@ -1,0 +1,109 @@
+{
+  "metadata": {
+    "generated_at": "2024-11-05T10:33:38.737560",
+    "base_year": 2025,
+    "end_year": 2075
+  },
+  "tech_trees": {
+    "2025": {
+      "emerging_technologies": [
+        {
+          "name": "AI-Driven Smart Contracts",
+          "probability": 0.85,
+          "estimated_year": 2026,
+          "innovation_type": "incremental",
+          "dependencies": [
+            "Blockchain Technology",
+            "Machine Learning"
+          ],
+          "impact_areas": [
+            "Finance",
+            "Legal Services"
+          ],
+          "description": "Smart contracts that adapt to real-time data and user needs, reducing the need for human intervention in contract execution.",
+          "societal_implications": "Enhances efficiency and trust in digital agreements but raises concerns about AI biases and security.",
+          "adoption_factors": "Regulatory acceptance, technical standards, and integration with existing legal frameworks."
+        },
+        {
+          "name": "Decentralized Space Operations",
+          "probability": 0.6,
+          "estimated_year": 2028,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Blockchain",
+            "Space Technology"
+          ],
+          "impact_areas": [
+            "Space Industry",
+            "Global Governance"
+          ],
+          "description": "Utilization of blockchain for managing space missions, ownership of space assets, and resource distribution.",
+          "societal_implications": "Could democratize space exploration but might lead to jurisdictional disputes in space.",
+          "adoption_factors": "International agreements, cost-effectiveness, and the need for secure, transparent operations in space."
+        },
+        {
+          "name": "Tokenized Cognitive Enhancements",
+          "probability": 0.75,
+          "estimated_year": 2029,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Neural Interfaces",
+            "Cryptocurrency"
+          ],
+          "impact_areas": [
+            "Health",
+            "Education"
+          ],
+          "description": "Neural enhancement technologies where individuals can trade or earn tokens for cognitive improvements.",
+          "societal_implications": "Potential to reduce inequality in cognitive abilities but introduces ethical concerns regarding cognitive equity.",
+          "adoption_factors": "Public perception, ethical guidelines, and the integration with educational and health systems."
+        }
+      ],
+      "mainstream_technologies": [
+        {
+          "name": "Decentralized Grid Management",
+          "from_emerging": true,
+          "original_emergence_year": 2023,
+          "maturity_year": 2025,
+          "impact_level": 8,
+          "description": "Blockchain-based systems for managing electricity distribution, enhancing grid resilience and integration of renewable sources.",
+          "adoption_status": "Widely adopted in regions with advanced energy policies, facing resistance in areas with established centralized energy systems."
+        },
+        {
+          "name": "Zero-Knowledge Applications",
+          "from_emerging": true,
+          "original_emergence_year": 2024,
+          "maturity_year": 2026,
+          "impact_level": 7,
+          "description": "Applications that ensure privacy through zero-knowledge proofs, now mainstream in areas requiring high data privacy.",
+          "adoption_status": "Integrated into financial services, healthcare, and identity verification systems for enhanced security and privacy."
+        }
+      ],
+      "epoch_themes": [
+        {
+          "theme": "Decentralization and Trust",
+          "description": "A move towards systems where trust is built into the technology rather than centralized entities.",
+          "related_technologies": [
+            "Blockchain-verified Autonomous Decisions",
+            "Decentralized AI Governance",
+            "Zero-Knowledge Applications"
+          ],
+          "societal_impact": "Promotes transparency, reduces corruption, but challenges traditional governance models.",
+          "global_trends": "Increasing push for data sovereignty, privacy laws, and anti-monopoly regulations."
+        },
+        {
+          "theme": "AI Integration in Governance",
+          "description": "AI's role in decision-making processes at various levels of governance, from contracts to space exploration.",
+          "related_technologies": [
+            "AI-Driven Smart Contracts",
+            "Tokenized AI Models",
+            "Decentralized Space Operations"
+          ],
+          "societal_impact": "Enhances decision quality but might automate away human oversight, necessitating new ethical frameworks.",
+          "global_trends": "Rising discussions on AI ethics, transparency, and accountability in governance."
+        }
+      ],
+      "epoch_year": 2025
+    }
+  }
+}
