@@ -1,0 +1,124 @@
+{
+  "metadata": {
+    "generated_at": "2024-11-05T09:06:54.981385",
+    "base_year": 2025,
+    "end_year": 2075
+  },
+  "tech_trees": {
+    "2025": {
+      "emerging_technologies": [
+        {
+          "name": "AI-driven Smart Contracts",
+          "probability": 0.75,
+          "estimated_year": 2027,
+          "innovation_type": "incremental",
+          "dependencies": [
+            "Blockchain",
+            "AI"
+          ],
+          "impact_areas": [
+            "Legal",
+            "Finance"
+          ],
+          "description": "Contracts that automatically execute based on AI's real-time analysis of conditions or external data feeds.",
+          "societal_implications": "Enhances trust and reduces disputes in contractual agreements, potentially reducing legal costs.",
+          "adoption_factors": "Requires widespread blockchain adoption, regulatory clarity on AI, and trust in AI decision-making."
+        },
+        {
+          "name": "Decentralized Autonomous Transport Networks",
+          "probability": 0.65,
+          "estimated_year": 2029,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Autonomous Vehicles",
+            "Blockchain"
+          ],
+          "impact_areas": [
+            "Transportation",
+            "Urban Planning"
+          ],
+          "description": "A network where autonomous vehicles operate based on community governance and blockchain-verified decisions.",
+          "societal_implications": "Could revolutionize urban mobility, reducing congestion and pollution, but also poses privacy and control issues.",
+          "adoption_factors": "Dependent on advancements in vehicle autonomy, infrastructure readiness, and public acceptance of decentralized systems."
+        },
+        {
+          "name": "Tokenized Energy Markets",
+          "probability": 0.8,
+          "estimated_year": 2026,
+          "innovation_type": "incremental",
+          "dependencies": [
+            "Renewable Energy",
+            "Blockchain"
+          ],
+          "impact_areas": [
+            "Energy",
+            "Sustainability"
+          ],
+          "description": "Trading of energy units on a blockchain, allowing for peer-to-peer energy exchange.",
+          "societal_implications": "Promotes green energy use, empowers consumers, but requires significant infrastructure changes.",
+          "adoption_factors": "Regulatory support, technological readiness of smart grids, and consumer understanding of blockchain."
+        },
+        {
+          "name": "Blockchain Identity and Memory Markets",
+          "probability": 0.6,
+          "estimated_year": 2030,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Neural Interfaces",
+            "Blockchain"
+          ],
+          "impact_areas": [
+            "Health",
+            "Security"
+          ],
+          "description": "Secure storage and trading of personal memories or identity data on a blockchain.",
+          "societal_implications": "Raises profound ethical questions about privacy, consent, and the nature of identity.",
+          "adoption_factors": "Advancements in neural tech, legal frameworks for digital identity, and public trust in blockchain security."
+        }
+      ],
+      "mainstream_technologies": [
+        {
+          "name": "Smart Grids",
+          "from_emerging": true,
+          "original_emergence_year": 2023,
+          "maturity_year": 2028,
+          "impact_level": 8,
+          "description": "Grid systems that integrate renewable energy sources, manage demand response, and incorporate blockchain for energy trading.",
+          "adoption_status": "Widespread adoption in developed nations due to governmental incentives and environmental policies."
+        },
+        {
+          "name": "AI-Personal Assistants",
+          "from_emerging": false,
+          "original_emergence_year": 2020,
+          "maturity_year": 2025,
+          "impact_level": 6,
+          "description": "AI systems that manage personal tasks, integrate with smart homes, and provide personalized services.",
+          "adoption_status": "Standard in households and businesses, enhancing daily productivity and convenience."
+        }
+      ],
+      "epoch_themes": [
+        {
+          "theme": "Decentralization and Autonomy",
+          "description": "Shift towards systems that operate autonomously with decentralized governance structures.",
+          "related_technologies": [
+            "AI-driven Smart Contracts",
+            "Decentralized Autonomous Transport Networks"
+          ],
+          "societal_impact": "Empowers individuals and communities, potentially reducing central control but increasing complexity in governance.",
+          "global_trends": "Growing interest in privacy, data sovereignty, and reducing reliance on centralized systems."
+        },
+        {
+          "theme": "Sustainability through Technology",
+          "description": "Utilizing technology to enhance sustainability efforts, focusing on energy and resource efficiency.",
+          "related_technologies": [
+            "Tokenized Energy Markets",
+            "Decentralized Grid Management"
+          ],
+          "societal_impact": "Promotes environmental consciousness, but requires significant changes in consumer behavior and infrastructure.",
+          "global_trends": "Increased focus on climate change mitigation and sustainable living practices."
+        }
+      ],
+      "epoch_year": 2025
+    }
+  }
+}
