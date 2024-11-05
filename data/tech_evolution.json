@@ -1,121 +1,106 @@
 {
   "tech_trees": {
-    "2030": {
+    "2035": {
       "emerging_technologies": [
         {
           "name": "AI-Driven Smart Contracts",
           "probability": 0.75,
-          "estimated_year": 2032,
-          "innovation_type": "incremental",
+          "estimated_year": 2036,
+          "innovation_type": "breakthrough",
           "dependencies": [
-            "Blockchain",
-            "AI"
+            "Blockchain Technology",
+            "Advanced AI"
           ],
           "impact_areas": [
+            "Finance",
             "Legal",
-            "Finance"
+            "Insurance"
           ],
-          "description": "Smart contracts that can autonomously adapt based on external data inputs and AI decision-making algorithms.",
-          "societal_implications": "Reduces the need for intermediaries, enhances contract efficiency and adaptability, but raises concerns about AI bias and decision transparency.",
-          "adoption_factors": "Legal frameworks, trust in AI systems, and blockchain scalability improvements."
-        },
-        {
-          "name": "Blockchain-Verified Autonomous Decisions",
-          "probability": 0.8,
-          "estimated_year": 2033,
-          "innovation_type": "breakthrough",
-          "dependencies": [
-            "Autonomous Vehicles",
-            "Blockchain"
-          ],
-          "impact_areas": [
-            "Transportation",
-            "Logistics"
-          ],
-          "description": "Autonomous systems making decisions with blockchain for verification, ensuring accountability and transparency.",
-          "societal_implications": "Enhances safety and reliability in autonomous operations but might increase the complexity of system oversight.",
-          "adoption_factors": "Regulatory acceptance, technological maturity of both autonomous systems and blockchain."
-        },
-        {
-          "name": "Tokenized Cognitive Enhancements",
-          "probability": 0.5,
-          "estimated_year": 2035,
-          "innovation_type": "breakthrough",
-          "dependencies": [
-            "Neural Interfaces",
-            "Token Economics"
-          ],
-          "impact_areas": [
-            "Education",
-            "Health"
-          ],
-          "description": "Cognitive enhancement through neural interfaces, where access or improvements can be tokenized.",
-          "societal_implications": "Could lead to a cognitive divide, ethical debates on human enhancement, and privacy concerns.",
-          "adoption_factors": "Ethical considerations, regulatory frameworks, and public perception of neural tech."
+          "description": "Contracts that execute and enforce themselves using AI to adapt to changing conditions or breaches.",
+          "societal_implications": "Reduces need for legal disputes, increases efficiency but raises concerns about AI bias and job displacement.",
+          "adoption_factors": "High due to cost savings and efficiency, but adoption will be moderated by regulatory frameworks."
         },
         {
           "name": "Decentralized Space Operations",
           "probability": 0.6,
-          "estimated_year": 2034,
+          "estimated_year": 2038,
           "innovation_type": "incremental",
           "dependencies": [
-            "Blockchain",
-            "Space Tech"
+            "Space Travel Tech",
+            "Blockchain"
           ],
           "impact_areas": [
-            "Space Exploration",
+            "Space Industry",
             "Resource Management"
           ],
-          "description": "Operational management of space activities through decentralized systems to enhance coordination and resource allocation.",
-          "societal_implications": "Promotes international cooperation in space but could complicate jurisdiction and sovereignty issues.",
-          "adoption_factors": "International agreements, technological feasibility, and the involvement of private entities."
+          "description": "Use of DAOs for managing space missions, satellite operations, and interplanetary settlements.",
+          "societal_implications": "Opens space exploration and utilization to broader participation, potential for space law conflicts.",
+          "adoption_factors": "Initial adoption by private space companies, later by international bodies."
+        },
+        {
+          "name": "Tokenized Cognitive Enhancements",
+          "probability": 0.55,
+          "estimated_year": 2037,
+          "innovation_type": "incremental",
+          "dependencies": [
+            "Neural Interfaces",
+            "Tokenization"
+          ],
+          "impact_areas": [
+            "Healthcare",
+            "Education",
+            "Workforce"
+          ],
+          "description": "Cognitive enhancements can be purchased, sold, or traded as tokens, enabling a market for brain augmentation.",
+          "societal_implications": "Could lead to cognitive inequality; ethical considerations on human enhancement.",
+          "adoption_factors": "Dependent on the acceptance of neural interfaces and regulatory approval."
         }
       ],
       "mainstream_technologies": [
         {
-          "name": "Decentralized Energy Grids",
-          "from_emerging": true,
-          "original_emergence_year": 2028,
-          "maturity_year": 2032,
-          "impact_level": 8,
-          "description": "Energy grids managed through decentralized networks where energy production and consumption are tokenized.",
-          "adoption_status": "Widely adopted in regions with advanced renewable energy infrastructure, facing regulatory and integration challenges elsewhere."
-        },
-        {
           "name": "Zero-Knowledge Applications",
           "from_emerging": true,
-          "original_emergence_year": 2030,
+          "original_emergence_year": 2029,
           "maturity_year": 2035,
+          "impact_level": 8,
+          "description": "Applications that enable privacy-preserving transactions and data exchanges.",
+          "adoption_status": "Widespread adoption in finance, healthcare, and identity verification sectors."
+        },
+        {
+          "name": "Decentralized Energy Grids",
+          "from_emerging": true,
+          "original_emergence_year": 2032,
+          "maturity_year": 2037,
           "impact_level": 7,
-          "description": "Applications leveraging zero-knowledge proofs for privacy-preserving interactions and transactions.",
-          "adoption_status": "Increasingly integrated into financial sectors, government services, and health data management for privacy compliance."
+          "description": "Energy grids managed via blockchain for local production, consumption, and trading.",
+          "adoption_status": "Increasingly adopted in regions with high renewable energy penetration."
         }
       ],
       "epoch_themes": [
         {
           "theme": "Decentralization and Autonomy",
-          "description": "A shift towards systems where control and decision-making are distributed rather than centralized.",
+          "description": "A shift towards systems where control is distributed rather than centralized, enhancing security and reducing single points of failure.",
           "related_technologies": [
             "AI-Driven Smart Contracts",
-            "Blockchain-Verified Autonomous Decisions",
-            "Decentralized Energy Grids"
+            "Decentralized Space Operations",
+            "Zero-Knowledge Applications"
           ],
-          "societal_impact": "Empowers individuals and smaller entities but requires new governance models and trust mechanisms.",
-          "global_trends": "Growing interest in blockchain, push for transparency, and the rise of autonomous technologies."
+          "societal_impact": "Promotes inclusivity, reduces power concentration, but challenges existing governance models.",
+          "global_trends": "Increased push for digital democracy, transparency in operations, and data privacy."
         },
         {
           "theme": "Human Augmentation",
-          "description": "Technological enhancements that augment human cognitive and physical capabilities.",
+          "description": "Enhancing human capabilities through technology, focusing on cognitive and physical enhancements.",
           "related_technologies": [
             "Tokenized Cognitive Enhancements",
             "Neural Interfaces"
           ],
-          "societal_impact": "Potential for significant improvements in human abilities but raises ethical, equality, and privacy issues.",
-          "global_trends": "Increased investment in brain-computer interfaces, gene editing, and personalized medicine."
+          "societal_impact": "Potential for new social divides based on access to enhancements; redefinition of human capabilities.",
+          "global_trends": "Ethical debates on enhancement, regulatory frameworks for new technologies."
         }
       ],
-      "epoch_year": 2030
+      "epoch_year": 2035
     }
   },
-  "last_updated": "2024-11-05T09:06:57.554973"
+  "last_updated": "2024-11-05T09:07:44.166856"
 }
