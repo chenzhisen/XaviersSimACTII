@@ -1,0 +1,128 @@
+{
+  "metadata": {
+    "generated_at": "2024-11-06T16:41:32.020743",
+    "base_year": 2025,
+    "end_year": 2075
+  },
+  "tech_trees": {
+    "2025": {
+      "emerging_technologies": [
+        {
+          "name": "AI-Driven Smart Contracts",
+          "probability": 0.8,
+          "estimated_year": 2026,
+          "innovation_type": "incremental",
+          "dependencies": [
+            "Blockchain Technology",
+            "Advanced AI Algorithms"
+          ],
+          "impact_areas": [
+            "Finance",
+            "Legal",
+            "Real Estate"
+          ],
+          "description": "Contracts that automatically execute based on AI analysis of conditions.",
+          "societal_implications": "Increases efficiency, reduces fraud but raises concerns about AI decision-making accountability.",
+          "adoption_factors": "Legal acceptance, regulatory frameworks, trust in AI systems."
+        },
+        {
+          "name": "Decentralized Space Operations",
+          "probability": 0.6,
+          "estimated_year": 2028,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Blockchain Technology",
+            "Spaceflight Technology"
+          ],
+          "impact_areas": [
+            "Space Industry",
+            "Global Governance"
+          ],
+          "description": "Use of blockchain for coordination of space missions, resource sharing, and operations.",
+          "societal_implications": "Could lead to democratized space exploration but might also complicate international space law.",
+          "adoption_factors": "International cooperation, regulatory bodies for space activities, investment in space tech."
+        },
+        {
+          "name": "Tokenized Energy Markets",
+          "probability": 0.75,
+          "estimated_year": 2027,
+          "innovation_type": "incremental",
+          "dependencies": [
+            "Blockchain Technology",
+            "Smart Grids"
+          ],
+          "impact_areas": [
+            "Energy",
+            "Sustainability"
+          ],
+          "description": "Energy trading where consumers can buy, sell, or trade energy tokens.",
+          "societal_implications": "Promotes energy independence and efficiency, potential grid stability issues.",
+          "adoption_factors": "Government support for green energy, consumer education, integration with existing energy systems."
+        },
+        {
+          "name": "DAO-governed Neural Networks",
+          "probability": 0.55,
+          "estimated_year": 2029,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "AI",
+            "Blockchain",
+            "Neural Interfaces"
+          ],
+          "impact_areas": [
+            "Healthcare",
+            "Education",
+            "Consumer Tech"
+          ],
+          "description": "Neural networks where governance and updates are managed by a decentralized autonomous organization.",
+          "societal_implications": "Could revolutionize how AI adapts to user needs but raises ethical questions about AI governance.",
+          "adoption_factors": "Public trust in decentralized systems, regulatory frameworks, technological maturity."
+        }
+      ],
+      "mainstream_technologies": [
+        {
+          "name": "Zero-Knowledge Applications",
+          "from_emerging": true,
+          "original_emergence_year": 2025,
+          "maturity_year": 2028,
+          "impact_level": 7,
+          "description": "Applications that allow for private computations and data transfers without revealing underlying data.",
+          "adoption_status": "Widespread in sectors requiring high privacy like finance and healthcare."
+        },
+        {
+          "name": "Decentralized Transport Networks",
+          "from_emerging": true,
+          "original_emergence_year": 2026,
+          "maturity_year": 2030,
+          "impact_level": 6,
+          "description": "Systems where transport infrastructure and services are managed through blockchain for efficiency and fairness.",
+          "adoption_status": "Integrated into urban planning, especially in smart cities."
+        }
+      ],
+      "epoch_themes": [
+        {
+          "theme": "Decentralized Governance",
+          "description": "An era where decentralized systems govern various aspects of life from energy to space exploration.",
+          "related_technologies": [
+            "DAO-governed Neural Networks",
+            "Decentralized Space Operations",
+            "Decentralized Transport Networks"
+          ],
+          "societal_impact": "Promotes autonomy, reduces centralized control, but challenges traditional governance models.",
+          "global_trends": "Increased push for transparency, participation, and security in governance structures."
+        },
+        {
+          "theme": "Sustainability Through Technology",
+          "description": "Using technology to enhance sustainability efforts, particularly in energy and resource management.",
+          "related_technologies": [
+            "Tokenized Energy Markets",
+            "Green Energy Certificates"
+          ],
+          "societal_impact": "Aims at reducing environmental impact, promoting circular economy, but requires significant behavioral and infrastructural changes.",
+          "global_trends": "Global push for zero emissions, renewable energy adoption, and sustainable urban development."
+        }
+      ],
+      "epoch_year": 2025
+    }
+  }
+}
