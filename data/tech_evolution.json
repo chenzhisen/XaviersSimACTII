@@ -1,0 +1,125 @@
+{
+  "metadata": {
+    "generated_at": "2024-11-06T14:07:14.344765",
+    "base_year": 2025,
+    "end_year": 2075
+  },
+  "tech_trees": {
+    "2025": {
+      "emerging_technologies": [
+        {
+          "name": "AI-Driven Smart Contracts",
+          "probability": 0.75,
+          "estimated_year": 2027,
+          "innovation_type": "incremental",
+          "dependencies": [
+            "Blockchain Technology",
+            "AI"
+          ],
+          "impact_areas": [
+            "Finance",
+            "Legal"
+          ],
+          "description": "Contracts that automatically execute, adapt, and negotiate terms based on AI analysis of real-time data.",
+          "societal_implications": "Enhances efficiency in contract execution but raises concerns about AI bias and decision transparency.",
+          "adoption_factors": "Legal frameworks, trust in AI systems, and integration with existing contract law."
+        },
+        {
+          "name": "Decentralized Space Operations",
+          "probability": 0.6,
+          "estimated_year": 2029,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Blockchain Technology",
+            "Space Technology"
+          ],
+          "impact_areas": [
+            "Space Exploration",
+            "Commercial Space"
+          ],
+          "description": "Utilizes blockchain for transparent and decentralized management of space missions and resource allocation.",
+          "societal_implications": "Could democratize space travel but also poses challenges in international space law.",
+          "adoption_factors": "Technological maturity of space travel, regulatory acceptance, and economic incentives."
+        },
+        {
+          "name": "Tokenized Energy Markets",
+          "probability": 0.85,
+          "estimated_year": 2026,
+          "innovation_type": "incremental",
+          "dependencies": [
+            "Blockchain Technology",
+            "Renewable Energy"
+          ],
+          "impact_areas": [
+            "Energy",
+            "Sustainability"
+          ],
+          "description": "Tokens representing energy production or consumption, enabling peer-to-peer energy trading.",
+          "societal_implications": "Promotes renewable energy adoption but requires widespread adoption of smart grids.",
+          "adoption_factors": "Government policies, energy infrastructure upgrades, and consumer awareness."
+        },
+        {
+          "name": "Neural Interface Identity Markets",
+          "probability": 0.55,
+          "estimated_year": 2030,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Neural Interfaces",
+            "Blockchain Technology"
+          ],
+          "impact_areas": [
+            "Privacy",
+            "Security"
+          ],
+          "description": "Markets where individuals can control, share, or monetize their neural data securely via blockchain.",
+          "societal_implications": "Raises significant ethical questions regarding privacy and consent.",
+          "adoption_factors": "Technological advancements in neural interfaces, public perception of neural privacy, and regulatory frameworks."
+        }
+      ],
+      "mainstream_technologies": [
+        {
+          "name": "Decentralized Autonomous Organizations (DAOs) for Transport",
+          "from_emerging": true,
+          "original_emergence_year": 2025,
+          "maturity_year": 2028,
+          "impact_level": 7,
+          "description": "DAOs manage fleets of autonomous vehicles, optimizing routes and maintenance based on decentralized decision-making.",
+          "adoption_status": "Widely adopted in urban transport systems, reducing congestion and improving efficiency."
+        },
+        {
+          "name": "Zero-Knowledge Applications",
+          "from_emerging": true,
+          "original_emergence_year": 2026,
+          "maturity_year": 2029,
+          "impact_level": 8,
+          "description": "Applications where data privacy is maintained through cryptographic proofs rather than data sharing.",
+          "adoption_status": "Integrated into financial services, healthcare, and personal data management for enhanced privacy."
+        }
+      ],
+      "epoch_themes": [
+        {
+          "theme": "Decentralization and Autonomy",
+          "description": "A shift towards systems that operate without central control, emphasizing transparency and community governance.",
+          "related_technologies": [
+            "AI-Driven Smart Contracts",
+            "Decentralized Space Operations",
+            "DAOs for Transport"
+          ],
+          "societal_impact": "Fosters a culture of participation but requires new frameworks for accountability.",
+          "global_trends": "Increasing demand for transparency in governance and operations across industries."
+        },
+        {
+          "theme": "Ethical AI and Data Sovereignty",
+          "description": "Focus on ethical considerations in AI development and ensuring individuals have control over their data.",
+          "related_technologies": [
+            "Neural Interface Identity Markets",
+            "Zero-Knowledge Applications"
+          ],
+          "societal_impact": "Promotes privacy but challenges traditional business models reliant on data mining.",
+          "global_trends": "Growing concerns over data privacy, pushing for regulations and technological solutions."
+        }
+      ],
+      "epoch_year": 2025
+    }
+  }
+}
