@@ -1,107 +1,144 @@
 {
   "tech_trees": {
-    "2030": {
+    "2035": {
       "emerging_technologies": [
         {
-          "name": "Decentralized AI Governance Networks",
-          "probability": 0.75,
-          "estimated_year": 2032,
-          "innovation_type": "breakthrough",
-          "dependencies": [
-            "AI ethics frameworks",
-            "Blockchain technology"
-          ],
-          "impact_areas": [
-            "Governance",
-            "Technology Regulation",
-            "AI Development"
-          ],
-          "description": "A system where AI governance decisions are made through decentralized networks, ensuring transparency and collective decision-making in AI development and application.",
-          "societal_implications": "Reduces the risk of monopolistic AI control, promotes ethical AI practices, but may face challenges with decision speed and accountability.",
-          "adoption_factors": "Adoption depends on regulatory acceptance, technological maturity of blockchain, and the willingness of AI developers to relinquish some control."
-        },
-        {
-          "name": "Neural Interface Markets",
-          "probability": 0.65,
-          "estimated_year": 2034,
+          "name": "AI-Driven Smart Contracts",
+          "probability": 0.85,
+          "estimated_year": 2036,
           "innovation_type": "incremental",
           "dependencies": [
-            "Neural Interface Technology",
-            "Cryptocurrency"
-          ],
-          "impact_areas": [
-            "Health",
-            "Entertainment",
-            "Education"
-          ],
-          "description": "Markets for trading and selling neural data, cognitive enhancements, and experiences, all secured via blockchain.",
-          "societal_implications": "Potential for enhancing human capabilities but raises privacy issues, ethical concerns about cognitive inequality, and security risks.",
-          "adoption_factors": "Adoption hinges on privacy laws, public perception of cognitive enhancements, and the development of reliable neural interfaces."
-        },
-        {
-          "name": "Tokenized Space Resource Rights",
-          "probability": 0.55,
-          "estimated_year": 2035,
-          "innovation_type": "breakthrough",
-          "dependencies": [
-            "Space Travel Technology",
+            "AI",
             "Blockchain"
           ],
           "impact_areas": [
-            "Space Economy",
-            "Mining",
-            "Resource Allocation"
+            "Finance",
+            "Legal",
+            "Real Estate"
           ],
-          "description": "A system to tokenize and trade rights to extraterrestrial resources, enabling investment and ownership in space assets.",
-          "societal_implications": "Could spur space exploration but might lead to new forms of space colonialism or resource conflicts.",
-          "adoption_factors": "Requires international space law agreements, technological breakthroughs in space travel, and market demand for space resources."
+          "description": "Contracts that automatically execute based on AI decisions and blockchain validation.",
+          "societal_implications": "Increases trust and efficiency in transactions but raises concerns about AI bias and legal enforceability.",
+          "adoption_factors": "Regulatory acceptance, legal frameworks for AI in contracts, and security improvements in blockchain technology."
+        },
+        {
+          "name": "Decentralized AI Governance",
+          "probability": 0.75,
+          "estimated_year": 2037,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Blockchain",
+            "DAO"
+          ],
+          "impact_areas": [
+            "Technology Governance",
+            "Ethics",
+            "Policy"
+          ],
+          "description": "A decentralized system where stakeholders govern AI development and deployment decisions.",
+          "societal_implications": "Promotes transparency and reduces monopoly control over AI, but could lead to governance inefficiencies.",
+          "adoption_factors": "Stakeholder education, maturity of blockchain governance models, and public trust in decentralized systems."
+        },
+        {
+          "name": "Blockchain-verified Autonomous Decisions",
+          "probability": 0.9,
+          "estimated_year": 2038,
+          "innovation_type": "incremental",
+          "dependencies": [
+            "AI",
+            "Blockchain",
+            "Autonomous Vehicles"
+          ],
+          "impact_areas": [
+            "Transportation",
+            "Logistics",
+            "Safety"
+          ],
+          "description": "Autonomous systems make decisions that are verified and logged on a blockchain for transparency.",
+          "societal_implications": "Enhances safety and accountability in autonomous operations but increases complexity and potential system vulnerabilities.",
+          "adoption_factors": "Regulatory compliance, technology integration in existing systems, and public perception of autonomous technology."
+        },
+        {
+          "name": "Space Resource Tokenization",
+          "probability": 0.65,
+          "estimated_year": 2039,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Blockchain",
+            "Space Tech"
+          ],
+          "impact_areas": [
+            "Space Industry",
+            "Economics",
+            "Resource Management"
+          ],
+          "description": "Tokenization of space resources like asteroid minerals, enabling ownership and trade.",
+          "societal_implications": "Could revolutionize space economy but poses significant legal and ethical challenges.",
+          "adoption_factors": "International space law, economic models for space resources, and technological feasibility of extraction."
+        },
+        {
+          "name": "Tokenized Cognitive Enhancements",
+          "probability": 0.5,
+          "estimated_year": 2040,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Neural Interfaces",
+            "Blockchain"
+          ],
+          "impact_areas": [
+            "Health",
+            "Education",
+            "Performance"
+          ],
+          "description": "Enhancements in cognitive abilities are tokenized, allowing for secure trading and ownership of cognitive upgrades.",
+          "societal_implications": "Might create a new class divide based on cognitive enhancements; ethical and privacy concerns.",
+          "adoption_factors": "Bioethical considerations, regulatory acceptance, and public perception of cognitive enhancement."
         }
       ],
       "mainstream_technologies": [
         {
-          "name": "AI-Driven Smart Contracts",
+          "name": "Decentralized Energy Grid",
           "from_emerging": true,
           "original_emergence_year": 2028,
-          "maturity_year": 2032,
-          "impact_level": 8,
-          "description": "Smart contracts that utilize AI to adapt and execute based on complex conditions and external data.",
-          "adoption_status": "Widespread adoption in legal, financial, and insurance sectors for automated, trustworthy transactions."
+          "maturity_year": 2035,
+          "impact_level": 7,
+          "description": "A fully decentralized grid where energy production and consumption are managed via blockchain.",
+          "adoption_status": "Widely adopted in regions with high renewable energy adoption; still facing regulatory hurdles elsewhere."
         },
         {
-          "name": "Decentralized Energy Grid Management",
+          "name": "Zero-Knowledge Applications",
           "from_emerging": true,
-          "original_emergence_year": 2029,
-          "maturity_year": 2033,
-          "impact_level": 7,
-          "description": "A decentralized system where energy production, distribution, and consumption are managed through blockchain for transparency and efficiency.",
-          "adoption_status": "Becoming standard in regions with advanced renewable energy adoption, significantly reducing energy waste."
+          "original_emergence_year": 2031,
+          "maturity_year": 2037,
+          "impact_level": 8,
+          "description": "Applications that allow data verification without revealing the underlying data, enhancing privacy.",
+          "adoption_status": "Integrated into most blockchain platforms, widely used in finance, healthcare, and identity verification."
         }
       ],
       "epoch_themes": [
         {
-          "theme": "Decentralized Everything",
-          "description": "A shift towards decentralization in various sectors to enhance security, transparency, and democratization.",
+          "theme": "Decentralization",
+          "description": "The shift towards decentralized systems in governance, energy, AI, and beyond.",
           "related_technologies": [
-            "Decentralized AI Governance Networks",
-            "Neural Interface Markets",
-            "Decentralized Energy Grid Management"
+            "Decentralized AI Governance",
+            "Tokenized Energy Markets",
+            "DAO-governed Neural Networks"
           ],
-          "societal_impact": "Promotes a more democratic approach to technology but challenges existing power structures and governance models.",
-          "global_trends": "Rise of decentralized finance (DeFi), increased push for data sovereignty, and a move away from centralized control in many sectors."
+          "societal_impact": "Encourages democratization of technology, but challenges include security, efficiency, and regulatory adaptation.",
+          "global_trends": "Increasing public demand for transparency, privacy, and control over personal data."
         },
         {
-          "theme": "Space Commercialization",
-          "description": "The commercialization of space activities, focusing on resource extraction, tourism, and extraterrestrial settlements.",
+          "theme": "Integration of Blockchain with AI",
+          "description": "Leveraging blockchain for AI transparency, security, and decentralized decision-making.",
           "related_technologies": [
-            "Tokenized Space Resource Rights",
-            "Interplanetary Settlement DAOs"
+            "AI-Driven Smart Contracts",
+            "Blockchain-verified Autonomous Decisions"
           ],
-          "societal_impact": "Could lead to economic expansion but also raises questions about space law, ethics, and environmental impact.",
-          "global_trends": "Investment in space technology, new space race among nations and private entities, and public-private partnerships in space exploration."
+          "societal_impact": "Enhances trust in AI systems, but also raises issues regarding data privacy and AI ethics.",
+          "global_trends": "Growth in AI ethics discussions, push for explainable AI, and integration of AI in regulatory compliance."
         }
       ],
-      "epoch_year": 2030
+      "epoch_year": 2035
     }
   },
-  "last_updated": "2024-11-06T15:43:45.801961"
+  "last_updated": "2024-11-06T15:44:35.258116"
 }
