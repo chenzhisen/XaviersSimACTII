@@ -1,0 +1,128 @@
+{
+  "metadata": {
+    "generated_at": "2024-11-06T09:16:30.089438",
+    "base_year": 2025,
+    "end_year": 2075
+  },
+  "tech_trees": {
+    "2025": {
+      "emerging_technologies": [
+        {
+          "name": "AI-driven Smart Contracts",
+          "probability": 0.75,
+          "estimated_year": 2026,
+          "innovation_type": "incremental",
+          "dependencies": [
+            "Blockchain",
+            "AI"
+          ],
+          "impact_areas": [
+            "Legal",
+            "Finance",
+            "Healthcare"
+          ],
+          "description": "Contracts that automatically execute based on AI-driven decision-making processes, ensuring compliance and efficiency.",
+          "societal_implications": "Enhances contract enforcement, reduces legal disputes, but raises concerns about AI bias and transparency.",
+          "adoption_factors": "Requires robust AI systems, widespread blockchain adoption, and legal frameworks to support AI arbitration."
+        },
+        {
+          "name": "Decentralized Space Operations",
+          "probability": 0.6,
+          "estimated_year": 2027,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Blockchain",
+            "Space Technology"
+          ],
+          "impact_areas": [
+            "Space Industry",
+            "Government"
+          ],
+          "description": "A decentralized system for managing and executing space missions, leveraging blockchain for transparent operations.",
+          "societal_implications": "Could democratize space exploration, but poses security risks due to decentralization.",
+          "adoption_factors": "Dependent on advancements in blockchain security, space technology maturity, and international cooperation."
+        },
+        {
+          "name": "Tokenized Energy Markets",
+          "probability": 0.8,
+          "estimated_year": 2025,
+          "innovation_type": "incremental",
+          "dependencies": [
+            "Blockchain",
+            "Renewable Energy"
+          ],
+          "impact_areas": [
+            "Energy Sector",
+            "Sustainability"
+          ],
+          "description": "Trading energy on blockchain platforms with tokens representing energy units, enabling peer-to-peer energy exchanges.",
+          "societal_implications": "Promotes renewable energy use, could reduce energy poverty, but requires significant infrastructure changes.",
+          "adoption_factors": "Adoption depends on regulatory acceptance, technology infrastructure, and consumer trust in blockchain."
+        },
+        {
+          "name": "Neural Interface Markets",
+          "probability": 0.5,
+          "estimated_year": 2029,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "AI",
+            "Neuroscience"
+          ],
+          "impact_areas": [
+            "Health",
+            "Education",
+            "Entertainment"
+          ],
+          "description": "Marketplaces for buying, selling, and enhancing neural interface data, with blockchain ensuring data integrity and ownership.",
+          "societal_implications": "Raises ethical concerns about privacy and cognitive inequality, but could revolutionize personal computing.",
+          "adoption_factors": "Requires breakthroughs in neural technology, widespread AI integration, and societal acceptance of brain-computer interfaces."
+        }
+      ],
+      "mainstream_technologies": [
+        {
+          "name": "Decentralized Transport Networks",
+          "from_emerging": true,
+          "original_emergence_year": 2025,
+          "maturity_year": 2028,
+          "impact_level": 7,
+          "description": "A network of autonomous vehicles and transport systems managed via decentralized consensus mechanisms.",
+          "adoption_status": "High adoption due to efficiency gains in urban mobility, supported by advancements in IoT and AI."
+        },
+        {
+          "name": "Tokenized AI Models",
+          "from_emerging": true,
+          "original_emergence_year": 2026,
+          "maturity_year": 2030,
+          "impact_level": 6,
+          "description": "AI models where ownership and usage rights are tokenized on blockchain, allowing for distributed development and monetization.",
+          "adoption_status": "Increasingly adopted by tech companies for collaborative AI development, though regulatory hurdles remain."
+        }
+      ],
+      "epoch_themes": [
+        {
+          "theme": "Decentralized Governance",
+          "description": "A shift towards systems where control and decision-making are distributed rather than centralized.",
+          "related_technologies": [
+            "Decentralized AI Governance",
+            "Interplanetary Settlement DAOs",
+            "Decentralized Transport Networks"
+          ],
+          "societal_impact": "Promotes transparency, reduces single points of failure, but complicates governance structures.",
+          "global_trends": "Growing interest in blockchain for governance, influenced by demands for democratic processes in technology and beyond."
+        },
+        {
+          "theme": "Sustainable and Distributed Energy",
+          "description": "A move towards energy systems that are both green and decentralized, empowering individuals and communities.",
+          "related_technologies": [
+            "Tokenized Energy Markets",
+            "Decentralized Grid Management",
+            "Green Energy Certificates"
+          ],
+          "societal_impact": "Fosters energy independence, reduces environmental impact, but requires a paradigm shift in energy distribution.",
+          "global_trends": "Increasing environmental consciousness, advancements in renewable technologies, and regulatory support for green initiatives."
+        }
+      ],
+      "epoch_year": 2025
+    }
+  }
+}
