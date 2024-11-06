@@ -1,0 +1,128 @@
+{
+  "metadata": {
+    "generated_at": "2024-11-05T21:42:50.871344",
+    "base_year": 2025,
+    "end_year": 2075
+  },
+  "tech_trees": {
+    "2025": {
+      "emerging_technologies": [
+        {
+          "name": "AI-Driven Smart Contracts",
+          "probability": 0.75,
+          "estimated_year": 2026,
+          "innovation_type": "incremental",
+          "dependencies": [
+            "Blockchain",
+            "Machine Learning"
+          ],
+          "impact_areas": [
+            "Legal",
+            "Finance"
+          ],
+          "description": "Smart contracts that adapt to real-time data and user interactions through AI.",
+          "societal_implications": "Enhances contract efficiency, reduces human error, and potentially increases trust in automated systems.",
+          "adoption_factors": "Requires standardization, legal frameworks, and AI ethics considerations."
+        },
+        {
+          "name": "Decentralized Autonomous Transport Networks",
+          "probability": 0.6,
+          "estimated_year": 2028,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Blockchain",
+            "IoT",
+            "Autonomous Vehicles"
+          ],
+          "impact_areas": [
+            "Transportation",
+            "Urban Planning"
+          ],
+          "description": "A network of self-regulating, blockchain-verified transport systems optimizing routes and resource allocation.",
+          "societal_implications": "Could lead to reduced traffic congestion, lower emissions, and improved public transport systems.",
+          "adoption_factors": "Needs widespread IoT adoption, regulatory approval, and public trust in autonomous systems."
+        },
+        {
+          "name": "Neural Identity Tokens",
+          "probability": 0.55,
+          "estimated_year": 2027,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Blockchain",
+            "Neural Interfaces"
+          ],
+          "impact_areas": [
+            "Privacy",
+            "Security",
+            "Healthcare"
+          ],
+          "description": "Tokenization of personal neural data for identity verification and cognitive enhancement trading.",
+          "societal_implications": "Raises concerns about privacy, data security, and the potential commodification of personal identity.",
+          "adoption_factors": "Requires significant advancements in neural interface technology, regulatory acceptance, and public education on data rights."
+        },
+        {
+          "name": "Space Resource Tokenization",
+          "probability": 0.45,
+          "estimated_year": 2029,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Blockchain",
+            "Space Technology"
+          ],
+          "impact_areas": [
+            "Economics",
+            "Space Exploration"
+          ],
+          "description": "Tokenizing space resources like minerals or water ice to facilitate their trade and ownership.",
+          "societal_implications": "Could spur space industry growth but also poses questions about space law and ownership rights.",
+          "adoption_factors": "Dependent on space travel advancements, legal frameworks for space commerce, and international cooperation."
+        }
+      ],
+      "mainstream_technologies": [
+        {
+          "name": "Tokenized Energy Markets",
+          "from_emerging": true,
+          "original_emergence_year": 2025,
+          "maturity_year": 2027,
+          "impact_level": 8,
+          "description": "Systems where energy production and consumption are tokenized, allowing for a decentralized energy market.",
+          "adoption_status": "High adoption in regions with renewable energy focus; regulatory challenges persist in others."
+        },
+        {
+          "name": "Decentralized Grid Management",
+          "from_emerging": true,
+          "original_emergence_year": 2026,
+          "maturity_year": 2028,
+          "impact_level": 7,
+          "description": "Utilizes blockchain for grid management, enabling peer-to-peer energy trading and dynamic load balancing.",
+          "adoption_status": "Gaining traction due to demand for resilient and flexible energy distribution systems."
+        }
+      ],
+      "epoch_themes": [
+        {
+          "theme": "Decentralization and Autonomy",
+          "description": "A shift towards systems that operate autonomously and with decentralized control, reducing reliance on centralized governance.",
+          "related_technologies": [
+            "AI-Driven Smart Contracts",
+            "Decentralized Autonomous Transport Networks",
+            "Decentralized Grid Management"
+          ],
+          "societal_impact": "Promotes resilience, privacy, and efficiency but challenges existing governance models.",
+          "global_trends": "Increased push for data sovereignty, local governance, and autonomous systems in various sectors."
+        },
+        {
+          "theme": "Tokenization of Assets",
+          "description": "The trend of representing physical or digital assets as tokens on blockchain platforms for trading or management.",
+          "related_technologies": [
+            "Space Resource Tokenization",
+            "Tokenized Energy Markets",
+            "Neural Identity Tokens"
+          ],
+          "societal_impact": "Creates new economic models, potentially democratizing access to resources but also raising issues of inequality and security.",
+          "global_trends": "Expansion of digital economies, growth of cryptocurrency markets, and increasing interest in fractional ownership."
+        }
+      ],
+      "epoch_year": 2025
+    }
+  }
+}
