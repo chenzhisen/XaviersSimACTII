@@ -1,0 +1,126 @@
+{
+  "metadata": {
+    "generated_at": "2024-11-06T14:20:37.717921",
+    "base_year": 2025,
+    "end_year": 2075
+  },
+  "tech_trees": {
+    "2025": {
+      "emerging_technologies": [
+        {
+          "name": "AI-Driven Smart Contract Platforms",
+          "probability": 0.85,
+          "estimated_year": 2026,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Blockchain Technology",
+            "Advanced AI"
+          ],
+          "impact_areas": [
+            "Finance",
+            "Law",
+            "Governance"
+          ],
+          "description": "Platforms where AI autonomously executes smart contracts based on real-time data analysis, reducing human error and bias.",
+          "societal_implications": "Increases trust in digital agreements, potential for legal disputes over AI decision-making.",
+          "adoption_factors": "Regulatory acceptance, technological reliability, and integration into existing blockchain ecosystems."
+        },
+        {
+          "name": "Decentralized Transport Networks",
+          "probability": 0.7,
+          "estimated_year": 2027,
+          "innovation_type": "incremental",
+          "dependencies": [
+            "Autonomous Vehicles",
+            "Blockchain Technology"
+          ],
+          "impact_areas": [
+            "Transportation",
+            "Logistics"
+          ],
+          "description": "Networks of self-driving vehicles managed through decentralized systems where tokens incentivize participation and efficiency.",
+          "societal_implications": "Reduces urban congestion, but raises concerns about employment in transportation sectors.",
+          "adoption_factors": "Urban planning policies, technological readiness, and public acceptance of autonomous vehicles."
+        },
+        {
+          "name": "Tokenized Cognitive Enhancements",
+          "probability": 0.6,
+          "estimated_year": 2028,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Neural Interfaces",
+            "Blockchain"
+          ],
+          "impact_areas": [
+            "Education",
+            "Health",
+            "Entertainment"
+          ],
+          "description": "Market for trading cognitive enhancements like memory boosts or skill learning modules secured by blockchain.",
+          "societal_implications": "Potential for cognitive disparity, ethical concerns about 'enhancement' vs. 'augmentation'.",
+          "adoption_factors": "Privacy concerns, regulatory frameworks, and ethical considerations."
+        },
+        {
+          "name": "Space Resource Tokenization",
+          "probability": 0.55,
+          "estimated_year": 2029,
+          "innovation_type": "incremental",
+          "dependencies": [
+            "Space Technology",
+            "Blockchain"
+          ],
+          "impact_areas": [
+            "Space Exploration",
+            "Economics"
+          ],
+          "description": "Tokenization of space resources like asteroids or lunar materials for funding space missions and incentivizing exploration.",
+          "societal_implications": "Could lead to new economic models but also potential conflicts over space property rights.",
+          "adoption_factors": "International space law, technological feasibility, and investor interest in space ventures."
+        }
+      ],
+      "mainstream_technologies": [
+        {
+          "name": "Zero-Knowledge Applications",
+          "from_emerging": true,
+          "original_emergence_year": 2025,
+          "maturity_year": 2027,
+          "impact_level": 8,
+          "description": "Applications that allow for data transactions without revealing underlying data, enhancing privacy and security.",
+          "adoption_status": "Widely adopted in financial sectors for privacy-preserving transactions, becoming standard in government and enterprise applications."
+        },
+        {
+          "name": "Decentralized Energy Markets",
+          "from_emerging": true,
+          "original_emergence_year": 2026,
+          "maturity_year": 2028,
+          "impact_level": 7,
+          "description": "Markets where energy is traded peer-to-peer using blockchain technology, reducing reliance on centralized utilities.",
+          "adoption_status": "Adopted in regions with high renewable energy production; faces challenges in areas with traditional energy infrastructure."
+        }
+      ],
+      "epoch_themes": [
+        {
+          "theme": "Decentralized Autonomy",
+          "description": "A shift towards systems and infrastructures where decisions and operations are decentralized, reducing centralized control.",
+          "related_technologies": [
+            "Decentralized Transport Networks",
+            "AI-Driven Smart Contract Platforms"
+          ],
+          "societal_impact": "Empowerment of individuals and small entities, potential for fragmentation in governance and regulation.",
+          "global_trends": "Growing distrust in centralized systems, push for transparency and accountability in technology."
+        },
+        {
+          "theme": "Tokenization of Assets",
+          "description": "The process of converting rights to an asset into a digital token on a blockchain.",
+          "related_technologies": [
+            "Space Resource Tokenization",
+            "Tokenized Cognitive Enhancements"
+          ],
+          "societal_impact": "Creation of new economic models, democratization of investment opportunities.",
+          "global_trends": "Increased interest in cryptocurrencies, blockchain as a financial tool, and the rise of the sharing economy."
+        }
+      ],
+      "epoch_year": 2025
+    }
+  }
+}
