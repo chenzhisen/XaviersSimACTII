@@ -5,6 +5,7 @@ from utils.config import Config, AIProvider
 from storage.github_operations import GithubOperations
 from generation.digest_generator import DigestGenerator
 import re
+import random
 
 class TweetGenerator:
     def __init__(self, tweets_per_year=96):
