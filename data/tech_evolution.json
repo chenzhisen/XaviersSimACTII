@@ -375,7 +375,127 @@
         }
       ],
       "epoch_year": 2035
+    },
+    "2040": {
+      "emerging_technologies": [
+        {
+          "name": "AI-Powered Autonomous City Management",
+          "probability": 0.8,
+          "estimated_year": 2042,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Advanced AI",
+            "5G/6G Networks",
+            "IoT"
+          ],
+          "impact_areas": [
+            "Urban Planning",
+            "Public Services",
+            "Sustainability"
+          ],
+          "description": "A system where AI manages urban infrastructure, optimizing traffic, waste management, public safety, and energy use.",
+          "societal_implications": "Potential for reduced urban congestion and pollution, but raises concerns about privacy and job displacement.",
+          "adoption_factors": "Requires advanced digital infrastructure, societal acceptance of AI in decision-making, and regulatory frameworks."
+        },
+        {
+          "name": "Neural-Enhanced Learning Environments",
+          "probability": 0.75,
+          "estimated_year": 2043,
+          "innovation_type": "incremental",
+          "dependencies": [
+            "BCI",
+            "VR/AR",
+            "AI"
+          ],
+          "impact_areas": [
+            "Education",
+            "Training",
+            "Cognitive Enhancement"
+          ],
+          "description": "Classrooms and training centers equipped with brain-computer interfaces to enhance learning capabilities through direct neural feedback.",
+          "societal_implications": "Could revolutionize education, making learning more effective but might increase educational disparities.",
+          "adoption_factors": "Dependent on public perception of neural tech, ethical considerations, and technological reliability."
+        },
+        {
+          "name": "Space-Based Solar Power Satellites",
+          "probability": 0.6,
+          "estimated_year": 2045,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Space Travel",
+            "Advanced Materials",
+            "Energy Transmission"
+          ],
+          "impact_areas": [
+            "Energy",
+            "Space Exploration"
+          ],
+          "description": "Satellites that capture solar energy in space and beam it back to Earth, providing a clean and virtually limitless energy source.",
+          "societal_implications": "Could significantly reduce reliance on fossil fuels, but requires international cooperation and agreements.",
+          "adoption_factors": "Technological breakthroughs in energy transmission, geopolitical stability, and economic feasibility."
+        },
+        {
+          "name": "Blockchain-Enabled Privacy Networks",
+          "probability": 0.9,
+          "estimated_year": 2040,
+          "innovation_type": "incremental",
+          "dependencies": [
+            "Blockchain",
+            "Cryptography"
+          ],
+          "impact_areas": [
+            "Privacy",
+            "Digital Infrastructure"
+          ],
+          "description": "A network where users control their personal data through blockchain technology, enhancing privacy and reducing data breaches.",
+          "societal_implications": "Empowers individuals with data control, but might complicate law enforcement and regulatory compliance.",
+          "adoption_factors": "Regulatory acceptance, user education, and integration with existing systems."
+        }
+      ],
+      "mainstream_technologies": [
+        {
+          "name": "AI-Driven Personal Assistants",
+          "from_emerging": true,
+          "original_emergence_year": 2025,
+          "maturity_year": 2040,
+          "impact_level": 8,
+          "description": "Ubiquitous AI assistants capable of managing personal schedules, health monitoring, and home automation.",
+          "adoption_status": "High adoption due to convenience, with integration into most smart homes and personal devices."
+        },
+        {
+          "name": "Fully Autonomous Vehicles",
+          "from_emerging": true,
+          "original_emergence_year": 2030,
+          "maturity_year": 2042,
+          "impact_level": 9,
+          "description": "Vehicles capable of navigating without human input, optimized for safety and efficiency.",
+          "adoption_status": "Widespread in urban areas, with regulatory frameworks supporting their integration into transport systems."
+        }
+      ],
+      "epoch_themes": [
+        {
+          "theme": "AI Integration",
+          "description": "AI becoming an integral part of daily life, influencing decision-making processes across various sectors.",
+          "related_technologies": [
+            "AI-Powered Autonomous City Management",
+            "AI-Driven Personal Assistants"
+          ],
+          "societal_impact": "Enhances efficiency and personalization but brings challenges in ethics, employment, and privacy.",
+          "global_trends": "Global push towards AI ethics standards, AI-driven economies, and AI in governance."
+        },
+        {
+          "theme": "Sustainability and Space",
+          "description": "Focus on sustainable practices on Earth and extending human presence in space.",
+          "related_technologies": [
+            "Space-Based Solar Power Satellites",
+            "Sustainable Urban Planning"
+          ],
+          "societal_impact": "Promotes a cleaner environment and potentially new economic sectors from space activities.",
+          "global_trends": "Increased investment in space technology, international space agreements, and sustainable development goals."
+        }
+      ],
+      "epoch_year": 2040
     }
   },
-  "last_updated": "2024-11-07T14:07:48.997577"
+  "last_updated": "2024-11-07T14:28:25.740995"
 }
