@@ -123,6 +123,8 @@ class DigestGenerator:
                 f"{json.dumps(new_comments, indent=2)}\n\n"
                 f"{tech_context}\n\n"
                 
+                "While Xavier’s journey unfolds, he occasionally notices peculiarities that make him wonder if he’s the protagonist in a larger scheme—but he quickly brushes off these thoughts.\n\n"
+
                 "GUIDELINES:\n"
                 "- Drive the story forward using recent tweets, but maintain continuity with past events\n"
                 "- Evolve ongoing relationships and storylines through recent interactions\n"

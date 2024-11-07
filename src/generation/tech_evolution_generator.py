@@ -7,6 +7,8 @@ from datetime import datetime
 import os
 import time
 import requests
+import math
+
 
 class TechEvolutionGenerator:
     def __init__(self, provider: AIProvider = AIProvider.XAI):
@@ -122,50 +124,45 @@ class TechEvolutionGenerator:
         try:
             previous_tech = self.get_previous_technologies(epoch_year)
             years_from_base = epoch_year - self.base_year
-            acceleration_factor = 1 + (years_from_base / 20)
-            
-            prompt = f"""Generate technological advancements for {epoch_year} to {epoch_year + 5}. 
+            acceleration_factor = math.exp(years_from_base / 30)
+
+            previous_tech = self.get_previous_technologies(epoch_year)
+            years_from_base = epoch_year - self.base_year
+            acceleration_factor = math.exp(years_from_base / 30)
+
+            prompt = f"""Generate technological advancements for the period {epoch_year} to {epoch_year + 5}. 
 
             CONTEXT:
             - Current epoch: {epoch_year}
             - Years from 2025: {years_from_base}
-            - Tech acceleration: {acceleration_factor:.2f}x faster than 2025
-            - Previous emerging tech: {json.dumps(previous_tech.get('emerging', []))}
-            - Current mainstream tech: {json.dumps(previous_tech.get('mainstream', []))}
-            
+            - Tech acceleration (exponential growth): {acceleration_factor:.2f}x faster than in 2025
+            - Previous emerging technologies: {json.dumps(previous_tech.get('emerging', []))}
+            - Current mainstream technologies: {json.dumps(previous_tech.get('mainstream', []))}
+
             DEVELOPMENT GUIDELINES:
 
             1. FOCUS AREAS & INTEGRATIONS:
-                - **Artificial Intelligence**: 
-                Encompasses advancements in machine learning, automation, and intelligent systems across various applications.
-
-                - **Autonomous Systems**: 
-                Involves self-operating technologies in transport, infrastructure, and daily life.
-
-                - **Neural Technology**: 
-                Explores human-computer interactions, brain interfaces, and enhanced cognitive tools.
-
-                - **Space Exploration**: 
-                Envisions humanity’s ventures into space, including settlement, resource management, and exploration.
-
-                - **Sustainable Technology**: 
-                Focuses on energy, environment, and sustainability-driven solutions and innovations.
-
-                - **Digital Infrastructure**: Centers on privacy, security, and infrastructure advancements in digital ecosystems.
+                - **Artificial Intelligence**: Encompasses advancements in machine learning, automation, and intelligent systems across various applications.
+                - **Autonomous Systems**: Involves self-operating technologies across transportation, infrastructure, and daily life.
+                - **Neural Technology**: Explores human-computer interactions, brain interfaces, and enhanced cognitive tools.
+                - **Space Exploration**: Envisions humanity’s ventures into space, including settlement, resource management, and exploration.
+                - **Sustainable Technology**: Focuses on energy efficiency, environmental resilience, and sustainability-driven innovations.
+                - **Digital Infrastructure**: Centers on privacy, security, and advancements in digital infrastructure for a connected world.
 
             2. DEVELOPMENT PRINCIPLES:
-               - Focus on practical implementations
-               - Consider real-world constraints
-               - Account for societal adoption
-               - Emphasize blockchain integration where relevant
-               - Balance innovation with reliability
-            
-            3. AVOID:
-               - Isolated technological developments
-               - Unrealistic breakthroughs
-               - Technologies without clear predecessors
+            - **Exponential Growth**: Technologies should develop at an exponential rate, with earlier emergence and faster sophistication due to compounding advancements.
+            - **Stage-Based Evolution**: Major technologies should appear as emerging stages, prototypes, or early versions before maturing into mainstream applications.
+            - **Practical Applications**: Prioritize technologies that offer practical and tangible benefits, and consider real-world constraints for societal adoption.
+            - **Societal Impact**: Emphasize technologies that consider ethical implications, regulatory challenges, and social adoption factors.
+            - **Blockchain Integration**: Include blockchain innovations where applicable, especially in areas of security, privacy, and digital infrastructure.
+            - **Balance**: Aim for a mix of breakthrough and incremental improvements to reflect the diverse pace of tech development.
 
-            Return JSON:
+            3. EXCLUDE:
+            - Isolated developments without clear predecessors or dependencies.
+            - Overly futuristic breakthroughs without foundational technologies.
+            - Technologies with no foreseeable path to real-world impact or adoption.
+
+            RETURN FORMAT (JSON):
             {{
                 "emerging_technologies": [
                     {{
@@ -200,7 +197,9 @@ class TechEvolutionGenerator:
                         "global_trends": "trend analysis"
                     }}
                 ]
-            }}"""
+            }}
+            """
+            # print(prompt)
             
             print("\nSending request to API...")
             response = self.client.messages.create(
