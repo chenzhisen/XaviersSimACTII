@@ -1,9 +1,4 @@
 {
-  "metadata": {
-    "generated_at": "2024-11-07T13:24:34.351897",
-    "base_year": 2025,
-    "end_year": 2075
-  },
   "tech_trees": {
     "2025": {
       "emerging_technologies": [
@@ -137,6 +132,132 @@
         }
       ],
       "epoch_year": 2025
+    },
+    "2030": {
+      "emerging_technologies": [
+        {
+          "name": "AI-Driven Urban Planning",
+          "probability": 0.75,
+          "estimated_year": 2032,
+          "innovation_type": "incremental",
+          "dependencies": [
+            "Big Data Analytics",
+            "Machine Learning"
+          ],
+          "impact_areas": [
+            "Urban Development",
+            "Sustainability"
+          ],
+          "description": "Using AI to optimize city layouts for energy efficiency, traffic flow, and public services distribution.",
+          "societal_implications": "Improves quality of life through smarter urban environments, potentially reducing congestion and pollution.",
+          "adoption_factors": "Requires collaboration between tech firms, urban planners, and government, with privacy concerns about data usage."
+        },
+        {
+          "name": "Brain-Cloud Interfaces",
+          "probability": 0.55,
+          "estimated_year": 2033,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Neural Technology",
+            "Cloud Computing"
+          ],
+          "impact_areas": [
+            "Healthcare",
+            "Education",
+            "Entertainment"
+          ],
+          "description": "Direct neural link to cloud services for enhanced cognitive abilities and information processing.",
+          "societal_implications": "Could revolutionize learning, work, and entertainment but raises significant ethical and privacy issues.",
+          "adoption_factors": "High initial costs, ethical considerations, and the need for widespread technological infrastructure."
+        },
+        {
+          "name": "Quantum Blockchain",
+          "probability": 0.6,
+          "estimated_year": 2031,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Quantum Computing",
+            "Blockchain"
+          ],
+          "impact_areas": [
+            "Finance",
+            "Cybersecurity"
+          ],
+          "description": "Utilization of quantum computing to enhance blockchain security and efficiency.",
+          "societal_implications": "Offers unprecedented security for transactions but could disrupt current cryptographic standards.",
+          "adoption_factors": "Requires quantum computing to become more accessible and blockchain technology to continue maturing."
+        },
+        {
+          "name": "Autonomous Spacecraft Repair",
+          "probability": 0.65,
+          "estimated_year": 2035,
+          "innovation_type": "incremental",
+          "dependencies": [
+            "Autonomous Systems",
+            "Robotics"
+          ],
+          "impact_areas": [
+            "Space Exploration"
+          ],
+          "description": "Spacecraft with the ability to self-diagnose and repair using robotic arms and AI decision-making.",
+          "societal_implications": "Enhances the longevity and reliability of space missions, reducing costs and risks.",
+          "adoption_factors": "High initial investment, technical complexity, and the need for space operations to become routine."
+        }
+      ],
+      "mainstream_technologies": [
+        {
+          "name": "5G+ Networks",
+          "from_emerging": true,
+          "original_emergence_year": 2028,
+          "maturity_year": 2030,
+          "impact_level": 8,
+          "description": "Advanced 5G networks with faster speeds, lower latency, and increased capacity for IoT devices.",
+          "adoption_status": "Widely adopted for urban areas, with ongoing expansion into rural and remote regions."
+        },
+        {
+          "name": "AI Personal Assistants",
+          "from_emerging": true,
+          "original_emergence_year": 2027,
+          "maturity_year": 2032,
+          "impact_level": 7,
+          "description": "Highly advanced AI assistants capable of complex tasks, from scheduling to providing real-time translation.",
+          "adoption_status": "Integrated into daily life for both personal and professional use, with concerns over privacy and data security."
+        }
+      ],
+      "epoch_themes": [
+        {
+          "theme": "Sustainable Living",
+          "description": "Technology focuses on reducing environmental impact and promoting sustainability.",
+          "related_technologies": [
+            "AI-Driven Urban Planning",
+            "5G+ Networks"
+          ],
+          "societal_impact": "Promotes a shift towards eco-friendly lifestyles, reducing carbon footprints.",
+          "global_trends": "Increased global emphasis on green technology and sustainable practices in all sectors."
+        },
+        {
+          "theme": "Cognitive Augmentation",
+          "description": "Enhancement of human cognitive capabilities through technology.",
+          "related_technologies": [
+            "Brain-Cloud Interfaces",
+            "AI Personal Assistants"
+          ],
+          "societal_impact": "Raises questions about human identity, ethics, and potential social inequalities.",
+          "global_trends": "Growing interest in neurotechnology and cognitive enhancement tools."
+        },
+        {
+          "theme": "Secure Digital Economy",
+          "description": "Focus on ensuring security in digital transactions and data management.",
+          "related_technologies": [
+            "Quantum Blockchain",
+            "Digital Infrastructure"
+          ],
+          "societal_impact": "Enhances trust in digital transactions but requires adaptation to new security paradigms.",
+          "global_trends": "Increased demand for secure, transparent, and decentralized systems."
+        }
+      ],
+      "epoch_year": 2030
     }
-  }
+  },
+  "last_updated": "2024-11-07T13:47:07.383601"
 }
