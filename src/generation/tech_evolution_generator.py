@@ -156,10 +156,10 @@ class TechEvolutionGenerator:
             2. DEVELOPMENT PRINCIPLES:
                - Focus on practical implementations
                - Consider real-world constraints
-               - Balance innovation with reliability
                - Account for societal adoption
-               - Emphasize blockchain integration
-
+               - Emphasize blockchain integration where relevant
+               - Balance innovation with reliability
+            
             3. AVOID:
                - Isolated technological developments
                - Unrealistic breakthroughs
@@ -214,17 +214,10 @@ class TechEvolutionGenerator:
                 ]
             )
             
-            # Get the response content
+            # Process response
             if hasattr(response, 'content') and len(response.content) > 0:
-                # Extract text from the first content block
                 text_content = response.content[0].text
-                
-                # Clean up the response
                 clean_response = text_content.replace('```json\n', '').replace('```', '').strip()
-                
-                print("\nComplete response length:", len(clean_response))
-                print("First 200 chars:", clean_response[:200])
-                
                 try:
                     tree_data = json.loads(clean_response)
                     # Validate the structure
@@ -236,7 +229,6 @@ class TechEvolutionGenerator:
                     tree_data["epoch_year"] = epoch_year
                     self.evolution_data["tech_trees"][str(epoch_year)] = tree_data
                     
-                    # Print summary
                     print(f"\nGenerated for {epoch_year}:")
                     print(f"- Emerging technologies: {len(tree_data['emerging_technologies'])}")
                     print(f"- Mainstream technologies: {len(tree_data['mainstream_technologies'])}")
@@ -253,8 +245,6 @@ class TechEvolutionGenerator:
                 
         except Exception as e:
             print(f"Failed to generate tech tree for {epoch_year}: {e}")
-            if 'complete_response' in locals():
-                print("Full response:", complete_response)
             return None
 
     def save_evolution_data(self):
@@ -310,12 +300,12 @@ class TechEvolutionGenerator:
                         commit_message=f"Create tech evolution data for {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}"
                     )
                 
+                print(f"Saved evolution data to {file_path}")
+                
             except requests.exceptions.HTTPError as e:
                 print(f"HTTP Error: {e.response.status_code}")
                 print(f"Error response: {e.response.text}")
                 raise
-                
-            print(f"Saved evolution data to {file_path}")
                 
         except Exception as e:
             print(f"Failed to save evolution data: {e}")

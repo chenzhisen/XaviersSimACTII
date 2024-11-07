@@ -258,14 +258,14 @@ class DigestGenerator:
         context += "Balance character growth with Xavier’s ongoing journey in tech and personal life."
         return context
 
-    def _get_life_phase(self, age, tech_context=None):
+    def _get_life_phase(self, age):
         """Return the current life phase based on age and tech evolution"""
         if age < 25:
             return (
                 "Early Career & Personal Growth (22-25)\n"
                 "- Professional: Early career in blockchain and Web3\n"
                 "- Personal: Dating and exploring city life\n"
-                "- Family: Regular family dinners, sharing tech stories\n"
+                "- Family: Regular family conversations, sharing tech stories\n"
                 "- Social: Building first professional network\n"
             )
         elif age < 30:
