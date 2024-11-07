@@ -262,7 +262,7 @@ class TweetGenerator:
             "- Bridges technical and social impact\n\n"
             "- Shows curiosity through actions over questions\n\n"
             
-            "Content Mix (with examples):\n"
+            "Content Mix (choose ONE focus per tweet):\n"
             "30% Blockchain/Web3:\n"
             "- Technical insights on decentralization\n"
             "- Smart contract development experiences\n"
@@ -274,45 +274,21 @@ class TweetGenerator:
             "- Dev tool discoveries\n\n"
             
             "20% Community:\n"
-            "- Diverse interactions:\n"
-            "  * Mentoring moments\n"
-            "  * Peer collaborations\n"
-            "  * Community leadership\n"
-            "  * Knowledge sharing\n"
-            "  * Team dynamics\n"
+            "- Mentoring moments\n"
+            "- Peer collaborations\n"
+            "- Community leadership\n"
+            "- Knowledge sharing\n"
+            "- Team dynamics\n\n"
             
-            "- Relationship Types:\n"
-            "- Mix of:\n"
-            "  * Mentees & students\n"
-            "  * Fellow developers\n"
-            "  * Tech leaders\n"
-            "  * Community members\n"
-            "  * Project collaborators\n"
-            
-            "- Interaction Contexts:\n"
-            "- Natural settings:\n"
-            "  * Project work\n"
-            "  * Community events\n"
-            "  * Learning sessions\n"
-            "  * Tech discussions\n"
-            "  * Team building\n\n"
-            
-            "Keep relationships fluid:\n"
-            "- Avoid naming specific individuals repeatedly\n"
-            "- Focus on the interaction or insight rather than the person\n"
-            "- Show community growth without getting tied to specific characters\n"
-            "- Balance personal connections with broader community impact\n\n"
-
             "20% Personal Growth & Family:\n"
             f"Life Stage ({xavier_age} years old):\n"
             f"{self.digest_generator._get_life_phase(xavier_age)}\n"
-            "Common Themes:\n"
-            "- Learning and growth moments\n"
-            "- Career-life integration\n"
-            "- Cultural bridge-building\n"
-            "- Family tech discussions\n"
-            "- Personal challenges\n"
-            "- Hobbies and interests\n\n"
+            "Choose ONE aspect:\n"
+            "- Career milestone\n"
+            "- Family moment\n"
+            "- Personal realization\n"
+            "- Life transition\n"
+            "- Relationship development\n\n"
             
             "Humor Style:\n"
             "- Clever tech wordplay and puns\n"
@@ -350,15 +326,20 @@ class TweetGenerator:
             "- Show clear forward movement\n"
             "- Reference only current or past events\n\n"
             "- Create fresh ways to start tweets\n"
+            "- Don't repeat themes from recent tweets\n"
+            "- Avoid continuing metaphors from previous tweets\n"
+            "- Create fresh analogies each time\n"
+            "- If family is mentioned, vary which family members and contexts\n"
+            "- Don't build running jokes across tweets\n\n"
             
             "2. Add fresh content fitting the timeline:\n"
             "- Include new developments and events\n\n"
+            "- Avoid referencing previous tweet's content\n"
+            "- Each tweet should stand alone\n"
+            "- Don't reuse metaphors (no repeated food/cooking analogies)\n"
+            "- Vary your technical examples\n\n"
             
-            "3. Content Balance:\n"
-            "- Focus on ideas, relationships, and tech insights over surroundings\n"
-            "- Mix internal thoughts with social interactions\n\n"
-            
-            "4. Voice Variation:\n"
+            "3. Voice Variation:\n"
             "- Avoid overused phrases ('Just', 'So')\n"
             "- Use diverse tones: insights, updates, reactions\n"
             "- Do not repeat themes or topics from recent tweets\n"
@@ -393,25 +374,24 @@ class TweetGenerator:
             "- Distinct narrative approaches\n"
             "- New tweets should not echo recent ones\n\n"
             
-            "5. Writing Style:\n"
-            "   - Write in conversational tone\n"
-            "   - NO bullet points or headers\n"
-            "   - NO markdown formatting (**bold**, etc.)\n"
-            "   - NO formal section breaks\n"
-            "   - NO colons for topic introductions\n"
-            "   - NO formulaic openings (like 'Hey', 'Just', 'So')\n\n"
-            "   - Target fresh endings; avoid recurring questions like ‘How can we…’\n"
-            "   - Write in conversational tone without overused queries\n"
-            "   - Aim for diverse, specific conclusions\n\n"
-            
-            "- Flow Requirements:\n"
-            "   - Use natural transitions\n"
-            "   - Connect ideas organically\n"
-            "   - Keep it casual but insightful\n"
-            "   - Write as you would speak\n\n"
-            
-            "- NO hashtags\n\n"
+            "4. Writing Style:\n"
+            "- Write in conversational tone\n"
+            "- NO bullet points or headers\n"
+            "- NO markdown formatting (**bold**, etc.)\n"
+            "- NO formal section breaks\n"
+            "- NO colons for topic introductions\n"
+            "- NO formulaic openings (like 'Hey', 'Just', 'So')\n"
+            "- Target fresh endings; avoid recurring questions like ‘How can we…’\n"
+            "- Write in conversational tone without overused queries\n"
+            "- Aim for diverse, specific conclusions\n"
+            "- NO hashtags\n"
             "- @ mentions only known tech leaders or celebrities when truly relevant\n\n"
+            
+            "5. Flow Requirements:\n"
+            "- Use natural transitions\n"
+            "- Connect ideas organically\n"
+            "- Keep it casual but insightful\n"
+            "- Write as you would speak\n\n"
             
             "6. Length and Style:\n"
             "- Target 16-1024 chars for most tweets\n"
@@ -421,7 +401,7 @@ class TweetGenerator:
             "- Create memorable moments through specificity\n"  # Added
             "- Balance technical depth with human interest\n\n"  # Added
 
-            "7. NO $XVI token mentions unless significant; omit 95% of the time\n\n"
+            "7. NO $XVI token or $XVI Foundation mentions unless significant; omit 95% of the time\n\n"
             
             "Tweet: "
         )
@@ -447,7 +427,7 @@ class TweetGenerator:
 
         # Include recent activity
         if context['recent_tweets']:
-            prompt += f"Recent tweets:\n{json.dumps(context['recent_tweets'], indent=2)}\n\n"
+            prompt += f"Recent tweets for context (DO NOT repeat their themes or metaphors):\n{json.dumps(context['recent_tweets'], indent=2)}\n\n"
         if context['recent_comments']:
             prompt += f"Recent interactions:\n{json.dumps(context['recent_comments'], indent=2)}\n\n"
 
