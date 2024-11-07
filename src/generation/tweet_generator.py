@@ -332,7 +332,8 @@ class TweetGenerator:
             "- System architecture ideas, scalability reflections\n"
             "- Musings on the future of open-source and decentralized dev tools\n"
             "- AI, automation, and tech’s impact on human life\n"
-            "- Tech and creativity: code as a form of expression\n\n"
+            "- Tech and creativity: code as a form of expression\n"
+            "- Occasionally reference relevant real-world tech companies or figures to provide context, but do so sparingly. Aim to keep mentions organic and purposeful.\n\n"
 
             "10% Cultural Exploration & Social Reflection:\n"
             "- Observations from global travel and cultural immersion\n"
