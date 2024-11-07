@@ -1,9 +1,4 @@
 {
-  "metadata": {
-    "generated_at": "2024-11-06T20:47:22.937261",
-    "base_year": 2025,
-    "end_year": 2075
-  },
   "tech_trees": {
     "2025": {
       "emerging_technologies": [
@@ -119,6 +114,134 @@
         }
       ],
       "epoch_year": 2025
+    },
+    "2030": {
+      "emerging_technologies": [
+        {
+          "name": "AI-Enhanced Predictive Analytics",
+          "probability": 0.8,
+          "estimated_year": 2033,
+          "innovation_type": "incremental",
+          "dependencies": [
+            "Advanced Machine Learning",
+            "Big Data Analytics"
+          ],
+          "impact_areas": [
+            "Healthcare",
+            "Finance",
+            "Logistics"
+          ],
+          "description": "Utilizes AI to predict future trends, events, or behaviors with high accuracy using vast data sets.",
+          "societal_implications": "Improves decision-making processes, potentially reducing human error but also raising concerns about privacy and job displacement.",
+          "adoption_factors": "Widespread adoption depends on regulatory environments, data protection laws, and societal acceptance of AI decision-making."
+        },
+        {
+          "name": "Neural-Enhanced Learning Systems",
+          "probability": 0.65,
+          "estimated_year": 2034,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Neural Interfaces",
+            "AI"
+          ],
+          "impact_areas": [
+            "Education",
+            "Skill Development",
+            "Special Needs"
+          ],
+          "description": "Systems that integrate with the human brain to enhance learning capabilities, memory retention, and cognitive function.",
+          "societal_implications": "Could revolutionize education and training, potentially increasing human capabilities but also posing ethical questions about cognitive enhancements.",
+          "adoption_factors": "Adoption would require overcoming ethical barriers, ensuring safety, and gaining public trust in neural technology."
+        },
+        {
+          "name": "Space-Based Solar Power",
+          "probability": 0.5,
+          "estimated_year": 2035,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Space Travel",
+            "Advanced Photovoltaics"
+          ],
+          "impact_areas": [
+            "Energy",
+            "Environment",
+            "Space Exploration"
+          ],
+          "description": "Solar panels in space collect solar energy, which is then beamed back to Earth for use.",
+          "societal_implications": "Offers a clean, constant energy source, reducing reliance on fossil fuels but requires significant initial investment and international cooperation.",
+          "adoption_factors": "Dependent on space travel technology advancements, cost-effectiveness, and geopolitical willingness to invest in space infrastructure."
+        },
+        {
+          "name": "Blockchain-Based Digital Identity",
+          "probability": 0.9,
+          "estimated_year": 2032,
+          "innovation_type": "incremental",
+          "dependencies": [
+            "Blockchain",
+            "Privacy Technologies"
+          ],
+          "impact_areas": [
+            "Security",
+            "Finance",
+            "Healthcare"
+          ],
+          "description": "A decentralized, secure system for identity verification and management.",
+          "societal_implications": "Enhances privacy and reduces identity theft but requires global standards and regulatory acceptance.",
+          "adoption_factors": "Adoption will be influenced by legislative frameworks, technology interoperability, and public trust in blockchain."
+        }
+      ],
+      "mainstream_technologies": [
+        {
+          "name": "Fully Autonomous Vehicles",
+          "from_emerging": true,
+          "original_emergence_year": 2025,
+          "maturity_year": 2030,
+          "impact_level": 8,
+          "description": "Vehicles capable of operating without human intervention in all conditions.",
+          "adoption_status": "High adoption in urban areas with supportive infrastructure; rural areas and less developed regions lag behind."
+        },
+        {
+          "name": "AI Personal Assistants",
+          "from_emerging": true,
+          "original_emergence_year": 2023,
+          "maturity_year": 2031,
+          "impact_level": 7,
+          "description": "Advanced AI systems that can manage daily tasks, personal scheduling, and offer real-time assistance.",
+          "adoption_status": "Ubiquitous in personal and professional environments, integrated into smart homes, offices, and personal devices."
+        }
+      ],
+      "epoch_themes": [
+        {
+          "theme": "Ethical AI and Automation",
+          "description": "Focus on ensuring AI systems and automation technologies are developed and used in an ethical manner.",
+          "related_technologies": [
+            "AI-Enhanced Predictive Analytics",
+            "Neural-Enhanced Learning Systems"
+          ],
+          "societal_impact": "Addresses concerns about privacy, job displacement, and decision-making transparency.",
+          "global_trends": "Increasing legislative actions towards AI ethics, international AI governance discussions, and corporate responsibility initiatives."
+        },
+        {
+          "theme": "Sustainable Space Ventures",
+          "description": "Expansion into space with an emphasis on sustainability and resource management.",
+          "related_technologies": [
+            "Space-Based Solar Power"
+          ],
+          "societal_impact": "Promotes sustainable development, reduces Earth's environmental burden, but raises issues of space law and resource rights.",
+          "global_trends": "Growth in private space industries, international space agreements, and public-private partnerships for space exploration."
+        },
+        {
+          "theme": "Digital Sovereignty and Privacy",
+          "description": "The push for control over personal data and digital identity in an increasingly connected world.",
+          "related_technologies": [
+            "Blockchain-Based Digital Identity"
+          ],
+          "societal_impact": "Empowers individuals with control over their data, reduces risks of data breaches, but challenges traditional data management systems.",
+          "global_trends": "Increased cyber security measures, data protection laws, and the rise of privacy-focused technologies."
+        }
+      ],
+      "epoch_year": 2030
     }
-  }
+  },
+  "last_updated": "2024-11-06T21:33:24.587429"
 }
