@@ -1,0 +1,144 @@
+{
+  "metadata": {
+    "generated_at": "2024-11-07T16:53:58.672312",
+    "base_year": 2025,
+    "end_year": 2075
+  },
+  "tech_trees": {
+    "2025": {
+      "emerging_technologies": [
+        {
+          "name": "AI-Driven Climate Adaptation",
+          "probability": 0.9,
+          "estimated_year": 2027,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Machine Learning",
+            "Big Data Analytics"
+          ],
+          "impact_areas": [
+            "Sustainable Technology",
+            "Digital Infrastructure"
+          ],
+          "description": "AI systems that predict and adapt to climate change impacts, optimizing urban planning, agriculture, and disaster response.",
+          "societal_implications": "Enhances resilience against climate change but raises concerns about data privacy and economic disparities in access to technology.",
+          "adoption_factors": "Requires significant investment in AI infrastructure and regulatory frameworks to ensure ethical use."
+        },
+        {
+          "name": "Quantum-Resistant Blockchain",
+          "probability": 0.75,
+          "estimated_year": 2028,
+          "innovation_type": "incremental",
+          "dependencies": [
+            "Quantum Computing",
+            "Blockchain"
+          ],
+          "impact_areas": [
+            "Digital Infrastructure",
+            "Security"
+          ],
+          "description": "Development of blockchain technologies that are resistant to attacks from quantum computers, ensuring long-term data security.",
+          "societal_implications": "Secures digital transactions and records against future threats but requires widespread adoption to be effective.",
+          "adoption_factors": "Dependent on the advancement of quantum computing and the need for enhanced security measures."
+        },
+        {
+          "name": "Autonomous Electric Aerial Vehicles (AEAVs)",
+          "probability": 0.8,
+          "estimated_year": 2029,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "AI",
+            "Battery Technology",
+            "Materials Science"
+          ],
+          "impact_areas": [
+            "Autonomous Systems",
+            "Sustainable Technology"
+          ],
+          "description": "Small, electric aircraft capable of urban transport, reducing road congestion and pollution.",
+          "societal_implications": "Transforms urban mobility, but introduces new challenges in airspace management and safety regulations.",
+          "adoption_factors": "Regulatory approval, public acceptance, and infrastructure for take-off and landing zones."
+        },
+        {
+          "name": "Neural Wearables",
+          "probability": 0.6,
+          "estimated_year": 2030,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Neural Technology",
+            "AI",
+            "Biocompatible Materials"
+          ],
+          "impact_areas": [
+            "Neural Technology",
+            "Health"
+          ],
+          "description": "Wearable devices that interface directly with the brain to enhance cognitive functions or control external devices.",
+          "societal_implications": "Potential for significant improvements in health and productivity, but raises ethical concerns about privacy and autonomy.",
+          "adoption_factors": "Requires advancements in biocompatibility, user acceptance, and ethical guidelines."
+        },
+        {
+          "name": "Space Resource Extraction",
+          "probability": 0.5,
+          "estimated_year": 2028,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Robotics",
+            "AI",
+            "Space Exploration"
+          ],
+          "impact_areas": [
+            "Space Exploration",
+            "Sustainable Technology"
+          ],
+          "description": "Technology for extracting and processing resources from celestial bodies like the moon or asteroids.",
+          "societal_implications": "Could revolutionize manufacturing and energy sectors, but poses environmental and geopolitical challenges.",
+          "adoption_factors": "Technological feasibility, economic viability, and international space law."
+        }
+      ],
+      "mainstream_technologies": [
+        {
+          "name": "Smart Cities Infrastructure",
+          "from_emerging": true,
+          "original_emergence_year": 2025,
+          "maturity_year": 2027,
+          "impact_level": 8,
+          "description": "Comprehensive urban systems integrating IoT, AI, and autonomous systems for efficient resource management and citizen services.",
+          "adoption_status": "Becoming standard in new urban developments; retrofitting existing cities ongoing."
+        },
+        {
+          "name": "AI Personal Assistants",
+          "from_emerging": true,
+          "original_emergence_year": 2020,
+          "maturity_year": 2026,
+          "impact_level": 7,
+          "description": "AI systems that manage personal schedules, health monitoring, and home automation, deeply integrated into daily life.",
+          "adoption_status": "Widely adopted in developed nations, with growing acceptance in emerging markets."
+        }
+      ],
+      "epoch_themes": [
+        {
+          "theme": "Cognitive Enhancement",
+          "description": "Advancements in technology aimed at enhancing human cognitive capabilities through AI and neural interfaces.",
+          "related_technologies": [
+            "Neural Wearables",
+            "AI Personal Assistants"
+          ],
+          "societal_impact": "Raises ethical questions about enhancement versus therapy, potential for social stratification, and the nature of human identity.",
+          "global_trends": "Increased focus on education, productivity, and mental health; potential for new forms of inequality."
+        },
+        {
+          "theme": "Sustainable Urban Living",
+          "description": "Technologies and urban planning strategies to make cities more sustainable, resilient, and livable.",
+          "related_technologies": [
+            "Smart Cities Infrastructure",
+            "AI-Driven Climate Adaptation"
+          ],
+          "societal_impact": "Promotes better quality of life, reduces environmental impact, but might face resistance due to cost and privacy concerns.",
+          "global_trends": "Urbanization, climate change response, and the push towards zero-emission cities."
+        }
+      ],
+      "epoch_year": 2025
+    }
+  }
+}
