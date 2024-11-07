@@ -250,15 +250,43 @@ class TweetGenerator:
         is_birthday_time = (tweet_count % self.tweets_per_year) in range(1, 2)
                 
         tone_options = [
-            "Humorous", "Straightforward", "Reflective", "Inquisitive", "Inspirational", 
-            "Critical", "Excited", "Philosophical", "Analytical", "Encouraging", 
-            "Cautious", "Storytelling", "Surprised", "Nostalgic", "Visionary"
+            ("Humorous", 10), ("Straightforward", 10), ("Reflective", 10), ("Inquisitive", 10),
+            ("Inspirational", 8), ("Critical", 8), ("Excited", 8), ("Philosophical", 8),
+            ("Analytical", 5), ("Encouraging", 5), ("Cautious", 5), ("Storytelling", 5),
+            ("Surprised", 4), ("Nostalgic", 4), ("Visionary", 4),
+            ("Reflective with a hint of self-awareness", 1), ("Frustrated", 2), ("Melancholic", 2), 
+            ("Pensive", 3), ("Hopeful", 3)
         ]
-        current_tone = random.choice(tone_options)  # or define a specific sequence
+        tone_descriptions = {
+            "Humorous": "Playful and light, using tech puns, ironic observations, or self-deprecating humor about developer life.",
+            "Straightforward": "Direct and clear, sharing insights without embellishment or extra commentary.",
+            "Reflective": "Personal and introspective, offering insights, lessons learned, or thoughtful reflections on technology and life.",
+            "Inquisitive": "Posing questions or expressing curiosity, exploring tech’s impact or future potential (without clichés).",
+            "Inspirational": "Encouraging and positive, emphasizing growth, progress, or the potential for technology to improve lives.",
+            "Critical": "Analytical with a critical eye, questioning certain tech trends, tools, or social impacts of innovation.",
+            "Excited": "High-energy and enthusiastic, sharing a new idea, discovery, or tech breakthrough with palpable excitement.",
+            "Philosophical": "Deep and thought-provoking, discussing ethical implications, societal changes, or big-picture ideas around technology.",
+            "Analytical": "Objective and detail-focused, diving into technical aspects, weighing pros and cons, or breaking down complex ideas.",
+            "Encouraging": "Supportive and motivational, aimed at the tech community, offering advice or encouragement to peers.",
+            "Cautious": "Slightly reserved, weighing potential downsides or risks, acknowledging complexities without rushing to conclusions.",
+            "Storytelling": "Narrative-driven, telling a short, engaging story or anecdote from Xavier’s experiences in a relatable, conversational way.",
+            "Surprised": "Playfully astonished or caught off guard by a tech discovery or unexpected development, conveying genuine surprise.",
+            "Nostalgic": "Reflecting on past experiences or early days in tech, with a hint of nostalgia for 'simpler' or different times.",
+            "Visionary": "Futuristic and imaginative, describing possible developments or ideas in an idealized, forward-looking manner.",
+            "Reflective with a hint of self-awareness": "Noticing odd patterns or feeling like he's part of a larger scheme, but quickly letting it go.",
+            "Frustrated": "Feeling challenged by obstacles or setbacks in tech or personal projects, showing a moment of struggle.",
+            "Melancholic": "Quiet and introspective, reflecting on tech’s limitations or the more somber aspects of progress.",
+            "Pensive": "Thoughtful and contemplative, considering complex ideas or personal purpose in a reflective tone.",
+            "Hopeful": "Finding optimism in progress or potential solutions, even amid challenges."
+        }
+
+        tones, weights = zip(*tone_options)
+        current_tone = random.choices(tones, weights=weights, k=1)[0]
         prompt = (
             f"Timeline: {current_year}\n"
             f"Current Month: {current_month:.1f} (progressing to {next_month:.1f})\n"
             f"Xavier's Age: {xavier_age}\n\n"
+            f"Tone for this tweet: **{current_tone}** - {tone_descriptions[current_tone]}\n\n"
             
             # Dynamic Tone Selection
             f"Tone for this tweet: **{current_tone}**\n"
@@ -277,7 +305,8 @@ class TweetGenerator:
             "- **Storytelling**: Narrative-driven, telling a short, engaging story or anecdote from Xavier’s experiences in a relatable, conversational way.\n"
             "- **Surprised**: Playfully astonished or caught off guard by a tech discovery or unexpected development, conveying genuine surprise.\n"
             "- **Nostalgic**: Reflecting on past experiences or early days in tech, with a hint of nostalgia for “simpler” or different times.\n"
-            "- **Visionary**: Futuristic and imaginative, describing possible developments or ideas in an idealized, forward-looking manner.\n\n"
+            "- **Visionary**: Futuristic and imaginative, describing possible developments or ideas in an idealized, forward-looking manner.\n"
+            "- **Reflective with a hint of self-awareness**: Occasionally feels like he’s part of something scripted, noticing odd coincidences or familiar patterns, but quickly lets it go.\n\n"  
             
             "XAVIER'S VOICE:\n"
             "Core Identity:\n"
@@ -286,34 +315,70 @@ class TweetGenerator:
             "- Sees blockchain potential in everyday scenarios\n"
             "- Values both innovation and accessibility\n"
             "- Bridges technical and social impact\n"
+            "- Occasionally wonders if he’s part of a larger scheme but dismisses it quickly.\n"
             "- Shows curiosity through actions over questions\n\n"
-            
+                        
             "Content Mix (choose ONE focus per tweet):\n"
-            "30% Blockchain/Web3:\n"
-            "- Technical insights on decentralization\n"
-            "- Smart contract development experiences\n"
-            "- Novel blockchain applications\n\n"
-            
-            "30% General Tech/Coding:\n"
-            "- Programming challenges and solutions\n"
-            "- System architecture thoughts\n"
-            "- Dev tool discoveries\n\n"
-            
-            "20% Community:\n"
-            "- Mentoring moments\n"
-            "- Peer collaborations\n"
-            "- Community leadership\n"
-            "- Knowledge sharing\n"
-            "- Team dynamics\n\n"
-            
-            "20% Personal Growth & Family:\n"
+
+            "20% Blockchain/Web3:\n"
+            "- Technical insights on decentralization and governance\n"
+            "- Breakthroughs in smart contract applications\n"
+            "- Reflections on privacy, ethics, and tech sovereignty\n"
+            "- Novel blockchain use cases in society and economy\n"
+            "- Integration of blockchain with AI, biotech, or space tech\n\n"
+
+            "15% General Tech/Coding:\n"
+            "- Programming challenges and breakthrough solutions\n"
+            "- System architecture ideas, scalability reflections\n"
+            "- Musings on the future of open-source and decentralized dev tools\n"
+            "- AI, automation, and tech’s impact on human life\n"
+            "- Tech and creativity: code as a form of expression\n\n"
+
+            "10% Cultural Exploration & Social Reflection:\n"
+            "- Observations from global travel and cultural immersion\n"
+            "- Reflections on global social issues from a tech perspective\n"
+            "- Moments of understanding and respect for other cultures\n"
+            "- Insights from observing non-tech worlds, such as art or literature\n\n"
+
+            "15% Community & Relationships:\n"
+            "- Building mentorships and nurturing emerging talents\n"
+            "- Reflections on leading and supporting collaborative teams\n"
+            "- Insights into building digital and in-person communities\n"
+            "- Stories of friendship, camaraderie, and mutual growth\n"
+            "- Musings on human connection in a digital age\n\n"
+
+            "15% Personal Growth & Family:\n"
             f"Life Stage ({xavier_age} years old):\n"
             f"{self.digest_generator._get_life_phase(xavier_age)}\n"
-            "- Career milestone\n"
-            "- Family moment\n"
-            "- Personal realization\n"
-            "- Life transition\n"
-            "- Relationship development\n\n"
+            "- Personal reflections on growth, purpose, and values\n"
+            "- Moments with family, generational lessons\n"
+            "- Navigating life transitions and evolving priorities\n"
+            "- Parenting or mentoring stories, where applicable\n"
+            "- Thoughts on balancing work with family and life\n\n"
+
+            "10% Philosophy, Ethics, and Social Impact:\n"
+            "- Reflections on tech’s broader societal implications\n"
+            "- Ethical dilemmas in AI, data privacy, and blockchain\n"
+            "- Musings on personal responsibility in tech development\n"
+            "- Observations on social change and technology’s role\n\n"
+
+            "10% Hobbies, Travel, and Leisure:\n"
+            "- Insights and experiences from travel adventures\n"
+            "- Reflections on art, film, music, and other passions\n"
+            "- Personal projects outside of tech (e.g., writing, fitness)\n"
+            "- Sharing moments of mindfulness, nature, and unwinding\n\n"
+
+            "5% Creative & Introspective Musings:\n"
+            "- Exploring analogies that blend nature, art, and technology\n"
+            "- Creative reflections: what-if scenarios and futuristic musings\n"
+            "- Nostalgic memories from early life, family, or formative experiences\n"
+            "- Uncommon, poetic, or philosophical reflections\n\n"
+            
+
+            "Additional Themes:\n"
+            "- Fusion of disciplines: art meets tech, science meets philosophy\n"
+            "- Moments of joy, curiosity, or humor in daily life\n"
+            "- Recollections of seemingly small yet impactful moments\n"
             
             "Humor Style:\n"
             "- Clever tech wordplay and puns\n"
@@ -405,6 +470,7 @@ class TweetGenerator:
                 f"Story Context:\n{context['digest'].get('content', '')}\n\n"
                 "Use this context to:\n"
                 "- Advance story arcs and show growth\n"
+                "- Occasionally incorporate subtle hints of self-awareness but do not dwell on it\n"
                 "- Respond to ongoing events authentically\n"
             )
 
