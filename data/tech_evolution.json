@@ -1,0 +1,148 @@
+{
+  "metadata": {
+    "generated_at": "2024-11-06T19:05:35.285433",
+    "base_year": 2025,
+    "end_year": 2075
+  },
+  "tech_trees": {
+    "2025": {
+      "emerging_technologies": [
+        {
+          "name": "AI-Driven Smart Contracts",
+          "probability": 0.85,
+          "estimated_year": 2027,
+          "innovation_type": "incremental",
+          "dependencies": [
+            "Blockchain Technology",
+            "AI"
+          ],
+          "impact_areas": [
+            "Finance",
+            "Legal",
+            "Real Estate"
+          ],
+          "description": "Smart contracts that can adapt and execute based on real-time data analysis using AI.",
+          "societal_implications": "Reduces need for intermediaries, increases contract efficiency, but raises concerns about AI bias and security.",
+          "adoption_factors": "Legal frameworks, AI ethics, security protocols"
+        },
+        {
+          "name": "Decentralized Autonomous Transport Networks",
+          "probability": 0.7,
+          "estimated_year": 2029,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Autonomous Vehicles",
+            "Blockchain Technology"
+          ],
+          "impact_areas": [
+            "Transportation",
+            "Urban Planning",
+            "Logistics"
+          ],
+          "description": "A network of self-governing autonomous vehicles managed via blockchain for route optimization and fare distribution.",
+          "societal_implications": "Promotes mobility as a service, reduces traffic congestion, but requires significant infrastructure changes.",
+          "adoption_factors": "Regulatory approval, infrastructure investment, public trust in autonomous systems"
+        },
+        {
+          "name": "Neural Interface for Memory Markets",
+          "probability": 0.65,
+          "estimated_year": 2030,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Brain-Computer Interfaces",
+            "Blockchain"
+          ],
+          "impact_areas": [
+            "Education",
+            "Health",
+            "Privacy"
+          ],
+          "description": "A system where individuals can lease or sell their cognitive capabilities or memories, secured by blockchain.",
+          "societal_implications": "Raises ethical issues about ownership of memories and cognitive capacity, potential for misuse.",
+          "adoption_factors": "Ethical guidelines, privacy laws, technological maturity"
+        },
+        {
+          "name": "Space Resource Tokenization",
+          "probability": 0.55,
+          "estimated_year": 2028,
+          "innovation_type": "incremental",
+          "dependencies": [
+            "Space Mining",
+            "Blockchain"
+          ],
+          "impact_areas": [
+            "Space Industry",
+            "Economics",
+            "Law"
+          ],
+          "description": "Tokenization of space resources for trading and ownership verification on Earth.",
+          "societal_implications": "Could democratize space exploration, but also risks creating new forms of space colonization.",
+          "adoption_factors": "International space law, economic viability, technological advancements in space mining"
+        },
+        {
+          "name": "Zero-Knowledge Proofs for Data Privacy",
+          "probability": 0.9,
+          "estimated_year": 2026,
+          "innovation_type": "incremental",
+          "dependencies": [
+            "Cryptography",
+            "Blockchain"
+          ],
+          "impact_areas": [
+            "Cybersecurity",
+            "Finance",
+            "Identity Management"
+          ],
+          "description": "Applications where users can prove possession of information without revealing it, enhancing privacy.",
+          "societal_implications": "Enhances personal data protection, reduces data breaches, but might complicate legal investigations.",
+          "adoption_factors": "Computational efficiency, regulatory acceptance, user trust in privacy mechanisms"
+        }
+      ],
+      "mainstream_technologies": [
+        {
+          "name": "Tokenized Energy Markets",
+          "from_emerging": true,
+          "original_emergence_year": 2025,
+          "maturity_year": 2028,
+          "impact_level": 7,
+          "description": "Energy trading through tokens representing green energy production or consumption.",
+          "adoption_status": "Widespread adoption in regions with supportive policy frameworks, integrating with smart grids."
+        },
+        {
+          "name": "AI-Driven Autonomous Drones",
+          "from_emerging": true,
+          "original_emergence_year": 2024,
+          "maturity_year": 2027,
+          "impact_level": 8,
+          "description": "Drones for delivery, surveillance, and environmental monitoring, autonomously managed by AI.",
+          "adoption_status": "Commonplace in logistics and agriculture, with ongoing debates about privacy and airspace regulations."
+        }
+      ],
+      "epoch_themes": [
+        {
+          "theme": "Decentralized Governance",
+          "description": "A shift towards systems where governance is distributed through blockchain technology.",
+          "related_technologies": [
+            "Decentralized Autonomous Organizations",
+            "Tokenized AI Models",
+            "Decentralized Energy Grids"
+          ],
+          "societal_impact": "Empowers individuals with more control over their data and decisions, potentially reducing corruption but increasing complexity in governance.",
+          "global_trends": "Increased interest in democratic tech solutions, rise in DAOs for various sectors, push for regulatory frameworks."
+        },
+        {
+          "theme": "Integration of AI in Daily Life",
+          "description": "AI becoming an integral part of everyday activities and decisions.",
+          "related_technologies": [
+            "AI-Driven Smart Contracts",
+            "AI Governance",
+            "Neural Interfaces"
+          ],
+          "societal_impact": "Enhances efficiency and personalization but necessitates ethical frameworks to address AI bias and privacy issues.",
+          "global_trends": "AI ethics becoming a major field, AI education, and widespread AI integration in services."
+        }
+      ],
+      "epoch_year": 2025
+    }
+  }
+}
