@@ -1,9 +1,4 @@
 {
-  "metadata": {
-    "generated_at": "2024-11-06T19:05:35.285433",
-    "base_year": 2025,
-    "end_year": 2075
-  },
   "tech_trees": {
     "2025": {
       "emerging_technologies": [
@@ -143,6 +138,122 @@
         }
       ],
       "epoch_year": 2025
+    },
+    "2030": {
+      "emerging_technologies": [
+        {
+          "name": "AI-Driven Personal Health Assistant",
+          "probability": 0.85,
+          "estimated_year": 2032,
+          "innovation_type": "incremental",
+          "dependencies": [
+            "AI",
+            "IoT"
+          ],
+          "impact_areas": [
+            "Healthcare",
+            "Personal Tech"
+          ],
+          "description": "An AI system that uses real-time health data from wearables to provide personalized health advice, predict potential health issues, and manage medication schedules.",
+          "societal_implications": "Enhances individual health management but raises concerns about data privacy and the automation of healthcare roles.",
+          "adoption_factors": "High due to an aging population and increasing health consciousness; adoption will be driven by integration with existing health platforms and trust in AI systems."
+        },
+        {
+          "name": "Quantum Blockchain",
+          "probability": 0.7,
+          "estimated_year": 2035,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Quantum Computing",
+            "Blockchain"
+          ],
+          "impact_areas": [
+            "Finance",
+            "Security"
+          ],
+          "description": "A blockchain technology utilizing quantum cryptography for enhanced security, potentially making transactions unbreakable.",
+          "societal_implications": "Could revolutionize financial transactions and digital security but introduces new vulnerabilities if quantum computing becomes widespread among adversaries.",
+          "adoption_factors": "Relatively low initial adoption due to the complexity and need for quantum infrastructure; expected to grow with quantum tech advancements."
+        },
+        {
+          "name": "Autonomous Urban Farming Systems",
+          "probability": 0.9,
+          "estimated_year": 2031,
+          "innovation_type": "incremental",
+          "dependencies": [
+            "AI",
+            "Robotics"
+          ],
+          "impact_areas": [
+            "Agriculture",
+            "Sustainability"
+          ],
+          "description": "Robotic systems that manage vertical farms within urban environments, optimizing space, reducing waste, and increasing yield.",
+          "societal_implications": "Promotes local food production, reduces carbon footprint, but may disrupt traditional farming communities.",
+          "adoption_factors": "High, driven by urban population growth, food security concerns, and environmental sustainability goals."
+        },
+        {
+          "name": "Neuralink-like Brain-Cloud Interface",
+          "probability": 0.65,
+          "estimated_year": 2034,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Neural Technology",
+            "Cloud Computing"
+          ],
+          "impact_areas": [
+            "Health",
+            "Education",
+            "Entertainment"
+          ],
+          "description": "Direct brain interface with cloud services for enhanced cognitive capabilities, memory storage, and real-time data processing.",
+          "societal_implications": "Potential for cognitive enhancement and new forms of learning, but ethical issues regarding privacy, identity, and inequality arise.",
+          "adoption_factors": "Slow adoption due to ethical debates, safety concerns, and the need for extensive public education on its implications."
+        }
+      ],
+      "mainstream_technologies": [
+        {
+          "name": "Augmented Reality (AR) Glasses",
+          "from_emerging": true,
+          "original_emergence_year": 2025,
+          "maturity_year": 2030,
+          "impact_level": 8,
+          "description": "AR glasses providing seamless integration of digital information into the real world for work, education, and entertainment.",
+          "adoption_status": "High adoption in tech-savvy regions, becoming a standard device similar to smartphones."
+        },
+        {
+          "name": "Autonomous Electric Vehicles (AEVs)",
+          "from_emerging": true,
+          "original_emergence_year": 2027,
+          "maturity_year": 2033,
+          "impact_level": 7,
+          "description": "Fully autonomous vehicles powered by electric engines, reducing pollution and traffic accidents.",
+          "adoption_status": "Increasing adoption, supported by regulatory frameworks and infrastructure development."
+        }
+      ],
+      "epoch_themes": [
+        {
+          "theme": "Sustainable Living",
+          "description": "Focus on technologies that reduce environmental impact and promote sustainable living practices.",
+          "related_technologies": [
+            "Autonomous Urban Farming Systems",
+            "AI-Driven Personal Health Assistant"
+          ],
+          "societal_impact": "Shift towards more environmentally conscious lifestyles, potential job shifts in traditional industries.",
+          "global_trends": "Rise in green cities, carbon neutrality goals, and circular economies."
+        },
+        {
+          "theme": "Cognitive Enhancement",
+          "description": "Advancements in neural tech and AI to enhance human cognitive functions.",
+          "related_technologies": [
+            "Neuralink-like Brain-Cloud Interface"
+          ],
+          "societal_impact": "Potential increase in intellectual capabilities, but also risks of social inequality and privacy invasion.",
+          "global_trends": "Increased focus on brain health, education reform, and ethical technology use."
+        }
+      ],
+      "epoch_year": 2030
     }
-  }
+  },
+  "last_updated": "2024-11-06T19:31:37.714407"
 }
