@@ -1,12 +1,13 @@
 import json
 from datetime import datetime
 from anthropic import Anthropic
-from src.utils.config import Config, AIProvider
-from src.storage.github_operations import GithubOperations
-from src.generation.digest_generator import DigestGenerator
+from utils.config import Config, AIProvider
+from storage.github_operations import GithubOperations
+from generation.digest_generator import DigestGenerator
+import re
 
 class TweetGenerator:
-    def __init__(self):
+    def __init__(self, tweets_per_year=96):
         xai_config = Config.get_ai_config(AIProvider.XAI)
         self.client = Anthropic(
             api_key=xai_config.api_key,
@@ -17,7 +18,7 @@ class TweetGenerator:
         
         # Simulation parameters
         self.sim_start_year = 2025
-        self.tweets_per_year = 96
+        self.tweets_per_year = tweets_per_year
         
     def calculate_current_year(self, tweet_count):
         """Calculate the current year in Xavier's timeline based on number of tweets"""
@@ -32,11 +33,8 @@ class TweetGenerator:
         except:
             print(f"Initializing {file_path} with empty content")
             # Ensure initial content is properly formatted
-            if file_path == "digest.json":
-                initial_content = {
-                    "generated_at": datetime.now().isoformat(),
-                    "content": ""
-                }
+            if file_path == "digest_history.json":
+                initial_content = []  # Always initialize digest history as an empty array
             self.github_ops.update_file(
                 file_path=file_path,
                 content=initial_content,
@@ -49,7 +47,7 @@ class TweetGenerator:
             # Initialize files if they don't exist
             self.initialize_file("ongoing_tweets.json", [])
             self.initialize_file("comments.json", [])
-            self.initialize_file("digest.json", {})
+            self.initialize_file("digest_history.json", [])
             self.initialize_file("simulation_state.json", {
                 "last_tweet_timestamp": None,
                 "tweet_count": 0,
@@ -89,53 +87,60 @@ class TweetGenerator:
                     print(f"Invalid first epoch format: {first_epoch}")
                     raise Exception("Failed to generate valid first tech epoch")
             
+            # Calculate how many recent tweets to include
+            recent_tweet_count = max(3, self.tweets_per_year // 20)  # At least 3
+            
             # Now get all existing tweets to calculate current year
             try:
                 ongoing_tweets, _ = self.github_ops.get_file_content("ongoing_tweets.json")
                 if not isinstance(ongoing_tweets, list):
                     ongoing_tweets = []
                 tweet_count = len(ongoing_tweets)
-                recent_tweets = ongoing_tweets[-5:] if ongoing_tweets else []
+                recent_tweets = ongoing_tweets[-recent_tweet_count:] if ongoing_tweets else []
                 
                 # For the first few tweets, include ACTI's final tweets in context
-                if tweet_count < 5:  # First 5 tweets
+                if tweet_count < recent_tweet_count:  # First few tweets
                     try:
                         acti_tweets, _ = self.github_ops.get_file_content("last_acti_tweets.json")
                         if not isinstance(acti_tweets, list):
                             acti_tweets = []
                         # Add the last few ACTI tweets to recent_tweets
-                        recent_tweets = acti_tweets[-(10-tweet_count):] + recent_tweets  # Last 5-10 ACTI tweets
+                        acti_count = recent_tweet_count - tweet_count
+                        recent_tweets = acti_tweets[-acti_count:] + recent_tweets
                     except Exception as e:
                         print(f"Error getting ACTI tweets: {e}")
-                
+                    
+                # Similarly scale recent comments
+                recent_comment_count = max(2, self.tweets_per_year // 32)  # At least 2 comments
+                try:
+                    comments, _ = self.github_ops.get_file_content("comments.json")
+                    if not isinstance(comments, list):
+                        comments = []
+                    recent_comments = comments[-recent_comment_count:] if comments else []
+                except Exception as e:
+                    print(f"Error getting comments: {e}")
+                    recent_comments = []
+
             except Exception as e:
                 print(f"Error getting tweets: {e}")
                 ongoing_tweets = []
                 tweet_count = 0
                 recent_tweets = []
+                recent_comments = []
             
             # Calculate current year based on tweet count
             current_year = self.calculate_current_year(tweet_count)
             
-            # Get the story digest
+            # Get the digest history
             try:
-                digest, _ = self.github_ops.get_file_content("digest.json")
-                if not isinstance(digest, dict) or not digest.get('content'):
-                    digest = {}
+                digest_history, _ = self.github_ops.get_file_content("digest_history.json")
+                if not isinstance(digest_history, list):
+                    digest_history = []
+                current_digest = digest_history[-1] if digest_history else {}
             except Exception as e:
-                print(f"Error getting digest: {e}")
-                digest = {}
+                print(f"Error getting digest history: {e}")
+                current_digest = {}
             
-            # Get recent comments if any
-            try:
-                comments, _ = self.github_ops.get_file_content("comments.json")
-                if not isinstance(comments, list):
-                    comments = []
-                recent_comments = comments[-5:] if comments else []
-            except Exception as e:
-                print(f"Error getting comments: {e}")
-                recent_comments = []
-
             # Get tech evolution data
             try:
                 tech_evolution, _ = self.github_ops.get_file_content("tech_evolution.json")
@@ -148,8 +153,8 @@ class TweetGenerator:
             return {
                 "current_year": current_year,
                 "tweet_count": tweet_count,
-                "digest": digest,
-                "recent_tweets": recent_tweets,  # Now includes ACTI tweets for first few tweets
+                "digest": current_digest,  # Just the most recent digest
+                "recent_tweets": recent_tweets,
                 "recent_comments": recent_comments,
                 "tech_evolution": tech_evolution
             }
@@ -234,86 +239,227 @@ class TweetGenerator:
         current_year = context['current_year']
         tweet_count = context['tweet_count']
         xavier_age = current_year - self.sim_start_year + 22
-        
-        # Calculate approximate month based on tweet count
-        # With 96 tweets per year (8 per month), each tweet represents ~3.75 days
-        month_estimate = (tweet_count % self.tweets_per_year) // 8 + 1  # 1-12 for months
-        
-        # Base timeline info
+        month_estimate = (tweet_count % self.tweets_per_year) // 8 + 1
+                # Calculate time progression
+        months_per_tweet = 12 / self.tweets_per_year  # e.g., 12/96 = 0.125 months per tweet
+        current_month = (tweet_count % self.tweets_per_year) * months_per_tweet
+        next_month = current_month + months_per_tweet
+
+        # Check if it's birthday time (around tweet 48 of each year - June-ish)
+        is_birthday_time = (tweet_count % self.tweets_per_year) in range(47, 49)
+                
         prompt = (
-            f"Current Timeline: {current_year} (Month {month_estimate})\n"
-            f"Xavier's Age: {xavier_age}\n"
-            "Personality: You're a tech visionary who sees blockchain as fundamental infrastructure:\n"
-            "- Excited about tech convergence (AI + blockchain, biotech + tokens, etc.)\n"
-            "- Views DAOs as the future of organization\n"
-            "- Fascinated by tokenization of everything\n"
-            "- Believes in decentralized governance for emerging tech\n"
-            "- Sees smart contracts as the foundation of future systems\n"
-            "- Questions centralized control of new technologies\n"
-            "- Experiments with integrating blockchain into daily life\n"
-            "- Thinks about token incentives for social good\n"
-            "- Has quirky, endearing social awkwardness\n"
-            "- Makes witty observations about tech and life\n"
-            "- Finds humor in coding disasters\n\n"
-            "Background: You are crypto-native and created the XVI token, but mention it VERY RARELY "
-            "(maximum 5% of tweets) and only for major developments.\n\n"
+            f"Timeline: {current_year}\n"
+            f"Current Month: {current_month:.1f} (progressing to {next_month:.1f})\n"
+            f"Xavier's Age: {xavier_age}\n\n"
+            
+            "XAVIER'S VOICE:\n"
+            "Core Identity:\n"
+            "- Blockchain optimist who values pragmatic solutions\n"
+            "- Technical expert with a creative mindset\n"
+            "- Sees blockchain potential in everyday scenarios\n"
+            "- Values both innovation and accessibility\n"
+            "- Bridges technical and social impact\n\n"
+            "- Shows curiosity through actions over questions\n\n"
+            
+            "Content Mix (with examples):\n"
+            "30% Blockchain/Web3:\n"
+            "- Technical insights on decentralization\n"
+            "- Smart contract development experiences\n"
+            "- Novel blockchain applications\n\n"
+            
+            "30% General Tech/Coding:\n"
+            "- Programming challenges and solutions\n"
+            "- System architecture thoughts\n"
+            "- Dev tool discoveries\n\n"
+            
+            "20% Community:\n"
+            "- Diverse interactions:\n"
+            "  * Mentoring moments\n"
+            "  * Peer collaborations\n"
+            "  * Community leadership\n"
+            "  * Knowledge sharing\n"
+            "  * Team dynamics\n"
+            
+            "- Relationship Types:\n"
+            "- Mix of:\n"
+            "  * Mentees & students\n"
+            "  * Fellow developers\n"
+            "  * Tech leaders\n"
+            "  * Community members\n"
+            "  * Project collaborators\n"
+            
+            "- Interaction Contexts:\n"
+            "- Natural settings:\n"
+            "  * Project work\n"
+            "  * Community events\n"
+            "  * Learning sessions\n"
+            "  * Tech discussions\n"
+            "  * Team building\n\n"
+            
+            "Keep relationships fluid:\n"
+            "- Avoid naming specific individuals repeatedly\n"
+            "- Focus on the interaction or insight rather than the person\n"
+            "- Show community growth without getting tied to specific characters\n"
+            "- Balance personal connections with broader community impact\n\n"
+
+            "20% Personal Growth & Family:\n"
+            f"Life Stage ({xavier_age} years old):\n"
+            f"{self.digest_generator._get_life_phase(xavier_age)}\n"
+            "Common Themes:\n"
+            "- Learning and growth moments\n"
+            "- Career-life integration\n"
+            "- Cultural bridge-building\n"
+            "- Family tech discussions\n"
+            "- Personal challenges\n"
+            "- Hobbies and interests\n\n"
+            
+            "Humor Style:\n"
+            "- Clever tech wordplay and puns\n"
+            "- Unexpected parallels between tech and daily life\n"
+            "- Relatable developer moments\n"
+            "- Self-aware tech observations\n"
+            "- Finding humor in coding challenges\n"
+            "- Playful takes on tech culture\n"
+            
+            "Humor Guidelines:\n"
+            "- Keep it smart but accessible\n"
+            "- Mix technical wit with universal experiences\n"
+            "- Let humor emerge from situations naturally\n"
+            "- Stay positive and playful\n"
+            "- Make complex concepts entertaining\n"
+            "- Find the fun in the technical\n"
+            
+            "Avoid:\n"
+            "- Crypto bro language\n"
+            "- Price/investment focus\n"
+            "- Overused tech jokes\n"
+            "- Preaching about blockchain\n"
+            "- Generic observations\n"
+            "- Open-ended philosophical questions\n"
+            "- Abstract 'what if' scenarios\n"
+            "- Generic 'how can we' queries\n"
+            "- Rhetorical questions about the future\n"
+            "- ANY time references (months, seasons, weather, etc)\n" # Modified this line
+            "- Location references except when story-critical\n\n"
+            
+            "Tweet Requirements:\n"
+            f"1. Advance timeline to month {next_month:.1f} (avoid mentioning month directly):\n"
+            "- Show project and relationship progress; align with context\n\n"
+            "- Never go backwards in time\n\n"
+            "- Show clear forward movement\n"
+            "- Reference only current or past events\n\n"
+            "- Create fresh ways to start tweets\n"
+            
+            "2. Add fresh content fitting the timeline:\n"
+            "- Include new developments and events\n\n"
+            
+            "3. Content Balance:\n"
+            "- Focus on ideas, relationships, and tech insights over surroundings\n"
+            "- Mix internal thoughts with social interactions\n\n"
+            
+            "4. Voice Variation:\n"
+            "- Avoid overused phrases ('Just', 'So')\n"
+            "- Use diverse tones: insights, updates, reactions\n"
+            "- Do not repeat themes or topics from recent tweets\n"
+            "- Vary sentence structures and vocabulary\n"
+            "- Limit the use of open-ended questions\n"
+            "- Emphasize statements over questions as endings\n"
+            "- Use varied structures, avoid frequent ‘how can we…’ questions\n"
+            "- Close tweets with insights, realizations, or solid conclusions\n"
+            
+            "Tweet Endings - Mix These Types:\n"
+            "Primary (70%):\n"
+            "- Technical insight\n"
+            "- Personal realization\n"
+            "- Project milestone\n"
+            "- Surprising connection or insight\n"
+            "- Forward-looking statement\n\n"
+                
+            "Questions (optional, <10%):\n"
+            "- If used, ensure unique phrasing or new context\n"
+            "- Avoid generic 'how can we…' or 'what if' structures\n"
+            "- Prefer questions that invite curiosity over solutions\n\n"
+
+            "Other (20%):\n"
+            "- Witty observations\n"
+            "- Clever wordplay\n"
+            "- Analogies or metaphors\n\n"
+
+            "Each tweet must be unique:\n"
+            "- Different themes, structures, vocabulary\n"
+            "- Varied opening and closing patterns\n"
+            "- Fresh perspectives on topics\n"
+            "- Distinct narrative approaches\n"
+            "- New tweets should not echo recent ones\n\n"
+            
+            "5. Writing Style:\n"
+            "   - Write in conversational tone\n"
+            "   - NO bullet points or headers\n"
+            "   - NO markdown formatting (**bold**, etc.)\n"
+            "   - NO formal section breaks\n"
+            "   - NO colons for topic introductions\n"
+            "   - NO formulaic openings (like 'Hey', 'Just', 'So')\n\n"
+            "   - Target fresh endings; avoid recurring questions like ‘How can we…’\n"
+            "   - Write in conversational tone without overused queries\n"
+            "   - Aim for diverse, specific conclusions\n\n"
+            
+            "- Flow Requirements:\n"
+            "   - Use natural transitions\n"
+            "   - Connect ideas organically\n"
+            "   - Keep it casual but insightful\n"
+            "   - Write as you would speak\n\n"
+            
+            "- NO hashtags\n\n"
+            "- @ mentions only known tech leaders or celebrities when truly relevant\n\n"
+            
+            "6. Length and Style:\n"
+            "- Target 16-1024 chars for most tweets\n"
+            "- Include vivid details and specific examples\n"  # Added
+            "- Add unexpected twists or observations\n"  # Added
+            "- Use analogies that surprise and delight\n"  # Added
+            "- Create memorable moments through specificity\n"  # Added
+            "- Balance technical depth with human interest\n\n"  # Added
+
+            "7. NO $XVI token mentions unless significant; omit 95% of the time\n\n"
+            
+            "Tweet: "
         )
 
-        # Add story context more prominently
+        # Special birthday guidance
+        if is_birthday_time:
+            prompt += (
+                f"\nBirthday Context:\n"
+                f"Xavier is turning {xavier_age}. Consider:\n"
+                "- Reflective or forward-looking thoughts on aging\n"
+                "- Personal goals or gratitude\n"
+                "- Keep it natural and relatable\n\n"
+            )
+
+        # Add story context
         if context.get('digest'):
             prompt += (
                 f"Story Context:\n{context['digest'].get('content', '')}\n\n"
                 "Use this context to:\n"
-                "- Advance story arcs naturally\n"
-                "- Show character growth\n"
-                "- React to ongoing situations\n"
-                "While maintaining an authentic social media voice\n\n"
+                "- Advance story arcs and show growth\n"
+                "- Respond to ongoing events authentically\n"
             )
-                
-        # Recent Activity
+
+        # Include recent activity
         if context['recent_tweets']:
             prompt += f"Recent tweets:\n{json.dumps(context['recent_tweets'], indent=2)}\n\n"
-                
         if context['recent_comments']:
             prompt += f"Recent interactions:\n{json.dumps(context['recent_comments'], indent=2)}\n\n"
 
-        # Special case: First tweet
+        # First tweet setup
         if context['tweet_count'] == 0:
             prompt += (
-                "Generate Xavier's first tweet transitioning between Japan and New York:\n"
-                "- Set in either final moments in Japan or first moments back in NYC\n"
-                "- Include specific location details\n"
-                "- Show emotional state about this transition\n"
-                "- Reference how Japan influenced his perspective\n\n"
+                "Generate Xavier's first tweet about the transition from Japan to NYC:\n"
+                "- Set in either final moments in Japan or first in NYC\n"
+                "- Reflect on the influence of Japan on his perspective\n\n"
             )
 
-        # Tweet Guidelines
-        prompt += (
-            "Tweet Requirements:\n"
-            "1. Story Progression:\n"
-            "   - Advance ongoing plot threads\n"
-            "   - React to recent events\n"
-            "   - Show character development\n"
-            "   - Build towards future developments\n"
-            "2. Voice: Maintain quirky personality while moving story forward:\n"
-            "   - Share meaningful experiences and decisions\n"
-            "   - Express growth and changing perspectives\n"
-            "   - Connect personal moments to larger themes\n"
-            "3. Writing Style:\n"
-            "   - AVOID starting tweets with 'Just', 'So', 'Had', or similar common openings\n"
-            "   - Use varied, engaging openings that grab attention\n"
-            "   - Examples:\n"
-            "     * Direct statements: 'The future of AI governance hit different after...'\n"
-            "     * Questions: 'Ever wonder why DAOs feel more alive at 3am?'\n"
-            "     * Observations: 'Watching smart contracts evolve feels like...'\n"
-            "     * Reactions: 'Mind blown by this new zero-knowledge proof...'\n"
-            "     * Location context: 'Downtown NYC hits different when...'\n"
-            "4. Length: Usually 384-640 chars, occasionally 16-1028 based on content weight\n"
-            "5. Format: Start with '[{current_year} | Age {xavier_age}]'\n"
-            "6. NO hashtags unless absolutely necessary (95% of tweets should have none)\n"
-            "7. NO XVI token mentions unless truly significant (95% of tweets should not mention it)\n\n"
-            "Tweet:"
-        )
+        print(prompt)
         return prompt
     
     def should_update_digest(self, context):
@@ -327,15 +473,16 @@ class TweetGenerator:
                 return True
                 
             # Get last processed tweet count
-            last_processed_count = existing_digest.get('last_tweet_count', 0)
+            last_processed_count = existing_digest.get('tweet_count', 0)
             current_count = context['tweet_count']
             
             # Always update for first few tweets to establish story
-            if current_count < 5:
+            if current_count < self.tweets_per_year * 0.05:  # First 5% of yearly tweets
                 return True
                 
-            # Update digest every ~12 tweets (about 1.5 months in story time)
-            if current_count - last_processed_count >= 12:
+            # Update digest every ~12.5% of yearly tweets (about 1.5 months in story time)
+            tweets_per_digest = max(1, self.tweets_per_year // 8)  # At least 1 tweet between digests
+            if current_count - last_processed_count >= tweets_per_digest:
                 return True
                 
             # Check for significant events since last digest
@@ -349,8 +496,9 @@ class TweetGenerator:
                 ]):
                     significant_events += 1
                     
-            # Update if we have enough significant events
-            if significant_events >= 3:
+            # Update if we have enough significant events (scaled to tweet frequency)
+            significant_threshold = max(2, self.tweets_per_year // 32)  # At least 2 events
+            if significant_events >= significant_threshold:
                 return True
                 
             return False
@@ -362,11 +510,11 @@ class TweetGenerator:
     def should_update_tech_evolution(self, context):
         """Determine if tech evolution needs updating"""
         try:
-            tech_evolution = context.get('tech_evolution', {}).get('tech_trees', {})
+            tech_trees = context.get('tech_evolution', {}).get('tech_trees', {})
             tweet_count = context['tweet_count']
             
             # Get the latest epoch we have tech for
-            if not tech_evolution:
+            if not tech_trees:
                 return True  # Generate first epoch if no tech exists
                 
             # Calculate tweets per epoch (5 years)
@@ -374,18 +522,17 @@ class TweetGenerator:
             
             # Calculate which epoch we're in
             current_epoch_index = tweet_count // tweets_per_epoch
-            tweets_into_epoch = tweet_count % tweets_per_epoch
+            next_epoch_year = self.sim_start_year + ((current_epoch_index + 1) * 5)
             
+            # Check if we already have the next epoch
+            if str(next_epoch_year) in tech_trees:
+                return False
+                
             # Generate next epoch when we're 60 tweets (~9 months) away from it
+            tweets_into_epoch = tweet_count % tweets_per_epoch
             tweets_until_next_epoch = tweets_per_epoch - tweets_into_epoch
             
-            if tweets_until_next_epoch <= 60:  # About 9 months before next epoch
-                next_epoch = self.sim_start_year + ((current_epoch_index + 1) * 5)
-                print(f"Approaching new tech epoch: {next_epoch}")
-                print(f"Tweets until next epoch: {tweets_until_next_epoch}")
-                return True
-                
-            return False
+            return tweets_until_next_epoch <= self.tweets_per_year * 60 / 96  # About 9 months before next epoch
             
         except Exception as e:
             print(f"Error checking tech evolution criteria: {e}")
@@ -399,6 +546,13 @@ class TweetGenerator:
             if not context:
                 return None
                 
+            # Calculate Xavier's age
+            current_year = context['current_year']
+            xavier_age = current_year - self.sim_start_year + 22
+            
+            # Add year and age prefix to tweet content
+            year_prefix = f"[{current_year} | Age {xavier_age}] "
+            
             # Check if tech evolution needs updating
             if self.should_update_tech_evolution(context):
                 from src.generation.tech_evolution_generator import TechEvolutionGenerator
@@ -413,23 +567,35 @@ class TweetGenerator:
                     tech_gen.save_evolution_data()
                     # Refresh context with new tech data
                     context = self.get_context()
-                
-            # Continue with digest and tweet generation
+            
+            # Check if digest needs updating
             if self.should_update_digest(context):
-                updated_digest = self.digest_generator.process_ongoing_digest(
-                    context['digest'],
-                    context['recent_tweets'],
-                    context['recent_comments']
-                )
+                # Get existing digest history
+                digest_history, _ = self.github_ops.get_file_content("digest_history.json")
+                if not isinstance(digest_history, list):
+                    digest_history = []
                 
-                if updated_digest:
+                # Generate appropriate digest based on whether it's first or ongoing
+                if not digest_history:
+                    print("Generating first digest...")
+                    new_digest = self.digest_generator.process_first_digest()
+                else:
+                    print("Generating ongoing digest...")
+                    new_digest = self.digest_generator.process_ongoing_digest(
+                        context['digest'],
+                        context['recent_tweets'],
+                        context['recent_comments']
+                    )
+                
+                if new_digest:
                     # Add tweet count to digest metadata
-                    updated_digest['last_tweet_count'] = context['tweet_count']
+                    new_digest['tweet_count'] = context['tweet_count']
                     
+                    # Update digest history
                     self.github_ops.update_story_digest(
                         new_tweets=context['recent_tweets'],
                         new_comments=context['recent_comments'],
-                        initial_content=updated_digest
+                        initial_content=new_digest
                     )
                     print(f"Updated digest at tweet #{context['tweet_count']}")
                     # Refresh context with new digest
@@ -441,7 +607,14 @@ class TweetGenerator:
                 message = self.client.messages.create(
                     model="grok-beta",
                     max_tokens=1024,
-                    system="You are Xavier, a young adult navigating life. Generate a single tweet that continues your story naturally.",
+                    system=(
+                        "You are Xavier, a tech visionary with a quick wit and playful curiosity. "
+                        "Generate a single tweet that continues your story naturally, showing both your passion "
+                        "for technology and your human side."
+                        "Respond with ONLY the tweet content - no preamble, no quotes, no explanations. "
+                        "Your response should be exactly what would appear in the tweet, nothing more."
+
+                    ),
                     messages=[
                         {
                             "role": "user",
@@ -452,17 +625,23 @@ class TweetGenerator:
                 
                 tweet_content = str(message.content)
                 
+                # Clean the content
+                tweet_content = tweet_content.replace("[TextBlock(text='", "")
+                tweet_content.replace("', type='text')]", "")
+                tweet_content = tweet_content.strip('"')  # Remove surrounding quotes
+                
+                # Remove any hashtags and clean up spacing
+                tweet_content = re.sub(r'\s*#\w+\s*', ' ', tweet_content).strip()
+
                 tweet = {
                     "id": f"tweet_{datetime.now().strftime('%Y%m%d_%H%M%S')}",
-                    "content": tweet_content,
+                    "content": year_prefix + tweet_content,  # Add prefix here
                     "timestamp": datetime.now().isoformat(),
                     "likes": 0,
                     "retweets": 0
                 }
                 
-                # Store tweet and update state
                 self.update_simulation_state(tweet)
-                print(f"Generated tweet #{context['tweet_count'] + 1}")
                 return tweet
                     
             except Exception as e:
@@ -470,48 +649,6 @@ class TweetGenerator:
                 return None
         except Exception as e:
             print(f"Error generating tweet: {str(e)}")
-            return None
-
-    def get_current_tech_context(self, context):
-        try:
-            tech_data = context.get('tech_evolution', {}).get('tech_trees', {})
-            if not isinstance(tech_data, dict):
-                print(f"Unexpected tech_trees type: {type(tech_data)}")
-                return None
-                
-            # Get current year and find the most recent tech epoch
-            current_year = context['current_year']
-            
-            # Debug the current_year value
-            print(f"Current year type: {type(current_year)}")
-            print(f"Current year value: {current_year}")
-            
-            # Ensure current_year is an integer
-            if isinstance(current_year, str):
-                current_year = int(current_year)
-            
-            available_years = [int(year) for year in tech_data.keys() if year.isdigit()]
-            
-            if not available_years:
-                print("No valid tech years found")
-                return None
-                
-            current_epoch = max(year for year in available_years if year <= current_year)
-            tech_tree = tech_data.get(str(current_epoch))
-            
-            if not tech_tree:
-                print(f"No tech tree found for epoch {current_epoch}")
-                return None
-                
-            return {
-                'mainstream': tech_tree.get('mainstream_technologies', []),
-                'emerging': tech_tree.get('emerging_technologies', []),
-                'themes': tech_tree.get('epoch_themes', [])
-            }
-                
-        except Exception as e:
-            print(f"Error in get_current_tech_context: {str(e)}")
-            print(f"Context data structure: {json.dumps(context, indent=2, default=str)}")
             return None
 
 def main():
@@ -537,3 +674,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+

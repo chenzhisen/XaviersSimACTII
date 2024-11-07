@@ -2,8 +2,9 @@ import json
 from datetime import datetime
 import os
 from anthropic import Anthropic
-from src.utils.config import Config, AIProvider
-from src.storage.github_operations import GithubOperations
+from utils.config import Config, AIProvider
+from storage.github_operations import GithubOperations
+import re
 
 class DigestGenerator:
     def __init__(self):
@@ -13,22 +14,27 @@ class DigestGenerator:
             base_url=xai_config.base_url
         )
         self.XaviersSim = 'XaviersSim.json'
+        self.github_ops = GithubOperations()
+        self.sim_start_year = 2025  # Add this for year calculation
 
-    def process_digest(self):
+    def process_first_digest(self):
         """Generate initial digest from XaviersSim.json"""
         try:
             # Get existing tweets from ACTI
-            actI_content, _ = GithubOperations().get_file_content(self.XaviersSim)
+            actI_content, _ = self.github_ops.get_file_content(self.XaviersSim)
             prompt = self.create_first_digest(actI_content)
             digest = self.generate_digest(prompt)
 
             if digest:
-                # Format the digest properly
-                digest_content = {
-                    "generated_at": datetime.now().isoformat(),
-                    "content": str(digest)  # Ensure content is a string
+                # Create timestamped digest entry
+                timestamp = datetime.now().isoformat()
+                return {
+                    "generated_at": timestamp,
+                    "content": str(digest),
+                    "is_initial": True,
+                    "year": self.sim_start_year,
+                    "tweet_count": 0
                 }
-                return digest_content  # Return formatted content
             return None
         except Exception as e:
             print(f"Error creating initial digest: {str(e)}")
@@ -51,6 +57,7 @@ class DigestGenerator:
             prompt += str(actI_content)
         
         prompt += self._get_digest_sections(is_first=True)
+        print("digest prompt: ", prompt)
         return prompt
 
     def generate_digest(self, prompt):
@@ -82,13 +89,18 @@ class DigestGenerator:
         """Generate a digest with both summary and future direction"""
         try:
             prompt = self.create_ongoing_prompt(existing_digest, new_tweets, new_comments)
+            print("digest prompt: ", prompt)
             updated_digest = self.generate_digest(prompt)
             
             if updated_digest:
+                # Create timestamped digest entry
+                timestamp = datetime.now().isoformat()
                 return {
-                    "generated_at": datetime.now().isoformat(),
+                    "generated_at": timestamp,
                     "content": updated_digest,
-                    "last_processed_tweet": new_tweets[-1]["id"] if new_tweets else None
+                    "last_processed_tweet": new_tweets[-1]["id"] if new_tweets else None,
+                    "tweet_count": len(new_tweets),
+                    "year": self._get_current_year()
                 }
             return None
         except Exception as e:
@@ -101,15 +113,23 @@ class DigestGenerator:
             tech_context = self._get_tech_context(new_tweets)
             
             prompt = (
-                "CURRENT STORY DIGEST:\n"
+                "RECENT STORY DEVELOPMENTS:\n"
+                f"{json.dumps(new_tweets, indent=2)}\n\n"
+                
+                "PREVIOUS CONTEXT:\n"
                 f"{existing_digest.get('content', 'Story begins with Xavier at age 22 in 2025.')}\n\n"
                 
-                "RECENT UPDATES:\n"
-                f"New Tweets:\n{json.dumps(new_tweets, indent=2)}\n\n"
-                f"Related Comments:\n{json.dumps(new_comments, indent=2)}\n\n"
-                f"{tech_context}"
+                "ADDITIONAL DETAILS:\n"
+                f"{json.dumps(new_comments, indent=2)}\n\n"
+                f"{tech_context}\n\n"
+                
+                "GUIDELINES:\n"
+                "- Drive the story forward using recent tweets, but maintain continuity with past events\n"
+                "- Evolve ongoing relationships and storylines through recent interactions\n"
+                "- Use comments and tech context to enrich but not steer the main narrative\n"
+                "- $XVI, a cryptocurrency token, mysteriously linked to Xavier, has special place to Xavier\n"
             )
-            
+
             prompt += self._get_digest_sections(is_first=False)
             return prompt
             
@@ -120,40 +140,58 @@ class DigestGenerator:
     def _get_tech_context(self, new_tweets):
         """Extract and format technological context including upcoming tech"""
         try:
-            tech_evolution, _ = GithubOperations().get_file_content("tech_evolution.json")
-            if not isinstance(tech_evolution, dict):
-                return ""
-                
-            # Calculate current year from latest tweet
-            current_year = 2025
-            if new_tweets:
-                year_str = new_tweets[-1]['content'].split('[')[1].split('|')[0].strip()
-                current_year = int(year_str)
+            # Debug logging
+            print("Fetching tech evolution data...")
+            tech_evolution, _ = self.github_ops.get_file_content("tech_evolution.json")
+            print(f"Tech evolution data: {json.dumps(tech_evolution, indent=2)[:200]}...")  # Print first 200 chars
             
-            # Find current and next epoch
-            epochs = [int(epoch) for epoch in tech_evolution.get('tech_trees', {}).keys()]
-            current_epoch = max([e for e in epochs if e <= current_year], default=None)
-            next_epoch = min([e for e in epochs if e > current_year], default=None)
+            simulation_state, _ = self.github_ops.get_file_content("simulation_state.json")
+            current_year = int(simulation_state.get("current_year", 2025))
+            
+            # Ensure tech_evolution is a dict
+            if isinstance(tech_evolution, str):
+                tech_evolution = json.loads(tech_evolution)
+            
+            # Get tech trees with better error handling
+            tech_trees = tech_evolution.get('tech_trees', {}) if isinstance(tech_evolution, dict) else {}
+            print(f"Found {len(tech_trees)} tech trees")
+            
+            if not tech_trees:
+                print("No tech trees found in evolution data")
+                return ""
+            
+            # Find current and next epochs
+            current_epoch = None
+            next_epoch = None
+            
+            # Convert years to integers for comparison
+            years = sorted([int(year) for year in tech_trees.keys()])
+            
+            # Find current and next epochs
+            for year in years:
+                if year <= current_year:
+                    current_epoch = tech_trees[str(year)]
+                elif next_epoch is None:
+                    next_epoch = tech_trees[str(year)]
+                    break
             
             if not current_epoch:
                 return ""
                 
-            current_data = tech_evolution['tech_trees'][str(current_epoch)]
-            next_data = tech_evolution['tech_trees'].get(str(next_epoch)) if next_epoch else None
-            
             context = (
-                f"\nTECHNOLOGICAL CONTEXT:\n"
-                f"Current Epoch ({current_epoch}-{current_epoch+5}):\n"
-                f"- Mainstream Technologies: {json.dumps([tech['name'] for tech in current_data['mainstream_technologies']], indent=2)}\n"
-                f"- Currently Emerging: {json.dumps([tech['name'] for tech in current_data['emerging_technologies']], indent=2)}\n"
-                f"- Major Themes: {json.dumps([theme['theme'] for theme in current_data['epoch_themes']], indent=2)}\n\n"
+                f"\nTECH CONTEXT:\n"
+                f"Current Epoch ({current_year}-{current_year+5}):\n"
+                f"- Mainstream: {json.dumps([tech['name'] for tech in current_epoch['mainstream_technologies']], indent=2)}\n"
+                f"- Emerging: {json.dumps([tech['name'] for tech in current_epoch['emerging_technologies']], indent=2)}\n"
+                f"- Themes: {json.dumps([theme['theme'] for theme in current_epoch['epoch_themes']], indent=2)}\n\n"
             )
             
-            if next_data:
+            if next_epoch:
+                next_year = current_year + 5
                 context += (
-                    f"Upcoming Epoch ({next_epoch}-{next_epoch+5}):\n"
-                    f"- Expected Technologies: {json.dumps([tech['name'] for tech in next_data['emerging_technologies']], indent=2)}\n"
-                    f"- Emerging Themes: {json.dumps([theme['theme'] for theme in next_data['epoch_themes']], indent=2)}\n\n"
+                    f"Next Epoch ({next_year}-{next_year+5}):\n"
+                    f"- Expected: {json.dumps([tech['name'] for tech in next_epoch['emerging_technologies']], indent=2)}\n"
+                    f"- Emerging Themes: {json.dumps([theme['theme'] for theme in next_epoch['epoch_themes']], indent=2)}\n\n"
                 )
             
             return context
@@ -163,54 +201,176 @@ class DigestGenerator:
             return ""
 
     def _get_digest_sections(self, is_first=False):
-        """Return standardized digest sections based on context"""
+        try:
+            simulation_state, _ = self.github_ops.get_file_content("simulation_state.json")
+            current_year = int(simulation_state.get("current_year", 2025))
+            current_age = current_year - 2025 + 22
+            
+        except Exception as e:
+            print(f"Error getting simulation state: {e}")
+            current_age = 22
+         
+        context = self._get_project_guidance(current_age)
+
+        context = "\nKEY CONTEXT:\n"
+        
         if is_first:
-            context = (
-                "\nKEY CONTEXT:\n"
-                "- Xavier has a deep connection to New York from his earlier years\n"
-                "- He is actively planning to return to New York to pursue his next chapter\n"
-                "- His future narrative will primarily take place in New York\n"
-                "- The city represents both his past experiences and future opportunities\n\n"
+            context += (
+                "Initial Context:\n"
+                "- Xavier returns from Japan with fresh tech perspectives\n"
+                "- Focused on positive tech change and societal impact\n\n"
+            )
+        # Foundation development phase and life phase
+        context += (
+            f"Current Age: {current_age} (Story spans 22-72, years 2025-2075)\n"
+            f"Life Phase: {self._get_life_phase(current_age)}\n"
+            f"Project Development: {self._get_project_guidance(current_age)}\n"
+            f"$XVI Foundation Phase: {self._get_foundation_phase(current_age)}\n\n"
+        )
+
+        # Xavier’s values
+        context += (
+            "Core Values & Mission:\n"
+            "- Positive impact through technology\n"
+            "- Curiosity about decentralized systems\n"
+            "- Understanding societal challenges\n"
+            "- Value of connections and community\n\n"
+        )
+
+        context += (
+            "Generate a digest with these sections:\n"
+            
+            "1. STORY SO FAR:\n"
+            "- Summarize events and character growth\n"
+            "- Track relationships and major life events\n"
+            "- Show how available tech shapes Xavier’s experiences\n\n"
+            
+            "2. STORY DIRECTION:\n"
+            "- Drive story forward with opportunities aligned to core values\n"
+            "- Explore societal and personal impact of new tech\n"
+            "- Introduce challenges that reinforce or test values\n\n"
+            
+            "3. NARRATIVE GUIDANCE:\n"
+            "- Depending on age phase, explore appropriate personal and professional developments\n"
+            "- Focus on tech community, learning experiences, and positive growth\n\n"
+        )
+        
+        context += "Balance character growth with Xavier’s ongoing journey in tech and personal life."
+        return context
+
+    def _get_life_phase(self, age, tech_context=None):
+        """Return the current life phase based on age and tech evolution"""
+        if age < 25:
+            return (
+                "Early Career & Personal Growth (22-25)\n"
+                "- Professional: Early career in blockchain and Web3\n"
+                "- Personal: Dating and exploring city life\n"
+                "- Family: Regular family dinners, sharing tech stories\n"
+                "- Social: Building first professional network\n"
+            )
+        elif age < 30:
+            return (
+                "Growth & Foundation Building (25-30)\n"
+                "- Professional: Growing expertise in emerging tech\n"
+                "- Personal: Deeper relationships, potential relocation\n"
+                "- Family: Staying connected through evolving tech\n"
+                "- Social: Expanding network across tech hubs\n"
+            )
+        elif age < 35:
+            return (
+                "Stability & Partnership (30-35)\n"
+                "- Professional: Growing leadership in tech\n"
+                "- Personal: Partnership/marriage\n"
+                "- Family: Blending traditions with modern life\n"
+                "- Social: Building lasting communities\n"
+            )
+        elif age < 45:
+            return (
+                "Family & Leadership (35-45)\n"
+                "- Professional: Pioneering while raising family\n"
+                "- Personal: Early parenthood journey\n"
+                "- Family: Creating tech-aware household\n"
+                "- Social: Building family-friendly networks\n"
+            )
+        elif age < 60:
+            return (
+                "Legacy & Mentorship (45-60)\n"
+                "- Professional: Shaping industry future\n"
+                "- Personal: Supporting children's growth\n"
+                "- Family: Multi-generational connections\n"
+                "- Social: Mentoring next generation\n"
             )
         else:
-            context = "\n"
+            return (
+                "Wisdom & Succession (60+)\n"
+                "- Professional: Advisory and guidance\n"
+                "- Personal: Grandparent phase\n"
+                "- Family: Bridging generations\n"
+                "- Social: Elder community voice\n"
+            )
 
-        return (
-            f"{context}"
-            "Please create a comprehensive digest with two sections:\n\n"
-            
-            "SECTION 1 - STORY SO FAR:\n"
-            "1. Summarize the existing narrative and recent developments\n"
-            "2. Track ongoing relationships and character growth\n"
-            "3. Note significant life events and decisions\n"
-            "4. Highlight emerging themes and patterns\n"
-            "5. Show how available technology shapes Xavier's experiences\n\n"
-            
-            "SECTION 2 - STORY DIRECTION:\n"
-            "1. Outline potential story arcs for the next 3-6 months that:\n"
-            "   - Naturally incorporate available and emerging technologies\n"
-            "   - Consider how tech trends might affect relationships and work\n"
-            "   - Balance personal growth with societal changes\n"
-            "2. Suggest natural developments in:\n"
-            "   - Career progression in the evolving tech landscape\n"
-            "   - Relationship dynamics influenced by new technologies\n"
-            "   - Personal growth opportunities\n"
-            "   - New York life experiences in a changing world\n"
-            "3. Identify potential challenges or conflicts, including:\n"
-            "   - Adapting to technological changes\n"
-            "   - Balancing traditional and digital relationships\n"
-            "   - Ethical considerations of new technologies\n"
-            "4. Note seasonal or contextual opportunities\n\n"
-            
-            "Keep the story direction subtle and open-ended, providing guidance while allowing "
-            "for natural tweet generation. Focus on creating situations and opportunities "
-            "rather than prescribing specific outcomes. Ensure technology integration feels "
-            "natural and serves the story rather than dominating it."
-        )
+    def _get_project_guidance(self, age):
+        """Return age-appropriate project guidance"""
+        if age < 25:
+            return (
+                "- Focus on practical, achievable blockchain projects\n"
+                "- Start with existing tech solutions\n"
+                "- Show learning through implementation\n"
+                "- Build credibility through small wins\n"
+                "- Demonstrate growing technical expertise\n\n"
+            )
+        elif age < 35:
+            return (
+                "- Balance practical solutions with innovative concepts\n"
+                "- Begin exploring novel applications\n"
+                "- Combine multiple technologies creatively\n"
+                "- Show increasing project scope and impact\n"
+                "- Build on established reputation\n\n"
+            )
+        else:
+            return (
+                "- Push boundaries with breakthrough concepts\n"
+                "- Lead technological paradigm shifts\n"
+                "- Create revolutionary solutions\n"
+                "- Shape future tech directions\n"
+                "- Influence industry standards\n\n"
+            )
+        
+    def _get_current_year(self):
+        """Calculate current year based on simulation state"""
+        try:
+            state, _ = self.github_ops.get_file_content("simulation_state.json")
+            if isinstance(state, dict):
+                return state.get("current_year", self.sim_start_year)
+            return self.sim_start_year
+        except Exception as e:
+            print(f"Error getting current year: {e}")
+            return self.sim_start_year
+
+    def _get_foundation_phase(self, age):
+        """Track $XVI Foundation development phase"""
+        if age < 23:
+            return "Pre creation"
+        elif age < 25:
+            return "Concept Development"
+        elif age < 28:
+            return "Initial Implementation"
+        elif age < 32:
+            return "Foundation Formation"
+        elif age < 40:
+            return "Growth & Establishment"
+        elif age < 50:
+            return "Scaling Impact"
+        elif age < 60:
+            return "Global Expansion"
+        elif age < 70:
+            return "Legacy Building"
+        else:
+            return "Succession & Future"
 
 def main():
     generator = DigestGenerator()
-    digest = generator.process_digest()
+    digest = generator.process_first_digest()
     print(digest)
 
 if __name__ == "__main__":

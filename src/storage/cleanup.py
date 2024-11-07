@@ -1,4 +1,4 @@
-from src.storage.github_operations import GithubOperations
+from github_operations import GithubOperations
 import requests
 import sys
 
@@ -65,7 +65,7 @@ if __name__ == "__main__":
         'ong': 'ongoing_tweets.json',
         'comm': 'comments.json',
         'sim': 'simulation_state.json',
-        'digest': 'digest.json',
+        'digest': 'digest_history.json',
         'tech': 'tech_evolution.json'
     }
     

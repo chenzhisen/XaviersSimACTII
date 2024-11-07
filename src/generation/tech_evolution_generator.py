@@ -1,7 +1,7 @@
 import argparse
 from anthropic import Anthropic
-from src.utils.config import Config, AIProvider
-from src.storage.github_operations import GithubOperations
+from utils.config import Config, AIProvider
+from storage.github_operations import GithubOperations
 import json
 from datetime import datetime
 import os
@@ -41,90 +41,83 @@ class TechEvolutionGenerator:
         """Get the most recently saved tech evolution file"""
         try:
             github_ops = GithubOperations()
-            # List files in the data directory
-            url = f"{github_ops.base_url}/repos/{github_ops.repo_owner}/{github_ops.repo_name}/contents/data"
-            response = requests.get(url, headers=github_ops.headers)
-            response.raise_for_status()
-            
-            # Filter for tech evolution files
-            tech_files = [f for f in response.json() if f['name'].startswith('tech_evolution_')]
-            if not tech_files:
-                return None
-                
-            # Sort by name (which includes timestamp) to get the most recent
-            tech_files.sort(key=lambda x: x['name'], reverse=True)
-            latest_file = tech_files[0]['name']
-            
-            # Get the content of the latest file
-            content, _ = github_ops.get_file_content(latest_file)
+            # Get the tech evolution file directly
+            content, _ = github_ops.get_file_content("tech_evolution.json")
             return content
             
         except Exception as e:
-            print(f"Error getting most recent evolution file: {e}")
+            print(f"Error getting tech evolution file: {e}")
             return None
 
     def get_previous_technologies(self, epoch_year):
         """Get technologies from previous epochs"""
         previous_tech = {
-            "emerging": [],  # Technologies that were emerging in previous epochs
-            "mainstream": [], # Technologies that became mainstream in previous epochs
-            "current_mainstream": []  # Technologies that are currently mainstream
+            "emerging": [],
+            "mainstream": [],
+            "current_mainstream": []
         }
         
-        # Try to load from most recent file first
-        recent_file = self.get_most_recent_evolution_file()
-        if recent_file:
-            try:
-                with open(recent_file, 'r') as f:
-                    saved_data = json.load(f)
-                    print(f"Loaded previous technology data from {recent_file}")
-            except Exception as e:
-                print(f"Error loading {recent_file}: {e}")
-                saved_data = {"tech_trees": {}}
-        else:
-            saved_data = {"tech_trees": {}}
-        
-        # Combine saved data with current data
-        all_tech_trees = {
-            **saved_data.get("tech_trees", {}),
-            **self.evolution_data.get("tech_trees", {})
-        }
+        # Get tech trees from saved data
+        all_tech_trees = self._load_tech_trees()
         
         # Process technologies from previous epochs
         for year in range(self.base_year, epoch_year, 5):
             year_str = str(year)
-            if year_str in all_tech_trees:
-                prev_data = all_tech_trees[year_str]
+            if year_str not in all_tech_trees:
+                continue
                 
-                # Add emerging technologies with their predicted years
-                for tech in prev_data.get("emerging_technologies", []):
-                    previous_tech["emerging"].append({
-                        "name": tech["name"],
-                        "estimated_year": tech["estimated_year"],
-                        "probability": tech.get("probability", 0.5)
-                    })
-                
-                # Add mainstream technologies
-                for tech in prev_data.get("mainstream_technologies", []):
-                    previous_tech["mainstream"].append({
-                        "name": tech["name"],
-                        "maturity_year": tech["maturity_year"]
-                    })
-                    # If this technology is mature by current epoch, add to current_mainstream
-                    if tech["maturity_year"] <= epoch_year:
-                        previous_tech["current_mainstream"].append({
-                            "name": tech["name"],
-                            "maturity_year": tech["maturity_year"]
-                        })
+            prev_data = all_tech_trees[year_str]
+            self._process_emerging_tech(previous_tech, prev_data)
+            self._process_mainstream_tech(previous_tech, prev_data, epoch_year)
         
-        # Print summary
+        self._print_tech_summary(epoch_year, previous_tech)
+        return previous_tech
+
+    def _load_tech_trees(self):
+        """Load and combine saved and current tech trees"""
+        recent_file = self.get_most_recent_evolution_file()
+        saved_data = {}
+        
+        if recent_file:
+            try:
+                saved_data = json.loads(recent_file)
+            except Exception as e:
+                print(f"Error loading tech trees: {e}")
+        
+        return {
+            **saved_data.get("tech_trees", {}),
+            **self.evolution_data.get("tech_trees", {})
+        }
+
+    def _process_emerging_tech(self, previous_tech, prev_data):
+        """Process emerging technologies"""
+        for tech in prev_data.get("emerging_technologies", []):
+            previous_tech["emerging"].append({
+                "name": tech["name"],
+                "estimated_year": tech["estimated_year"],
+                "probability": tech.get("probability", 0.5)
+            })
+
+    def _process_mainstream_tech(self, previous_tech, prev_data, epoch_year):
+        """Process mainstream technologies"""
+        for tech in prev_data.get("mainstream_technologies", []):
+            previous_tech["mainstream"].append({
+                "name": tech["name"],
+                "maturity_year": tech["maturity_year"]
+            })
+            if tech["maturity_year"] <= epoch_year:
+                previous_tech["current_mainstream"].append({
+                    "name": tech["name"],
+                    "maturity_year": tech["maturity_year"]
+                })
+
+    def _print_tech_summary(self, epoch_year, previous_tech):
+        """Print summary of technologies"""
         print(f"\nPrevious technologies for epoch {epoch_year}:")
         print(f"- Emerging: {len(previous_tech['emerging'])}")
         print(f"- Mainstream: {len(previous_tech['mainstream'])}")
         print(f"- Currently Mainstream: {len(previous_tech['current_mainstream'])}")
-        
-        return previous_tech
-    
+
     def generate_epoch_tech_tree(self, epoch_year):
         try:
             previous_tech = self.get_previous_technologies(epoch_year)
@@ -143,35 +136,22 @@ class TechEvolutionGenerator:
             DEVELOPMENT GUIDELINES:
 
             1. FOCUS AREAS & INTEGRATIONS:
-               - AI & Robotics
-                 * AI-driven smart contracts
-                 * Decentralized AI governance
-                 * Tokenized AI models
-               
-               - Autonomous Systems
-                 * Blockchain-verified autonomous decisions
-                 * Decentralized transport networks
-                 * Token-incentivized infrastructure
-               
-               - Neural Interfaces
-                 * Blockchain identity and memory markets
-                 * Tokenized cognitive enhancements
-                 * DAO-governed neural networks
-               
-               - Space Technology
-                 * Decentralized space operations
-                 * Interplanetary settlement DAOs
-                 * Space resource tokenization
-               
-               - Sustainable Energy
-                 * Tokenized energy markets
-                 * Decentralized grid management
-                 * Green energy certificates
-               
-               - Digital Infrastructure
-                 * Zero-knowledge applications
-                 * Cross-chain innovations
-                 * Decentralized physical infrastructure
+                - **Artificial Intelligence**: 
+                Encompasses advancements in machine learning, automation, and intelligent systems across various applications.
+
+                - **Autonomous Systems**: 
+                Involves self-operating technologies in transport, infrastructure, and daily life.
+
+                - **Neural Technology**: 
+                Explores human-computer interactions, brain interfaces, and enhanced cognitive tools.
+
+                - **Space Exploration**: 
+                Envisions humanity’s ventures into space, including settlement, resource management, and exploration.
+
+                - **Sustainable Technology**: 
+                Focuses on energy, environment, and sustainability-driven solutions and innovations.
+
+                - **Digital Infrastructure**: Centers on privacy, security, and infrastructure advancements in digital ecosystems.
 
             2. DEVELOPMENT PRINCIPLES:
                - Focus on practical implementations
@@ -281,37 +261,55 @@ class TechEvolutionGenerator:
         """Save the current evolution data to GitHub"""
         try:
             github_ops = GithubOperations()
-            file_path = "tech_evolution.json"  # Remove the extra data/ prefix
+            file_path = "tech_evolution.json"
 
-            # Try to get existing file's SHA
+            # Try to get existing file content
             try:
                 print("Fetching existing file content...")
                 existing_content, sha = github_ops.get_file_content(file_path)
-                print(f"Found existing file with SHA: {sha}")
+                if existing_content:
+                    # Parse existing content if it's a string
+                    if isinstance(existing_content, str):
+                        existing_content = json.loads(existing_content)
+                    
+                    # Merge tech trees
+                    existing_trees = existing_content.get('tech_trees', {})
+                    existing_trees.update(self.evolution_data.get('tech_trees', {}))
+                    
+                    # Create updated content
+                    updated_content = {
+                        'tech_trees': existing_trees,
+                        'last_updated': datetime.now().isoformat()
+                    }
+                else:
+                    updated_content = self.evolution_data
+                
+                print(f"Total tech trees after merge: {len(updated_content['tech_trees'])}")
+                
             except Exception as e:
                 print(f"No existing file found or error: {e}")
+                updated_content = self.evolution_data
                 sha = None
 
-            # Prepare content
-            content_json = json.dumps(self.evolution_data, indent=2)
-            print(f"Content size: {len(content_json)} bytes")
+            # Convert to JSON string before saving
+            json_content = json.dumps(updated_content, indent=2)
             
             # Save/update file
             try:
-                if sha:  # If file exists, we need the SHA
+                if sha:  # Update existing file
                     response = github_ops.update_file(
                         file_path=file_path,
-                        content=self.evolution_data,
+                        content=json_content,
                         commit_message=f"Update tech evolution data for {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}",
                         sha=sha
                     )
-                else:  # First time creation
+                else:  # Create new file
                     response = github_ops.update_file(
                         file_path=file_path,
-                        content=self.evolution_data,
+                        content=json_content,
                         commit_message=f"Create tech evolution data for {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}"
                     )
-                print(f"Update response: {response}")
+                
             except requests.exceptions.HTTPError as e:
                 print(f"HTTP Error: {e.response.status_code}")
                 print(f"Error response: {e.response.text}")

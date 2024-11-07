@@ -15,10 +15,11 @@ class GithubOperations:
         self.repo_name = Config.GITHUB_REPO
         self.ongoing_tweets_path = "ongoing_tweets.json"
         self.comments_path = "comments.json"
-        self.story_digest_path = "digest.json"
+        self.story_digest_path = "digest_history.json"
         self.tech_advances_path = "tech_evolution.json"
 
     def get_file_content(self, file_path):
+        """Get file content from GitHub"""
         url = f"{self.base_url}/repos/{self.repo_owner}/{self.repo_name}/contents/data/{file_path}"
         try:
             response = requests.get(url, headers=self.headers)
@@ -26,15 +27,20 @@ class GithubOperations:
             content = response.json()
             decoded_content = base64.b64decode(content['content']).decode('utf-8')
             data = json.loads(decoded_content)
-            # If the file is empty or contains an empty list, return an empty dict
-            if isinstance(data, list) and len(data) == 0:
-                return {}, content.get('sha', None)
+            
+            # Ensure specific files are always arrays
+            if file_path in ["ongoing_tweets.json", "comments.json", "digest_history.json"]:
+                if not isinstance(data, list):
+                    data = []
+            
             return data, content.get('sha', None)
         except requests.exceptions.HTTPError as e:
             if e.response.status_code == 404:
-                # File doesn't exist yet, return empty dict and None for sha
+                # File doesn't exist yet, return empty structure based on file type
+                if file_path in ["ongoing_tweets.json", "comments.json", "digest_history.json"]:
+                    return [], None
                 return {}, None
-            raise  # Re-raise other HTTP errors
+            raise
 
     def update_file(self, file_path, content, commit_message, sha=None):
         """Update or create a file in the repository"""
@@ -105,32 +111,23 @@ class GithubOperations:
     def update_story_digest(self, new_tweets, new_comments, initial_content=None):
         """Update the story digest with new content"""
         try:
-            # Fetch the existing digest
-            existing_digest, digest_sha = self.get_file_content(self.story_digest_path)
+            # Fetch the existing digest history
+            history, digest_sha = self.get_file_content(self.story_digest_path)
+            if not isinstance(history, list):
+                history = []
             
             if initial_content:
-                # Use the provided initial content
-                digest_content = initial_content
-            else:
-                # Initialize digest if it doesn't exist
-                digest_content = existing_digest if existing_digest else {
-                    "generated_at": datetime.now().isoformat(),
-                    "content": "",
-                    "tweets": [],
-                    "comments": []
-                }
+                # Add the new digest to history
+                history.append(initial_content)
             
-            # Update timestamp
-            digest_content["generated_at"] = datetime.now().isoformat()
-            
-            # Store the updated digest
+            # Store the updated history
             self.update_file(
                 file_path=self.story_digest_path,
-                content=digest_content,
-                commit_message=f"Update digest with {len(new_tweets)} tweets and {len(new_comments)} comments",
+                content=history,
+                commit_message=f"Update digest history with {len(new_tweets)} tweets and {len(new_comments)} comments",
                 sha=digest_sha
             )
-            print(f"Successfully updated digest with {len(new_tweets)} tweets and {len(new_comments)} comments")
+            print(f"Successfully updated digest history with {len(new_tweets)} tweets and {len(new_comments)} comments")
                 
         except Exception as e:
             print(f"Error updating story digest: {str(e)}")
