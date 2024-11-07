@@ -1,0 +1,124 @@
+{
+  "metadata": {
+    "generated_at": "2024-11-06T20:47:22.937261",
+    "base_year": 2025,
+    "end_year": 2075
+  },
+  "tech_trees": {
+    "2025": {
+      "emerging_technologies": [
+        {
+          "name": "AI-Driven Predictive Maintenance",
+          "probability": 0.85,
+          "estimated_year": 2027,
+          "innovation_type": "incremental",
+          "dependencies": [
+            "Machine Learning",
+            "IoT"
+          ],
+          "impact_areas": [
+            "Manufacturing",
+            "Transportation"
+          ],
+          "description": "Systems that predict equipment failures before they occur, reducing downtime and maintenance costs.",
+          "societal_implications": "Enhances efficiency and reduces waste, but might lead to job displacement in maintenance sectors.",
+          "adoption_factors": "High initial investment, need for data infrastructure, gradual acceptance in conservative sectors."
+        },
+        {
+          "name": "Neural Lace",
+          "probability": 0.6,
+          "estimated_year": 2029,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Brain-Computer Interfaces",
+            "Nanotechnology"
+          ],
+          "impact_areas": [
+            "Healthcare",
+            "Education",
+            "Entertainment"
+          ],
+          "description": "A mesh of electrodes placed on or near the brain to facilitate direct communication between the brain and electronic devices.",
+          "societal_implications": "Could revolutionize communication, learning, and treatment for neurological disorders but raises significant ethical and privacy issues.",
+          "adoption_factors": "High cost, ethical concerns, need for regulatory frameworks, potential health risks."
+        },
+        {
+          "name": "Space-Based Solar Power",
+          "probability": 0.7,
+          "estimated_year": 2030,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Space Travel",
+            "Solar Energy"
+          ],
+          "impact_areas": [
+            "Energy",
+            "Environment"
+          ],
+          "description": "Satellites designed to capture solar power in space and beam it back to Earth for energy consumption.",
+          "societal_implications": "Offers a clean, unlimited energy source but requires significant international cooperation and investment.",
+          "adoption_factors": "Technological challenges, geopolitical agreements, high initial costs, environmental impact studies."
+        },
+        {
+          "name": "Quantum Blockchain",
+          "probability": 0.55,
+          "estimated_year": 2028,
+          "innovation_type": "incremental",
+          "dependencies": [
+            "Quantum Computing",
+            "Blockchain Technology"
+          ],
+          "impact_areas": [
+            "Finance",
+            "Security"
+          ],
+          "description": "Utilizing quantum computing to enhance blockchain's security and efficiency, enabling transactions that are quantum-resistant.",
+          "societal_implications": "Improves transaction security but could disrupt current blockchain systems if not universally adopted.",
+          "adoption_factors": "Complexity of quantum technology, need for standardization, potential for new forms of cyber threats."
+        }
+      ],
+      "mainstream_technologies": [
+        {
+          "name": "5G Advanced",
+          "from_emerging": true,
+          "original_emergence_year": 2020,
+          "maturity_year": 2025,
+          "impact_level": 8,
+          "description": "Enhanced 5G networks offering greater speed, lower latency, and more reliable connections.",
+          "adoption_status": "Widely adopted in urban areas, with ongoing expansion into rural regions."
+        },
+        {
+          "name": "Smart Cities",
+          "from_emerging": true,
+          "original_emergence_year": 2016,
+          "maturity_year": 2026,
+          "impact_level": 7,
+          "description": "Urban environments optimized with IoT, AI, and data analytics for energy efficiency, traffic management, and public services.",
+          "adoption_status": "Increasing adoption in developed countries, with pilot programs in many cities worldwide."
+        }
+      ],
+      "epoch_themes": [
+        {
+          "theme": "Sustainability through Technology",
+          "description": "Leveraging technology to mitigate environmental impact and promote sustainable living.",
+          "related_technologies": [
+            "AI-Driven Predictive Maintenance",
+            "Space-Based Solar Power"
+          ],
+          "societal_impact": "Shift towards green energy, reduction in waste, and more sustainable urban planning.",
+          "global_trends": "Increased corporate responsibility, international climate agreements, and public demand for eco-friendly solutions."
+        },
+        {
+          "theme": "Human Augmentation",
+          "description": "Enhancing human capabilities through technological interfaces and implants.",
+          "related_technologies": [
+            "Neural Lace"
+          ],
+          "societal_impact": "Potential for cognitive enhancement, health monitoring, and new forms of interaction, with significant ethical considerations.",
+          "global_trends": "Growing interest in transhumanism, investment in neurotechnology, and discussions on the ethics of human enhancement."
+        }
+      ],
+      "epoch_year": 2025
+    }
+  }
+}
