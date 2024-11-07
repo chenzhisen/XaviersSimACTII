@@ -1,0 +1,142 @@
+{
+  "metadata": {
+    "generated_at": "2024-11-07T13:24:34.351897",
+    "base_year": 2025,
+    "end_year": 2075
+  },
+  "tech_trees": {
+    "2025": {
+      "emerging_technologies": [
+        {
+          "name": "AI-Driven Personal Assistants",
+          "probability": 0.85,
+          "estimated_year": 2027,
+          "innovation_type": "incremental",
+          "dependencies": [
+            "Machine Learning",
+            "NLP"
+          ],
+          "impact_areas": [
+            "Daily Life",
+            "Workplace Efficiency"
+          ],
+          "description": "Advanced AI assistants that manage schedules, provide real-time contextual information, and integrate with smart environments.",
+          "societal_implications": "Enhances productivity, reduces cognitive load on individuals, raises concerns about privacy and data security.",
+          "adoption_factors": "Ease of integration into existing digital ecosystems, user trust in AI, and the development of intuitive interfaces."
+        },
+        {
+          "name": "Autonomous Urban Delivery Drones",
+          "probability": 0.75,
+          "estimated_year": 2028,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Drone Technology",
+            "Autonomous Navigation",
+            "AI"
+          ],
+          "impact_areas": [
+            "Logistics",
+            "Retail"
+          ],
+          "description": "Drones capable of navigating urban environments for package delivery, significantly reducing delivery times.",
+          "societal_implications": "Decreases road congestion, but raises issues with privacy, noise pollution, and airspace management.",
+          "adoption_factors": "Regulatory acceptance, safety assurances, public acceptance, and integration with existing delivery systems."
+        },
+        {
+          "name": "Neural Interface for Cognitive Enhancement",
+          "probability": 0.6,
+          "estimated_year": 2030,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Neural Technology",
+            "AI"
+          ],
+          "impact_areas": [
+            "Education",
+            "Health Care"
+          ],
+          "description": "Devices that enhance or augment human cognitive capabilities through direct neural interfaces.",
+          "societal_implications": "Potential for improving learning rates and memory retention, ethical concerns regarding enhancement and access equity.",
+          "adoption_factors": "Technological maturity, ethical guidelines, public perception, and the development of safe, non-invasive methods."
+        },
+        {
+          "name": "Space-Based Solar Power",
+          "probability": 0.55,
+          "estimated_year": 2029,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Space Exploration",
+            "Renewable Energy Technology"
+          ],
+          "impact_areas": [
+            "Energy",
+            "Environment"
+          ],
+          "description": "Satellites capturing solar energy in space and beaming it back to Earth for clean, continuous energy supply.",
+          "societal_implications": "Could provide a stable, renewable energy source, but involves significant initial investment and international cooperation.",
+          "adoption_factors": "Technological breakthroughs in energy transmission, cost-effectiveness, and geopolitical agreements."
+        },
+        {
+          "name": "Blockchain for Digital Identity",
+          "probability": 0.8,
+          "estimated_year": 2026,
+          "innovation_type": "incremental",
+          "dependencies": [
+            "Blockchain Technology",
+            "Cryptography"
+          ],
+          "impact_areas": [
+            "Security",
+            "Digital Infrastructure"
+          ],
+          "description": "Decentralized systems for managing digital identities, enhancing privacy and security in online interactions.",
+          "societal_implications": "Empowers individuals with control over their personal data, challenges existing data governance models.",
+          "adoption_factors": "Regulatory frameworks, scalability issues, and integration with existing systems."
+        }
+      ],
+      "mainstream_technologies": [
+        {
+          "name": "5G Networks",
+          "from_emerging": true,
+          "original_emergence_year": 2019,
+          "maturity_year": 2025,
+          "impact_level": 9,
+          "description": "Ubiquitous high-speed internet connectivity enabling advanced IoT, smart cities, and real-time data processing.",
+          "adoption_status": "Highly adopted with continued expansion into rural areas and enhancement of network capabilities."
+        },
+        {
+          "name": "Quantum Computing",
+          "from_emerging": true,
+          "original_emergence_year": 2023,
+          "maturity_year": 2030,
+          "impact_level": 8,
+          "description": "Computers using quantum bits (qubits) for exponential increases in computational power, impacting fields like cryptography, material science, and drug discovery.",
+          "adoption_status": "Early mainstream adoption with significant R&D investment and growing practical applications."
+        }
+      ],
+      "epoch_themes": [
+        {
+          "theme": "Human Augmentation",
+          "description": "Technologies that enhance or extend human capabilities, both physical and cognitive.",
+          "related_technologies": [
+            "Neural Interface for Cognitive Enhancement",
+            "AI-Driven Personal Assistants"
+          ],
+          "societal_impact": "Could lead to a divide between enhanced and non-enhanced individuals, prompting discussions on ethics, equality, and human rights.",
+          "global_trends": "Increased focus on bioethics, laws regarding augmentation, and societal acceptance of human enhancement technologies."
+        },
+        {
+          "theme": "Sustainable Living",
+          "description": "Initiatives and technologies aimed at reducing environmental impact and promoting sustainability.",
+          "related_technologies": [
+            "Space-Based Solar Power",
+            "Autonomous Urban Delivery Drones"
+          ],
+          "societal_impact": "Promotes a shift towards sustainable practices, affecting urban planning, energy policies, and consumer behavior.",
+          "global_trends": "Green initiatives, circular economy models, and international agreements on climate change."
+        }
+      ],
+      "epoch_year": 2025
+    }
+  }
+}
