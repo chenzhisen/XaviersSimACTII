@@ -1,0 +1,125 @@
+{
+  "metadata": {
+    "generated_at": "2024-11-08T14:23:04.880837",
+    "base_year": 2025,
+    "end_year": 2075
+  },
+  "tech_trees": {
+    "2025": {
+      "emerging_technologies": [
+        {
+          "name": "AI-Driven Code Synthesis",
+          "probability": 0.85,
+          "estimated_year": 2026,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "AI Coding Assistants",
+            "Machine Learning"
+          ],
+          "impact_areas": [
+            "Software Development",
+            "Automation"
+          ],
+          "description": "AI systems capable of autonomously developing complete software applications from high-level requirements.",
+          "societal_implications": "Reduces the entry barrier for software creation, potentially leading to an increase in software development but also raising concerns about job displacement for coders.",
+          "adoption_factors": "Widespread adoption depends on the reliability of AI-generated code, legal frameworks for AI authorship, and integration into existing development environments."
+        },
+        {
+          "name": "Neuralink-like Brain Interfaces",
+          "probability": 0.7,
+          "estimated_year": 2027,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Neural Technology",
+            "AI"
+          ],
+          "impact_areas": [
+            "Health",
+            "Augmented Reality",
+            "Cognitive Enhancement"
+          ],
+          "description": "Commercialization of brain-computer interfaces for cognitive enhancement and control of external devices.",
+          "societal_implications": "Enhances human capabilities but poses significant ethical questions regarding privacy, consent, and potential misuse.",
+          "adoption_factors": "Adoption will be influenced by public perception, ethical guidelines, and the safety and efficacy of the technology."
+        },
+        {
+          "name": "Blockchain-Enhanced Digital Identity",
+          "probability": 0.9,
+          "estimated_year": 2028,
+          "innovation_type": "incremental",
+          "dependencies": [
+            "Blockchain",
+            "Digital Infrastructure"
+          ],
+          "impact_areas": [
+            "Security",
+            "Privacy",
+            "Identity Verification"
+          ],
+          "description": "A decentralized system for managing personal digital identities with enhanced privacy and security features.",
+          "societal_implications": "Could significantly reduce identity theft and streamline online verification processes but might face resistance due to privacy concerns.",
+          "adoption_factors": "Adoption depends on regulatory acceptance, interoperability with existing systems, and user trust in blockchain technology."
+        },
+        {
+          "name": "Autonomous Urban Air Mobility",
+          "probability": 0.65,
+          "estimated_year": 2029,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Autonomous Systems",
+            "AI"
+          ],
+          "impact_areas": [
+            "Transportation",
+            "Urban Planning"
+          ],
+          "description": "Deployment of autonomous flying taxis for urban transportation, reducing congestion and pollution.",
+          "societal_implications": "Transforms urban mobility, potentially reducing travel time but also requiring new infrastructure and regulations.",
+          "adoption_factors": "Relies on technological maturity, public acceptance, regulatory frameworks, and urban infrastructure readiness."
+        }
+      ],
+      "mainstream_technologies": [
+        {
+          "name": "AI Pair Programming",
+          "from_emerging": true,
+          "original_emergence_year": 2025,
+          "maturity_year": 2027,
+          "impact_level": 8,
+          "description": "Advanced AI tools that work alongside developers, providing real-time suggestions, debugging, and code optimization.",
+          "adoption_status": "High adoption rate among software development teams, becoming an essential tool in professional environments."
+        },
+        {
+          "name": "Sustainable Energy Harvesting",
+          "from_emerging": true,
+          "original_emergence_year": 2026,
+          "maturity_year": 2030,
+          "impact_level": 7,
+          "description": "Technologies like advanced solar panels and kinetic energy harvesters becoming standard in urban and remote energy solutions.",
+          "adoption_status": "Integrated into new constructions and retrofit solutions, driven by environmental regulations and cost efficiency."
+        }
+      ],
+      "epoch_themes": [
+        {
+          "theme": "AI Augmentation of Human Skills",
+          "description": "Focus on technologies that enhance or automate human capabilities, particularly in cognitive and creative tasks.",
+          "related_technologies": [
+            "AI-Driven Code Synthesis",
+            "Neuralink-like Brain Interfaces"
+          ],
+          "societal_impact": "Raises questions about human vs. machine capabilities, job automation, and the future of work.",
+          "global_trends": "Increasing investment in AI education, policy changes for AI integration in workplaces, and ethical AI use."
+        },
+        {
+          "theme": "Decentralized Systems and Privacy",
+          "description": "Shift towards systems that prioritize user control over data, security, and privacy through blockchain and related technologies.",
+          "related_technologies": [
+            "Blockchain-Enhanced Digital Identity"
+          ],
+          "societal_impact": "Promotes individual sovereignty over data but challenges traditional data governance models.",
+          "global_trends": "Legislation for data protection, rise in decentralized finance, and increasing public awareness of privacy issues."
+        }
+      ],
+      "epoch_year": 2025
+    }
+  }
+}
