@@ -1,0 +1,124 @@
+{
+  "metadata": {
+    "generated_at": "2024-11-07T21:16:33.015478",
+    "base_year": 2025,
+    "end_year": 2075
+  },
+  "tech_trees": {
+    "2025": {
+      "emerging_technologies": [
+        {
+          "name": "AI-Driven Personal Health Assistants",
+          "probability": 0.9,
+          "estimated_year": 2026,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Machine Learning",
+            "Neural Technology"
+          ],
+          "impact_areas": [
+            "Healthcare",
+            "Artificial Intelligence"
+          ],
+          "description": "AI systems that provide personalized health advice, monitor vital signs in real-time, and predict potential health issues before they manifest.",
+          "societal_implications": "Could significantly reduce healthcare costs by preventing diseases, but raises concerns about data privacy and the role of AI in decision making.",
+          "adoption_factors": "Requires robust data security measures and public trust in AI for health management. Integration with existing health systems is crucial."
+        },
+        {
+          "name": "Quantum Internet Prototypes",
+          "probability": 0.7,
+          "estimated_year": 2027,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Quantum Computing",
+            "Blockchain"
+          ],
+          "impact_areas": [
+            "Digital Infrastructure",
+            "Security"
+          ],
+          "description": "Initial networks using quantum entanglement for secure communications, offering unbreakable encryption.",
+          "societal_implications": "Enhances global security but might lead to significant shifts in power dynamics due to the potential to render current encryption obsolete.",
+          "adoption_factors": "High initial investment and technical complexity; requires international cooperation and standardization."
+        },
+        {
+          "name": "Autonomous Urban Delivery Drones",
+          "probability": 0.85,
+          "estimated_year": 2028,
+          "innovation_type": "incremental",
+          "dependencies": [
+            "AI",
+            "Autonomous Systems"
+          ],
+          "impact_areas": [
+            "Transportation",
+            "Logistics"
+          ],
+          "description": "Drones capable of navigating urban environments to deliver goods, reducing traffic and pollution.",
+          "societal_implications": "Potential job displacement in delivery sectors, new urban regulations, and noise pollution considerations.",
+          "adoption_factors": "Regulatory approval, public acceptance, and the need for urban infrastructure to support drone operations."
+        },
+        {
+          "name": "Neural Link Interfaces",
+          "probability": 0.6,
+          "estimated_year": 2029,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Neural Technology",
+            "AI"
+          ],
+          "impact_areas": [
+            "Healthcare",
+            "Education"
+          ],
+          "description": "Brain-computer interfaces that allow direct communication between the human brain and digital devices.",
+          "societal_implications": "Raises ethical issues regarding privacy, consent, and the potential for cognitive enhancement disparities.",
+          "adoption_factors": "Technological maturity, safety concerns, and public perception regarding brain hacking and identity."
+        }
+      ],
+      "mainstream_technologies": [
+        {
+          "name": "Smart Grids",
+          "from_emerging": true,
+          "original_emergence_year": 2020,
+          "maturity_year": 2025,
+          "impact_level": 8,
+          "description": "Electricity networks that integrate advanced sensing, metering, and control technology for efficient energy management.",
+          "adoption_status": "Wide adoption in developed countries, with ongoing rollout in developing nations."
+        },
+        {
+          "name": "Blockchain for Digital Identity",
+          "from_emerging": true,
+          "original_emergence_year": 2022,
+          "maturity_year": 2027,
+          "impact_level": 7,
+          "description": "Use of blockchain to provide secure, verifiable digital identities for individuals and businesses.",
+          "adoption_status": "Increasing adoption for secure online transactions and identity verification, driven by privacy concerns."
+        }
+      ],
+      "epoch_themes": [
+        {
+          "theme": "The Rise of Autonomous Living",
+          "description": "A shift towards environments where machines perform tasks autonomously, from transport to home management.",
+          "related_technologies": [
+            "Autonomous Urban Delivery Drones",
+            "AI-Driven Personal Health Assistants"
+          ],
+          "societal_impact": "Changes in employment, urban planning, and lifestyle, with significant emphasis on human-AI collaboration.",
+          "global_trends": "Increased focus on regulatory frameworks for autonomous systems, urban redesign for smart cities."
+        },
+        {
+          "theme": "Quantum Leap in Security",
+          "description": "A focus on leveraging quantum technologies to enhance security and privacy in digital communications.",
+          "related_technologies": [
+            "Quantum Internet Prototypes",
+            "Blockchain for Digital Identity"
+          ],
+          "societal_impact": "Potential reshaping of global espionage, data protection laws, and the digital divide.",
+          "global_trends": "International efforts towards quantum technology standards, cybersecurity arms race."
+        }
+      ],
+      "epoch_year": 2025
+    }
+  }
+}
