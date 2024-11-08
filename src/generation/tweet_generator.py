@@ -398,10 +398,6 @@ class TweetGenerator:
             "- Find the fun in the technical\n"
             
             "Avoid:\n"
-            "- Crypto bro language\n"
-            "- Price/investment focus\n"
-            "- Overused tech jokes\n"
-            "- Preaching about blockchain\n"
             "- Generic observations\n"
             "- Open-ended philosophical questions\n"
             "- Abstract 'what if' scenarios\n"
@@ -445,7 +441,7 @@ class TweetGenerator:
             
             "5. Stylistic Guidelines:\n"
             "- NO hashtags.\n"
-            "- Limit @ mentions to known tech companies or tech figures or celebs only when highly relevant.\n"
+            "- Limit @ mentions to real-world known tech companies or tech figures or celebs only when highly relevant.\n"
             "- Vary tweet lengths, aiming for 384-640 characters on average, but allow occasional shorter or longer tweets (16-1024 characters).\n"
             "- Share real experiences, insights, and relatable moments as a developer. Be authentic and direct—sound like yourself, not a script.\n"
             "- Each tweet should advance the story with a fresh perspective, and maintain an engaging, professional, and personable voice.\n\n"

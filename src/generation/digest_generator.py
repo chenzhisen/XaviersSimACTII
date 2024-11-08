@@ -45,8 +45,9 @@ class DigestGenerator:
         prompt = (
             "BACKGROUND:\n"
             "Xavier's story (age 18-22) documented his early experiences, relationships, and growth "
-            "through social media posts. This digest will bridge his past and future narrative.\n\n"
-            
+            "through social media posts. This digest will bridge his past and future narrative, setting the stage "
+            "for an exploration of deeper questions about technology’s role in human identity, legacy, and the mysteries of existence.\n\n"
+                
             "ORIGINAL CONTENT:\n"
         )
         
@@ -123,13 +124,15 @@ class DigestGenerator:
                 f"{json.dumps(new_comments, indent=2)}\n\n"
                 f"{tech_context}\n\n"
                 
-                "While Xavier’s journey unfolds, he occasionally notices peculiarities that make him wonder if he’s the protagonist in a larger scheme—but he quickly brushes off these thoughts.\n\n"
+                "As Xavier continues on his journey, subtle insights begin to surface. He occasionally reflects on the possibility of a larger design or purpose in his life. "
+                "His curiosity drives him forward, exploring the boundaries of technology and identity, even as he sometimes feels on the edge of something vast and mysterious.\n"
+                "He occasionally notices peculiarities that make him wonder if he’s the protagonist in a larger scheme—but he quickly brushes off these thoughts.\n\n"
 
                 "GUIDELINES:\n"
                 "- Drive the story forward using recent tweets, but maintain continuity with past events\n"
                 "- Evolve ongoing relationships and storylines through recent interactions\n"
                 "- Use comments and tech context to enrich but not steer the main narrative\n"
-                "- $XVI, a cryptocurrency token, mysteriously linked to Xavier, has special place to Xavier\n"
+                "- $XVI, a cryptocurrency token, mysteriously linked to Xavier, has special place to Xavier, perhaps signaling a path toward deeper revelations\n\n"
             )
 
             prompt += self._get_digest_sections(is_first=False)
@@ -220,7 +223,7 @@ class DigestGenerator:
             context += (
                 "Initial Context:\n"
                 "- Xavier returns from Japan with fresh tech perspectives\n"
-                "- Focused on positive tech change and societal impact\n\n"
+                "- Focused on positive tech change, with a growing curiosity about his place in a larger context\n\n"
             )
         # Foundation development phase and life phase
         context += (
@@ -244,20 +247,24 @@ class DigestGenerator:
             
             "1. STORY SO FAR:\n"
             "- Summarize events and character growth\n"
-            "- Track relationships and major life events\n"
-            "- Show how available tech shapes Xavier’s experiences\n\n"
+            "- Track relationships and major life events, with Xavier gradually moving toward questions of purpose\n"
+            "- Show how available tech influences Xavier’s reflections on identity\n\n"
             
             "2. STORY DIRECTION:\n"
-            "- Drive story forward with opportunities aligned to core values\n"
-            "- Explore societal and personal impact of new tech\n"
+            "- Drive story forward with opportunities aligned to core values, exploring his search for a deeper purpose\n"
+            "- Introduce new societal and personal impacts of advanced technology, hinting at themes of self-realization\n"
+            "- Use recent events to reinforce the idea of discovery, hinting at a legacy or cosmic exploration\n"
             "- Introduce challenges that reinforce or test values\n\n"
-            
+
+
             "3. NARRATIVE GUIDANCE:\n"
-            "- Depending on age phase, explore appropriate personal and professional developments\n"
-            "- Focus on tech community, learning experiences, and positive growth\n\n"
+            "- Depending on age phase, explore transformations in Xavier’s professional and personal growth\n"
+            "- Encourage tech community growth, balanced with introspective moments and philosophical themes\n\n"
+
         )
         
-        context += "Balance character growth with Xavier’s ongoing journey in tech and personal life."
+        context += "Balance character growth with Xavier’s journey, subtly drawing toward a legacy or transformation that feels true to his character’s growth and exploration of purpose."
+    
         return context
 
     def _get_life_phase(self, age):
