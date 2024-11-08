@@ -1,0 +1,126 @@
+{
+  "metadata": {
+    "generated_at": "2024-11-08T07:55:08.174466",
+    "base_year": 2025,
+    "end_year": 2075
+  },
+  "tech_trees": {
+    "2025": {
+      "emerging_technologies": [
+        {
+          "name": "Quantum Machine Learning",
+          "probability": 0.8,
+          "estimated_year": 2027,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Quantum Computing",
+            "AI Algorithms"
+          ],
+          "impact_areas": [
+            "Data Analysis",
+            "Drug Discovery",
+            "Financial Modeling"
+          ],
+          "description": "Leveraging quantum computing to perform machine learning operations exponentially faster than classical computers.",
+          "societal_implications": "Could revolutionize fields requiring high computational power, but raises concerns about job displacement and data privacy.",
+          "adoption_factors": "Dependent on the development of stable, error-corrected quantum computers and new quantum algorithms."
+        },
+        {
+          "name": "Neuromorphic Computing",
+          "probability": 0.75,
+          "estimated_year": 2026,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Neural Technology",
+            "AI"
+          ],
+          "impact_areas": [
+            "AI Hardware",
+            "Robotics",
+            "Edge Computing"
+          ],
+          "description": "Hardware that mimics the neural structure of the human brain to perform computations more efficiently.",
+          "societal_implications": "Promises lower energy consumption and could lead to more intelligent, autonomous systems; ethical concerns about AI decision-making.",
+          "adoption_factors": "Challenges include scaling up production and integration with current digital systems."
+        },
+        {
+          "name": "Decentralized Autonomous Organizations (DAOs)",
+          "probability": 0.9,
+          "estimated_year": 2025,
+          "innovation_type": "incremental",
+          "dependencies": [
+            "Blockchain"
+          ],
+          "impact_areas": [
+            "Corporate Governance",
+            "Social Networks",
+            "Finance"
+          ],
+          "description": "Organizations managed by rules encoded as computer programs on the blockchain, rather than by people.",
+          "societal_implications": "Offers new models for democratic decision-making but poses regulatory and legal challenges.",
+          "adoption_factors": "Adoption depends on regulatory acceptance, user trust in smart contracts, and integration with existing legal frameworks."
+        },
+        {
+          "name": "Space-Based Solar Power",
+          "probability": 0.6,
+          "estimated_year": 2030,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Space Exploration",
+            "Energy Storage"
+          ],
+          "impact_areas": [
+            "Energy",
+            "Sustainability"
+          ],
+          "description": "Collecting solar power in space for transmission to Earth to provide continuous, clean energy.",
+          "societal_implications": "Could dramatically reduce reliance on fossil fuels but involves high initial costs and geopolitical issues.",
+          "adoption_factors": "Requires advancements in space technology, energy transmission, and international cooperation."
+        }
+      ],
+      "mainstream_technologies": [
+        {
+          "name": "Autonomous Delivery Drones",
+          "from_emerging": true,
+          "original_emergence_year": 2025,
+          "maturity_year": 2028,
+          "impact_level": 7,
+          "description": "Drones capable of delivering packages autonomously, improving logistics efficiency.",
+          "adoption_status": "Widespread in urban areas with regulatory frameworks for drone airspace management."
+        },
+        {
+          "name": "AI-Driven Personal Health Assistants",
+          "from_emerging": true,
+          "original_emergence_year": 2026,
+          "maturity_year": 2029,
+          "impact_level": 8,
+          "description": "AI systems that monitor health metrics and provide personalized health advice.",
+          "adoption_status": "Integrated into daily life, with high acceptance due to proven health outcomes and privacy regulations."
+        }
+      ],
+      "epoch_themes": [
+        {
+          "theme": "Sustainable Living",
+          "description": "A global push towards technologies that reduce environmental impact and promote sustainability.",
+          "related_technologies": [
+            "Space-Based Solar Power",
+            "Energy Efficient AI"
+          ],
+          "societal_impact": "Promotes a shift in lifestyle, economy, and policy towards sustainability, with potential job shifts towards green industries.",
+          "global_trends": "Rising environmental awareness, international climate agreements, and investments in renewable energy."
+        },
+        {
+          "theme": "Digital Sovereignty",
+          "description": "Increasing focus on privacy, data control, and the decentralization of digital services.",
+          "related_technologies": [
+            "Blockchain",
+            "DAOs"
+          ],
+          "societal_impact": "Empowers individuals with control over their data, challenges traditional governance models, and could lead to new forms of digital citizenship.",
+          "global_trends": "Regulatory changes for data protection, growth of decentralized apps, and public demand for transparency in digital services."
+        }
+      ],
+      "epoch_year": 2025
+    }
+  }
+}
