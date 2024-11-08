@@ -1,0 +1,109 @@
+{
+  "metadata": {
+    "generated_at": "2024-11-08T11:42:46.033445",
+    "base_year": 2025,
+    "end_year": 2075
+  },
+  "tech_trees": {
+    "2025": {
+      "emerging_technologies": [
+        {
+          "name": "AI-Driven Autonomous Development Environment (AIDE)",
+          "probability": 0.75,
+          "estimated_year": 2027,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "AI Coding Assistants",
+            "Machine Learning"
+          ],
+          "impact_areas": [
+            "Software Development",
+            "Automation"
+          ],
+          "description": "AIDE not only assists but autonomously handles entire software development projects from conception to deployment, integrating with version control systems and performing real-time code review.",
+          "societal_implications": "Reduces the need for human programmers in routine tasks, potentially leading to job displacement but also allowing for more complex projects to be undertaken.",
+          "adoption_factors": "Requires significant trust in AI capabilities, regulatory acceptance, and adaptation in educational systems to train for oversight roles."
+        },
+        {
+          "name": "Neural-Linked Augmented Reality",
+          "probability": 0.65,
+          "estimated_year": 2028,
+          "innovation_type": "incremental",
+          "dependencies": [
+            "Neural Interfaces",
+            "Augmented Reality"
+          ],
+          "impact_areas": [
+            "Human-Computer Interaction",
+            "Gaming",
+            "Education"
+          ],
+          "description": "Direct neural links enhance AR experiences, allowing for seamless integration of digital information with physical senses, enabling new forms of interaction and learning.",
+          "societal_implications": "Could revolutionize education and training but raises concerns about privacy, data security, and the blurring line between reality and simulation.",
+          "adoption_factors": "Cost of technology, ethical considerations, and the need for robust security measures to protect against potential misuse."
+        },
+        {
+          "name": "Quantum Blockchain",
+          "probability": 0.6,
+          "estimated_year": 2029,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Quantum Computing",
+            "Blockchain"
+          ],
+          "impact_areas": [
+            "Digital Infrastructure",
+            "Security",
+            "Finance"
+          ],
+          "description": "A blockchain that leverages quantum computing for encryption, offering unprecedented security and scalability for transactions and data storage.",
+          "societal_implications": "Enhances trust in digital transactions, but the technology's complexity could widen the digital divide.",
+          "adoption_factors": "Development of quantum-resistant algorithms, regulatory frameworks, and the need for widespread quantum computing adoption."
+        }
+      ],
+      "mainstream_technologies": [
+        {
+          "name": "AI Coding Assistants",
+          "from_emerging": true,
+          "original_emergence_year": 2025,
+          "maturity_year": 2027,
+          "impact_level": 8,
+          "description": "AI tools that have evolved from simple code completion to full development automation, including real-time collaborative coding and integration with deployment systems.",
+          "adoption_status": "Widely adopted in software development, with many companies relying on AI for initial code drafts and debugging."
+        },
+        {
+          "name": "Autonomous Electric Vehicles",
+          "from_emerging": true,
+          "original_emergence_year": 2026,
+          "maturity_year": 2030,
+          "impact_level": 7,
+          "description": "Vehicles that operate without human intervention, reducing accidents, improving traffic flow, and integrating with smart city infrastructures.",
+          "adoption_status": "Becoming standard in urban areas, with regulations evolving to accommodate their integration into public and private transport systems."
+        }
+      ],
+      "epoch_themes": [
+        {
+          "theme": "The Automation Era",
+          "description": "A period marked by significant advances in automation across industries, reducing human involvement in repetitive tasks.",
+          "related_technologies": [
+            "AIDE",
+            "AI Coding Assistants",
+            "Autonomous Electric Vehicles"
+          ],
+          "societal_impact": "Shifts in job markets, increased productivity, and potential for new types of work focused on oversight, creativity, and strategic planning.",
+          "global_trends": "Increased demand for STEM education, policy reforms to address automation's socio-economic impacts, and ethical discussions around AI governance."
+        },
+        {
+          "theme": "Digital Augmentation of Reality",
+          "description": "The blending of digital information with physical environments through advanced AR and neural interfaces.",
+          "related_technologies": [
+            "Neural-Linked Augmented Reality"
+          ],
+          "societal_impact": "Changes in human interaction with technology, new forms of entertainment, education, and work, and potential for addiction to augmented experiences.",
+          "global_trends": "Growth in immersive tech industries, privacy laws adapting to new data collection methods, and health concerns related to long-term use."
+        }
+      ],
+      "epoch_year": 2025
+    }
+  }
+}
