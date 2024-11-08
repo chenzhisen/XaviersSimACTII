@@ -9,10 +9,10 @@ import random
 
 class TweetGenerator:
     def __init__(self, tweets_per_year=96):
-        xai_config = Config.get_ai_config(AIProvider.XAI)
+        self.xai_config = Config.get_ai_config(AIProvider.XAI)
         self.client = Anthropic(
-            api_key=xai_config.api_key,
-            base_url=xai_config.base_url
+            api_key=self.xai_config.api_key,
+            base_url=self.xai_config.base_url
         )
         self.github_ops = GithubOperations()
         self.digest_generator = DigestGenerator()
@@ -89,7 +89,7 @@ class TweetGenerator:
                     raise Exception("Failed to generate valid first tech epoch")
             
             # Calculate how many recent tweets to include
-            recent_tweet_count = max(3, self.tweets_per_year // 20)  # At least 3
+            recent_tweet_count = max(3, self.tweets_per_year // 8)  # At least 3
             
             # Now get all existing tweets to calculate current year
             try:
@@ -631,7 +631,7 @@ class TweetGenerator:
             
             try:
                 message = self.client.messages.create(
-                    model="grok-beta",
+                    model=self.xai_config.model,  # Use model from config instead of hardcoding
                     max_tokens=1024,
                     system=(
                         "You are Xavier, a tech visionary with a quick wit and playful curiosity. "
@@ -661,7 +661,7 @@ class TweetGenerator:
 
                 tweet = {
                     "id": f"tweet_{datetime.now().strftime('%Y%m%d_%H%M%S')}",
-                    "content": year_prefix + tweet_content,  # Add prefix here
+                    "content": tweet_content,  # Add prefix here
                     "timestamp": datetime.now().isoformat(),
                     "likes": 0,
                     "retweets": 0
