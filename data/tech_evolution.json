@@ -1,0 +1,125 @@
+{
+  "metadata": {
+    "generated_at": "2024-11-08T11:45:59.748195",
+    "base_year": 2025,
+    "end_year": 2075
+  },
+  "tech_trees": {
+    "2025": {
+      "emerging_technologies": [
+        {
+          "name": "AI-Driven Full Stack Development",
+          "probability": 0.85,
+          "estimated_year": 2027,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "AI Coding Assistants",
+            "Machine Learning"
+          ],
+          "impact_areas": [
+            "Software Development",
+            "DevOps",
+            "Education"
+          ],
+          "description": "AI systems that can autonomously design, develop, test, and deploy complete software solutions based on user requirements.",
+          "societal_implications": "Reduces human error, speeds up development cycles, but raises concerns about job displacement in software development.",
+          "adoption_factors": "Adoption will depend on trust in AI accuracy, regulatory acceptance, and integration with existing development tools."
+        },
+        {
+          "name": "Quantum-Resistant Cryptography",
+          "probability": 0.75,
+          "estimated_year": 2028,
+          "innovation_type": "incremental",
+          "dependencies": [
+            "Quantum Computing",
+            "Blockchain"
+          ],
+          "impact_areas": [
+            "Digital Security",
+            "Financial Transactions"
+          ],
+          "description": "Development of cryptographic systems robust against quantum computing attacks, integrating into blockchain and other secure systems.",
+          "societal_implications": "Enhances security in digital transactions, protecting sensitive data against future threats.",
+          "adoption_factors": "Adoption will be driven by the need for future-proof security measures as quantum computing becomes more prevalent."
+        },
+        {
+          "name": "Autonomous Drone Networks",
+          "probability": 0.9,
+          "estimated_year": 2026,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "AI",
+            "IoT"
+          ],
+          "impact_areas": [
+            "Logistics",
+            "Emergency Services"
+          ],
+          "description": "A network of drones capable of self-coordinating for tasks like delivery, surveillance, or disaster response.",
+          "societal_implications": "Improves efficiency in logistics, emergency response times, but poses challenges in privacy and airspace management.",
+          "adoption_factors": "Regulatory approval, public acceptance, and technological reliability will drive adoption."
+        },
+        {
+          "name": "Brain-Computer Interface for Learning",
+          "probability": 0.6,
+          "estimated_year": 2029,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Neural Technology",
+            "AI"
+          ],
+          "impact_areas": [
+            "Education",
+            "Cognitive Enhancement"
+          ],
+          "description": "BCI systems that enhance learning speed by directly interfacing with cognitive processes.",
+          "societal_implications": "Could revolutionize education but raises ethical questions about cognitive inequality and privacy.",
+          "adoption_factors": "Adoption would be influenced by ethical considerations, technological maturity, and societal readiness."
+        }
+      ],
+      "mainstream_technologies": [
+        {
+          "name": "AI-Powered Personal Assistants",
+          "from_emerging": true,
+          "original_emergence_year": 2025,
+          "maturity_year": 2028,
+          "impact_level": 8,
+          "description": "Advanced AI assistants capable of handling complex tasks like scheduling, information retrieval, and personal finance management.",
+          "adoption_status": "Widespread adoption in personal and professional environments, integrated into daily life."
+        },
+        {
+          "name": "Smart Grid Technology",
+          "from_emerging": true,
+          "original_emergence_year": 2026,
+          "maturity_year": 2030,
+          "impact_level": 7,
+          "description": "Integrated systems for managing electricity distribution more efficiently with AI-driven demand-response.",
+          "adoption_status": "Becoming standard in urban areas, driven by energy efficiency and sustainability goals."
+        }
+      ],
+      "epoch_themes": [
+        {
+          "theme": "AI Augmentation",
+          "description": "AI not only assists but augments human capabilities in decision-making, creativity, and productivity.",
+          "related_technologies": [
+            "AI-Driven Full Stack Development",
+            "Brain-Computer Interface for Learning"
+          ],
+          "societal_impact": "Potential for significant productivity gains, but also raises concerns about dependency on AI.",
+          "global_trends": "Increased focus on AI ethics, regulation, and AI-human collaboration."
+        },
+        {
+          "theme": "Sustainable Living",
+          "description": "Technologies that drive towards sustainability, reducing environmental impact and enhancing energy efficiency.",
+          "related_technologies": [
+            "Smart Grid Technology",
+            "Autonomous Drone Networks"
+          ],
+          "societal_impact": "Promotes a greener lifestyle, but requires global cooperation and changes in consumer behavior.",
+          "global_trends": "Move towards circular economies, increased investment in green tech, and policy incentives for sustainable practices."
+        }
+      ],
+      "epoch_year": 2025
+    }
+  }
+}
