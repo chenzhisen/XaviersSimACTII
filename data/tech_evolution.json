@@ -1,0 +1,123 @@
+{
+  "metadata": {
+    "generated_at": "2024-11-07T22:33:09.574254",
+    "base_year": 2025,
+    "end_year": 2075
+  },
+  "tech_trees": {
+    "2025": {
+      "emerging_technologies": [
+        {
+          "name": "Neural Lace",
+          "probability": 0.6,
+          "estimated_year": 2027,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "AI",
+            "Brain-Computer Interfaces"
+          ],
+          "impact_areas": [
+            "Neural Technology",
+            "Health"
+          ],
+          "description": "A mesh that can be integrated into the brain to enhance cognitive functions and interface with digital devices.",
+          "societal_implications": "Could revolutionize treatment for neurological disorders but raises privacy and ethical concerns regarding thought surveillance.",
+          "adoption_factors": "High initial costs, ethical regulations, and public acceptance of brain-invasive technologies."
+        },
+        {
+          "name": "AI-Driven Personal Energy Management",
+          "probability": 0.85,
+          "estimated_year": 2026,
+          "innovation_type": "incremental",
+          "dependencies": [
+            "AI",
+            "IoT"
+          ],
+          "impact_areas": [
+            "Sustainable Technology",
+            "Digital Infrastructure"
+          ],
+          "description": "AI systems that predict and optimize energy use in homes and businesses based on user behavior and external factors.",
+          "societal_implications": "Reduces energy waste, supports environmental sustainability, but might lead to energy monopolies if not regulated.",
+          "adoption_factors": "Integration with smart home systems, cost savings, and government incentives for green technology."
+        },
+        {
+          "name": "Quantum Blockchain",
+          "probability": 0.7,
+          "estimated_year": 2028,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Quantum Computing",
+            "Blockchain"
+          ],
+          "impact_areas": [
+            "Digital Infrastructure",
+            "Security"
+          ],
+          "description": "Blockchain technology leveraging quantum computing for enhanced security and scalability.",
+          "societal_implications": "Provides unprecedented security for transactions but could render current encryption methods obsolete.",
+          "adoption_factors": "Need for quantum computing infrastructure, regulatory acceptance, and transition from classical to quantum systems."
+        },
+        {
+          "name": "Autonomous Urban Air Mobility",
+          "probability": 0.6,
+          "estimated_year": 2029,
+          "innovation_type": "incremental",
+          "dependencies": [
+            "Autonomous Systems",
+            "AI"
+          ],
+          "impact_areas": [
+            "Transportation",
+            "Infrastructure"
+          ],
+          "description": "Drones and flying vehicles for urban transport, reducing traffic congestion and pollution.",
+          "societal_implications": "Improves urban mobility but requires significant airspace regulation and infrastructure changes.",
+          "adoption_factors": "Public safety concerns, regulatory frameworks, and integration with existing transport systems."
+        }
+      ],
+      "mainstream_technologies": [
+        {
+          "name": "AI Personal Assistants",
+          "from_emerging": true,
+          "original_emergence_year": 2025,
+          "maturity_year": 2030,
+          "impact_level": 8,
+          "description": "Advanced AI systems integrated into daily life for personal assistance in scheduling, communication, and learning.",
+          "adoption_status": "Widely adopted in both personal and professional environments, with significant improvements in natural language processing and personalization."
+        },
+        {
+          "name": "5G+ Networks",
+          "from_emerging": false,
+          "original_emergence_year": 2023,
+          "maturity_year": 2027,
+          "impact_level": 7,
+          "description": "Enhanced 5G networks offering higher speeds, lower latency, and greater device connectivity.",
+          "adoption_status": "Standard across urban areas, with rural expansion underway, driving advancements in IoT and smart cities."
+        }
+      ],
+      "epoch_themes": [
+        {
+          "theme": "Ethical AI Governance",
+          "description": "Focus on ethical considerations in AI development and deployment.",
+          "related_technologies": [
+            "AI Personal Assistants",
+            "Neural Lace"
+          ],
+          "societal_impact": "Promotes transparency, accountability, and fairness in AI systems, potentially reducing societal biases.",
+          "global_trends": "Increased regulatory frameworks for AI, public demand for ethical tech, and corporate responsibility initiatives."
+        },
+        {
+          "theme": "Space as the Next Frontier",
+          "description": "Emphasizing space exploration, colonization, and resource exploitation.",
+          "related_technologies": [
+            "Autonomous Urban Air Mobility"
+          ],
+          "societal_impact": "Expands human presence beyond Earth, potentially leading to new economic and geopolitical dynamics.",
+          "global_trends": "Investment in space technologies, international space agreements, and the emergence of space tourism."
+        }
+      ],
+      "epoch_year": 2025
+    }
+  }
+}
