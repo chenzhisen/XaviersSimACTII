@@ -1,0 +1,152 @@
+{
+  "metadata": {
+    "generated_at": "2024-11-07T20:49:34.199212",
+    "base_year": 2025,
+    "end_year": 2075
+  },
+  "tech_trees": {
+    "2025": {
+      "emerging_technologies": [
+        {
+          "name": "Quantum Machine Learning",
+          "probability": 0.75,
+          "estimated_year": 2028,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Quantum Computing",
+            "AI"
+          ],
+          "impact_areas": [
+            "Artificial Intelligence",
+            "Data Analysis"
+          ],
+          "description": "Utilization of quantum algorithms to enhance machine learning capabilities beyond classical limits.",
+          "societal_implications": "Potential to revolutionize drug discovery, financial modeling, and climate prediction, but raises concerns about data privacy and security.",
+          "adoption_factors": "Requires significant advancements in quantum hardware, availability of quantum-resistant encryption, and a workforce trained in quantum mechanics."
+        },
+        {
+          "name": "Fully Autonomous Delivery Drones",
+          "probability": 0.9,
+          "estimated_year": 2026,
+          "innovation_type": "incremental",
+          "dependencies": [
+            "AI",
+            "GPS Technology"
+          ],
+          "impact_areas": [
+            "Logistics",
+            "E-commerce"
+          ],
+          "description": "Drones capable of navigating urban environments without human intervention to deliver goods.",
+          "societal_implications": "Reduces need for human delivery personnel, potentially leading to job displacement, but increases efficiency and could decrease carbon footprint.",
+          "adoption_factors": "Regulatory approval, public acceptance, and technological reliability in diverse weather conditions."
+        },
+        {
+          "name": "Neural Lace",
+          "probability": 0.6,
+          "estimated_year": 2029,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Nanotechnology",
+            "Neuroscience"
+          ],
+          "impact_areas": [
+            "Neural Technology",
+            "Health"
+          ],
+          "description": "A brain-computer interface implanted directly into the brain to enhance cognitive functions or connect with digital devices.",
+          "societal_implications": "Raises ethical issues around privacy, autonomy, and human enhancement; potential for significant medical applications in treating neurological disorders.",
+          "adoption_factors": "Ethical considerations, safety, and the need for non-invasive alternatives."
+        },
+        {
+          "name": "Space-Based Solar Power",
+          "probability": 0.5,
+          "estimated_year": 2027,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Space Exploration",
+            "Renewable Energy"
+          ],
+          "impact_areas": [
+            "Sustainable Technology",
+            "Energy"
+          ],
+          "description": "Collecting solar power in space and transmitting it wirelessly to Earth.",
+          "societal_implications": "Could provide unlimited clean energy, but poses challenges in terms of space debris management and the economics of space launches.",
+          "adoption_factors": "Technological advancements in wireless power transmission, cost reduction in space travel, and international cooperation."
+        },
+        {
+          "name": "Decentralized Digital Identity",
+          "probability": 0.8,
+          "estimated_year": 2025,
+          "innovation_type": "incremental",
+          "dependencies": [
+            "Blockchain",
+            "Digital Infrastructure"
+          ],
+          "impact_areas": [
+            "Security",
+            "Privacy"
+          ],
+          "description": "A blockchain-based system for managing identity verification without centralized control.",
+          "societal_implications": "Enhances personal data control and reduces identity theft, but requires widespread adoption and trust in blockchain technology.",
+          "adoption_factors": "Need for regulatory frameworks, public understanding of blockchain, and interoperability among different systems."
+        }
+      ],
+      "mainstream_technologies": [
+        {
+          "name": "Advanced Driver Assistance Systems (ADAS)",
+          "from_emerging": true,
+          "original_emergence_year": 2020,
+          "maturity_year": 2025,
+          "impact_level": 7,
+          "description": "Systems in vehicles that assist with driving tasks, evolving towards fully autonomous vehicles.",
+          "adoption_status": "High adoption in new vehicles, with ongoing improvements in sensor technology and algorithms."
+        },
+        {
+          "name": "Smart Cities Infrastructure",
+          "from_emerging": true,
+          "original_emergence_year": 2015,
+          "maturity_year": 2026,
+          "impact_level": 8,
+          "description": "Urban areas using IoT and data analytics to improve efficiency, sustainability, and quality of life.",
+          "adoption_status": "Widespread in developed countries, with significant investments in urban planning and public-private partnerships."
+        }
+      ],
+      "epoch_themes": [
+        {
+          "theme": "The Age of Intelligence",
+          "description": "A period marked by the integration of AI into daily life, enhancing decision-making and automation.",
+          "related_technologies": [
+            "Quantum Machine Learning",
+            "AI",
+            "Neural Lace"
+          ],
+          "societal_impact": "Shifts in employment, privacy concerns, and a redefinition of human intelligence and capability.",
+          "global_trends": "Increased automation in industries, rise in ethical AI discussions, and focus on AI education."
+        },
+        {
+          "theme": "Sustainable Futures",
+          "description": "Focus on technologies that promote sustainability, reduce carbon footprints, and manage resources efficiently.",
+          "related_technologies": [
+            "Space-Based Solar Power",
+            "Smart Cities Infrastructure"
+          ],
+          "societal_impact": "Global push towards greener technologies, influencing policy, economy, and lifestyle choices.",
+          "global_trends": "Investment in renewable energy, urban planning for sustainability, and international climate agreements."
+        },
+        {
+          "theme": "Digital Autonomy",
+          "description": "A shift towards decentralized systems and personal control over digital interactions.",
+          "related_technologies": [
+            "Decentralized Digital Identity",
+            "Blockchain"
+          ],
+          "societal_impact": "Empowerment of individuals, but also potential for increased digital divide.",
+          "global_trends": "Adoption of blockchain for various uses beyond cryptocurrency, privacy laws, and the rise of digital citizenship."
+        }
+      ],
+      "epoch_year": 2025
+    }
+  }
+}
