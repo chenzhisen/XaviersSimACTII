@@ -1,0 +1,126 @@
+{
+  "metadata": {
+    "generated_at": "2024-11-08T10:44:03.037816",
+    "base_year": 2025,
+    "end_year": 2075
+  },
+  "tech_trees": {
+    "2025": {
+      "emerging_technologies": [
+        {
+          "name": "AI-Driven Development Environments",
+          "probability": 0.9,
+          "estimated_year": 2026,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "AI Coding Assistants",
+            "Machine Learning"
+          ],
+          "impact_areas": [
+            "Software Development",
+            "Automation"
+          ],
+          "description": "Fully autonomous development environments where AI can write, test, and deploy software with minimal human oversight.",
+          "societal_implications": "Reduces the demand for basic coding skills, shifts focus towards design and management of software, raises concerns about job displacement.",
+          "adoption_factors": "High initial cost, regulatory approval for autonomous systems, need for new educational paradigms."
+        },
+        {
+          "name": "Neuralink Integration",
+          "probability": 0.7,
+          "estimated_year": 2027,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Neural Technology",
+            "AI"
+          ],
+          "impact_areas": [
+            "Healthcare",
+            "Entertainment",
+            "Education"
+          ],
+          "description": "Integration of brain-computer interfaces for controlling devices, enhancing cognitive abilities, and direct human-to-human communication.",
+          "societal_implications": "Potential for significant cognitive enhancement, ethical concerns regarding privacy and consent, changes in social interaction.",
+          "adoption_factors": "Public acceptance, ethical and regulatory hurdles, technological reliability."
+        },
+        {
+          "name": "Quantum-Resistant Blockchain",
+          "probability": 0.8,
+          "estimated_year": 2028,
+          "innovation_type": "incremental",
+          "dependencies": [
+            "Blockchain",
+            "Cryptography"
+          ],
+          "impact_areas": [
+            "Digital Infrastructure",
+            "Security"
+          ],
+          "description": "Development of blockchain systems resistant to quantum computing attacks, ensuring long-term security of transactions and data.",
+          "societal_implications": "Strengthens digital security infrastructure, necessary for the protection of sensitive data against future threats.",
+          "adoption_factors": "Need for consensus among blockchain communities, compatibility with existing systems, research into quantum algorithms."
+        },
+        {
+          "name": "Autonomous Urban Infrastructure",
+          "probability": 0.75,
+          "estimated_year": 2029,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Autonomous Systems",
+            "AI",
+            "IoT"
+          ],
+          "impact_areas": [
+            "Urban Planning",
+            "Transport",
+            "Public Services"
+          ],
+          "description": "Infrastructure that adapts in real-time to traffic, energy needs, and public service demands, optimizing city operations.",
+          "societal_implications": "Enhances urban living but raises issues with privacy, surveillance, and control over public spaces.",
+          "adoption_factors": "Cost of deployment, public trust, regulatory frameworks for autonomous systems."
+        }
+      ],
+      "mainstream_technologies": [
+        {
+          "name": "AI Pair Programming",
+          "from_emerging": true,
+          "original_emergence_year": 2025,
+          "maturity_year": 2028,
+          "impact_level": 8,
+          "description": "AI systems that not only assist in coding but actively participate in the software development process, including design and testing.",
+          "adoption_status": "Widely adopted in tech companies, becoming standard in software development practices."
+        },
+        {
+          "name": "Space Tourism",
+          "from_emerging": true,
+          "original_emergence_year": 2026,
+          "maturity_year": 2030,
+          "impact_level": 7,
+          "description": "Commercial space travel for tourists, with regular scheduled flights to low Earth orbit.",
+          "adoption_status": "A niche but growing market, primarily for the wealthy, with potential for broader adoption as costs decrease."
+        }
+      ],
+      "epoch_themes": [
+        {
+          "theme": "The Age of Autonomous Everything",
+          "description": "An era where autonomous systems are integrated into nearly all aspects of human life, from daily tasks to complex decision-making.",
+          "related_technologies": [
+            "AI-Driven Development Environments",
+            "Autonomous Urban Infrastructure"
+          ],
+          "societal_impact": "Reduces human error in critical systems, increases efficiency, but also leads to debates over control, employment, and ethics.",
+          "global_trends": "Increased automation in industries, shift in employment focus from manual to oversight roles, growth in regulatory frameworks for autonomous tech."
+        },
+        {
+          "theme": "Human Augmentation",
+          "description": "Focus on enhancing human capabilities through technology, from physical to cognitive enhancements.",
+          "related_technologies": [
+            "Neuralink Integration"
+          ],
+          "societal_impact": "Potential for reduced inequality in access to knowledge and abilities, but also raises issues of fairness and the essence of being human.",
+          "global_trends": "Rise in bioethics discussions, legislative measures for augmentation technologies, and new forms of human rights concerning cognitive freedom."
+        }
+      ],
+      "epoch_year": 2025
+    }
+  }
+}
