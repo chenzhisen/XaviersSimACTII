@@ -1,0 +1,108 @@
+{
+  "metadata": {
+    "generated_at": "2024-11-08T11:02:17.691359",
+    "base_year": 2025,
+    "end_year": 2075
+  },
+  "tech_trees": {
+    "2025": {
+      "emerging_technologies": [
+        {
+          "name": "AI-Driven Autonomous Code Review",
+          "probability": 0.85,
+          "estimated_year": 2026,
+          "innovation_type": "incremental",
+          "dependencies": [
+            "AI Coding Assistants",
+            "Machine Learning"
+          ],
+          "impact_areas": [
+            "Software Development",
+            "Quality Assurance"
+          ],
+          "description": "AI systems that autonomously review code for security vulnerabilities, performance issues, and best practices, integrating seamlessly with CI/CD pipelines.",
+          "societal_implications": "Reduces human error in code review, increases software reliability, but raises concerns about job automation in QA roles.",
+          "adoption_factors": "Requires robust AI training data and trust in AI decision-making; adoption will be driven by the need for faster development cycles."
+        },
+        {
+          "name": "Quantum-Enhanced Neural Interfaces",
+          "probability": 0.65,
+          "estimated_year": 2029,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Neural Technology",
+            "Quantum Computing"
+          ],
+          "impact_areas": [
+            "Healthcare",
+            "Education",
+            "Gaming"
+          ],
+          "description": "Use of quantum computing to enhance the processing speed and accuracy of brain-computer interfaces, enabling more complex and real-time interactions.",
+          "societal_implications": "Potential for significant advancements in mental health treatment, but ethical concerns around privacy and consent are paramount.",
+          "adoption_factors": "High cost and complexity of quantum systems; ethical, privacy, and security issues need resolution before widespread adoption."
+        },
+        {
+          "name": "Blockchain-Enabled Autonomous Vehicles",
+          "probability": 0.7,
+          "estimated_year": 2027,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Autonomous Systems",
+            "Blockchain Technology"
+          ],
+          "impact_areas": [
+            "Transportation",
+            "Insurance",
+            "Data Security"
+          ],
+          "description": "Vehicles that operate on blockchain technology for secure, transparent, and decentralized management of vehicle data, ownership, and insurance.",
+          "societal_implications": "Enhances trust in autonomous systems through transparency and data security, but raises issues around data ownership and liability.",
+          "adoption_factors": "Adoption depends on regulatory acceptance of blockchain for such critical applications and the resolution of technical challenges in real-time processing."
+        }
+      ],
+      "mainstream_technologies": [
+        {
+          "name": "AI Collaborative Coding Environments",
+          "from_emerging": true,
+          "original_emergence_year": 2025,
+          "maturity_year": 2028,
+          "impact_level": 8,
+          "description": "Advanced AI tools that not only suggest code but actively participate in coding sessions, providing real-time suggestions, code optimization, and debugging support.",
+          "adoption_status": "Widely adopted in tech companies, with significant impact on software development speed and quality, but still requires human oversight for critical decisions."
+        },
+        {
+          "name": "Energy Harvesting Urban Infrastructure",
+          "from_emerging": false,
+          "original_emergence_year": 2023,
+          "maturity_year": 2026,
+          "impact_level": 7,
+          "description": "Urban structures designed to capture and utilize ambient energy from solar, kinetic, and thermal sources to power public services.",
+          "adoption_status": "Becoming standard in new urban developments, driven by sustainability goals and city planning initiatives."
+        }
+      ],
+      "epoch_themes": [
+        {
+          "theme": "AI-Enhanced Human Augmentation",
+          "description": "A focus on technologies that enhance human capabilities through AI, particularly in cognitive and physical tasks.",
+          "related_technologies": [
+            "AI-Driven Autonomous Code Review",
+            "Quantum-Enhanced Neural Interfaces"
+          ],
+          "societal_impact": "Potential for cognitive enhancement, ethical debates over human vs. machine capabilities, and changes in labor markets.",
+          "global_trends": "Increased investment in AI for healthcare, education, and personal productivity; global push for ethical AI frameworks."
+        },
+        {
+          "theme": "Sustainable and Resilient Urbanization",
+          "description": "Innovations aimed at making cities more sustainable, resilient to climate change, and capable of energy self-sufficiency.",
+          "related_technologies": [
+            "Energy Harvesting Urban Infrastructure"
+          ],
+          "societal_impact": "Enhances urban living conditions, reduces environmental impact, but requires significant initial investment.",
+          "global_trends": "Urban planning prioritizing green technologies, international agreements on carbon neutrality, and smart city initiatives."
+        }
+      ],
+      "epoch_year": 2025
+    }
+  }
+}
