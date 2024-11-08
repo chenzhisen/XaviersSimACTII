@@ -1,0 +1,146 @@
+{
+  "metadata": {
+    "generated_at": "2024-11-08T18:17:24.992065",
+    "base_year": 2025,
+    "end_year": 2075
+  },
+  "tech_trees": {
+    "2025": {
+      "emerging_technologies": [
+        {
+          "name": "AI-Driven Autonomous Coding Systems",
+          "probability": 0.9,
+          "estimated_year": 2027,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "AI Coding Assistants",
+            "Advanced Machine Learning"
+          ],
+          "impact_areas": [
+            "Software Development",
+            "Education",
+            "Enterprise Solutions"
+          ],
+          "description": "Fully autonomous systems capable of developing software from high-level requirements to deployment, integrating with version control systems, and performing real-time collaborative coding and debugging.",
+          "societal_implications": "Reduces the entry barrier for software development, increases productivity but potentially displaces traditional coding jobs.",
+          "adoption_factors": "Requires significant advancements in AI, trust in AI systems, and regulatory frameworks to ensure ethical practices."
+        },
+        {
+          "name": "Quantum-Resistant Blockchain",
+          "probability": 0.7,
+          "estimated_year": 2028,
+          "innovation_type": "incremental",
+          "dependencies": [
+            "Blockchain",
+            "Quantum Computing"
+          ],
+          "impact_areas": [
+            "Finance",
+            "Data Security",
+            "Identity Management"
+          ],
+          "description": "Blockchain technology designed to withstand attacks from quantum computers, ensuring long-term security of digital transactions and data.",
+          "societal_implications": "Enhances security in critical infrastructure and personal data protection, potentially reducing fraud.",
+          "adoption_factors": "Requires standardization of quantum-resistant algorithms, industry consensus, and integration into existing blockchain systems."
+        },
+        {
+          "name": "Neural-Enhanced Learning Systems",
+          "probability": 0.8,
+          "estimated_year": 2026,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Neural Technology",
+            "AI"
+          ],
+          "impact_areas": [
+            "Education",
+            "Training",
+            "Skill Development"
+          ],
+          "description": "Systems that integrate AI with neurofeedback to optimize learning processes by adapting to individual cognitive patterns.",
+          "societal_implications": "Could lead to personalized education, reducing educational disparities but might also increase surveillance concerns.",
+          "adoption_factors": "Willingness to adopt neurotechnology, privacy laws, and ethical considerations regarding mind-reading capabilities."
+        },
+        {
+          "name": "Space-Based Solar Power",
+          "probability": 0.6,
+          "estimated_year": 2029,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Space Exploration",
+            "Renewable Energy"
+          ],
+          "impact_areas": [
+            "Energy",
+            "Environment",
+            "Infrastructure"
+          ],
+          "description": "Solar panels in space that collect solar energy and beam it back to Earth for consumption, offering unlimited clean energy.",
+          "societal_implications": "Potential for significant reduction in carbon emissions, geopolitical implications due to control over energy sources.",
+          "adoption_factors": "Technological feasibility, international cooperation, and the economic viability of space launches."
+        },
+        {
+          "name": "Decentralized Digital Identity",
+          "probability": 0.85,
+          "estimated_year": 2027,
+          "innovation_type": "incremental",
+          "dependencies": [
+            "Blockchain",
+            "Privacy Technologies"
+          ],
+          "impact_areas": [
+            "Security",
+            "Privacy",
+            "Internet Services"
+          ],
+          "description": "A system where individuals control their digital identity through blockchain, reducing reliance on centralized authorities.",
+          "societal_implications": "Enhances user privacy and control but could complicate identity verification processes.",
+          "adoption_factors": "Need for widespread blockchain adoption, regulatory acceptance, and user education on managing digital identities."
+        }
+      ],
+      "mainstream_technologies": [
+        {
+          "name": "AI-Powered Smart Cities",
+          "from_emerging": true,
+          "original_emergence_year": 2025,
+          "maturity_year": 2030,
+          "impact_level": 8,
+          "description": "Cities integrated with AI for traffic management, energy efficiency, public safety, and waste management.",
+          "adoption_status": "High adoption in developed urban areas, with significant investments in infrastructure."
+        },
+        {
+          "name": "Neural Interface Devices",
+          "from_emerging": true,
+          "original_emergence_year": 2026,
+          "maturity_year": 2030,
+          "impact_level": 7,
+          "description": "Devices that allow direct communication between the brain and computers, enhancing human capabilities.",
+          "adoption_status": "Increasingly common in medical applications, education, and personal productivity."
+        }
+      ],
+      "epoch_themes": [
+        {
+          "theme": "AI Everywhere",
+          "description": "AI integration into every aspect of life, from daily tasks to complex decision-making processes.",
+          "related_technologies": [
+            "AI-Driven Autonomous Coding Systems",
+            "Neural-Enhanced Learning Systems"
+          ],
+          "societal_impact": "Shifts job markets, enhances productivity, raises ethical questions about AI governance.",
+          "global_trends": "Increased focus on AI ethics, education reform, and workforce retraining initiatives."
+        },
+        {
+          "theme": "Sustainable Innovation",
+          "description": "Technological advancements focused on sustainability to address climate change and resource scarcity.",
+          "related_technologies": [
+            "Space-Based Solar Power",
+            "AI-Powered Smart Cities"
+          ],
+          "societal_impact": "Promotes environmental awareness, shifts in energy policy, and global cooperation.",
+          "global_trends": "Rising investments in green technology, international treaties on sustainability, and consumer demand for eco-friendly solutions."
+        }
+      ],
+      "epoch_year": 2025
+    }
+  }
+}
