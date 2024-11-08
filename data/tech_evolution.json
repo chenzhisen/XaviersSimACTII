@@ -1,0 +1,127 @@
+{
+  "metadata": {
+    "generated_at": "2024-11-08T15:44:21.890614",
+    "base_year": 2025,
+    "end_year": 2075
+  },
+  "tech_trees": {
+    "2025": {
+      "emerging_technologies": [
+        {
+          "name": "AI-Driven Autonomous Development Environments",
+          "probability": 0.85,
+          "estimated_year": 2027,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "AI Coding Assistants",
+            "Machine Learning"
+          ],
+          "impact_areas": [
+            "Software Development",
+            "Education",
+            "AI Research"
+          ],
+          "description": "These environments autonomously handle software development tasks from conception to deployment, adapting to developer's coding style and project requirements.",
+          "societal_implications": "Reduces human error in coding, increases productivity, but raises concerns about job displacement in software development.",
+          "adoption_factors": "High initial investment, ethical considerations regarding AI's role in creative work, and regulatory compliance."
+        },
+        {
+          "name": "Neuralink 2.0",
+          "probability": 0.75,
+          "estimated_year": 2028,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Neural Technology",
+            "AI"
+          ],
+          "impact_areas": [
+            "Health",
+            "Entertainment",
+            "Education"
+          ],
+          "description": "A refined brain-computer interface for seamless interaction with digital devices, enhancing cognitive capabilities and providing augmented reality experiences.",
+          "societal_implications": "Potential for cognitive enhancement, but also raises privacy concerns, ethical issues around human augmentation, and potential for misuse.",
+          "adoption_factors": "Acceptance of invasive technology, ethical debates, and regulatory hurdles."
+        },
+        {
+          "name": "Quantum Blockchain",
+          "probability": 0.6,
+          "estimated_year": 2029,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Blockchain",
+            "Quantum Computing"
+          ],
+          "impact_areas": [
+            "Finance",
+            "Security",
+            "Digital Infrastructure"
+          ],
+          "description": "Integration of quantum computing with blockchain to enhance security, speed, and scalability of transactions.",
+          "societal_implications": "Could revolutionize secure transactions, but brings concerns about the centralization of power if quantum computing becomes too advanced.",
+          "adoption_factors": "Requires significant advances in quantum technology, high cost, and global consensus on blockchain standards."
+        },
+        {
+          "name": "Space-Based Solar Power",
+          "probability": 0.55,
+          "estimated_year": 2029,
+          "innovation_type": "incremental",
+          "dependencies": [
+            "Space Exploration",
+            "Sustainable Technology"
+          ],
+          "impact_areas": [
+            "Energy",
+            "Infrastructure"
+          ],
+          "description": "Collecting solar power in space where sunlight is uninterrupted and transmitting it back to Earth.",
+          "societal_implications": "Provides a clean energy source, reduces dependency on terrestrial resources, but involves high initial costs and geopolitical space law issues.",
+          "adoption_factors": "Technological feasibility, international cooperation, and economic viability."
+        }
+      ],
+      "mainstream_technologies": [
+        {
+          "name": "AI-Powered Smart Cities",
+          "from_emerging": true,
+          "original_emergence_year": 2025,
+          "maturity_year": 2030,
+          "impact_level": 8,
+          "description": "Cities leveraging AI for traffic management, waste management, energy use optimization, and public safety.",
+          "adoption_status": "Widely adopted in developed nations, with ongoing implementation in developing countries due to infrastructure readiness."
+        },
+        {
+          "name": "Advanced Driver Assistance Systems (ADAS) Level 4",
+          "from_emerging": true,
+          "original_emergence_year": 2026,
+          "maturity_year": 2030,
+          "impact_level": 9,
+          "description": "Vehicles capable of fully autonomous driving under specific conditions, significantly reducing human intervention.",
+          "adoption_status": "Common in new vehicles, with full adoption in urban areas where infrastructure supports autonomous driving."
+        }
+      ],
+      "epoch_themes": [
+        {
+          "theme": "AI Integration into Daily Life",
+          "description": "AI becomes ubiquitous, deeply integrated into personal, professional, and societal operations.",
+          "related_technologies": [
+            "AI-Driven Autonomous Development Environments",
+            "AI-Powered Smart Cities"
+          ],
+          "societal_impact": "Enhances efficiency but challenges include job displacement, privacy, and ethical AI use.",
+          "global_trends": "Global push towards AI ethics standards, AI education, and AI-driven policy making."
+        },
+        {
+          "theme": "Sustainability through Technology",
+          "description": "Technology focuses on solving environmental challenges through innovative, sustainable solutions.",
+          "related_technologies": [
+            "Space-Based Solar Power",
+            "Sustainable Technology"
+          ],
+          "societal_impact": "Promotes environmental stewardship, but requires significant investment and international collaboration.",
+          "global_trends": "Rise in green technology investments, carbon credit systems, and sustainable urban planning."
+        }
+      ],
+      "epoch_year": 2025
+    }
+  }
+}
