@@ -1,0 +1,125 @@
+{
+  "metadata": {
+    "generated_at": "2024-11-08T10:27:58.244348",
+    "base_year": 2025,
+    "end_year": 2075
+  },
+  "tech_trees": {
+    "2025": {
+      "emerging_technologies": [
+        {
+          "name": "AI-Driven Code Synthesis",
+          "probability": 0.8,
+          "estimated_year": 2027,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "AI Coding Assistants",
+            "Machine Learning"
+          ],
+          "impact_areas": [
+            "Software Development",
+            "Automation"
+          ],
+          "description": "AI systems that can automatically generate complete code modules or applications from high-level requirements.",
+          "societal_implications": "Could lead to significant job displacement in coding but also empower non-developers to create software, broadening access to technology creation.",
+          "adoption_factors": "Requires advanced AI capabilities, trust in AI-generated code, and regulatory frameworks for AI in software development."
+        },
+        {
+          "name": "Neural Lace Interface",
+          "probability": 0.6,
+          "estimated_year": 2029,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Neural Technology",
+            "Bio-sensors"
+          ],
+          "impact_areas": [
+            "Human Enhancement",
+            "Healthcare"
+          ],
+          "description": "A brain-computer interface that integrates directly with neural tissue to enhance cognitive functions or control devices.",
+          "societal_implications": "Raises ethical issues regarding privacy, autonomy, and the potential for cognitive enhancement disparities.",
+          "adoption_factors": "Biocompatibility, ethical considerations, regulatory approval, and public acceptance of invasive technology."
+        },
+        {
+          "name": "Quantum Secure Blockchain",
+          "probability": 0.75,
+          "estimated_year": 2028,
+          "innovation_type": "incremental",
+          "dependencies": [
+            "Blockchain",
+            "Quantum Computing"
+          ],
+          "impact_areas": [
+            "Digital Infrastructure",
+            "Security"
+          ],
+          "description": "A blockchain technology resistant to quantum computing attacks, ensuring long-term data integrity and security.",
+          "societal_implications": "Enhances security in financial and governmental systems, potentially reducing cybercrime and enhancing trust in digital transactions.",
+          "adoption_factors": "Development of quantum-resistant algorithms, integration with existing blockchain networks, and industry-wide acceptance."
+        },
+        {
+          "name": "Autonomous Urban Traffic Management",
+          "probability": 0.85,
+          "estimated_year": 2026,
+          "innovation_type": "incremental",
+          "dependencies": [
+            "AI",
+            "IoT",
+            "Autonomous Vehicles"
+          ],
+          "impact_areas": [
+            "Transportation",
+            "Urban Planning"
+          ],
+          "description": "A system that dynamically manages traffic flow in cities through AI, reducing congestion and optimizing energy use.",
+          "societal_implications": "Improves quality of life through reduced travel time and pollution, but requires significant infrastructure investment.",
+          "adoption_factors": "City infrastructure readiness, regulatory approval, and public trust in autonomous systems."
+        }
+      ],
+      "mainstream_technologies": [
+        {
+          "name": "AI Coding Assistants",
+          "from_emerging": true,
+          "original_emergence_year": 2025,
+          "maturity_year": 2028,
+          "impact_level": 8,
+          "description": "Tools like Cursor and Copilot evolve into comprehensive development environments where AI assists in all aspects of coding.",
+          "adoption_status": "Widely adopted in software development, changing the nature of programming jobs and education."
+        },
+        {
+          "name": "Smart City Infrastructure",
+          "from_emerging": false,
+          "original_emergence_year": 2024,
+          "maturity_year": 2027,
+          "impact_level": 7,
+          "description": "Cities leverage IoT and AI for optimizing services like energy, water, waste management, and public transport.",
+          "adoption_status": "Becoming standard in urban planning with significant investments from governments and private sectors."
+        }
+      ],
+      "epoch_themes": [
+        {
+          "theme": "AI Integration",
+          "description": "AI becomes ubiquitous, transforming industries and daily life with intelligent automation.",
+          "related_technologies": [
+            "AI-Driven Code Synthesis",
+            "AI Coding Assistants"
+          ],
+          "societal_impact": "Shift in workforce skills, job market, and educational systems towards AI literacy and ethical considerations.",
+          "global_trends": "Global push for AI ethics, AI-driven economic growth, and international AI policy frameworks."
+        },
+        {
+          "theme": "Sustainability and Resilience",
+          "description": "Technological advancements focus on creating sustainable systems and preparing for environmental challenges.",
+          "related_technologies": [
+            "Autonomous Urban Traffic Management",
+            "Smart City Infrastructure"
+          ],
+          "societal_impact": "Enhances urban living standards, reduces environmental impact, but might increase urban-rural divide.",
+          "global_trends": "Move towards green tech, renewable energy, and circular economy principles."
+        }
+      ],
+      "epoch_year": 2025
+    }
+  }
+}
