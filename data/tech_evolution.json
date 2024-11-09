@@ -1,0 +1,124 @@
+{
+  "metadata": {
+    "generated_at": "2024-11-09T12:12:05.135093",
+    "base_year": 2025,
+    "end_year": 2075
+  },
+  "tech_trees": {
+    "2025": {
+      "emerging_technologies": [
+        {
+          "name": "AI-Driven Code Autonomation",
+          "probability": 0.85,
+          "estimated_year": 2026,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "AI Coding Assistants",
+            "Machine Learning"
+          ],
+          "impact_areas": [
+            "Software Development",
+            "Automation"
+          ],
+          "description": "AI systems capable of autonomously writing, testing, and deploying software, reducing human involvement in coding to oversight and strategic decision-making.",
+          "societal_implications": "Significant changes in job roles within IT, potential for increased efficiency but also concerns about job displacement.",
+          "adoption_factors": "Requires advancements in AI reliability, trust in AI for critical tasks, and regulatory frameworks for AI in software development."
+        },
+        {
+          "name": "Quantum-Resistant Blockchain",
+          "probability": 0.7,
+          "estimated_year": 2028,
+          "innovation_type": "incremental",
+          "dependencies": [
+            "Blockchain",
+            "Quantum Computing"
+          ],
+          "impact_areas": [
+            "Digital Infrastructure",
+            "Security"
+          ],
+          "description": "Blockchain systems designed to withstand attacks from quantum computers, ensuring long-term security for digital transactions and data.",
+          "societal_implications": "Enhances trust in digital transactions and supports the longevity of blockchain technology in a post-quantum world.",
+          "adoption_factors": "Depends on the progression of quantum computing and the development of new cryptographic algorithms."
+        },
+        {
+          "name": "Neural Lace",
+          "probability": 0.55,
+          "estimated_year": 2029,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Neural Technology",
+            "Nano-Tech"
+          ],
+          "impact_areas": [
+            "Health",
+            "Computing"
+          ],
+          "description": "A brain-computer interface that directly integrates with human neural tissue to enhance cognitive capabilities or control external devices.",
+          "societal_implications": "Potential for cognitive enhancement, ethical concerns about privacy, consent, and equity in access.",
+          "adoption_factors": "Ethical approval, medical safety validations, and public acceptance of brain modification technology."
+        },
+        {
+          "name": "Zero-Energy Buildings",
+          "probability": 0.9,
+          "estimated_year": 2027,
+          "innovation_type": "incremental",
+          "dependencies": [
+            "Sustainable Technology",
+            "Energy Storage"
+          ],
+          "impact_areas": [
+            "Construction",
+            "Environment"
+          ],
+          "description": "Buildings designed to consume no net energy over a year, producing as much energy as they use through renewable means.",
+          "societal_implications": "Reduces carbon footprint, promotes energy independence, and could lead to shifts in urban planning.",
+          "adoption_factors": "Cost reduction in renewable energy technologies, regulatory incentives, and public demand for sustainable living."
+        }
+      ],
+      "mainstream_technologies": [
+        {
+          "name": "AI Pair Programming",
+          "from_emerging": true,
+          "original_emergence_year": 2025,
+          "maturity_year": 2028,
+          "impact_level": 8,
+          "description": "AI systems that work in real-time with human developers, offering suggestions, writing code, and performing automated testing.",
+          "adoption_status": "Widely adopted in tech companies, integrated into development workflows, with educational systems adapting to teach alongside AI."
+        },
+        {
+          "name": "Autonomous Delivery Vehicles",
+          "from_emerging": true,
+          "original_emergence_year": 2025,
+          "maturity_year": 2030,
+          "impact_level": 7,
+          "description": "Vehicles designed to deliver goods autonomously, reducing human involvement in last-mile delivery.",
+          "adoption_status": "Common in urban areas, with regulatory frameworks established to manage traffic and safety."
+        }
+      ],
+      "epoch_themes": [
+        {
+          "theme": "Ethical AI and Regulation",
+          "description": "A focus on ensuring AI systems are developed and used in ways that are ethical, transparent, and beneficial to society.",
+          "related_technologies": [
+            "AI-Driven Code Autonomation",
+            "Neural Lace"
+          ],
+          "societal_impact": "Promotes trust in technology, influences policy-making, and could lead to new ethical frameworks for tech development.",
+          "global_trends": "Increasing public and governmental interest in AI ethics, leading to international standards and regulations."
+        },
+        {
+          "theme": "Sustainability and Resource Management",
+          "description": "A shift towards technologies that minimize environmental impact and promote sustainability.",
+          "related_technologies": [
+            "Zero-Energy Buildings",
+            "Quantum-Resistant Blockchain"
+          ],
+          "societal_impact": "Encourages a circular economy, reduces environmental degradation, and fosters innovations in energy and material use.",
+          "global_trends": "Global push for green technology, influenced by climate change initiatives and resource scarcity concerns."
+        }
+      ],
+      "epoch_year": 2025
+    }
+  }
+}
