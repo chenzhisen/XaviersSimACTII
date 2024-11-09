@@ -1,0 +1,143 @@
+{
+  "metadata": {
+    "generated_at": "2024-11-09T15:20:29.117656",
+    "base_year": 2025,
+    "end_year": 2075
+  },
+  "tech_trees": {
+    "2025": {
+      "emerging_technologies": [
+        {
+          "name": "AI-Driven Software Development",
+          "probability": 0.9,
+          "estimated_year": 2026,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "AI Coding Assistants",
+            "Machine Learning"
+          ],
+          "impact_areas": [
+            "Software Development",
+            "Education"
+          ],
+          "description": "AI systems that can autonomously write, debug, and deploy code with minimal human intervention, enhancing productivity and reducing errors.",
+          "societal_implications": "Shift in job roles for developers, potential increase in software quality, ethical considerations regarding AI-generated code.",
+          "adoption_factors": "Ease of integration with existing development workflows, trust in AI capabilities, regulatory compliance for automated systems."
+        },
+        {
+          "name": "Fully Autonomous Vehicles",
+          "probability": 0.7,
+          "estimated_year": 2027,
+          "innovation_type": "incremental",
+          "dependencies": [
+            "Autonomous Systems",
+            "AI"
+          ],
+          "impact_areas": [
+            "Transportation",
+            "Urban Planning"
+          ],
+          "description": "Vehicles capable of operating in all conditions without human input, leading to reduced accidents and optimized traffic flow.",
+          "societal_implications": "Reduction in transportation jobs, changes in urban design, privacy concerns from constant data collection.",
+          "adoption_factors": "Legislative approval, public trust in autonomous safety, infrastructure readiness."
+        },
+        {
+          "name": "Neural-Cloud Interfaces",
+          "probability": 0.6,
+          "estimated_year": 2029,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Neural Technology",
+            "Cloud Computing"
+          ],
+          "impact_areas": [
+            "Health",
+            "Gaming",
+            "Education"
+          ],
+          "description": "Direct brain-to-cloud interfaces allowing for seamless interaction with digital environments, enhancing cognitive abilities through augmented reality.",
+          "societal_implications": "Privacy issues, ethical considerations about cognitive enhancement, potential for digital divide.",
+          "adoption_factors": "Technological maturity, regulatory frameworks for brain interfaces, public acceptance of invasive technology."
+        },
+        {
+          "name": "Space Resource Utilization",
+          "probability": 0.8,
+          "estimated_year": 2028,
+          "innovation_type": "incremental",
+          "dependencies": [
+            "Space Exploration",
+            "Sustainable Technology"
+          ],
+          "impact_areas": [
+            "Industry",
+            "Energy"
+          ],
+          "description": "Technologies for harvesting and processing resources from space, focusing initially on water ice mining on the moon.",
+          "societal_implications": "Economic shifts due to new resource availability, geopolitical competition for space resources.",
+          "adoption_factors": "Cost-effectiveness, international space law, technological reliability."
+        },
+        {
+          "name": "Zero-Waste Manufacturing",
+          "probability": 0.85,
+          "estimated_year": 2027,
+          "innovation_type": "incremental",
+          "dependencies": [
+            "Sustainable Technology",
+            "AI"
+          ],
+          "impact_areas": [
+            "Manufacturing",
+            "Environment"
+          ],
+          "description": "Advanced manufacturing processes that recycle all by-products, reducing environmental impact to near zero.",
+          "societal_implications": "Reduction in landfill waste, new business models for manufacturers, potential job shifts.",
+          "adoption_factors": "Economic incentives, regulatory support, technological scalability."
+        }
+      ],
+      "mainstream_technologies": [
+        {
+          "name": "AI-Powered Smart Cities",
+          "from_emerging": true,
+          "original_emergence_year": 2025,
+          "maturity_year": 2028,
+          "impact_level": 8,
+          "description": "Cities using AI to optimize everything from traffic to waste management, enhancing urban living.",
+          "adoption_status": "Widespread adoption in major metropolitan areas, with ongoing integration in smaller cities."
+        },
+        {
+          "name": "Blockchain for Digital Identity",
+          "from_emerging": true,
+          "original_emergence_year": 2025,
+          "maturity_year": 2029,
+          "impact_level": 7,
+          "description": "Use of blockchain to manage digital identities, ensuring privacy and security in digital transactions.",
+          "adoption_status": "Integrated into financial services, government systems, and increasingly in personal data management."
+        }
+      ],
+      "epoch_themes": [
+        {
+          "theme": "AI and Autonomy",
+          "description": "A period marked by significant advancements in AI and autonomous systems, transforming various sectors.",
+          "related_technologies": [
+            "AI-Driven Software Development",
+            "Fully Autonomous Vehicles",
+            "AI-Powered Smart Cities"
+          ],
+          "societal_impact": "Increased automation leading to job displacement, but also new job creation in AI management and oversight.",
+          "global_trends": "Rise of AI ethics as a major field, increased investment in AI education and research."
+        },
+        {
+          "theme": "Sustainable Living",
+          "description": "Focus on technologies that reduce environmental impact and promote sustainability.",
+          "related_technologies": [
+            "Zero-Waste Manufacturing",
+            "AI-Powered Smart Cities"
+          ],
+          "societal_impact": "Shift towards circular economies, regulatory changes to support sustainable practices.",
+          "global_trends": "Global push for green technologies, international agreements on sustainability targets."
+        }
+      ],
+      "epoch_year": 2025
+    }
+  }
+}
