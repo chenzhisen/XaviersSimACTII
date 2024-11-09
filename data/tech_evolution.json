@@ -1,0 +1,128 @@
+{
+  "metadata": {
+    "generated_at": "2024-11-09T09:19:26.332854",
+    "base_year": 2025,
+    "end_year": 2075
+  },
+  "tech_trees": {
+    "2025": {
+      "emerging_technologies": [
+        {
+          "name": "AI-Driven Autonomous Code Synthesis",
+          "probability": 0.85,
+          "estimated_year": 2027,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "AI Coding Assistants",
+            "Machine Learning"
+          ],
+          "impact_areas": [
+            "Software Development",
+            "Education",
+            "Tech Industry"
+          ],
+          "description": "A system where AI not only assists but autonomously generates, tests, and deploys code based on high-level project requirements.",
+          "societal_implications": "Reduces the need for human coders in routine tasks, potentially leading to job displacement but also to higher-level software engineering roles.",
+          "adoption_factors": "Requires significant trust in AI capabilities, regulatory approval for automated software deployment, and integration with existing development environments."
+        },
+        {
+          "name": "Blockchain-Enhanced Neural Interfaces",
+          "probability": 0.6,
+          "estimated_year": 2029,
+          "innovation_type": "incremental",
+          "dependencies": [
+            "Neural Technology",
+            "Blockchain"
+          ],
+          "impact_areas": [
+            "Healthcare",
+            "Privacy",
+            "Security"
+          ],
+          "description": "Using blockchain for secure, decentralized storage and transfer of neural data, enhancing privacy and security in brain-computer interfaces.",
+          "societal_implications": "Could lead to new ethical debates about ownership of neural data and privacy concerns.",
+          "adoption_factors": "Adoption depends on overcoming technical challenges in real-time blockchain transactions, regulatory acceptance, and public trust in neural data security."
+        },
+        {
+          "name": "Quantum Computing for Machine Learning",
+          "probability": 0.75,
+          "estimated_year": 2028,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Quantum Computing",
+            "AI"
+          ],
+          "impact_areas": [
+            "Computing",
+            "AI Research",
+            "Cryptography"
+          ],
+          "description": "Utilizing quantum computing to enhance machine learning algorithms, enabling faster processing of large datasets and solving complex optimization problems.",
+          "societal_implications": "Could revolutionize fields like drug discovery, weather prediction, and financial modeling, with potential job shifts in related industries.",
+          "adoption_factors": "High costs and technical barriers to entry; requires advancements in error correction and quantum error mitigation."
+        },
+        {
+          "name": "Energy Harvesting Nanomaterials",
+          "probability": 0.7,
+          "estimated_year": 2026,
+          "innovation_type": "incremental",
+          "dependencies": [
+            "Nanotechnology",
+            "Sustainable Technology"
+          ],
+          "impact_areas": [
+            "Energy",
+            "Wearable Tech",
+            "IoT"
+          ],
+          "description": "Materials that can convert ambient energy (like light, heat, or vibration) into electrical power, enhancing the sustainability of devices.",
+          "societal_implications": "Promotes energy independence and reduces reliance on traditional energy sources, impacting urban planning and environmental policies.",
+          "adoption_factors": "Scalability, cost-effectiveness, and efficiency improvements are key for widespread adoption."
+        }
+      ],
+      "mainstream_technologies": [
+        {
+          "name": "AI-Enhanced Autonomous Vehicles",
+          "from_emerging": true,
+          "original_emergence_year": 2021,
+          "maturity_year": 2025,
+          "impact_level": 8,
+          "description": "Fully autonomous vehicles capable of navigating complex urban environments without human intervention.",
+          "adoption_status": "Widespread adoption in urban areas, with regulatory frameworks evolving to support integration into public transport systems."
+        },
+        {
+          "name": "Smart Contracts for Space Commerce",
+          "from_emerging": true,
+          "original_emergence_year": 2024,
+          "maturity_year": 2028,
+          "impact_level": 7,
+          "description": "Utilization of blockchain technology for secure, transparent contracts in space resource management and trade.",
+          "adoption_status": "Becoming standard practice for space-related commercial agreements, supported by international space law adjustments."
+        }
+      ],
+      "epoch_themes": [
+        {
+          "theme": "The Age of Autonomous Collaboration",
+          "description": "A period where AI and human collaboration reach new heights, with AI systems aiding or even leading in various professional fields.",
+          "related_technologies": [
+            "AI-Driven Autonomous Code Synthesis",
+            "AI-Enhanced Autonomous Vehicles"
+          ],
+          "societal_impact": "Leads to a redefinition of work, creativity, and decision-making processes in society.",
+          "global_trends": "Increased focus on education for human-AI collaboration, ethical considerations in AI deployment, and policy development for AI governance."
+        },
+        {
+          "theme": "Decentralized Digital Trust",
+          "description": "A shift towards blockchain and decentralized systems for ensuring trust and security in digital interactions.",
+          "related_technologies": [
+            "Blockchain-Enhanced Neural Interfaces",
+            "Smart Contracts for Space Commerce"
+          ],
+          "societal_impact": "Enhances privacy and security but also brings up issues regarding data control and the democratization of information.",
+          "global_trends": "Rise in blockchain-based solutions for identity verification, financial transactions, and digital governance."
+        }
+      ],
+      "epoch_year": 2025
+    }
+  }
+}
