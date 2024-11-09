@@ -1,0 +1,108 @@
+{
+  "metadata": {
+    "generated_at": "2024-11-08T19:33:34.074168",
+    "base_year": 2025,
+    "end_year": 2075
+  },
+  "tech_trees": {
+    "2025": {
+      "emerging_technologies": [
+        {
+          "name": "AI-Driven Autonomous Development Platforms",
+          "probability": 0.75,
+          "estimated_year": 2028,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "AI Coding Assistants",
+            "Machine Learning Algorithms"
+          ],
+          "impact_areas": [
+            "Software Development",
+            "Productivity"
+          ],
+          "description": "Platforms where AI not only assists but autonomously designs, codes, tests, and deploys software applications, integrating with existing development tools.",
+          "societal_implications": "Reduces the entry barriers for software development, potentially leading to widespread automation in the tech sector but also raising concerns about job displacement and intellectual property.",
+          "adoption_factors": "Adoption will depend on the reliability of AI in complex projects, trust in AI decision-making, and integration with existing enterprise software development practices."
+        },
+        {
+          "name": "Quantum-Resistant Cryptography",
+          "probability": 0.8,
+          "estimated_year": 2027,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Current Cryptographic Systems",
+            "Quantum Computing"
+          ],
+          "impact_areas": [
+            "Digital Security",
+            "Privacy"
+          ],
+          "description": "Development of encryption methods that are secure against quantum computing attacks, ensuring long-term data protection.",
+          "societal_implications": "Ensures continuity and security of digital transactions and communications in the face of quantum computing threats.",
+          "adoption_factors": "Will be driven by regulatory mandates, the rise in quantum computing capabilities, and the need to protect sensitive data over long periods."
+        },
+        {
+          "name": "Neural-Enhanced Interfaces",
+          "probability": 0.65,
+          "estimated_year": 2029,
+          "innovation_type": "incremental",
+          "dependencies": [
+            "Neural Technology",
+            "AI"
+          ],
+          "impact_areas": [
+            "Health",
+            "Education",
+            "Entertainment"
+          ],
+          "description": "Advanced brain-computer interfaces that allow for direct control of devices or communication through thought, enhancing human capabilities.",
+          "societal_implications": "Could revolutionize how we interact with technology, improve quality of life for those with disabilities, but also poses ethical questions about privacy and autonomy.",
+          "adoption_factors": "Requires breakthroughs in non-invasive neural technology, public acceptance of brain interface technology, and robust ethical frameworks."
+        }
+      ],
+      "mainstream_technologies": [
+        {
+          "name": "AI-Pair Programming",
+          "from_emerging": true,
+          "original_emergence_year": 2025,
+          "maturity_year": 2027,
+          "impact_level": 8,
+          "description": "AI systems that work alongside human developers to write, review, and debug code in real-time, enhancing productivity and code quality.",
+          "adoption_status": "Widely adopted in tech companies, integrated into development environments, and recognized for improving coding efficiency and reducing errors."
+        },
+        {
+          "name": "Urban Autonomous Transport",
+          "from_emerging": true,
+          "original_emergence_year": 2025,
+          "maturity_year": 2030,
+          "impact_level": 9,
+          "description": "Autonomous vehicles, including buses, taxis, and delivery vehicles, becoming a common sight in urban environments.",
+          "adoption_status": "High adoption rate in cities, supported by regulatory frameworks, infrastructure, and public acceptance of autonomous transport."
+        }
+      ],
+      "epoch_themes": [
+        {
+          "theme": "AI as a Co-Creator",
+          "description": "AI's role evolves from an assistant to a co-creator in software and content creation, reshaping how work is done in creative and technical fields.",
+          "related_technologies": [
+            "AI-Driven Autonomous Development Platforms",
+            "AI-Pair Programming"
+          ],
+          "societal_impact": "Shifts in job roles towards oversight, strategy, and complex problem-solving rather than routine tasks.",
+          "global_trends": "Global increase in productivity, potential reduction in work hours, and new forms of human-AI collaboration."
+        },
+        {
+          "theme": "Sustainable Urban Living",
+          "description": "Technology focused on making urban environments more livable through autonomous systems, sustainable energy, and smart infrastructure.",
+          "related_technologies": [
+            "Urban Autonomous Transport",
+            "Sustainable Energy Systems"
+          ],
+          "societal_impact": "Enhances quality of life, reduces urban congestion and pollution, promotes sustainable living practices.",
+          "global_trends": "Growth in smart city initiatives, increased investment in green technologies, and urban planning that incorporates technology for sustainability."
+        }
+      ],
+      "epoch_year": 2025
+    }
+  }
+}
