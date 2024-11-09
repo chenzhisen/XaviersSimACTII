@@ -1,0 +1,125 @@
+{
+  "metadata": {
+    "generated_at": "2024-11-09T15:39:28.301118",
+    "base_year": 2025,
+    "end_year": 2075
+  },
+  "tech_trees": {
+    "2025": {
+      "emerging_technologies": [
+        {
+          "name": "AI-Driven Autonomous Code Repair",
+          "probability": 0.85,
+          "estimated_year": 2026,
+          "innovation_type": "incremental",
+          "dependencies": [
+            "AI Coding Assistants",
+            "Machine Learning"
+          ],
+          "impact_areas": [
+            "Software Development",
+            "Cybersecurity"
+          ],
+          "description": "Tools that can automatically detect, analyze, and repair code issues in real-time, reducing human error and speeding up development cycles.",
+          "societal_implications": "Increases efficiency in software development, potentially reducing jobs in manual code review but also enhancing product quality and security.",
+          "adoption_factors": "High adoption due to immediate benefits in productivity and security, with challenges in trust and reliability of AI systems."
+        },
+        {
+          "name": "Quantum-Resistant Blockchain",
+          "probability": 0.7,
+          "estimated_year": 2027,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Blockchain",
+            "Quantum Computing"
+          ],
+          "impact_areas": [
+            "Digital Infrastructure",
+            "Security"
+          ],
+          "description": "Blockchain systems designed to be secure against quantum computing attacks, enhancing the longevity and security of cryptographic methods.",
+          "societal_implications": "Ensures the long-term viability of blockchain technologies, critical for financial systems and data integrity.",
+          "adoption_factors": "Adoption will depend on the advancement of quantum computing and the perceived threat it poses to current cryptographic systems."
+        },
+        {
+          "name": "Neural-Interface Glasses",
+          "probability": 0.6,
+          "estimated_year": 2028,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Neural Technology",
+            "Augmented Reality"
+          ],
+          "impact_areas": [
+            "Health",
+            "Education",
+            "Entertainment"
+          ],
+          "description": "Glasses that use neural interfaces to overlay AR content directly onto the user's visual field, controlled by thought.",
+          "societal_implications": "Could revolutionize education, entertainment, and accessibility, but raises privacy concerns and potential addiction issues.",
+          "adoption_factors": "Adoption will be influenced by ethical considerations, user privacy, and the development of non-invasive neural technologies."
+        },
+        {
+          "name": "Autonomous Urban Air Mobility",
+          "probability": 0.75,
+          "estimated_year": 2029,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Autonomous Systems",
+            "Battery Technology"
+          ],
+          "impact_areas": [
+            "Transportation",
+            "Urban Planning"
+          ],
+          "description": "Fully autonomous flying vehicles for urban transport, reducing traffic congestion and pollution.",
+          "societal_implications": "Transforms urban landscapes, reduces travel time but brings new challenges in airspace management and safety.",
+          "adoption_factors": "Requires regulatory approval, public trust in autonomous flight, and infrastructure development."
+        }
+      ],
+      "mainstream_technologies": [
+        {
+          "name": "AI Pair Programming",
+          "from_emerging": true,
+          "original_emergence_year": 2025,
+          "maturity_year": 2027,
+          "impact_level": 8,
+          "description": "AI tools that not only assist but actively participate in coding, offering suggestions, and implementing code blocks.",
+          "adoption_status": "Widely adopted by software development teams, with significant changes in how coding is taught and performed."
+        },
+        {
+          "name": "AI-Enhanced Renewable Energy Systems",
+          "from_emerging": true,
+          "original_emergence_year": 2026,
+          "maturity_year": 2030,
+          "impact_level": 9,
+          "description": "AI algorithms optimizing renewable energy production and distribution, significantly increasing efficiency.",
+          "adoption_status": "Becoming standard in smart grids and energy management systems, driven by environmental regulations and cost savings."
+        }
+      ],
+      "epoch_themes": [
+        {
+          "theme": "AI-Driven Development",
+          "description": "The integration of AI into the software development lifecycle to enhance productivity, creativity, and efficiency.",
+          "related_technologies": [
+            "AI-Driven Autonomous Code Repair",
+            "AI Pair Programming"
+          ],
+          "societal_impact": "Changes the nature of work in software development, potentially reducing entry barriers but also requiring new skill sets.",
+          "global_trends": "Global push towards automation and efficiency in knowledge work, leading to a rise in AI literacy and education."
+        },
+        {
+          "theme": "Sustainable Urban Living",
+          "description": "Technologies aimed at making urban environments more sustainable through intelligent systems and autonomous transport.",
+          "related_technologies": [
+            "Autonomous Urban Air Mobility",
+            "AI-Enhanced Renewable Energy Systems"
+          ],
+          "societal_impact": "Promotes greener cities, reduces carbon footprints, but also necessitates urban planning reforms.",
+          "global_trends": "Increasing urbanization worldwide drives demand for sustainable solutions in city planning and transport."
+        }
+      ],
+      "epoch_year": 2025
+    }
+  }
+}
