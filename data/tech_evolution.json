@@ -1,0 +1,129 @@
+{
+  "metadata": {
+    "generated_at": "2024-11-09T11:56:09.027823",
+    "base_year": 2025,
+    "end_year": 2075
+  },
+  "tech_trees": {
+    "2025": {
+      "emerging_technologies": [
+        {
+          "name": "AI-Driven Autonomous Coding Platforms",
+          "probability": 0.85,
+          "estimated_year": 2026,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "AI Coding Assistants",
+            "Machine Learning"
+          ],
+          "impact_areas": [
+            "Software Development",
+            "Education",
+            "Automation"
+          ],
+          "description": "Platforms where AI not only assists but fully automates coding tasks, from design to deployment, with minimal human oversight.",
+          "societal_implications": "Could lead to significant job displacement in software development but also increase productivity and reduce human error.",
+          "adoption_factors": "Initial resistance due to job security concerns; adoption will increase with proven reliability and regulatory frameworks."
+        },
+        {
+          "name": "Neural-Enhanced Reality",
+          "probability": 0.7,
+          "estimated_year": 2027,
+          "innovation_type": "incremental",
+          "dependencies": [
+            "Neural Technology",
+            "AI"
+          ],
+          "impact_areas": [
+            "Entertainment",
+            "Education",
+            "Healthcare"
+          ],
+          "description": "Augmented reality systems that adapt in real-time to user's cognitive state, enhancing learning, therapy, and immersive experiences.",
+          "societal_implications": "Enhances personalized learning and therapy but raises concerns over privacy and data protection.",
+          "adoption_factors": "Widespread adoption in educational and medical sectors, with slower consumer uptake due to cost and privacy concerns."
+        },
+        {
+          "name": "Space Resource Utilization",
+          "probability": 0.6,
+          "estimated_year": 2028,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Space Exploration",
+            "AI",
+            "Robotics"
+          ],
+          "impact_areas": [
+            "Space Industry",
+            "Energy",
+            "Materials Science"
+          ],
+          "description": "Technologies for extracting and processing resources on other celestial bodies, initially for use in space construction.",
+          "societal_implications": "Potential for new economic models, geopolitical tensions over space resources, and environmental considerations.",
+          "adoption_factors": "Dependent on successful space missions and regulatory agreements for space mining."
+        },
+        {
+          "name": "Decentralized Digital Identity",
+          "probability": 0.9,
+          "estimated_year": 2026,
+          "innovation_type": "incremental",
+          "dependencies": [
+            "Blockchain",
+            "AI Security"
+          ],
+          "impact_areas": [
+            "Privacy",
+            "Security",
+            "Digital Infrastructure"
+          ],
+          "description": "A blockchain-based system where individuals control their personal data, providing identity verification without centralized databases.",
+          "societal_implications": "Enhances personal privacy but requires widespread adoption of blockchain and could face regulatory hurdles.",
+          "adoption_factors": "Adoption will be driven by privacy concerns and regulatory push for better data protection."
+        }
+      ],
+      "mainstream_technologies": [
+        {
+          "name": "AI-Assisted Software Development",
+          "from_emerging": true,
+          "original_emergence_year": 2025,
+          "maturity_year": 2027,
+          "impact_level": 8,
+          "description": "AI tools that not only complete code but also suggest optimizations, manage version control, and automate testing.",
+          "adoption_status": "Highly adopted in tech industries, becoming standard in software development practices."
+        },
+        {
+          "name": "Smart Autonomous Vehicles",
+          "from_emerging": true,
+          "original_emergence_year": 2024,
+          "maturity_year": 2029,
+          "impact_level": 7,
+          "description": "Vehicles that operate autonomously in controlled environments with full integration into urban infrastructure.",
+          "adoption_status": "Widespread in urban centers, with regulatory and safety frameworks in place to ensure widespread adoption."
+        }
+      ],
+      "epoch_themes": [
+        {
+          "theme": "Automation and Autonomy",
+          "description": "A shift towards systems and technologies that operate with minimal to no human intervention.",
+          "related_technologies": [
+            "AI-Driven Autonomous Coding Platforms",
+            "Smart Autonomous Vehicles"
+          ],
+          "societal_impact": "Job displacement, increased efficiency, and changes in urban planning and transportation.",
+          "global_trends": "Increased focus on AI ethics, regulatory frameworks for autonomous systems, and a rise in remote work."
+        },
+        {
+          "theme": "Sustainability and Resource Management",
+          "description": "Technological solutions aimed at reducing environmental impact and managing resources sustainably.",
+          "related_technologies": [
+            "Space Resource Utilization",
+            "AI for Energy Efficiency"
+          ],
+          "societal_impact": "Promotes circular economy, reduces reliance on Earth's resources, and fosters interplanetary cooperation.",
+          "global_trends": "Global push towards green technologies, space law development, and sustainable development goals."
+        }
+      ],
+      "epoch_year": 2025
+    }
+  }
+}
