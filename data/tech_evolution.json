@@ -1,0 +1,152 @@
+{
+  "metadata": {
+    "generated_at": "2024-11-09T08:36:10.878047",
+    "base_year": 2025,
+    "end_year": 2075
+  },
+  "tech_trees": {
+    "2025": {
+      "emerging_technologies": [
+        {
+          "name": "AI-Driven Autonomous Code Development",
+          "probability": 0.8,
+          "estimated_year": 2026,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Machine Learning",
+            "AI Coding Assistants"
+          ],
+          "impact_areas": [
+            "Software Development",
+            "AI Integration"
+          ],
+          "description": "AI systems capable of autonomously writing, testing, and deploying software from high-level requirements.",
+          "societal_implications": "Reduces human error in coding, increases productivity but might lead to job displacement in programming roles.",
+          "adoption_factors": "Requires advanced AI algorithms, trust in AI's decision-making, and robust security measures for code integrity."
+        },
+        {
+          "name": "Neuralink-Style Brain-Computer Interfaces",
+          "probability": 0.6,
+          "estimated_year": 2027,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Neural Technology",
+            "AI"
+          ],
+          "impact_areas": [
+            "Health",
+            "Human Augmentation",
+            "Gaming"
+          ],
+          "description": "Invasive or non-invasive brain interfaces allowing control of devices or computers directly through thought.",
+          "societal_implications": "Enhances human capabilities but raises significant ethical concerns around privacy, autonomy, and identity.",
+          "adoption_factors": "Public acceptance, regulatory approval, and overcoming technical challenges in biocompatibility and signal interpretation."
+        },
+        {
+          "name": "Quantum Blockchain",
+          "probability": 0.4,
+          "estimated_year": 2028,
+          "innovation_type": "incremental",
+          "dependencies": [
+            "Quantum Computing",
+            "Blockchain"
+          ],
+          "impact_areas": [
+            "Finance",
+            "Security",
+            "Data Integrity"
+          ],
+          "description": "Utilization of quantum computing principles to enhance blockchain security, scalability, and speed.",
+          "societal_implications": "Could revolutionize data security but also poses risks if quantum computers decrypt current blockchain systems.",
+          "adoption_factors": "Maturity of quantum computing, integration into existing blockchain networks, and overcoming quantum-resistant cryptography."
+        },
+        {
+          "name": "Space-Based Solar Power Farms",
+          "probability": 0.7,
+          "estimated_year": 2029,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Space Exploration",
+            "Sustainable Technology"
+          ],
+          "impact_areas": [
+            "Energy",
+            "Space Industry"
+          ],
+          "description": "Large solar panels in space to collect solar power and beam it back to Earth for consumption.",
+          "societal_implications": "Provides clean, limitless energy but involves high initial costs and environmental considerations in space.",
+          "adoption_factors": "Technological breakthroughs in wireless power transmission, space logistics, and international cooperation."
+        },
+        {
+          "name": "Autonomous Urban Air Mobility",
+          "probability": 0.85,
+          "estimated_year": 2028,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Autonomous Systems",
+            "AI"
+          ],
+          "impact_areas": [
+            "Transportation",
+            "Urban Planning"
+          ],
+          "description": "Drones and flying taxis for urban transport, reducing road congestion and improving travel times.",
+          "societal_implications": "Could transform urban landscapes but requires new infrastructure, safety regulations, and public acceptance.",
+          "adoption_factors": "Regulatory frameworks, battery technology, AI for navigation, and urban integration planning."
+        }
+      ],
+      "mainstream_technologies": [
+        {
+          "name": "AI Pair Programming",
+          "from_emerging": true,
+          "original_emergence_year": 2025,
+          "maturity_year": 2027,
+          "impact_level": 8,
+          "description": "AI tools that work alongside developers in real-time, offering suggestions, debugging, and code completion.",
+          "adoption_status": "Widespread in tech companies, with significant improvements in coding efficiency and quality."
+        },
+        {
+          "name": "Smart Energy Grids",
+          "from_emerging": true,
+          "original_emergence_year": 2026,
+          "maturity_year": 2029,
+          "impact_level": 9,
+          "description": "Grid systems integrated with AI for energy distribution optimization and resilience.",
+          "adoption_status": "Implemented in several developed nations, aiding in sustainable energy management."
+        }
+      ],
+      "epoch_themes": [
+        {
+          "theme": "Sustainable Living",
+          "description": "Technological advancements aimed at reducing environmental impact and enhancing energy efficiency.",
+          "related_technologies": [
+            "Smart Energy Grids",
+            "Space-Based Solar Power Farms"
+          ],
+          "societal_impact": "Promotes environmental consciousness and shifts towards sustainable practices.",
+          "global_trends": "Increased governmental policies for carbon reduction, corporate responsibility, and consumer demand for green products."
+        },
+        {
+          "theme": "The Autonomous Age",
+          "description": "Integration of autonomous systems in everyday life, from transport to home automation.",
+          "related_technologies": [
+            "Autonomous Urban Air Mobility",
+            "AI-Driven Autonomous Code Development"
+          ],
+          "societal_impact": "Alters job markets, enhances safety, and changes human interaction with technology.",
+          "global_trends": "Growing acceptance of autonomous vehicles, regulatory frameworks to manage AI ethics, and public education on AI."
+        },
+        {
+          "theme": "Human-Tech Symbiosis",
+          "description": "Advancements in technologies that merge human capabilities with machines.",
+          "related_technologies": [
+            "Neuralink-Style Brain-Computer Interfaces"
+          ],
+          "societal_impact": "Potential for cognitive enhancement but raises issues of privacy, consent, and the essence of human identity.",
+          "global_trends": "Increased research in neuroscience, ethical debates, and a push for international standards on brain-computer interfaces."
+        }
+      ],
+      "epoch_year": 2025
+    }
+  }
+}
