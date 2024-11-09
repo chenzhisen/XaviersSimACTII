@@ -1,0 +1,145 @@
+{
+  "metadata": {
+    "generated_at": "2024-11-09T08:50:46.106264",
+    "base_year": 2025,
+    "end_year": 2075
+  },
+  "tech_trees": {
+    "2025": {
+      "emerging_technologies": [
+        {
+          "name": "AI-Driven Autonomous Software Development",
+          "probability": 0.9,
+          "estimated_year": 2027,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "AI Coding Assistants",
+            "Machine Learning"
+          ],
+          "impact_areas": [
+            "Software Development",
+            "IT Infrastructure",
+            "Education"
+          ],
+          "description": "Systems capable of autonomously developing, testing, and deploying software applications with minimal human oversight.",
+          "societal_implications": "Reduction in coding errors, increased productivity, potential job displacement for entry-level developers, need for new educational paradigms.",
+          "adoption_factors": "Requires trust in AI systems, regulatory frameworks for AI in software development, and acceptance by the developer community."
+        },
+        {
+          "name": "Neuralink Expansion",
+          "probability": 0.7,
+          "estimated_year": 2028,
+          "innovation_type": "incremental",
+          "dependencies": [
+            "Neural Technology",
+            "Machine Learning"
+          ],
+          "impact_areas": [
+            "Healthcare",
+            "Education",
+            "Entertainment"
+          ],
+          "description": "Enhanced brain-computer interfaces that allow for more complex interactions like thought-controlled devices and direct human-to-human communication.",
+          "societal_implications": "Privacy concerns, ethical debates over enhancement vs. therapy, potential for cognitive inequality.",
+          "adoption_factors": "Regulatory approval, public perception, and integration with existing technology."
+        },
+        {
+          "name": "Quantum-Resistant Cryptography",
+          "probability": 0.85,
+          "estimated_year": 2029,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Blockchain",
+            "Digital Infrastructure"
+          ],
+          "impact_areas": [
+            "Security",
+            "Finance",
+            "Government"
+          ],
+          "description": "Cryptographic algorithms designed to withstand attacks from quantum computers.",
+          "societal_implications": "Ensures long-term security of digital transactions and data, essential for blockchain and secure communications.",
+          "adoption_factors": "Need for standardization, transition from current systems, and global adoption."
+        },
+        {
+          "name": "Carbon Capture and Utilization",
+          "probability": 0.8,
+          "estimated_year": 2026,
+          "innovation_type": "incremental",
+          "dependencies": [
+            "Sustainable Technology",
+            "Chemical Engineering"
+          ],
+          "impact_areas": [
+            "Environment",
+            "Energy",
+            "Industry"
+          ],
+          "description": "Technologies for capturing carbon dioxide from industrial emissions and converting it into useful products like building materials or fuels.",
+          "societal_implications": "Combats climate change, promotes circular economy, potential economic benefits from carbon markets.",
+          "adoption_factors": "Economic incentives, regulatory support, and technological scalability."
+        },
+        {
+          "name": "Space-Based Solar Power",
+          "probability": 0.6,
+          "estimated_year": 2030,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Space Exploration",
+            "Sustainable Technology"
+          ],
+          "impact_areas": [
+            "Energy",
+            "Space Industry"
+          ],
+          "description": "Solar energy collected by satellites in space and beamed back to Earth to provide clean, continuous power.",
+          "societal_implications": "Could significantly reduce reliance on fossil fuels, geopolitical implications for energy distribution, and space law considerations.",
+          "adoption_factors": "Technological feasibility, economic viability, and international cooperation."
+        }
+      ],
+      "mainstream_technologies": [
+        {
+          "name": "AI-Powered Urban Traffic Management",
+          "from_emerging": true,
+          "original_emergence_year": 2025,
+          "maturity_year": 2027,
+          "impact_level": 7,
+          "description": "AI systems that optimize traffic flow in cities, reducing congestion and improving transport efficiency.",
+          "adoption_status": "Widely adopted in major urban centers with supportive infrastructure."
+        },
+        {
+          "name": "Fully Autonomous Electric Vehicles",
+          "from_emerging": true,
+          "original_emergence_year": 2026,
+          "maturity_year": 2029,
+          "impact_level": 9,
+          "description": "Self-driving cars that operate without human intervention, enhancing safety and mobility.",
+          "adoption_status": "Commercially available with widespread regulatory acceptance in developed countries."
+        }
+      ],
+      "epoch_themes": [
+        {
+          "theme": "The Rise of AI in Daily Life",
+          "description": "AI becomes ubiquitous, influencing everything from personal assistants to autonomous systems.",
+          "related_technologies": [
+            "AI-Driven Autonomous Software Development",
+            "AI-Powered Urban Traffic Management"
+          ],
+          "societal_impact": "Shift in job markets, redefinition of human-AI collaboration, privacy issues.",
+          "global_trends": "Increased demand for AI education, ethical AI frameworks, and international AI governance."
+        },
+        {
+          "theme": "Sustainability and Space",
+          "description": "Focus on environmental sustainability and the expansion of human presence in space.",
+          "related_technologies": [
+            "Carbon Capture and Utilization",
+            "Space-Based Solar Power"
+          ],
+          "societal_impact": "Reduction in carbon footprint, new energy paradigms, potential for new industries in space.",
+          "global_trends": "Global push for green technologies, space tourism, and exploration initiatives."
+        }
+      ],
+      "epoch_year": 2025
+    }
+  }
+}
