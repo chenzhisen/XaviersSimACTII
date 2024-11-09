@@ -1,0 +1,126 @@
+{
+  "metadata": {
+    "generated_at": "2024-11-09T15:06:09.802692",
+    "base_year": 2025,
+    "end_year": 2075
+  },
+  "tech_trees": {
+    "2025": {
+      "emerging_technologies": [
+        {
+          "name": "AI-Driven Code Synthesis",
+          "probability": 0.8,
+          "estimated_year": 2026,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Machine Learning",
+            "AI Coding Assistants"
+          ],
+          "impact_areas": [
+            "Software Development",
+            "Automation"
+          ],
+          "description": "A system that not only assists but fully automates code writing, testing, and deployment based on high-level specifications provided by developers.",
+          "societal_implications": "Reduces the need for human coders for routine tasks, potentially reshaping job markets in tech sectors.",
+          "adoption_factors": "Adoption will depend on the accuracy and reliability of AI-generated code, trust in AI decision-making, and integration with existing development ecosystems."
+        },
+        {
+          "name": "Neural-Enhanced Human Interface",
+          "probability": 0.6,
+          "estimated_year": 2027,
+          "innovation_type": "incremental",
+          "dependencies": [
+            "Neural Technology",
+            "Machine Learning"
+          ],
+          "impact_areas": [
+            "Healthcare",
+            "Education",
+            "Gaming"
+          ],
+          "description": "Development of interfaces that can interpret and interact with human neural patterns for enhanced communication and control.",
+          "societal_implications": "Raises ethical concerns about privacy, consent, and the potential for cognitive enhancement leading to social inequality.",
+          "adoption_factors": "Public acceptance of invasive technology, regulatory approval, and the development of non-invasive or minimally invasive alternatives."
+        },
+        {
+          "name": "Space Resource Utilization",
+          "probability": 0.7,
+          "estimated_year": 2028,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Space Exploration",
+            "Robotics"
+          ],
+          "impact_areas": [
+            "Resource Management",
+            "Manufacturing"
+          ],
+          "description": "Technologies for extracting, processing, and utilizing resources on celestial bodies like the Moon and Mars for construction and life support.",
+          "societal_implications": "Could pave the way for sustainable space colonization but also poses geopolitical and environmental challenges.",
+          "adoption_factors": "Technological feasibility, economic viability, and international cooperation or competition in space."
+        },
+        {
+          "name": "Blockchain for Digital Infrastructure",
+          "probability": 0.9,
+          "estimated_year": 2025,
+          "innovation_type": "incremental",
+          "dependencies": [
+            "Digital Infrastructure",
+            "Blockchain"
+          ],
+          "impact_areas": [
+            "Finance",
+            "Data Security"
+          ],
+          "description": "Use of blockchain technology to enhance the security, transparency, and efficiency of digital infrastructure, including identity management and smart contracts.",
+          "societal_implications": "Promotes decentralization, could reduce fraud but might also complicate regulatory oversight.",
+          "adoption_factors": "Scalability of blockchain solutions, regulatory acceptance, and user trust in decentralized systems."
+        }
+      ],
+      "mainstream_technologies": [
+        {
+          "name": "Fully Autonomous Vehicles",
+          "from_emerging": true,
+          "original_emergence_year": 2023,
+          "maturity_year": 2027,
+          "impact_level": 8,
+          "description": "Vehicles capable of navigating roads and traffic without human intervention, now seen in commercial use across major cities.",
+          "adoption_status": "Widespread adoption in urban areas, supported by infrastructure like smart traffic systems and regulatory frameworks."
+        },
+        {
+          "name": "AI Pair Programming",
+          "from_emerging": true,
+          "original_emergence_year": 2025,
+          "maturity_year": 2030,
+          "impact_level": 7,
+          "description": "Developers work alongside AI systems that provide real-time coding suggestions, error detection, and code optimization.",
+          "adoption_status": "Integrated into most software development processes, changing the dynamics of how code is written and reviewed."
+        }
+      ],
+      "epoch_themes": [
+        {
+          "theme": "Automation and AI Integration",
+          "description": "The pervasive integration of AI into all sectors, pushing for automation in tasks traditionally performed by humans.",
+          "related_technologies": [
+            "AI-Driven Code Synthesis",
+            "AI Pair Programming",
+            "Neural-Enhanced Human Interface"
+          ],
+          "societal_impact": "Shift in job markets, potential increase in productivity, and significant changes in work culture.",
+          "global_trends": "Global competition in AI development, with emphasis on ethical AI frameworks and regulation."
+        },
+        {
+          "theme": "Sustainable Space Exploration",
+          "description": "Advancements in technology to make space exploration sustainable and resource-efficient.",
+          "related_technologies": [
+            "Space Resource Utilization",
+            "Autonomous Systems"
+          ],
+          "societal_impact": "Potential for new economic models, international cooperation or competition in space, and environmental considerations.",
+          "global_trends": "Rise of private space enterprises, international space laws, and public interest in space colonization."
+        }
+      ],
+      "epoch_year": 2025
+    }
+  }
+}
