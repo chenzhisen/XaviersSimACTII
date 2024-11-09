@@ -20,27 +20,34 @@ class GithubOperations:
 
     def get_file_content(self, file_path):
         """Get file content from GitHub"""
-        url = f"{self.base_url}/repos/{self.repo_owner}/{self.repo_name}/contents/data/{file_path}"
         try:
+            # Use REST API directly instead of PyGithub
+            url = f"{self.base_url}/repos/{self.repo_owner}/{self.repo_name}/contents/data/{file_path}"
             response = requests.get(url, headers=self.headers)
             response.raise_for_status()
-            content = response.json()
-            decoded_content = base64.b64decode(content['content']).decode('utf-8')
-            data = json.loads(decoded_content)
             
-            # Ensure specific files are always arrays
-            if file_path in ["ongoing_tweets.json", "comments.json", "digest_history.json"]:
-                if not isinstance(data, list):
-                    data = []
+            content_data = response.json()
+            content = base64.b64decode(content_data['content']).decode('utf-8')
             
-            return data, content.get('sha', None)
+            # Debug: Print first 200 chars of content
+            print(f"Raw content from {file_path} (first 200 chars): {content[:200]}")
+            
+            try:
+                parsed_content = json.loads(content)
+                print(f"Successfully parsed {file_path}")
+                return parsed_content, content_data['sha']
+            except json.JSONDecodeError as e:
+                print(f"JSON decode error in {file_path}: {str(e)}")
+                print(f"Content type: {type(content)}")
+                print(f"Content length: {len(content)}")
+                return None, None
+                
         except requests.exceptions.HTTPError as e:
-            if e.response.status_code == 404:
-                # File doesn't exist yet, return empty structure based on file type
-                if file_path in ["ongoing_tweets.json", "comments.json", "digest_history.json"]:
-                    return [], None
-                return {}, None
-            raise
+            print(f"File {file_path} not found")
+            return None, None
+        except Exception as e:
+            print(f"Error reading {file_path}: {type(e)} - {str(e)}")
+            return None, None
 
     def update_file(self, file_path, content, commit_message, sha=None):
         """Update or create a file in the repository"""

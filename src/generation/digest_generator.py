@@ -45,8 +45,8 @@ class DigestGenerator:
         prompt = (
             "BACKGROUND:\n"
             "Xavier's story (age 18-22) documented his early experiences, relationships, and growth "
-            "through social media posts. This digest will bridge his past and future narrative, setting the stage "
-            "for an exploration of deeper questions about technology’s role in human identity, legacy, and the mysteries of existence.\n\n"
+            "through social media posts. This digest will bridge his past and future narrative, initially focusing on practical, achievable goals in technology. "
+            "As he ages, his perspective will evolve, embracing deeper questions about technology’s role in human identity, legacy, and the mysteries of existence.\n\n"
                 
             "ORIGINAL CONTENT:\n"
         )
@@ -58,21 +58,23 @@ class DigestGenerator:
             prompt += str(actI_content)
         
         prompt += self._get_digest_sections(is_first=True)
-        print("digest prompt: ", prompt)
+        # print("digest prompt: ", prompt)
         return prompt
 
     def generate_digest(self, prompt):
-        """Generate a digest using xAI API."""
         try:
             message = self.client.messages.create(
                 model="grok-beta",
-                max_tokens=2048,
+                max_tokens=1024,
                 system=(
                     "You are a story curator and narrative architect maintaining Xavier's story. "
                     "Your role is to both document the story's history and guide its future development. "
                     "Create a cohesive summary that captures past events while subtly suggesting natural "
                     "story opportunities for the next 3-6 months. Balance continuity with organic growth, "
                     "ensuring technological and societal changes feel natural within Xavier's personal journey."
+                    "Maintain an age-appropriate tone in his reflections—"
+                    "early years focus on practicality, and as he ages, introduce deeper, more philosophical considerations about technology’s impact on humanity and identity."
+
                 ),
                 messages=[
                     {
@@ -90,7 +92,7 @@ class DigestGenerator:
         """Generate a digest with both summary and future direction"""
         try:
             prompt = self.create_ongoing_prompt(existing_digest, new_tweets, new_comments)
-            print("digest prompt: ", prompt)
+            # print("digest prompt: ", prompt)
             updated_digest = self.generate_digest(prompt)
             
             if updated_digest:
@@ -112,6 +114,7 @@ class DigestGenerator:
         """Create a prompt for ongoing digest updates"""
         try:
             tech_context = self._get_tech_context(new_tweets)
+            # print("tech context: ", tech_context)
             
             prompt = (
                 "RECENT STORY DEVELOPMENTS:\n"
@@ -124,8 +127,9 @@ class DigestGenerator:
                 f"{json.dumps(new_comments, indent=2)}\n\n"
                 f"{tech_context}\n\n"
                 
-                "As Xavier continues on his journey, subtle insights begin to surface. He occasionally reflects on the possibility of a larger design or purpose in his life. "
-                "His curiosity drives him forward, exploring the boundaries of technology and identity, even as he sometimes feels on the edge of something vast and mysterious.\n"
+                "As Xavier continues on his journey, his reflections align with his age. In his early years, he remains focused on practical tech innovations, "
+                "while occasionally pondering the larger impact of his work. With time, his curiosity broadens, leading him to explore the boundaries of technology, identity, and purpose more deeply. "
+                "By middle age, he begins to reflect on the legacies technology might leave for future generations.\n\n"
                 "He occasionally notices peculiarities that make him wonder if he’s the protagonist in a larger scheme—but he quickly brushes off these thoughts.\n\n"
 
                 "GUIDELINES:\n"
@@ -148,7 +152,7 @@ class DigestGenerator:
             # Debug logging
             print("Fetching tech evolution data...")
             tech_evolution, _ = self.github_ops.get_file_content("tech_evolution.json")
-            print(f"Tech evolution data: {json.dumps(tech_evolution, indent=2)[:200]}...")  # Print first 200 chars
+            # print(f"Tech evolution data: {json.dumps(tech_evolution, indent=2)[:200]}...")  # Print first 200 chars
             
             simulation_state, _ = self.github_ops.get_file_content("simulation_state.json")
             current_year = int(simulation_state.get("current_year", 2025))
@@ -184,19 +188,59 @@ class DigestGenerator:
                 return ""
                 
             context = (
-                f"\nTECH CONTEXT:\n"
+                f"\nTECH CONTEXT AND TIMELINE:\n"
+                f"Current Year: {current_year}\n\n"
+                "TEMPORAL GUIDELINES:\n"
+                "- Focus on currently mature technologies for immediate impact\n"
+                "- Track emerging technologies based on their estimated arrival and probability\n"
+                "- Note breakthrough vs incremental changes for narrative pacing\n"
+                "- Consider technology readiness when discussing project possibilities\n\n"
+                
                 f"Current Epoch ({current_year}-{current_year+5}):\n"
-                f"- Mainstream: {json.dumps([tech['name'] for tech in current_epoch['mainstream_technologies']], indent=2)}\n"
-                f"- Emerging: {json.dumps([tech['name'] for tech in current_epoch['emerging_technologies']], indent=2)}\n"
-                f"- Themes: {json.dumps([theme['theme'] for theme in current_epoch['epoch_themes']], indent=2)}\n\n"
+                f"- Mainstream Technologies (Currently Available):\n"
+                + json.dumps([{
+                    "name": tech['name'],
+                    "maturity_year": tech['maturity_year'],
+                    "impact_level": tech.get('impact_level', 'N/A'),
+                    "status": "Available" if tech['maturity_year'] <= current_year else "Upcoming",
+                    "time_until_maturity": max(0, tech['maturity_year'] - current_year)
+                } for tech in current_epoch['mainstream_technologies']], indent=2)
+                + "\n\n- Emerging Technologies (In Development):\n"
+                + json.dumps([{
+                    "name": tech['name'],
+                    "probability": tech.get('probability', 'N/A'),
+                    "estimated_year": tech.get('estimated_year', 'N/A'),
+                    "innovation_type": tech.get('innovation_type', 'N/A'),
+                    "timing_status": (
+                        "Imminent" if abs(tech.get('estimated_year', current_year) - current_year) <= 1
+                        else "Near Future" if abs(tech.get('estimated_year', current_year) - current_year) <= 2
+                        else "In Development"
+                    ),
+                    "confidence_level": (
+                        "High" if tech.get('probability', 0) > 0.8
+                        else "Medium" if tech.get('probability', 0) > 0.5
+                        else "Low"
+                    )
+                } for tech in current_epoch['emerging_technologies']], indent=2)
+                + "\n\n- Themes:\n"
+                + json.dumps([theme['theme'] for theme in current_epoch['epoch_themes']], indent=2)
+                + "\n\n"
             )
             
             if next_epoch:
                 next_year = current_year + 5
                 context += (
                     f"Next Epoch ({next_year}-{next_year+5}):\n"
-                    f"- Expected: {json.dumps([tech['name'] for tech in next_epoch['emerging_technologies']], indent=2)}\n"
-                    f"- Emerging Themes: {json.dumps([theme['theme'] for theme in next_epoch['epoch_themes']], indent=2)}\n\n"
+                    f"- Expected Technologies:\n"
+                    + json.dumps([{
+                        "name": tech['name'],
+                        "probability": tech.get('probability', 'N/A'),
+                        "estimated_year": tech.get('estimated_year', 'N/A'),
+                        "innovation_type": tech.get('innovation_type', 'N/A')
+                    } for tech in next_epoch['emerging_technologies']], indent=2)
+                    + "\n\n- Emerging Themes:\n"
+                    + json.dumps([theme['theme'] for theme in next_epoch['epoch_themes']], indent=2)
+                    + "\n\n"
                 )
             
             return context
@@ -229,7 +273,7 @@ class DigestGenerator:
         context += (
             f"Current Age: {current_age} (Story spans 22-72, years 2025-2075)\n"
             f"Life Phase: {self._get_life_phase(current_age)}\n"
-            f"Project Development: {self._get_project_guidance(current_age)}\n"
+            # f"Project Development: {self._get_project_guidance(current_age)}\n"
             f"$XVI Foundation Phase: {self._get_foundation_phase(current_age)}\n\n"
         )
 
@@ -272,18 +316,20 @@ class DigestGenerator:
         if age < 25:
             return (
                 "Early Career & Personal Growth (22-25)\n"
-                "- Professional: Early career in blockchain and Web3\n"
+                "- Professional: Focus on practical tech skills and career building in blockchain and Web3\n"
                 "- Personal: Dating and exploring city life\n"
                 "- Family: Regular family conversations, sharing tech stories\n"
                 "- Social: Building first professional network\n"
-            )
+                "- Reflections: Curious about technology's immediate potential, with a practical outlook\n"
+                )
         elif age < 30:
             return (
                 "Growth & Foundation Building (25-30)\n"
-                "- Professional: Growing expertise in emerging tech\n"
+                "- Professional: Developing expertise and tackling innovative projects\n"
                 "- Personal: Deeper relationships, potential relocation\n"
                 "- Family: Staying connected through evolving tech\n"
                 "- Social: Expanding network across tech hubs\n"
+                "- Reflections: Begins exploring tech's social impact, still primarily focused on practical outcomes\n"
             )
         elif age < 35:
             return (
@@ -292,6 +338,7 @@ class DigestGenerator:
                 "- Personal: Partnership/marriage\n"
                 "- Family: Blending traditions with modern life\n"
                 "- Social: Building lasting communities\n"
+                "- Reflections: Exploring tech's social impact, while focused on practical outcomes\n"
             )
         elif age < 45:
             return (
@@ -300,6 +347,7 @@ class DigestGenerator:
                 "- Personal: Early parenthood journey\n"
                 "- Family: Creating tech-aware household\n"
                 "- Social: Building family-friendly networks\n"
+                "- Reflections: Early philosophical musings about tech’s future impact, blended with family and legacy\n"
             )
         elif age < 60:
             return (
@@ -308,6 +356,7 @@ class DigestGenerator:
                 "- Personal: Supporting children's growth\n"
                 "- Family: Multi-generational connections\n"
                 "- Social: Mentoring next generation\n"
+                "- Reflections: Increasingly philosophical, considering ethical implications of tech on society\n"
             )
         else:
             return (
@@ -316,12 +365,17 @@ class DigestGenerator:
                 "- Personal: Grandparent phase\n"
                 "- Family: Bridging generations\n"
                 "- Social: Elder community voice\n"
+                "- Reflections: Deep philosophical insights on technology, humanity, and legacy\n"
             )
 
     def _get_project_guidance(self, age):
         """Return age-appropriate project guidance"""
         if age < 25:
             return (
+                "- Actively using and exploring AI coding assistants\n"
+                "- Learning to effectively pair-program with AI\n"
+                "- Sharing insights about AI-assisted development\n"
+                "- Balancing traditional skills with AI augmentation\n"
                 "- Focus on practical, achievable blockchain projects\n"
                 "- Start with existing tech solutions\n"
                 "- Show learning through implementation\n"
@@ -330,6 +384,10 @@ class DigestGenerator:
             )
         elif age < 35:
             return (
+                "- Pioneering new AI-assisted development methodologies\n"
+                "- Leading teams in adopting advanced coding tools\n"
+                "- Contributing to AI coding assistant evolution\n"
+                "- Exploring novel applications of AI in development\n"
                 "- Balance practical solutions with innovative concepts\n"
                 "- Begin exploring novel applications\n"
                 "- Combine multiple technologies creatively\n"
@@ -338,6 +396,10 @@ class DigestGenerator:
             )
         else:
             return (
+                "- Shaping the future of AI-assisted development\n"
+                "- Mentoring on effective human-AI collaboration\n"
+                "- Influencing AI coding tool development\n"
+                "- Bridging human creativity with AI capabilities\n"
                 "- Push boundaries with breakthrough concepts\n"
                 "- Lead technological paradigm shifts\n"
                 "- Create revolutionary solutions\n"

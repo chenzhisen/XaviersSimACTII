@@ -126,10 +126,6 @@ class TechEvolutionGenerator:
             years_from_base = epoch_year - self.base_year
             acceleration_factor = math.exp(years_from_base / 30)
 
-            previous_tech = self.get_previous_technologies(epoch_year)
-            years_from_base = epoch_year - self.base_year
-            acceleration_factor = math.exp(years_from_base / 30)
-
             prompt = f"""Generate technological advancements for the period {epoch_year} to {epoch_year + 5}. 
 
             CONTEXT:
@@ -142,7 +138,13 @@ class TechEvolutionGenerator:
             DEVELOPMENT GUIDELINES:
 
             1. FOCUS AREAS & INTEGRATIONS:
-                - **Artificial Intelligence**: Encompasses advancements in machine learning, automation, and intelligent systems across various applications.
+                - **Artificial Intelligence**: 
+                    * AI Coding Assistants (like @cursor_ai, Copilot)
+                    * Impact on software development practices
+                    * Evolution from code completion to full development automation
+                    * Integration with version control and deployment
+                    * Real-time collaborative coding and debugging
+                    * Encompasses advancements in machine learning, automation, and intelligent systems across various applications.
                 - **Autonomous Systems**: Involves self-operating technologies across transportation, infrastructure, and daily life.
                 - **Neural Technology**: Explores human-computer interactions, brain interfaces, and enhanced cognitive tools.
                 - **Space Exploration**: Envisions humanity’s ventures into space, including settlement, resource management, and exploration.
@@ -150,17 +152,22 @@ class TechEvolutionGenerator:
                 - **Digital Infrastructure**: Centers on privacy, security, and advancements in digital infrastructure for a connected world.
 
             2. DEVELOPMENT PRINCIPLES:
-            - **Exponential Growth**: Technologies should develop at an exponential rate, with earlier emergence and faster sophistication due to compounding advancements.
-            - **Stage-Based Evolution**: Major technologies should appear as emerging stages, prototypes, or early versions before maturing into mainstream applications.
-            - **Practical Applications**: Prioritize technologies that offer practical and tangible benefits, and consider real-world constraints for societal adoption.
-            - **Societal Impact**: Emphasize technologies that consider ethical implications, regulatory challenges, and social adoption factors.
-            - **Blockchain Integration**: Include blockchain innovations where applicable, especially in areas of security, privacy, and digital infrastructure.
-            - **Balance**: Aim for a mix of breakthrough and incremental improvements to reflect the diverse pace of tech development.
+                - **Exponential Growth**: Technologies should develop at an exponential rate, with earlier emergence and faster sophistication due to compounding advancements.
+                - **Stage-Based Evolution**: Major technologies should appear as emerging stages, prototypes, or early versions before maturing into mainstream applications.
+                - **Practical Applications**: Prioritize technologies that offer practical and tangible benefits, and consider real-world constraints for societal adoption.
+                - **Societal Impact**: Emphasize technologies that consider ethical implications, regulatory challenges, and social adoption factors.
+                - **Blockchain Integration**: Include blockchain innovations where applicable, especially in areas of security, privacy, and digital infrastructure.
+                - **Balance**: Aim for a mix of breakthrough and incremental improvements to reflect the diverse pace of tech development.
+                - **Developer Tools Evolution**:
+                    * Track progression from basic code completion to advanced pair programming
+                    * Consider impact on software development lifecycle
+                    * Note changes in how developers work and learn
+                    * Include social coding and knowledge sharing aspects
 
             3. EXCLUDE:
-            - Isolated developments without clear predecessors or dependencies.
-            - Overly futuristic breakthroughs without foundational technologies.
-            - Technologies with no foreseeable path to real-world impact or adoption.
+                - Isolated developments without clear predecessors or dependencies.
+                - Overly futuristic breakthroughs without foundational technologies.
+                - Technologies with no foreseeable path to real-world impact or adoption.
 
             RETURN FORMAT (JSON):
             {{
@@ -217,6 +224,7 @@ class TechEvolutionGenerator:
             if hasattr(response, 'content') and len(response.content) > 0:
                 text_content = response.content[0].text
                 clean_response = text_content.replace('```json\n', '').replace('```', '').strip()
+                print(clean_response)
                 try:
                     tree_data = json.loads(clean_response)
                     # Validate the structure
