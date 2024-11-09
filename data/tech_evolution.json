@@ -1,0 +1,129 @@
+{
+  "metadata": {
+    "generated_at": "2024-11-09T00:19:35.522295",
+    "base_year": 2025,
+    "end_year": 2075
+  },
+  "tech_trees": {
+    "2025": {
+      "emerging_technologies": [
+        {
+          "name": "AI-Driven Code Synthesis",
+          "probability": 0.85,
+          "estimated_year": 2026,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Machine Learning",
+            "Natural Language Processing"
+          ],
+          "impact_areas": [
+            "Software Development",
+            "Education",
+            "Automation"
+          ],
+          "description": "AI systems capable of autonomously developing entire software projects from natural language descriptions.",
+          "societal_implications": "Could reduce the need for traditional programming skills, leading to job displacement but also opening up software development to a broader audience.",
+          "adoption_factors": "Requires significant advancements in AI reliability, security, and ethical coding standards; adoption will depend on regulatory approval and acceptance by the developer community."
+        },
+        {
+          "name": "Neuralink Interface Prototypes",
+          "probability": 0.7,
+          "estimated_year": 2027,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Brain-Computer Interface",
+            "Miniaturization"
+          ],
+          "impact_areas": [
+            "Healthcare",
+            "Gaming",
+            "Communication"
+          ],
+          "description": "Prototypes of brain-computer interfaces allowing direct communication between the human brain and computers.",
+          "societal_implications": "Potential for enhancing human capabilities, ethical concerns about privacy and control, and implications for identity and autonomy.",
+          "adoption_factors": "Highly dependent on regulatory environments, public perception of safety, and the establishment of ethical guidelines."
+        },
+        {
+          "name": "Quantum Secure Blockchain",
+          "probability": 0.65,
+          "estimated_year": 2028,
+          "innovation_type": "incremental",
+          "dependencies": [
+            "Quantum Computing",
+            "Cryptography"
+          ],
+          "impact_areas": [
+            "Finance",
+            "Security",
+            "Digital Identity"
+          ],
+          "description": "Blockchain technology leveraging quantum cryptography for enhanced security against quantum computing threats.",
+          "societal_implications": "Could ensure long-term security for digital transactions, but might require widespread infrastructure changes.",
+          "adoption_factors": "Adoption hinges on the maturity of quantum computing and the development of quantum-resistant algorithms."
+        },
+        {
+          "name": "Autonomous Urban Mobility",
+          "probability": 0.9,
+          "estimated_year": 2029,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "AI",
+            "Sensors",
+            "Vehicle-to-Everything (V2X) Communication"
+          ],
+          "impact_areas": [
+            "Transportation",
+            "Urban Planning",
+            "Logistics"
+          ],
+          "description": "Fully autonomous vehicles designed for urban environments, reducing human involvement in driving.",
+          "societal_implications": "Significant impact on urban design, traffic management, and potentially reducing accidents caused by human error.",
+          "adoption_factors": "Regulatory frameworks, public trust, and infrastructure readiness are critical for widespread adoption."
+        }
+      ],
+      "mainstream_technologies": [
+        {
+          "name": "AI Coding Assistants",
+          "from_emerging": true,
+          "original_emergence_year": 2020,
+          "maturity_year": 2026,
+          "impact_level": 7,
+          "description": "Advanced AI tools assisting developers in coding, debugging, and optimizing software development processes.",
+          "adoption_status": "Widely adopted in tech companies, with integration into IDEs and development platforms."
+        },
+        {
+          "name": "Smart Grids",
+          "from_emerging": true,
+          "original_emergence_year": 2015,
+          "maturity_year": 2025,
+          "impact_level": 8,
+          "description": "Electricity networks integrated with IoT and AI to manage energy distribution more efficiently.",
+          "adoption_status": "Mainstream in developed countries, with ongoing expansion in developing regions."
+        }
+      ],
+      "epoch_themes": [
+        {
+          "theme": "AI-Driven Development",
+          "description": "The integration of AI into all stages of software and hardware development, enhancing efficiency and creativity.",
+          "related_technologies": [
+            "AI-Driven Code Synthesis",
+            "AI Coding Assistants"
+          ],
+          "societal_impact": "Changes in workforce skills, potential job automation, and the democratization of software creation.",
+          "global_trends": "Shift towards AI education and ethics, increased focus on AI governance."
+        },
+        {
+          "theme": "Human Augmentation",
+          "description": "Technologies that enhance human cognitive and physical capabilities through direct or indirect means.",
+          "related_technologies": [
+            "Neuralink Interface Prototypes",
+            "Augmented Reality"
+          ],
+          "societal_impact": "Debates over human enhancement, ethical considerations, and the potential for a cognitive divide.",
+          "global_trends": "Increased research in bioethics, brain-computer interface, and human enhancement technologies."
+        }
+      ],
+      "epoch_year": 2025
+    }
+  }
+}
