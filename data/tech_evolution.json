@@ -1,0 +1,155 @@
+{
+  "metadata": {
+    "generated_at": "2024-11-08T19:15:52.814592",
+    "base_year": 2025,
+    "end_year": 2075
+  },
+  "tech_trees": {
+    "2025": {
+      "emerging_technologies": [
+        {
+          "name": "AI-Driven Software Development Lifecycle",
+          "probability": 0.85,
+          "estimated_year": 2027,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "AI Coding Assistants",
+            "Machine Learning"
+          ],
+          "impact_areas": [
+            "Software Development",
+            "Automation",
+            "Productivity"
+          ],
+          "description": "AI tools that manage the entire software development process, from coding to deployment, with minimal human intervention.",
+          "societal_implications": "Reduces human error, increases efficiency, but could lead to job displacement in traditional coding roles.",
+          "adoption_factors": "High demand for faster, error-free software development; resistance from traditional developers; need for retraining."
+        },
+        {
+          "name": "Autonomous Urban Transport System",
+          "probability": 0.75,
+          "estimated_year": 2029,
+          "innovation_type": "incremental",
+          "dependencies": [
+            "AI",
+            "Sensors",
+            "IoT"
+          ],
+          "impact_areas": [
+            "Transportation",
+            "Urban Planning"
+          ],
+          "description": "Fully autonomous transport systems for urban environments, reducing congestion and improving safety.",
+          "societal_implications": "Decreases traffic accidents, increases urban mobility, but requires infrastructure overhaul and public acceptance.",
+          "adoption_factors": "Government policies, infrastructure readiness, public trust in autonomous systems."
+        },
+        {
+          "name": "Neural Interface for Cognitive Enhancement",
+          "probability": 0.65,
+          "estimated_year": 2030,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Neural Technology",
+            "AI"
+          ],
+          "impact_areas": [
+            "Healthcare",
+            "Education",
+            "Entertainment"
+          ],
+          "description": "Interfaces that enhance cognitive functions by directly interacting with the brain, aiding learning and memory.",
+          "societal_implications": "Potential for increased productivity and learning capacity, but raises ethical concerns about privacy and equity.",
+          "adoption_factors": "Ethical considerations, regulatory approval, technological maturity."
+        },
+        {
+          "name": "Space-based Solar Power",
+          "probability": 0.7,
+          "estimated_year": 2028,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Space Exploration",
+            "Sustainable Technology"
+          ],
+          "impact_areas": [
+            "Energy",
+            "Space"
+          ],
+          "description": "Collecting solar power in space and beaming it back to Earth to provide clean, unlimited energy.",
+          "societal_implications": "Offers a sustainable energy solution, but involves high initial costs and geopolitical considerations.",
+          "adoption_factors": "Technological breakthroughs in energy transmission, international cooperation."
+        },
+        {
+          "name": "Blockchain-Enhanced Digital Identity",
+          "probability": 0.9,
+          "estimated_year": 2026,
+          "innovation_type": "incremental",
+          "dependencies": [
+            "Blockchain",
+            "Digital Infrastructure"
+          ],
+          "impact_areas": [
+            "Security",
+            "Privacy",
+            "Governance"
+          ],
+          "description": "Using blockchain to create secure, verifiable digital identities for both individuals and entities.",
+          "societal_implications": "Improves online security and reduces identity theft, but requires widespread adoption and trust in blockchain technology.",
+          "adoption_factors": "Privacy concerns, regulatory environment, need for interoperability between systems."
+        }
+      ],
+      "mainstream_technologies": [
+        {
+          "name": "AI-Powered Personal Assistants",
+          "from_emerging": true,
+          "original_emergence_year": 2025,
+          "maturity_year": 2027,
+          "impact_level": 8,
+          "description": "AI assistants capable of handling complex tasks, personal scheduling, and learning user preferences.",
+          "adoption_status": "Widely adopted in both consumer and enterprise settings, with continuous improvements in functionality."
+        },
+        {
+          "name": "Smart Grids",
+          "from_emerging": false,
+          "original_emergence_year": 2020,
+          "maturity_year": 2028,
+          "impact_level": 7,
+          "description": "Integration of renewable energy sources with advanced control mechanisms for efficient energy distribution.",
+          "adoption_status": "Becoming standard in developed nations, with significant investment in infrastructure."
+        }
+      ],
+      "epoch_themes": [
+        {
+          "theme": "Automation and Human Augmentation",
+          "description": "A focus on technologies that automate human tasks and enhance human capabilities.",
+          "related_technologies": [
+            "AI-Driven Software Development Lifecycle",
+            "Neural Interface for Cognitive Enhancement"
+          ],
+          "societal_impact": "Shift in workforce dynamics, potential for increased productivity, and ethical debates on human enhancement.",
+          "global_trends": "Increased investment in AI research, discussions on AI ethics, and the rise of cognitive enhancement technologies."
+        },
+        {
+          "theme": "Sustainability and Space",
+          "description": "Technologies aimed at sustainable living and expanding human presence beyond Earth.",
+          "related_technologies": [
+            "Space-based Solar Power",
+            "Autonomous Urban Transport System"
+          ],
+          "societal_impact": "Promotes environmental consciousness and opens new economic frontiers in space.",
+          "global_trends": "Global push for renewable energy, space exploration, and sustainable urban planning."
+        },
+        {
+          "theme": "Digital Trust and Security",
+          "description": "Enhancement of digital infrastructure to ensure privacy, security, and trust in online interactions.",
+          "related_technologies": [
+            "Blockchain-Enhanced Digital Identity",
+            "AI-Powered Personal Assistants"
+          ],
+          "societal_impact": "Reduces fraud, enhances security, but also brings challenges in managing digital rights and privacy.",
+          "global_trends": "Increased regulatory frameworks for digital security, growth in blockchain applications."
+        }
+      ],
+      "epoch_year": 2025
+    }
+  }
+}
