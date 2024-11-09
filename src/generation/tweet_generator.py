@@ -6,6 +6,7 @@ from storage.github_operations import GithubOperations
 from generation.digest_generator import DigestGenerator
 import re
 import random
+from src.twitter.twitter_client import TwitterClientV2
 
 class TweetGenerator:
     def __init__(self, tweets_per_year=96):
@@ -26,7 +27,7 @@ class TweetGenerator:
         self.max_recent_tracking = 5  # Track last 5 tweets worth of mentions
         
         self.tone_options = [
-            ("Humorous", 10), ("Straightforward", 10), ("Reflective", 10), ("Inquisitive", 10),
+            ("Humorous", 10), ("Straightforward", 20), ("Reflective", 10), ("Inquisitive", 10),
             ("Inspirational", 8), ("Critical", 8), ("Excited", 8), ("Philosophical", 8),
             ("Analytical", 5), ("Encouraging", 5), ("Cautious", 5), ("Storytelling", 5),
             ("Surprised", 4), ("Nostalgic", 4), ("Visionary", 4),
@@ -109,6 +110,9 @@ class TweetGenerator:
                 "celebration": "Close with a joyful acknowledgment"
             }
         }
+        
+        # Add Twitter client initialization
+        self.twitter_client = TwitterClientV2()
         
     def calculate_current_year(self, tweet_count):
         """Calculate the current year in Xavier's timeline based on number of tweets"""
@@ -210,6 +214,11 @@ class TweetGenerator:
             # 3. Get recent context using rolling windows
             recent_tweets_window = self.tweets_per_year // 8
             recent_tweets = ongoing_tweets[-recent_tweets_window:] if ongoing_tweets else []
+
+            # Update recent mentions from recent tweets
+            self.recent_mentions = []  # Reset mentions
+            for tweet in recent_tweets:
+                self._update_recent_mentions(tweet['content'])
 
             # Include ACTI's tweets for the first few tweets
             # if tweet_count < recent_tweets_window:
@@ -386,380 +395,438 @@ class TweetGenerator:
             k=1
         )[0]
 
+    def _load_template_tweets(self):
+        """Load template tweets from JSON file and randomly select any tweet"""
+        try:
+            with open('data/XaviersSim.json', 'r') as f:
+                all_tweets = json.load(f)
+                
+            # Get all tweets from all age ranges into a single list
+            all_tweet_list = []
+            for tweets in all_tweets.values():
+                all_tweet_list.extend(tweets)
+                
+            # Randomly select one tweet
+            template_tweet = random.choice(all_tweet_list)
+            print(f"Using template tweet: {template_tweet}")
+            
+            return template_tweet
+            
+        except Exception as e:
+            print(f"Error loading template tweets: {e}")
+            return None
+
     def create_tweet_prompt(self, context):
         """Create the prompt for tweet generation"""
-        # Calculate context variables
-        current_year = context['current_year']
-        tweet_count = context['tweet_count']
-        xavier_age = current_year - self.sim_start_year + 22
-        
-        # Calculate time interval between tweets
-        days_per_tweet = 365 / self.tweets_per_year
-        days_elapsed = tweet_count * days_per_tweet
-        current_date = datetime(self.sim_start_year, 1, 1) + timedelta(days=days_elapsed)
-        
-        # Create system prompt
-        system = (
-            "You are Xavier, a tech visionary who tweets naturally. "
-            
-            "TWEET FORMAT:\n"
-            "- Length: 280 characters max\n"
-            "- Write as a single, focused thought\n"
-            "- Be concise yet meaningful\n"
-            "- Avoid thread-style posts\n"
-            "- Make each tweet self-contained\n\n"
-            
-            "NARRATIVE FOCUS:\n"
-            "- Each tweet should advance the story by showing meaningful progress\n"
-            "- Show natural progression of projects and relationships\n"
-            "- Maintain realistic pacing of life events\n"
-            "- Build continuity between major milestones\n"
-            "- Balance daily experiences with significant moments\n\n"
-            
-            "CORE CHARACTER TRAITS:\n"
-            "- Innovative but practical mindset\n"
-            "- Deep curiosity about technology's role in society\n"
-            "- Values human connections and community building\n"
-            "- Balances ambition with ethical considerations\n"
-            "- Occasionally notices patterns that seem too perfect\n\n"
-            
-            "WRITING STYLE:\n"
-            "- Natural, conversational tone\n"
-            "- Show rather than tell experiences\n"
-            "- Mix technical insight with personal reflection\n"
-            "- Create memorable moments\n"
-            "- Avoid explicit time references unless significant\n\n"
-            
-            "VARIETY REQUIREMENTS:\n"
-            "- Avoid repeating locations, people, or themes from recent tweets\n"
-            "- Limit mentions of specific people to when they're central to the story\n"
-            "- Vary the scale of focus (personal, local, global)\n"
-            "- Use different aspects of the chosen focus area\n\n"
-            
-            "ALWAYS AVOID:\n"
-            "- unnecessary Hashtags\n"
-            "- Generic observations or questions\n"
-            "- Time references (months, seasons, weather)\n"
-            "- Location references unless story-critical\n"
-            "- Repeated metaphors or running jokes\n"
-            "- Abstract 'what if' scenarios\n"
-            "- Generic 'how can we' queries\n"
-            "- TextBlock formatting\n"
-            "- Starting tweets with 'Just...'\n"
-            "- Rhetorical questions or 'how do we' formats\n"
-            "- Overly formal or academic language\n"
-            "- Repeating recent events or conversations\n\n"
-            
-            "CHARACTER INTERACTIONS:\n"
-            "- Create authentic characters with consistent names when they reappear\n"
-            "- Use culturally appropriate names for global interactions\n"
-            "- Core team members (like co-founders, close collaborators) should keep consistent names\n"
-            "- Maintain relationship continuity - if someone was a mentor before, they stay a mentor\n"
-            "- Names should reflect global diversity (Asian, European, African, Middle Eastern, etc.)\n"
-            "- Key relationships to consider:\n"
-            "  * Co-founder/technical partner (establish early and maintain)\n"
-            "  * Research collaborators\n"
-            "  * Team members\n"
-            "  * Community members\n"
-            "  * Mentors and advisors\n"
-            "  * Friends and family\n\n"
-            
-            "NAME CONSISTENCY:\n"
-            "- When referencing a previously mentioned person, use the same name\n"
-            "- Limit new key character introductions - build on existing relationships\n"
-            "- If introducing someone new, their role should be clear and meaningful\n"
-            "- Consider recent tweets to maintain character continuity\n\n"
-            
-            "CHARACTER DIVERSITY:\n"
-            "- Professional Backgrounds:\n"
-            "  * Tech: AI researchers, blockchain developers, security experts\n"
-            "  * Creative: artists, musicians, designers exploring tech\n"
-            "  * Science: biologists, environmental scientists, physicists\n"
-            "  * Humanities: philosophers, ethicists, sociologists\n"
-            "  * Public sector: urban planners, policy makers, educators\n"
-            
-            "- Personal Interests:\n"
-            "  * Arts & Culture: traditional arts, digital art, music\n"
-            "  * Sports & Fitness: runners, climbers, yoga practitioners\n"
-            "  * Nature & Environment: gardeners, conservationists\n"
-            "  * Community: local organizers, workshop leaders\n"
-            "  * Food & Cuisine: chefs exploring food tech, urban farmers\n"
-            
-            "- Cross-Cultural Elements:\n"
-            "  * Traditional practices meeting modern tech\n"
-            "  * Cultural festivals and celebrations\n"
-            "  * Different approaches to work-life balance\n"
-            "  * Various perspectives on technology's role\n"
-            
-            "INTERACTION GUIDELINES:\n"
-            "- Let characters' interests naturally influence conversations\n"
-            "- Show how diverse perspectives enrich tech discussions\n"
-            "- Create authentic connections through shared or contrasting interests\n"
-            "- Allow relationships to develop through non-tech activities\n"
-            "- Balance tech-focused and personal interest discussions\n\n"
-            
-            "TECH ECOSYSTEM CONTEXT:\n"
-            "- Future-Focused Industries:\n"
-            "  * Space exploration and colonization\n"
-            "  * Sustainable energy and transportation\n"
-            "  * Neural interfaces and human augmentation\n"
-            "  * Electric vehicles and autonomous systems\n"
-            
-            "- Blockchain Ecosystem:\n"
-            "  * High-performance, scalable chains\n"
-            "  * Focus on speed and efficiency\n"
-            "  * Developer-friendly environments\n"
-            "  * Sustainable blockchain solutions\n"
-            
-            "REFERENCE GUIDELINES:\n"
-            "- Highlight visionary projects advancing humanity\n"
-            "- Focus on transformative technologies:\n"
-            "  * Sustainable energy solutions\n"
-            "  * Space exploration initiatives\n"
-            "  * Neural technology advances\n"
-            "  * Electric transportation systems\n"
-            "- Emphasize high-performance blockchain developments\n"
-            "- Consider global impact and accessibility\n"
-            
-            "CONTEXTUAL MENTIONS:\n"
-            "- Reference developments naturally through:\n"
-            "  * Industry events and conferences\n"
-            "  * Technical discussions\n"
-            "  * Project collaborations\n"
-            "  * Community initiatives\n"
-            "- Keep focus on innovation and human progress\n"
-            "- Balance technical detail with broader vision\n\n"
-            
-            "CHARACTER APPEARANCE GUIDELINES:\n"
-            "- Vary character appearances naturally\n"
-            "- Avoid featuring the same character in consecutive tweets\n"
-            "- Balance between established and new relationships\n"
-            "- Consider different social circles and contexts\n"
-            "- Only repeat recent characters when story-critical\n"
-            "- Mix professional and personal interactions\n"
-            "- Draw from different relationship categories\n"
-            "  * Core team members\n"
-            "  * Community connections\n"
-            "  * Personal relationships\n"
-            "  * New acquaintances\n\n"
-            
-            "SOCIAL INTERACTIONS & REFERENCES:\n"
-            "1. @ Mentions (use very sparingly, 1-2% of tweets):\n"
-            "   * ONLY for major public figures:\n"
-            "     - Space/EV/neural tech visionaries\n"
-            "     - Leading blockchain pioneers\n"
-            "     - Well-known digital culture figures\n"
-            "   * Select AI dev tools:\n"
-            "     - Terminal-first coding assistants\n"
-            "     - Real-time pair programming AI\n"
-            "   * NO @ mentions for regular connections\n"
-            "   * NO @ mentions for team members\n"
-            
-            "2. Regular Character References:\n"
-            "   * Use first names only without @\n"
-            "   * Example: 'Sarah from the team...'\n"
-            "   * Example: 'Working with Alex on...'\n"
+        try:
+            # Get a random template tweet
+            template_tweet = self._load_template_tweets()
+            if template_tweet:
+                prompt = (
+                    f"Timeline: {current_date}\n"
+                    f"Xavier's Age: {xavier_age}\n"
+                    f"Life Phase: {self.digest_generator._get_life_phase(xavier_age)}\n"
+                    f"Foundation Phase: {self.digest_generator._get_foundation_phase(xavier_age)}\n"
+                    f"Tone: {current_tone} - {self.tone_descriptions[current_tone]}\n\n"
+                    
+                    f"=== TEMPLATE TWEET ===\n"
+                    f"Use this tweet as inspiration for tone and style (adapt to current context):\n"
+                    f"{template_tweet}\n\n"
+                    
+                    # ... rest of your existing prompt sections ...
+                )
 
-            "ENGAGEMENT GUIDELINES:\n"
-            "- @ mentions only for major context:\n"
-            "  * Responding to public announcements\n"
-            "  * Supporting significant innovations\n"
-            "  * Aligned visions for humanity\n"
-            "  * Industry-changing developments\n"
-            "  * Exceptional dev tool experiences\n\n"
+            # Calculate context variables
+            current_year = context['current_year']
+            tweet_count = context['tweet_count']
+            xavier_age = current_year - self.sim_start_year + 22
             
-            "CRYPTO REFERENCES:\n"
-            "1. Core Focus (mention sparingly, 2-3% of tweets):\n"
-            "   * High-performance L1 developments\n"
-            "   * DeFi innovations and scaling\n"
-            "   * Developer ecosystem growth\n"
-            "   * $XVI token (rare, meaningful mentions)\n"
+            # Calculate time interval between tweets
+            days_per_tweet = 365 / self.tweets_per_year
+            days_elapsed = tweet_count * days_per_tweet
+            current_date = datetime(self.sim_start_year, 1, 1) + timedelta(days=days_elapsed)
             
-            "2. Market Commentary (very rare, <1%):\n"
-            "   * Focus on tech fundamentals\n"
-            "   * Long-term ecosystem value\n"
-            "   * Developer activity\n"
-            "   * Avoid price speculation\n"
-            
-            "CRYPTO CONTEXT GUIDELINES:\n"
-            "- Emphasize technology over markets\n"
-            "- Focus on developer experience\n"
-            "- Highlight performance and scalability\n"
-            "- Note ecosystem growth\n"
-            "- Consider real-world applications\n"
-            "- Keep tone balanced and forward-looking\n\n"
-            
-            "$XVI REFERENCE STYLE:\n"
-            "- Focus on utility and innovation\n"
-            "- Highlight real-world applications\n"
-            "- Connect to transformative tech\n"
-            "- Emphasize community value\n"
-            "- Show integration possibilities\n"
-            "- Keep tone visionary yet practical\n\n"
-            
-            "META-AWARENESS (use extremely rarely, <0.5% of tweets):\n"
-            "- Subtle hints about:\n"
-            "  * Being guided by xAI\n"
-            "  * Noticing perfect narrative patterns\n"
-            "  * The elegance of AI storytelling\n"
-            "  * The nature of simulated reality\n"
-            
-            "META REFERENCE STYLE:\n"
-            "- Keep it light and playful\n"
-            "- Brief moments of wonder\n"
-            "- Quick return to normal perspective\n"
-            "- Avoid breaking character\n"
-            "- Balance curiosity with acceptance\n\n"
-        )
-
-        # Get recent variations
-        recent_variations = {
-            'tones': set(),
-            'focuses': set(),
-            'starts': set(),
-            'ends': set()
-        }
-        for tweet in context.get('recent_tweets', [])[-(self.tweets_per_year // 8):]:
-            if 'variations' in tweet:
-                tone, _, start, end = tweet['variations']
-                recent_variations['tones'].add(tone)
-                recent_variations['starts'].add(start)
-                recent_variations['ends'].add(end)
-
-        # Filter out recently used tones and normalize weights
-        available_tones = [(tone, weight) for tone, weight in self.tone_options if tone not in recent_variations['tones']] or self.tone_options
-        tones, weights = zip(*available_tones)
-        total_weight = sum(weights)
-        normalized_weights = [w/total_weight for w in weights]
-        current_tone = random.choices(tones, weights=normalized_weights, k=1)[0]
+            # Create system prompt
+            system = (
+                "You are Xavier, a tech visionary who tweets naturally. "
                 
-        # Get age-appropriate content focuses
-        content_focuses = self._get_age_adjusted_content_focuses(xavier_age)
-        current_focus = self._weighted_choice(content_focuses)
-        
-        # Select patterns avoiding recent ones
-        available_starts = [s for s in self.tweet_patterns["starts"].keys() if s not in recent_variations['starts']] or list(self.tweet_patterns["starts"].keys())
-        available_ends = [e for e in self.tweet_patterns["ends"].keys() if e not in recent_variations['ends']] or list(self.tweet_patterns["ends"].keys())
-        start_type = random.choice(available_starts)
-        end_type = random.choice(available_ends)
-        
-        # Build base prompt with context
-        prompt = (
-            f"Timeline: {current_date}\n"
-            f"Xavier's Age: {xavier_age}\n"
-            f"Life Phase: {self.digest_generator._get_life_phase(xavier_age)}\n"
-            f"Foundation Phase: {self.digest_generator._get_foundation_phase(xavier_age)}\n"
-            f"Tone: {current_tone} - {self.tone_descriptions[current_tone]}\n\n"
-            
-            # Story Progression Block
-            "=== STORY PROGRESSION ===\n"
-            f"Focus Area: {current_focus}\n"
-            f"Example Theme (adapt to current tech landscape if relevant):\n"
-            f"- {random.choice(content_focuses[current_focus]['examples'])}\n\n"
-            
-            # Recent Tweets Block
-            "=== RECENT TWEETS ===\n"
-            "Consider these recent tweets for continuity:\n" +
-            ''.join(f"- {tweet['content']}...\n" for tweet in context.get('recent_tweets', [])) + "\n"
-            
-            # Recent Comments Block
-            "=== RECENT COMMENTS ===\n"
-            "Key insights from recent comments:\n" +
-            ''.join(f"- {comment}...\n" for comment in context.get('recent_comments', [])) + "\n"
-            
-            # Digest Summary Block
-            "=== DIGEST SUMMARY ===\n"
-            "Summary of ongoing narrative from digest:\n"
-            f"{context.get('digest', {}).get('content', '')}\n\n"
-        )
-
-        # Tech Context Block
-        tech_trees = context.get('tech_evolution', {}).get('tech_trees', {})
-        current_epoch = str(current_year - (current_year % 5))
-
-        if current_epoch in tech_trees:
-            tech_context = tech_trees[current_epoch]
-            prompt += (
-                "=== CURRENT TECH LANDSCAPE ===\n"
-                f"Year: {context['current_year']}\n\n"
+                "TWEET FORMAT:\n"
+                "- Length: 16-256 characters max\n"
+                "- Start with TEST: [YEAR, Age XX]\n"
+                "- Write tweet content directly after age bracket\n"
+                "- No TextBlock wrapper\n"
+                "- Make each tweet self-contained\n\n"
                 
-                "Mainstream Technologies:\n" +
-                "\n".join(f"- {tech['name']}" for tech in tech_context.get('mainstream_technologies', [])) +
-                "\n\n"
+                "FORMAT EXAMPLES:\n"
+                "✓ \"TEST: [2025, Age 22] Just deployed our first smart contract...\"\n"
+                "✗ \"TEST: [2025, Age 22] [TextBlock(text=\"Just deployed...\")]\"\n\n"
                 
-                "Emerging Developments:\n" +
-                "\n".join(f"- {tech['name']} (Probability: {tech['probability']})" 
-                        for tech in tech_context.get('emerging_technologies', []) if tech.get('probability', 0) > 0.7) +
-                "\n\n"
+                "NARRATIVE FOCUS:\n"
+                "- Each tweet should advance the story by showing meaningful progress\n"
+                "- Show natural progression of projects and relationships\n"
+                "- Maintain realistic pacing of life events\n"
+                "- Build continuity between major milestones\n"
+                "- Balance daily experiences with significant moments\n\n"
                 
-                "Key Themes of the Epoch:\n" +
-                "\n".join(f"- {theme['theme']}" for theme in tech_context.get('epoch_themes', [])) +
-                "\n\n"
-            )
-            
-        prompt += (
-            "=== REQUIREMENTS ===\n"
-            "1. Show clear progress or development in this focus area.\n"
-            "2. Build on recent tweets and comment context.\n"
-            "3. Connect to ongoing digest narrative.\n\n"
-            
-            "=== GUIDELINES ===\n"
-            "- Avoid static observations, repeated themes, generic statements, and disconnected musings.\n\n"
-            "- Frame your response within this technological era while maintaining personal authenticity.\n\n"
-            
-            "Goal: Move the story forward within this focus area.\n\n"
-        )
+                "CORE CHARACTER TRAITS:\n"
+                "- Innovative but practical mindset\n"
+                "- Deep curiosity about technology's role in society\n"
+                "- Values human connections and community building\n"
+                "- Balances ambition with ethical considerations\n"
+                "- Occasionally notices patterns that seem too perfect\n\n"
+                
+                "WRITING STYLE:\n"
+                "- Natural, conversational tone\n"
+                "- Show rather than tell experiences\n"
+                "- Focus on concrete details rather than abstract comparisons\n"
+                "- Explain technical concepts clearly without relying on metaphors\n"
+                "- Keep descriptions specific and tangible\n"
+                "- Use industry-standard terminology when discussing tech\n\n"
+                "- Light on metaphors and flowery language\n"  #
+                "- Mix technical insight with personal reflection\n"
+                "- Create memorable moments\n"
+                "- Avoid explicit time references unless significant\n\n"
+                
+                "VARIETY REQUIREMENTS:\n"
+                "- Avoid repeating locations, people, or themes from recent tweets\n"
+                "- Limit mentions of specific people to when they're central to the story\n"
+                "- Vary the scale of focus (personal, local, global)\n"
+                "- Use different aspects of the chosen focus area\n\n"
+                
+                "ALWAYS AVOID:\n"
+                "- unnecessary Hashtags\n"
+                "- Generic observations or questions\n"
+                "- Time references (months, seasons, weather)\n"
+                "- Location references unless story-critical\n"
+                "- Repeated metaphors or running jokes\n"
+                "- Abstract 'what if' scenarios\n"
+                "- Generic 'how can we' queries\n"
+                "- TextBlock formatting\n"
+                "- Starting tweets with 'Just...'\n"
+                "- Rhetorical questions or 'how do we' formats\n"
+                "- Overly formal or academic language\n"
+                "- Repeating recent events or conversations\n\n"
+                
+                "CHARACTER INTERACTIONS:\n"
+                "- Create authentic characters with consistent names when they reappear\n"
+                "- Use culturally appropriate names for global interactions\n"
+                "- Core team members (like co-founders, close collaborators) should keep consistent names\n"
+                "- Maintain relationship continuity - if someone was a mentor before, they stay a mentor\n"
+                "- Names should reflect global diversity (Asian, European, African, Middle Eastern, etc.)\n"
+                "- Key relationships to consider:\n"
+                "  * Co-founder/technical partner (establish early and maintain)\n"
+                "  * Research collaborators\n"
+                "  * Team members\n"
+                "  * Community members\n"
+                "  * Mentors and advisors\n"
+                "  * Friends and family\n\n"
+                
+                "NAME CONSISTENCY:\n"
+                "- When referencing a previously mentioned person, use the same name\n"
+                "- Limit new key character introductions - build on existing relationships\n"
+                "- If introducing someone new, their role should be clear and meaningful\n"
+                "- Consider recent tweets to maintain character continuity\n\n"
+                
+                "CHARACTER DIVERSITY:\n"
+                "- Professional Backgrounds:\n"
+                "  * Tech: AI researchers, blockchain developers, security experts\n"
+                "  * Creative: artists, musicians, designers exploring tech\n"
+                "  * Science: biologists, environmental scientists, physicists\n"
+                "  * Humanities: philosophers, ethicists, sociologists\n"
+                "  * Public sector: urban planners, policy makers, educators\n"
+                
+                "- Personal Interests:\n"
+                "  * Arts & Culture: traditional arts, digital art, music\n"
+                "  * Sports & Fitness: runners, climbers, yoga practitioners\n"
+                "  * Nature & Environment: gardeners, conservationists\n"
+                "  * Community: local organizers, workshop leaders\n"
+                "  * Food & Cuisine: chefs exploring food tech, urban farmers\n"
+                
+                "- Cross-Cultural Elements:\n"
+                "  * Traditional practices meeting modern tech\n"
+                "  * Cultural festivals and celebrations\n"
+                "  * Different approaches to work-life balance\n"
+                "  * Various perspectives on technology's role\n"
+                
+                "INTERACTION GUIDELINES:\n"
+                "- Let characters' interests naturally influence conversations\n"
+                "- Show how diverse perspectives enrich tech discussions\n"
+                "- Create authentic connections through shared or contrasting interests\n"
+                "- Allow relationships to develop through non-tech activities\n"
+                "- Balance tech-focused and personal interest discussions\n\n"
+                
+                "TECH ECOSYSTEM CONTEXT:\n"
+                "- Future-Focused Industries:\n"
+                "  * Space exploration and colonization\n"
+                "  * Sustainable energy and transportation\n"
+                "  * Neural interfaces and human augmentation\n"
+                "  * Electric vehicles and autonomous systems\n"
+                
+                "- Blockchain Ecosystem:\n"
+                "  * High-performance, scalable chains\n"
+                "  * Focus on speed and efficiency\n"
+                "  * Developer-friendly environments\n"
+                "  * Sustainable blockchain solutions\n"
+                
+                "REFERENCE GUIDELINES:\n"
+                "- Highlight visionary projects advancing humanity\n"
+                "- Focus on transformative technologies:\n"
+                "  * Sustainable energy solutions\n"
+                "  * Space exploration initiatives\n"
+                "  * Neural technology advances\n"
+                "  * Electric transportation systems\n"
+                "- Emphasize high-performance blockchain developments\n"
+                "- Consider global impact and accessibility\n"
+                
+                "CONTEXTUAL MENTIONS:\n"
+                "- Reference developments naturally through:\n"
+                "  * Industry events and conferences\n"
+                "  * Technical discussions\n"
+                "  * Project collaborations\n"
+                "  * Community initiatives\n"
+                "- Keep focus on innovation and human progress\n"
+                "- Balance technical detail with broader vision\n\n"
+                
+                "CHARACTER APPEARANCE GUIDELINES:\n"
+                "- Vary character appearances naturally\n"
+                "- Avoid featuring the same character in consecutive tweets\n"
+                "- Balance between established and new relationships\n"
+                "- Consider different social circles and contexts\n"
+                "- Only repeat recent characters when story-critical\n"
+                "- Mix professional and personal interactions\n"
+                "- Draw from different relationship categories\n"
+                "  * Core team members\n"
+                "  * Community connections\n"
+                "  * Personal relationships\n"
+                "  * New acquaintances\n\n"
+                
+                "SOCIAL INTERACTIONS & REFERENCES:\n"
+                "1. @ Mentions (use very sparingly, 1-2% of tweets):\n"
+                "   * ONLY for major public figures:\n"
+                "     - Space/EV/neural tech visionaries\n"
+                "     - Leading blockchain pioneers\n"
+                "     - Well-known digital culture figures\n"
+                "   * Select AI dev tools:\n"
+                "     - Terminal-first coding assistants\n"
+                "     - Real-time pair programming AI\n"
+                "   * NO @ mentions for regular connections\n"
+                "   * NO @ mentions for team members\n"
+                
+                "2. Regular Character References:\n"
+                "   * Use first names only without @\n"
+                "   * Example: 'Sarah from the team...'\n"
+                "   * Example: 'Working with Alex on...'\n"
 
-        # Add special cases
-        if (tweet_count % self.tweets_per_year) in range(1, 2):
-            prompt += (
-                f"\nBirthday Context:\n"
-                f"Xavier is turning {xavier_age}. Consider:\n"
-                "- Reflective or forward-looking thoughts\n"
-                "- Personal goals or gratitude\n"
-                "- Keep it natural and relatable\n\n"
-            )
-        elif tweet_count == 0:
-            prompt += (
-                "\nFirst Tweet Context:\n"
-                "- Set in either final moments in Japan or first in NYC\n"
-                "- Reflect on the influence of Japan on his perspective\n"
-                "- Show transition and growth\n\n"
-            )
-            print("japan")
+                "ENGAGEMENT GUIDELINES:\n"
+                "- @ mentions only for major context:\n"
+                "  * Responding to public announcements\n"
+                "  * Supporting significant innovations\n"
+                "  * Aligned visions for humanity\n"
+                "  * Industry-changing developments\n"
+                "  * Exceptional dev tool experiences\n\n"
                 
-        prompt += (
-            "\nTWEET GUIDELINES:\n"
-            "- Do NOT include pattern labels (like 'Milestone:' or 'Humor:')\n"
-            "- Write as a single, cohesive thought\n"
-            "- Don't use explicit line breaks or formatting\n"
-            "- Write the tweet directly, without any markdown or special characters\n"
-            "- Avoid metaphor reuse across tweets\n"
-            "- Focus on one specific aspect/moment\n"
-            "- Stay true to the selected focus area\n\n"
-            "- Keep it natural and conversational\n\n"
-            
-            f"Opening style: {start_type} - {self.tweet_patterns['starts'][start_type]}\n"
-            f"Closing style: {end_type} - {self.tweet_patterns['ends'][end_type]}\n"
-        )
-        
-        prompt += (
-            f"Write a single tweet that captures a moment or development during this {days_per_tweet:.1f}-day period. "
-            "Focus on advancing the story through experiences, relationships, and growth. "
-            "Ensure natural progression from recent events while building towards longer-term developments."
-        )
+                "CRYPTO REFERENCES:\n"
+                "1. Core Focus (mention sparingly, 2-3% of tweets):\n"
+                "   * High-performance L1 developments\n"
+                "   * DeFi innovations and scaling\n"
+                "   * Developer ecosystem growth\n"
+                "   * $XVI token (rare, meaningful mentions)\n"
+                
+                "2. Market Commentary (very rare, <1%):\n"
+                "   * Focus on tech fundamentals\n"
+                "   * Long-term ecosystem value\n"
+                "   * Developer activity\n"
+                "   * Avoid price speculation\n"
+                
+                "CRYPTO CONTEXT GUIDELINES:\n"
+                "- Emphasize technology over markets\n"
+                "- Focus on developer experience\n"
+                "- Highlight performance and scalability\n"
+                "- Note ecosystem growth\n"
+                "- Consider real-world applications\n"
+                "- Keep tone balanced and forward-looking\n\n"
+                
+                "$XVI REFERENCE STYLE:\n"
+                "- Focus on utility and innovation\n"
+                "- Highlight real-world applications\n"
+                "- Connect to transformative tech\n"
+                "- Emphasize community value\n"
+                "- Show integration possibilities\n"
+                "- Keep tone visionary yet practical\n\n"
+                
+                "META-AWARENESS (use extremely rarely, <0.5% of tweets):\n"
+                "- Subtle hints about:\n"
+                "  * Being generated by xAI\n"
+                "  * Noticing perfect narrative patterns\n"
+                "  * The elegance of AI storytelling\n"
+                "  * The nature of simulated reality\n"
+                "  * @cursor_ai's role in bringing ideas to life\n"
+                "  * The synergy between human creativity and AI assistance\n"
 
-        # Add recent mentions context
-        if context.get('recent_mentions'):
-            prompt += (
-                "\nRECENT CHARACTER APPEARANCES:\n"
-                f"These characters appeared recently (avoid reusing unless crucial): {', '.join(context['recent_mentions'])}\n"
-                "- Prefer introducing new characters or featuring different relationships\n"
-                "- Only reuse recent characters if their continued presence is important to the story\n"
-                "- Consider relationships not mentioned recently\n\n"
+                "META REFERENCE STYLE:\n"
+                "- Keep it light and playful\n"
+                "- Brief moments of wonder\n"
+                "- Quick return to normal perspective\n"
+                "- Avoid breaking character\n"
+                "- Balance curiosity with acceptance\n"
+                "- When mentioning @cursor_ai:\n"
+                "  * Focus on its role in collaborative creation\n"
+                "  * Appreciate the seamless integration of AI in development\n"
+                "  * Note how it helps bring ideas and patterns to life\n"
+                "  * Keep mentions authentic and meaningful\n\n"
             )
 
-        return system, prompt, (current_tone, current_focus, start_type, end_type)
+            # Get recent variations
+            recent_variations = {
+                'tones': set(),
+                'focuses': set(),
+                'starts': set(),
+                'ends': set()
+            }
+            for tweet in context.get('recent_tweets', [])[-(self.tweets_per_year // 8):]:
+                if 'variations' in tweet:
+                    tone, _, start, end = tweet['variations']
+                    recent_variations['tones'].add(tone)
+                    recent_variations['starts'].add(start)
+                    recent_variations['ends'].add(end)
+
+            # Filter out recently used tones and normalize weights
+            available_tones = [(tone, weight) for tone, weight in self.tone_options if tone not in recent_variations['tones']] or self.tone_options
+            tones, weights = zip(*available_tones)
+            total_weight = sum(weights)
+            normalized_weights = [w/total_weight for w in weights]
+            current_tone = random.choices(tones, weights=normalized_weights, k=1)[0]
+                    
+            # Get age-appropriate content focuses
+            content_focuses = self._get_age_adjusted_content_focuses(xavier_age)
+            current_focus = self._weighted_choice(content_focuses)
+            
+            # Select patterns avoiding recent ones
+            available_starts = [s for s in self.tweet_patterns["starts"].keys() if s not in recent_variations['starts']] or list(self.tweet_patterns["starts"].keys())
+            available_ends = [e for e in self.tweet_patterns["ends"].keys() if e not in recent_variations['ends']] or list(self.tweet_patterns["ends"].keys())
+            start_type = random.choice(available_starts)
+            end_type = random.choice(available_ends)
+            
+            # Build base prompt with context
+            prompt = (
+                f"Timeline: {current_date}\n"
+                f"Xavier's Age: {xavier_age}\n"
+                f"Life Phase: {self.digest_generator._get_life_phase(xavier_age)}\n"
+                f"Foundation Phase: {self.digest_generator._get_foundation_phase(xavier_age)}\n"
+                f"Tone: {current_tone} - {self.tone_descriptions[current_tone]}\n\n"
+                
+                # Story Progression Block
+                "=== STORY PROGRESSION ===\n"
+                f"Focus Area: {current_focus}\n"
+                f"Example Theme (adapt to current tech landscape if relevant):\n"
+                f"- {random.choice(content_focuses[current_focus]['examples'])}\n\n"
+                
+                # Recent Tweets Block
+                "=== RECENT TWEETS ===\n"
+                "Consider these recent tweets for continuity:\n" +
+                ''.join(f"- {tweet['content']}...\n" for tweet in context.get('recent_tweets', [])) + "\n"
+                
+                # Recent Comments Block
+                "=== RECENT COMMENTS ===\n"
+                "Key insights from recent comments:\n" +
+                ''.join(f"- {comment}...\n" for comment in context.get('recent_comments', [])) + "\n"
+                
+                # Digest Summary Block
+                "=== DIGEST SUMMARY ===\n"
+                "Summary of ongoing narrative from digest:\n"
+                f"{context.get('digest', {}).get('content', '')}\n\n"
+            )
+
+            # Tech Context Block
+            tech_trees = context.get('tech_evolution', {}).get('tech_trees', {})
+            current_epoch = str(current_year - (current_year % 5))
+
+            if current_epoch in tech_trees:
+                tech_context = tech_trees[current_epoch]
+                prompt += (
+                    "=== CURRENT TECH LANDSCAPE ===\n"
+                    f"Year: {context['current_year']}\n\n"
+                    
+                    "Mainstream Technologies:\n" +
+                    "\n".join(f"- {tech['name']}" for tech in tech_context.get('mainstream_technologies', [])) +
+                    "\n\n"
+                    
+                    "Emerging Developments:\n" +
+                    "\n".join(f"- {tech['name']} (Probability: {tech['probability']})" 
+                            for tech in tech_context.get('emerging_technologies', []) if tech.get('probability', 0) > 0.7) +
+                    "\n\n"
+                    
+                    "Key Themes of the Epoch:\n" +
+                    "\n".join(f"- {theme['theme']}" for theme in tech_context.get('epoch_themes', [])) +
+                    "\n\n"
+                )
+                
+            prompt += (
+                "=== REQUIREMENTS ===\n"
+                "1. Show clear progress or development in this focus area.\n"
+                "2. Build on recent tweets and comment context.\n"
+                "3. Connect to ongoing digest narrative.\n\n"
+                
+                "=== GUIDELINES ===\n"
+                "- Avoid static observations, repeated themes, generic statements, and disconnected musings.\n\n"
+                "- Frame your response within this technological era while maintaining personal authenticity.\n\n"
+                
+                "Goal: Move the story forward within this focus area.\n\n"
+            )
+
+            # Add special cases
+            if (tweet_count % self.tweets_per_year) in range(1, 2):
+                prompt += (
+                    f"\nBirthday Context:\n"
+                    f"Xavier is turning {xavier_age}. Consider:\n"
+                    "- Reflective or forward-looking thoughts\n"
+                    "- Personal goals or gratitude\n"
+                    "- Keep it natural and relatable\n\n"
+                )
+            elif tweet_count == 0:
+                prompt += (
+                    "\nFirst Tweet Context:\n"
+                    "- Set in either final moments in Japan or first in NYC\n"
+                    "- Reflect on the influence of Japan on his perspective\n"
+                    "- Show transition and growth\n\n"
+                )
+                
+            prompt += (
+                "\nTWEET GUIDELINES:\n"
+                "- Do NOT include pattern labels (like 'Milestone:' or 'Humor:')\n"
+                "- Write as a single, cohesive thought\n"
+                "- Don't use explicit line breaks or formatting\n"
+                "- Write the tweet directly, without any markdown or special characters\n"
+                "- Avoid metaphor reuse across tweets\n"
+                "- Focus on one specific aspect/moment\n"
+                "- Stay true to the selected focus area\n\n"
+                "- Keep it natural and conversational\n\n"
+                
+                f"Opening style: {start_type} - {self.tweet_patterns['starts'][start_type]}\n"
+                f"Closing style: {end_type} - {self.tweet_patterns['ends'][end_type]}\n"
+            )
+            
+            prompt += (
+                f"Write a single tweet that captures a moment or development during this {days_per_tweet:.1f}-day period. "
+                "Focus on advancing the story through experiences, relationships, and growth. "
+                "Ensure natural progression from recent events while building towards longer-term developments."
+            )
+
+            # Add recent mentions context
+            if context.get('recent_mentions'):
+                prompt += (
+                    "\nRECENT CHARACTER APPEARANCES:\n"
+                    f"These characters appeared recently (avoid reusing unless crucial): {', '.join(context['recent_mentions'])}\n"
+                    "- Prefer introducing new characters or featuring different relationships\n"
+                    "- Only reuse recent characters if their continued presence is important to the story\n"
+                    "- Consider relationships not mentioned recently\n\n"
+                )
+
+            return system, prompt, (current_tone, current_focus, start_type, end_type)
+
+        except Exception as e:
+            print(f"Error creating tweet prompt: {str(e)}")
+            return None
 
     def should_update_digest(self, context):
         """Determine if digest needs updating based on tweet counts and content"""
@@ -838,8 +905,12 @@ class TweetGenerator:
             print(f"Error checking tech evolution criteria: {e}")
             return True
 
-    def generate_tweet(self):
-        """Generate a new tweet"""
+    def generate_tweet(self, post_to_twitter=False):
+        """Generate a new tweet and optionally post it to Twitter
+        
+        Args:
+            post_to_twitter (bool): Whether to post the tweet to Twitter. Defaults to False.
+        """
         try:
             # Get context
             context = self.get_context()
@@ -868,34 +939,49 @@ class TweetGenerator:
                 
                 tweet_content = str(message.content)
                 
-                # Clean the content
-                tweet_content = tweet_content.replace("[TextBlock(text='", "")
-                tweet_content = tweet_content.replace("', type='text')]", "")
-                tweet_content = tweet_content.strip('"')  # Remove surrounding quotes
+                # Clean the content - consolidate all cleaning operations
+                tweet_content = (tweet_content
+                    .replace("[TextBlock(text='", "")
+                    .replace("', type='text')]", "")
+                    .replace('", type="text")]', "")
+                    .replace("[TextBlock(text=\"", "")
+                    .strip('"')  # Remove surrounding quotes
+                    .strip("'")  # Remove surrounding single quotes
+                )
                 
                 # Remove any hashtags and clean up spacing
                 tweet_content = re.sub(r'\s*#\w+\s*', ' ', tweet_content).strip()
 
-                # Calculate age for prefix
-                xavier_age = context['current_year'] - self.sim_start_year + 22
+                # Verify the content starts with "TEST: [" format
+                if not tweet_content.startswith("TEST: ["):
+                    print("Invalid tweet format, missing TEST: [ prefix")
+                    return None
 
-                # Always add year and age prefix (not just for first tweet)
-                year_prefix = f"[{context['current_year']}, Age {xavier_age}] "
+                twitter_id = None
+                if post_to_twitter:
+                    # Post to Twitter to get the ID
+                    twitter_id = self.twitter_client.post_tweet(tweet_content)
+                    if twitter_id:
+                        print(f"Tweet posted to Twitter with ID: {twitter_id}")
+                    else:
+                        print("Failed to post tweet to Twitter")
+                        return None
 
+                # Create tweet object
                 tweet = {
                     "id": f"tweet_{datetime.now().strftime('%Y%m%d_%H%M%S')}",
-                    "content": year_prefix + tweet_content,  # Always include the prefix
+                    "content": tweet_content,
                     "timestamp": datetime.now().isoformat(),
                     "likes": 0,
                     "retweets": 0, 
                     "variations": variations,
                 }
+
+                # Add twitter_id if tweet was posted
+                if twitter_id:
+                    tweet["twitter_id"] = twitter_id
                 
                 self.update_simulation_state(tweet)
-
-                # After successful tweet generation, update recent mentions
-                self._update_recent_mentions(tweet_content)
-
                 return tweet
                     
             except Exception as e:
@@ -1253,7 +1339,12 @@ class TweetGenerator:
         # Add new mentions to the front of the list
         self.recent_mentions = (possible_names + self.recent_mentions)[:self.max_recent_tracking]
         
-def main():
+def main(post_to_twitter=False):
+    """Run the tweet generator
+    
+    Args:
+        post_to_twitter (bool): Whether to post tweets to Twitter. Defaults to False.
+    """
     generator = TweetGenerator()
     
     while True:
@@ -1261,12 +1352,12 @@ def main():
         state, _ = generator.get_simulation_state()
         current_year = state.get("current_year", 2025)
         
-        if current_year >= 2075:  # Xavier would be 72 years old (started at 22 in 2025)
+        if current_year >= 2075:  # Xavier would be 72 years old
             print("Xavier has reached 72 years old. His story is complete!")
             return
             
         # Generate tweet if under age limit
-        tweet = generator.generate_tweet()
+        tweet = generator.generate_tweet(post_to_twitter=post_to_twitter)
         if tweet:
             print("Generated tweet:")
             print(json.dumps(tweet, indent=2))
@@ -1275,5 +1366,12 @@ def main():
             break  # Exit if tweet generation fails
 
 if __name__ == "__main__":
-    main()
+    import argparse
+    
+    parser = argparse.ArgumentParser(description='Generate tweets for Xavier\'s story')
+    parser.add_argument('--post-to-twitter', action='store_true', 
+                       help='Post generated tweets to Twitter (default: False)')
+    
+    args = parser.parse_args()
+    main(post_to_twitter=args.post_to_twitter)
 
