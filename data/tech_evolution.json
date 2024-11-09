@@ -1,0 +1,126 @@
+{
+  "metadata": {
+    "generated_at": "2024-11-09T15:36:39.300249",
+    "base_year": 2025,
+    "end_year": 2075
+  },
+  "tech_trees": {
+    "2025": {
+      "emerging_technologies": [
+        {
+          "name": "AI-Driven Full Stack Developer",
+          "probability": 0.75,
+          "estimated_year": 2027,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "AI Coding Assistants",
+            "Machine Learning"
+          ],
+          "impact_areas": [
+            "Software Development",
+            "Automation"
+          ],
+          "description": "An AI system capable of autonomously designing, coding, testing, and deploying software applications from high-level requirements.",
+          "societal_implications": "Reduces the need for human coders, potentially leading to job displacement but also allowing for rapid software development and innovation.",
+          "adoption_factors": "High adoption in industries with a demand for rapid iteration and scalability, ethical concerns regarding AI's role in creative and decision-making processes."
+        },
+        {
+          "name": "Neuralink Commercial Release",
+          "probability": 0.6,
+          "estimated_year": 2028,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Neural Technology",
+            "AI"
+          ],
+          "impact_areas": [
+            "Health",
+            "Human Enhancement",
+            "Gaming"
+          ],
+          "description": "A commercial version of Neuralink allowing for brain-computer interfaces for both medical and entertainment purposes.",
+          "societal_implications": "Enhances cognitive abilities, raises significant ethical questions about privacy, consent, and human augmentation.",
+          "adoption_factors": "Adoption limited by regulatory hurdles, public perception of brain implants, and cost-effectiveness."
+        },
+        {
+          "name": "Space Solar Power Satellites",
+          "probability": 0.55,
+          "estimated_year": 2029,
+          "innovation_type": "incremental",
+          "dependencies": [
+            "Space Exploration",
+            "Sustainable Technology"
+          ],
+          "impact_areas": [
+            "Energy",
+            "Infrastructure"
+          ],
+          "description": "Satellites designed to collect solar power in space and beam it down to Earth for consumption.",
+          "societal_implications": "Could provide clean energy, reducing dependency on fossil fuels, but requires significant investment and international cooperation.",
+          "adoption_factors": "Initial high costs, geopolitical challenges, and the need for global agreements on space utilization."
+        },
+        {
+          "name": "Decentralized Digital Identity",
+          "probability": 0.8,
+          "estimated_year": 2026,
+          "innovation_type": "incremental",
+          "dependencies": [
+            "Blockchain",
+            "Digital Infrastructure"
+          ],
+          "impact_areas": [
+            "Security",
+            "Privacy",
+            "Internet"
+          ],
+          "description": "A blockchain-based system allowing individuals to control and share their personal data securely across the web.",
+          "societal_implications": "Enhances privacy and control over personal data, could reduce identity theft but might face resistance from centralized data entities.",
+          "adoption_factors": "User demand for privacy, regulatory support for data sovereignty, technical challenges in integration with existing systems."
+        }
+      ],
+      "mainstream_technologies": [
+        {
+          "name": "AI-Assisted Software Development",
+          "from_emerging": true,
+          "original_emergence_year": 2025,
+          "maturity_year": 2030,
+          "impact_level": 8,
+          "description": "AI tools that assist in coding, debugging, and optimizing software, becoming standard in the development ecosystem.",
+          "adoption_status": "Widely adopted due to productivity gains, with ongoing training for developers to work alongside AI systems."
+        },
+        {
+          "name": "Autonomous Urban Transport",
+          "from_emerging": true,
+          "original_emergence_year": 2025,
+          "maturity_year": 2028,
+          "impact_level": 7,
+          "description": "Self-driving vehicles and drones for urban transport, significantly reducing human-driven traffic.",
+          "adoption_status": "Broad adoption in progressive cities, supported by regulatory frameworks and infrastructure changes."
+        }
+      ],
+      "epoch_themes": [
+        {
+          "theme": "AI Integration in Daily Life",
+          "description": "AI becomes ubiquitous, assisting in everything from personal tasks to complex professional workflows.",
+          "related_technologies": [
+            "AI-Driven Full Stack Developer",
+            "AI-Assisted Software Development"
+          ],
+          "societal_impact": "Transforms how individuals interact with technology, potentially leading to increased productivity and new forms of social interaction.",
+          "global_trends": "A push towards AI education, ethical AI use, and regulatory frameworks to manage AI's role in society."
+        },
+        {
+          "theme": "Sustainable Innovation",
+          "description": "Technologies focused on reducing environmental impact become central to global innovation efforts.",
+          "related_technologies": [
+            "Space Solar Power Satellites",
+            "Autonomous Urban Transport"
+          ],
+          "societal_impact": "Encourages a shift towards renewable energy and sustainable practices, influencing policy and consumer behavior.",
+          "global_trends": "Increased investment in green technologies, international collaboration on climate change solutions."
+        }
+      ],
+      "epoch_year": 2025
+    }
+  }
+}
