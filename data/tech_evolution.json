@@ -1,0 +1,107 @@
+{
+  "metadata": {
+    "generated_at": "2024-11-09T08:56:27.289657",
+    "base_year": 2025,
+    "end_year": 2075
+  },
+  "tech_trees": {
+    "2025": {
+      "emerging_technologies": [
+        {
+          "name": "AI-Driven Full Development Automation",
+          "probability": 0.85,
+          "estimated_year": 2027,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "AI Coding Assistants",
+            "Machine Learning"
+          ],
+          "impact_areas": [
+            "Software Development",
+            "Automation"
+          ],
+          "description": "AI systems that can autonomously design, code, test, and deploy software, reducing human intervention to oversight and strategic decisions.",
+          "societal_implications": "Reduces need for human coders in routine tasks, potentially leading to job displacement but also freeing up human creativity for higher-level tasks.",
+          "adoption_factors": "Requires significant advancements in AI reliability, security, and ethical guidelines to ensure fairness and accountability."
+        },
+        {
+          "name": "Neural Lace Integration",
+          "probability": 0.6,
+          "estimated_year": 2029,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Neural Technology",
+            "AI"
+          ],
+          "impact_areas": [
+            "Human-Computer Interaction",
+            "Health"
+          ],
+          "description": "A mesh of electrodes implanted in the brain to enhance cognitive functions and interface directly with digital devices.",
+          "societal_implications": "Potential for cognitive enhancement could lead to social stratification based on access to this technology; ethical concerns about privacy and autonomy.",
+          "adoption_factors": "Ethical, legal, and health safety regulations will significantly delay widespread adoption."
+        },
+        {
+          "name": "Quantum Blockchain",
+          "probability": 0.55,
+          "estimated_year": 2028,
+          "innovation_type": "incremental",
+          "dependencies": [
+            "Blockchain",
+            "Quantum Computing"
+          ],
+          "impact_areas": [
+            "Security",
+            "Finance"
+          ],
+          "description": "Integration of quantum computing with blockchain to enhance security through quantum-resistant encryption.",
+          "societal_implications": "Could prevent future quantum computing threats to current cryptographic systems, ensuring long-term security for digital transactions.",
+          "adoption_factors": "Dependent on the maturity of quantum computing and the evolution of blockchain technology."
+        }
+      ],
+      "mainstream_technologies": [
+        {
+          "name": "Autonomous Urban Transport Systems",
+          "from_emerging": true,
+          "original_emergence_year": 2025,
+          "maturity_year": 2027,
+          "impact_level": 7,
+          "description": "Vehicles and public transport systems that operate without human intervention, optimizing traffic flow and reducing accidents.",
+          "adoption_status": "High adoption in urban centers with supportive infrastructure; slower in rural areas due to different challenges."
+        },
+        {
+          "name": "AI-Powered Predictive Maintenance",
+          "from_emerging": false,
+          "original_emergence_year": 2025,
+          "maturity_year": 2026,
+          "impact_level": 6,
+          "description": "Use of AI to predict equipment failures in various industries, reducing downtime and maintenance costs.",
+          "adoption_status": "Widespread in manufacturing, logistics, and energy sectors."
+        }
+      ],
+      "epoch_themes": [
+        {
+          "theme": "The Automation of Expertise",
+          "description": "Technological advancements that automate expert-level tasks across various fields.",
+          "related_technologies": [
+            "AI-Driven Full Development Automation",
+            "Neural Lace Integration"
+          ],
+          "societal_impact": "Shifts job markets, requires new educational paradigms, and potentially increases economic disparities.",
+          "global_trends": "Growing demand for AI ethics, reskilling programs, and universal basic income discussions."
+        },
+        {
+          "theme": "Sustainable Digital Transformation",
+          "description": "Focus on technologies that promote sustainability in digital practices.",
+          "related_technologies": [
+            "Quantum Blockchain",
+            "AI-Powered Predictive Maintenance"
+          ],
+          "societal_impact": "Reduces environmental impact of digital infrastructure, promotes energy efficiency.",
+          "global_trends": "Increased regulatory focus on green technology, corporate sustainability commitments."
+        }
+      ],
+      "epoch_year": 2025
+    }
+  }
+}
