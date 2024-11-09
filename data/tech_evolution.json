@@ -1,0 +1,124 @@
+{
+  "metadata": {
+    "generated_at": "2024-11-09T11:17:42.643031",
+    "base_year": 2025,
+    "end_year": 2075
+  },
+  "tech_trees": {
+    "2025": {
+      "emerging_technologies": [
+        {
+          "name": "AI-Driven Development Environments",
+          "probability": 0.95,
+          "estimated_year": 2027,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Machine Learning",
+            "Real-time Data Processing"
+          ],
+          "impact_areas": [
+            "Software Development",
+            "Education"
+          ],
+          "description": "Development tools where AI not only assists with code completion but also suggests optimizations, handles version control, and automates testing and deployment.",
+          "societal_implications": "Reduces the entry barriers for new developers, speeds up software development cycles, potential job displacement in coding roles.",
+          "adoption_factors": "High adoption due to increased productivity, requires developers to trust AI decisions, and adapt to new workflows."
+        },
+        {
+          "name": "Autonomous Urban Delivery Systems",
+          "probability": 0.85,
+          "estimated_year": 2028,
+          "innovation_type": "incremental",
+          "dependencies": [
+            "Autonomous Vehicles",
+            "Blockchain for Logistics"
+          ],
+          "impact_areas": [
+            "Logistics",
+            "Urban Planning"
+          ],
+          "description": "Fully autonomous drones and ground vehicles for urban delivery, integrated with smart city infrastructure for optimized routing.",
+          "societal_implications": "Decrease in road congestion, changes in urban delivery jobs, privacy concerns regarding drone surveillance.",
+          "adoption_factors": "Regulatory approval, public trust in autonomous technology, infrastructure readiness."
+        },
+        {
+          "name": "Neural-Enhanced Cognitive Tools",
+          "probability": 0.7,
+          "estimated_year": 2029,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "BCI Technology",
+            "AI"
+          ],
+          "impact_areas": [
+            "Healthcare",
+            "Education",
+            "Military"
+          ],
+          "description": "Wearable devices that enhance cognitive functions by interfacing directly with the brain, aiding memory, learning, and decision making.",
+          "societal_implications": "Raises ethical issues about cognitive enhancement, potential for misuse, increased social divide based on access to technology.",
+          "adoption_factors": "Public acceptance of brain-computer interfaces, regulatory frameworks for safety, and privacy."
+        },
+        {
+          "name": "Space-Based Solar Power Stations",
+          "probability": 0.6,
+          "estimated_year": 2030,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Space Exploration",
+            "Advanced Materials"
+          ],
+          "impact_areas": [
+            "Energy",
+            "Space Industry"
+          ],
+          "description": "Solar power stations in space that capture solar energy and beam it back to Earth via microwaves or lasers.",
+          "societal_implications": "Could provide unlimited clean energy, geopolitical implications regarding control over energy, environmental concerns.",
+          "adoption_factors": "Technological feasibility, international cooperation, economic viability."
+        }
+      ],
+      "mainstream_technologies": [
+        {
+          "name": "AI-Assisted Programming",
+          "from_emerging": true,
+          "original_emergence_year": 2025,
+          "maturity_year": 2026,
+          "impact_level": 8,
+          "description": "Tools like @cursor_ai and Copilot become standard, providing real-time code suggestions and automating significant portions of the coding process.",
+          "adoption_status": "Widely adopted in tech companies, educational institutions adapting curricula to incorporate AI coding tools."
+        },
+        {
+          "name": "Blockchain for Secure Data Transactions",
+          "from_emerging": true,
+          "original_emergence_year": 2023,
+          "maturity_year": 2027,
+          "impact_level": 7,
+          "description": "Blockchain technology for secure, transparent data transactions across various industries, ensuring privacy and reducing fraud.",
+          "adoption_status": "Integrated into financial sectors, supply chains, and governmental records for secure data handling."
+        }
+      ],
+      "epoch_themes": [
+        {
+          "theme": "AI and Automation Integration",
+          "description": "AI technologies are becoming deeply integrated into daily life, work processes, and infrastructure.",
+          "related_technologies": [
+            "AI-Driven Development Environments",
+            "Autonomous Urban Delivery Systems"
+          ],
+          "societal_impact": "Changes in job markets, increased efficiency, potential for social inequality due to technology access.",
+          "global_trends": "Global push towards AI ethics, regulatory frameworks, and education reform to adapt to AI-driven changes."
+        },
+        {
+          "theme": "Sustainable Energy from Space",
+          "description": "Pursuit of sustainable energy solutions through space-based technologies.",
+          "related_technologies": [
+            "Space-Based Solar Power Stations"
+          ],
+          "societal_impact": "Shift in energy production paradigms, potential for global energy equity, environmental considerations.",
+          "global_trends": "Increased investment in space technology, international collaborations, and environmental policy changes."
+        }
+      ],
+      "epoch_year": 2025
+    }
+  }
+}
