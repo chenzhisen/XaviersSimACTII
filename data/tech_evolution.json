@@ -1,0 +1,136 @@
+{
+  "metadata": {
+    "generated_at": "2024-11-08T20:54:18.694020",
+    "base_year": 2025,
+    "end_year": 2075
+  },
+  "tech_trees": {
+    "2025": {
+      "emerging_technologies": [
+        {
+          "name": "AI-Powered Autonomous Software Development",
+          "probability": 0.8,
+          "estimated_year": 2026,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Advanced AI",
+            "Neural Networks"
+          ],
+          "impact_areas": [
+            "Software Development",
+            "Automation"
+          ],
+          "description": "AI systems that can autonomously develop, test, and deploy software from high-level requirements, reducing human involvement in coding.",
+          "societal_implications": "Reduces the need for human programmers, potential for job displacement, but also opens up new types of jobs in AI training and management.",
+          "adoption_factors": "Requires advancements in AI reliability and ethical considerations around autonomous decision-making in software creation."
+        },
+        {
+          "name": "Brain-Computer Interfaces for Daily Use",
+          "probability": 0.7,
+          "estimated_year": 2027,
+          "innovation_type": "incremental",
+          "dependencies": [
+            "Neural Technology",
+            "AI"
+          ],
+          "impact_areas": [
+            "Health",
+            "Entertainment",
+            "Education"
+          ],
+          "description": "Non-invasive brain-computer interfaces that enable control of digital devices through thought for widespread consumer use.",
+          "societal_implications": "Improves quality of life for disabled individuals, raises privacy concerns regarding mental data, and ethical issues about brain control.",
+          "adoption_factors": "Public acceptance of brain data privacy, cost reduction, and technological miniaturization."
+        },
+        {
+          "name": "Space-based Solar Power Satellites",
+          "probability": 0.6,
+          "estimated_year": 2029,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Space Exploration",
+            "Sustainable Technology"
+          ],
+          "impact_areas": [
+            "Energy",
+            "Space Industry"
+          ],
+          "description": "Satellites capturing solar energy in space and beaming it back to Earth for consumption, providing constant, clean energy.",
+          "societal_implications": "Potential for unlimited clean energy, geopolitical implications of space resource control, environmental considerations for space debris.",
+          "adoption_factors": "Technological advancements in energy transmission, international space law, and investment in space infrastructure."
+        },
+        {
+          "name": "Blockchain-Enhanced Privacy Protocols",
+          "probability": 0.85,
+          "estimated_year": 2026,
+          "innovation_type": "incremental",
+          "dependencies": [
+            "Blockchain",
+            "Digital Infrastructure"
+          ],
+          "impact_areas": [
+            "Security",
+            "Finance",
+            "Data Management"
+          ],
+          "description": "Utilization of blockchain for enhancing privacy through decentralized identity verification and data management.",
+          "societal_implications": "Increases individual control over personal data, complicates regulatory oversight, and potential for reducing identity theft.",
+          "adoption_factors": "Scalability issues of blockchain, regulatory acceptance, and integration with existing systems."
+        }
+      ],
+      "mainstream_technologies": [
+        {
+          "name": "Full-Stack AI Development Tools",
+          "from_emerging": true,
+          "original_emergence_year": 2025,
+          "maturity_year": 2027,
+          "impact_level": 8,
+          "description": "AI tools that assist in all phases of software development, from code writing to deployment and maintenance.",
+          "adoption_status": "Widely adopted by software companies for efficiency and cost reduction, becoming standard in developer toolkits."
+        },
+        {
+          "name": "Smart Autonomous Vehicles",
+          "from_emerging": true,
+          "original_emergence_year": 2025,
+          "maturity_year": 2030,
+          "impact_level": 9,
+          "description": "Vehicles capable of navigating without human intervention in most scenarios, integrated with smart cities infrastructure.",
+          "adoption_status": "Increasingly common in urban areas, with regulatory frameworks in place for safety and liability."
+        }
+      ],
+      "epoch_themes": [
+        {
+          "theme": "Autonomy and Automation",
+          "description": "The era focuses on the progression towards systems that operate autonomously, reducing human involvement in routine tasks.",
+          "related_technologies": [
+            "AI-Powered Autonomous Software Development",
+            "Smart Autonomous Vehicles"
+          ],
+          "societal_impact": "Shift in labor markets, ethical considerations of autonomous decision-making, and new forms of human-AI collaboration.",
+          "global_trends": "Increased automation in industries, policy development for autonomous systems, and a push towards sustainable practices."
+        },
+        {
+          "theme": "Sustainable Innovation",
+          "description": "Technological advancements aimed at environmental sustainability and resource management.",
+          "related_technologies": [
+            "Space-based Solar Power Satellites",
+            "Sustainable Technology"
+          ],
+          "societal_impact": "Global effort towards reducing carbon footprint, creating new markets for green technology, and addressing climate change.",
+          "global_trends": "Renewable energy adoption, international cooperation on environmental issues, and innovation in material science."
+        },
+        {
+          "theme": "Digital Human Rights",
+          "description": "Enhancing privacy, security, and personal data control through advanced digital infrastructure.",
+          "related_technologies": [
+            "Blockchain-Enhanced Privacy Protocols",
+            "Digital Infrastructure"
+          ],
+          "societal_impact": "Empowerment of individuals in data governance, potential for reducing cybercrime, and new challenges in cybersecurity.",
+          "global_trends": "Legislative movements towards digital rights, development of privacy-centric technologies, and increasing public awareness of data rights."
+        }
+      ],
+      "epoch_year": 2025
+    }
+  }
+}
