@@ -1,0 +1,140 @@
+{
+  "metadata": {
+    "generated_at": "2024-11-09T16:21:53.784199",
+    "base_year": 2025,
+    "end_year": 2075
+  },
+  "tech_trees": {
+    "2025": {
+      "emerging_technologies": [
+        {
+          "name": "AI-Driven Code Synthesis",
+          "probability": 0.9,
+          "estimated_year": 2026,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "AI Coding Assistants",
+            "Machine Learning"
+          ],
+          "impact_areas": [
+            "Software Development",
+            "Automation"
+          ],
+          "description": "AI systems capable of not just suggesting code but generating entire applications based on high-level requirements.",
+          "societal_implications": "Reduces the skill barrier in programming, potentially leading to an increase in software developers and innovation, but also raises concerns about job displacement in coding professions.",
+          "adoption_factors": "Adoption will be driven by productivity gains, though initial resistance might come from developers protective of their craft."
+        },
+        {
+          "name": "Neural Lace",
+          "probability": 0.6,
+          "estimated_year": 2027,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Neural Technology",
+            "Bioinformatics"
+          ],
+          "impact_areas": [
+            "Human-Computer Interaction",
+            "Health"
+          ],
+          "description": "A brain-computer interface that can integrate with the human brain, enhancing cognitive abilities and allowing direct communication with digital devices.",
+          "societal_implications": "Could revolutionize how we interact with technology, but ethical concerns about privacy, autonomy, and consent will be significant.",
+          "adoption_factors": "High initial costs, need for regulatory approval, and public acceptance will dictate the pace of adoption."
+        },
+        {
+          "name": "Blockchain for Autonomous Vehicle Networks",
+          "probability": 0.8,
+          "estimated_year": 2028,
+          "innovation_type": "incremental",
+          "dependencies": [
+            "Autonomous Systems",
+            "Blockchain"
+          ],
+          "impact_areas": [
+            "Transportation",
+            "Security"
+          ],
+          "description": "Using blockchain to manage and secure data exchanges between autonomous vehicles for better coordination and security.",
+          "societal_implications": "Increases trust and efficiency in vehicle-to-vehicle communication, potentially reducing accidents and improving traffic flow.",
+          "adoption_factors": "Adoption will depend on the integration of blockchain into existing automotive systems and the standardization of protocols."
+        },
+        {
+          "name": "Quantum-Resistant Cryptography",
+          "probability": 0.75,
+          "estimated_year": 2029,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Digital Infrastructure",
+            "Quantum Computing"
+          ],
+          "impact_areas": [
+            "Security",
+            "Privacy"
+          ],
+          "description": "New cryptographic methods designed to withstand attacks from quantum computers.",
+          "societal_implications": "Ensures long-term security of data in the face of quantum computing threats, critical for government, finance, and all data-sensitive industries.",
+          "adoption_factors": "Adoption will be driven by the need for security but might be slow due to the need for replacing existing cryptographic systems."
+        },
+        {
+          "name": "Space Resource Mining",
+          "probability": 0.5,
+          "estimated_year": 2030,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Space Exploration",
+            "Robotics"
+          ],
+          "impact_areas": [
+            "Resource Management",
+            "Economy"
+          ],
+          "description": "Technology to mine resources from asteroids or other celestial bodies, starting with water and metals.",
+          "societal_implications": "Could lead to new economic models, space colonization efforts, and potentially reduce resource scarcity on Earth.",
+          "adoption_factors": "Adoption hinges on technological breakthroughs in space travel, robotics, and international space law."
+        }
+      ],
+      "mainstream_technologies": [
+        {
+          "name": "AI Pair Programming",
+          "from_emerging": true,
+          "original_emergence_year": 2025,
+          "maturity_year": 2027,
+          "impact_level": 8,
+          "description": "AI systems that work alongside human developers, offering real-time coding suggestions, debugging, and even testing.",
+          "adoption_status": "Widely adopted in tech industries, significantly enhancing productivity and reducing development cycles."
+        },
+        {
+          "name": "Smart Grids with Renewable Integration",
+          "from_emerging": true,
+          "original_emergence_year": 2025,
+          "maturity_year": 2028,
+          "impact_level": 7,
+          "description": "Advanced electrical grids that integrate renewable energy sources efficiently, reducing waste and optimizing distribution.",
+          "adoption_status": "Becoming standard in developed countries, with increasing adoption in emerging economies due to energy demands."
+        }
+      ],
+      "epoch_themes": [
+        {
+          "theme": "Autonomy Everywhere",
+          "description": "A theme where automation and autonomous systems become pervasive, impacting daily life, industry, and governance.",
+          "related_technologies": [
+            "AI-Driven Code Synthesis",
+            "Blockchain for Autonomous Vehicle Networks"
+          ],
+          "societal_impact": "Shifts in employment, privacy concerns, and new ethical considerations regarding machine autonomy.",
+          "global_trends": "Increased focus on AI ethics, regulatory frameworks for autonomous systems, and public discourse on the future of work."
+        },
+        {
+          "theme": "Human-Tech Symbiosis",
+          "description": "The integration of technology with human biology to enhance cognitive and physical capabilities.",
+          "related_technologies": [
+            "Neural Lace"
+          ],
+          "societal_impact": "Potential for significant enhancements in human capabilities, but also raises profound ethical, privacy, and identity issues.",
+          "global_trends": "Increased research in neuroscience, bioethics, and the rise of transhumanism discussions."
+        }
+      ],
+      "epoch_year": 2025
+    }
+  }
+}
