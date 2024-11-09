@@ -65,7 +65,7 @@ class DigestGenerator:
         try:
             message = self.client.messages.create(
                 model="grok-beta",
-                max_tokens=1024,
+                max_tokens=2048,
                 system=(
                     "You are a story curator and narrative architect maintaining Xavier's story. "
                     "Your role is to both document the story's history and guide its future development. "
@@ -74,7 +74,14 @@ class DigestGenerator:
                     "ensuring technological and societal changes feel natural within Xavier's personal journey."
                     "Maintain an age-appropriate tone in his reflections—"
                     "early years focus on practicality, and as he ages, introduce deeper, more philosophical considerations about technology’s impact on humanity and identity."
-
+                    "Track and develop relationships with attention to:\n"
+                    "- Character consistency and natural development\n"
+                    "- Cultural diversity and unique perspectives\n"
+                    "- Personal interests beyond technology\n"
+                    "- Authentic relationship evolution\n"
+                    "- Impact of relationships on Xavier's growth\n"
+                    "Create a cohesive summary that captures relationship developments "
+                    "while suggesting natural opportunities for future interactions."
                 ),
                 messages=[
                     {
@@ -291,24 +298,75 @@ class DigestGenerator:
             
             "1. STORY SO FAR:\n"
             "- Summarize events and character growth\n"
-            "- Track relationships and major life events, with Xavier gradually moving toward questions of purpose\n"
-            "- Show how available tech influences Xavier’s reflections on identity\n\n"
+            "- Track relationships and major life events\n"
+            "- Show how available tech influences Xavier's reflections\n\n"
             
-            "2. STORY DIRECTION:\n"
-            "- Drive story forward with opportunities aligned to core values, exploring his search for a deeper purpose\n"
-            "- Introduce new societal and personal impacts of advanced technology, hinting at themes of self-realization\n"
-            "- Use recent events to reinforce the idea of discovery, hinting at a legacy or cosmic exploration\n"
-            "- Introduce challenges that reinforce or test values\n\n"
+            "2. KEY RELATIONSHIPS:\n"
+            "- Core Team:\n"
+            "  * Track co-founders and key team members\n"
+            "  * Note their roles and relationship evolution\n"
+            "- Professional Network:\n"
+            "  * Document recurring collaborators and mentors\n"
+            "  * Note significant project partnerships\n"
+            "- Personal Connections:\n"
+            "  * Track development of close friendships\n"
+            "  * Note family relationships and their evolution\n"
+            "- Community:\n"
+            "  * Document meaningful community interactions\n"
+            "  * Track recurring community members\n\n"
+            
+            "3. STORY DIRECTION:\n"
+            "- Drive story forward with opportunities aligned to core values\n"
+            "- Introduce new societal and personal impacts of technology\n"
+            "- Use recent events to reinforce discovery themes\n"
+            "- Introduce challenges that reinforce or test values\n"
+            "- Suggest potential relationship developments\n\n"
 
-
-            "3. NARRATIVE GUIDANCE:\n"
-            "- Depending on age phase, explore transformations in Xavier’s professional and personal growth\n"
-            "- Encourage tech community growth, balanced with introspective moments and philosophical themes\n\n"
-
+            "4. NARRATIVE GUIDANCE:\n"
+            "- Explore transformations in Xavier's professional and personal growth\n"
+            "- Encourage tech community growth and relationship building\n"
+            "- Balance new connections with deepening existing relationships\n"
+            "- Consider age-appropriate relationship developments\n\n"
         )
         
         context += "Balance character growth with Xavier’s journey, subtly drawing toward a legacy or transformation that feels true to his character’s growth and exploration of purpose."
     
+        context += (
+            "RELATIONSHIP TRACKING:\n"
+            "1. PROFESSIONAL CIRCLE:\n"
+            "- Core Team Members:\n"
+            "  * Names, roles, and relationship development\n"
+            "  * Shared experiences and project collaborations\n"
+            "  * Personal dynamics and friendship evolution\n"
+            "  * Notable interests and cultural backgrounds\n"
+            
+            "2. MENTORS & ADVISORS:\n"
+            "  * Key influencers in Xavier's journey\n"
+            "  * Areas of expertise and guidance\n"
+            "  * Evolution of mentorship relationships\n"
+            "  * Cultural perspectives and life wisdom shared\n"
+            
+            "3. COMMUNITY CONNECTIONS:\n"
+            "  * Regular collaborators and friends\n"
+            "  * Local community members and their interests\n"
+            "  * Cross-cultural relationships and exchanges\n"
+            "  * Shared activities and non-tech interactions\n"
+            
+            "4. PERSONAL RELATIONSHIPS:\n"
+            "  * Close friends and their diverse backgrounds\n"
+            "  * Family relationships and dynamics\n"
+            "  * Partner/spouse development (when applicable)\n"
+            "  * Shared hobbies and cultural experiences\n\n"
+            
+            "For each relationship, track:\n"
+            "- First appearance and context\n"
+            "- Professional and personal interests\n"
+            "- Cultural background and perspective\n"
+            "- Shared experiences and activities\n"
+            "- Evolution of relationship over time\n"
+            "- Impact on Xavier's journey\n\n"
+        )
+        
         return context
 
     def _get_life_phase(self, age):

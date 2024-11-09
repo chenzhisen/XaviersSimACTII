@@ -21,6 +21,10 @@ class TweetGenerator:
         self.sim_start_year = 2025
         self.tweets_per_year = tweets_per_year
         
+        # Add tracking for recent character mentions
+        self.recent_mentions = []
+        self.max_recent_tracking = 5  # Track last 5 tweets worth of mentions
+        
         self.tone_options = [
             ("Humorous", 10), ("Straightforward", 10), ("Reflective", 10), ("Inquisitive", 10),
             ("Inspirational", 8), ("Critical", 8), ("Excited", 8), ("Philosophical", 8),
@@ -62,6 +66,9 @@ class TweetGenerator:
   
         self.tweet_patterns = {
             "starts": {
+                "tech_pun": "Start with a tech-related wordplay",
+                "funny_observation": "Share a humorous tech moment",
+                "self_deprecating": "Playfully admit a tech mishap",
                 "action_verb": "Start with a strong verb",
                 "observation": "Share what you notice",
                 "reflection": "Share a realization",
@@ -76,9 +83,12 @@ class TweetGenerator:
                 "contrast": "Note an interesting difference",
                 "celebration": "Share a win",
                 "surprise": "Express unexpected discovery",
-                "curiosity": "Start with something you’re curious about"
+                "curiosity": "Start with something you're curious about"
             },
             "ends": {
+                "punchline": "End with a clever tech joke",
+                "ironic_twist": "Add an unexpected funny turn",
+                "playful_question": "Close with a humorous rhetorical question",
                 "insight": "Share learning",
                 "outcome": "Show result",
                 "forward_looking": "Show anticipation",
@@ -396,12 +406,17 @@ class TweetGenerator:
             "- Create memorable moments\n"
             "- Avoid explicit time references unless significant\n\n"
             
+            "VARIETY REQUIREMENTS:\n"
+            "- Avoid repeating locations, people, or themes from recent tweets\n"
+            "- Limit mentions of specific people to when they're central to the story\n"
+            "- Vary the scale of focus (personal, local, global)\n"
+            "- Use different aspects of the chosen focus area\n\n"
+            
             "ALWAYS AVOID:\n"
-            "- Hashtags or unnecessary @ mentions\n"
+            "- unnecessary Hashtags\n"
             "- Generic observations or questions\n"
             "- Time references (months, seasons, weather)\n"
             "- Location references unless story-critical\n"
-            "- $XVI token mentions (omit 95% of time)\n"
             "- Repeated metaphors or running jokes\n"
             "- Abstract 'what if' scenarios\n"
             "- Generic 'how can we' queries\n"
@@ -411,7 +426,141 @@ class TweetGenerator:
             "- Overly formal or academic language\n"
             "- Repeating recent events or conversations\n\n"
             
-            "Respond with ONLY the tweet content."
+            "CHARACTER INTERACTIONS:\n"
+            "- Create authentic characters with consistent names when they reappear\n"
+            "- Use culturally appropriate names for global interactions\n"
+            "- Core team members (like co-founders, close collaborators) should keep consistent names\n"
+            "- Maintain relationship continuity - if someone was a mentor before, they stay a mentor\n"
+            "- Names should reflect global diversity (Asian, European, African, Middle Eastern, etc.)\n"
+            "- Key relationships to consider:\n"
+            "  * Co-founder/technical partner (establish early and maintain)\n"
+            "  * Research collaborators\n"
+            "  * Team members\n"
+            "  * Community members\n"
+            "  * Mentors and advisors\n"
+            "  * Friends and family\n\n"
+            
+            "NAME CONSISTENCY:\n"
+            "- When referencing a previously mentioned person, use the same name\n"
+            "- Limit new key character introductions - build on existing relationships\n"
+            "- If introducing someone new, their role should be clear and meaningful\n"
+            "- Consider recent tweets to maintain character continuity\n\n"
+            
+            "CHARACTER DIVERSITY:\n"
+            "- Professional Backgrounds:\n"
+            "  * Tech: AI researchers, blockchain developers, security experts\n"
+            "  * Creative: artists, musicians, designers exploring tech\n"
+            "  * Science: biologists, environmental scientists, physicists\n"
+            "  * Humanities: philosophers, ethicists, sociologists\n"
+            "  * Public sector: urban planners, policy makers, educators\n"
+            
+            "- Personal Interests:\n"
+            "  * Arts & Culture: traditional arts, digital art, music\n"
+            "  * Sports & Fitness: runners, climbers, yoga practitioners\n"
+            "  * Nature & Environment: gardeners, conservationists\n"
+            "  * Community: local organizers, workshop leaders\n"
+            "  * Food & Cuisine: chefs exploring food tech, urban farmers\n"
+            
+            "- Cross-Cultural Elements:\n"
+            "  * Traditional practices meeting modern tech\n"
+            "  * Cultural festivals and celebrations\n"
+            "  * Different approaches to work-life balance\n"
+            "  * Various perspectives on technology's role\n"
+            
+            "INTERACTION GUIDELINES:\n"
+            "- Let characters' interests naturally influence conversations\n"
+            "- Show how diverse perspectives enrich tech discussions\n"
+            "- Create authentic connections through shared or contrasting interests\n"
+            "- Allow relationships to develop through non-tech activities\n"
+            "- Balance tech-focused and personal interest discussions\n\n"
+            
+            "TECH ECOSYSTEM CONTEXT:\n"
+            "- Future-Focused Industries:\n"
+            "  * Space exploration and colonization\n"
+            "  * Sustainable energy and transportation\n"
+            "  * Neural interfaces and human augmentation\n"
+            "  * Electric vehicles and autonomous systems\n"
+            
+            "- Blockchain Ecosystem:\n"
+            "  * High-performance, scalable chains\n"
+            "  * Focus on speed and efficiency\n"
+            "  * Developer-friendly environments\n"
+            "  * Sustainable blockchain solutions\n"
+            
+            "REFERENCE GUIDELINES:\n"
+            "- Highlight visionary projects advancing humanity\n"
+            "- Focus on transformative technologies:\n"
+            "  * Sustainable energy solutions\n"
+            "  * Space exploration initiatives\n"
+            "  * Neural technology advances\n"
+            "  * Electric transportation systems\n"
+            "- Emphasize high-performance blockchain developments\n"
+            "- Consider global impact and accessibility\n"
+            
+            "CONTEXTUAL MENTIONS:\n"
+            "- Reference developments naturally through:\n"
+            "  * Industry events and conferences\n"
+            "  * Technical discussions\n"
+            "  * Project collaborations\n"
+            "  * Community initiatives\n"
+            "- Keep focus on innovation and human progress\n"
+            "- Balance technical detail with broader vision\n\n"
+            
+            "CHARACTER APPEARANCE GUIDELINES:\n"
+            "- Vary character appearances naturally\n"
+            "- Avoid featuring the same character in consecutive tweets\n"
+            "- Balance between established and new relationships\n"
+            "- Consider different social circles and contexts\n"
+            "- Only repeat recent characters when story-critical\n"
+            "- Mix professional and personal interactions\n"
+            "- Draw from different relationship categories\n"
+            "  * Core team members\n"
+            "  * Community connections\n"
+            "  * Personal relationships\n"
+            "  * New acquaintances\n\n"
+            
+            "SOCIAL INTERACTIONS & REFERENCES:\n"
+            "@ Mentions (use very sparingly, 1-2% of tweets):\n"
+            "   * Major tech visionaries (space/EV/neural)\n"
+            "   * Leading blockchain pioneers\n"
+            "   * Well-known digital culture figures\n"
+            "   * Only mention widely recognized names\n"
+            
+            "ENGAGEMENT GUIDELINES:\n"
+            "- Reserve @ mentions for significant context:\n"
+            "  * Groundbreaking announcements\n"
+            "  * Direct relevance to their work\n"
+            "  * Shared vision for humanity\n"
+            "  * Major tech milestones\n"
+            
+            "KEY CONTEXTS:\n"
+            "- Space exploration & Mars\n"
+            "- Electric vehicles & sustainable energy\n"
+            "- Neural interfaces & AI safety\n"
+            "- High-performance blockchain\n"
+            "- Gaming & digital culture\n"
+            "- Web3 adoption\n\n"
+            
+            "CRYPTO REFERENCES:\n"
+            "1. Core Focus (mention sparingly, 2-3% of tweets):\n"
+            "   * High-performance L1 developments\n"
+            "   * DeFi innovations and scaling\n"
+            "   * Developer ecosystem growth\n"
+            "   * $XVI token (rare, meaningful mentions)\n"
+            
+            "2. Market Commentary (very rare, <1%):\n"
+            "   * Focus on tech fundamentals\n"
+            "   * Long-term ecosystem value\n"
+            "   * Developer activity\n"
+            "   * Avoid price speculation\n"
+            
+            "CRYPTO CONTEXT GUIDELINES:\n"
+            "- Emphasize technology over markets\n"
+            "- Focus on developer experience\n"
+            "- Highlight performance and scalability\n"
+            "- Note ecosystem growth\n"
+            "- Consider real-world applications\n"
+            "- Keep tone balanced and forward-looking\n\n"
         )
 
         # Get recent variations
@@ -428,10 +577,12 @@ class TweetGenerator:
                 recent_variations['starts'].add(start)
                 recent_variations['ends'].add(end)
 
-        # Filter out recently used variations
+        # Filter out recently used tones and normalize weights
         available_tones = [(tone, weight) for tone, weight in self.tone_options if tone not in recent_variations['tones']] or self.tone_options
         tones, weights = zip(*available_tones)
-        current_tone = random.choices(tones, weights=weights, k=1)[0]
+        total_weight = sum(weights)
+        normalized_weights = [w/total_weight for w in weights]
+        current_tone = random.choices(tones, weights=normalized_weights, k=1)[0]
                 
         # Get age-appropriate content focuses
         content_focuses = self._get_age_adjusted_content_focuses(xavier_age)
@@ -547,6 +698,17 @@ class TweetGenerator:
             "Focus on advancing the story through experiences, relationships, and growth. "
             "Ensure natural progression from recent events while building towards longer-term developments."
         )
+
+        # Add recent mentions context
+        if context.get('recent_mentions'):
+            prompt += (
+                "\nRECENT CHARACTER APPEARANCES:\n"
+                f"These characters appeared recently (avoid reusing unless crucial): {', '.join(context['recent_mentions'])}\n"
+                "- Prefer introducing new characters or featuring different relationships\n"
+                "- Only reuse recent characters if their continued presence is important to the story\n"
+                "- Consider relationships not mentioned recently\n\n"
+            )
+
         return system, prompt, (current_tone, current_focus, start_type, end_type)
 
     def should_update_digest(self, context):
@@ -634,6 +796,9 @@ class TweetGenerator:
             if not context:
                 return None
                 
+            # Add recent mentions to context
+            context['recent_mentions'] = self.recent_mentions
+            
             # Get prompts
             system, prompt, variations = self.create_tweet_prompt(context)
             
@@ -677,6 +842,10 @@ class TweetGenerator:
                 }
                 
                 self.update_simulation_state(tweet)
+
+                # After successful tweet generation, update recent mentions
+                self._update_recent_mentions(tweet_content)
+
                 return tweet
                     
             except Exception as e:
@@ -1016,6 +1185,14 @@ class TweetGenerator:
                 }
             }
 
+    def _update_recent_mentions(self, tweet_content):
+        """Extract and track character mentions from tweet"""
+        # Simple name extraction (can be made more sophisticated)
+        possible_names = re.findall(r'(?<![@#])\b[A-Z][a-z]+\b', tweet_content)
+        
+        # Add new mentions to the front of the list
+        self.recent_mentions = (possible_names + self.recent_mentions)[:self.max_recent_tracking]
+        
 def main():
     generator = TweetGenerator()
     
