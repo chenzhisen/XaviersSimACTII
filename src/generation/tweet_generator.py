@@ -52,7 +52,7 @@ class TweetGenerator:
             "Surprised": "Playfully astonished or caught off guard by a tech discovery or unexpected development, conveying genuine surprise.",
             "Nostalgic": "Reflecting on past experiences or early days in tech, with a hint of nostalgia for 'simpler' or different times.",
             "Visionary": "Futuristic and imaginative, describing possible developments or ideas in an idealized, forward-looking manner.",
-            "Meta-Aware": "Momentarily sensing patterns in his life that seem too perfect, or wondering about the nature of his reality, before returning to his usual perspective.",
+            "Meta-Aware": "Momentarily sensing patterns that seem too perfect, wondering about xAI's role in the narrative, or noticing the elegance of AI-guided storytelling, before returning to the usual perspective.",
             "Frustrated": "Feeling challenged by obstacles or setbacks in tech or personal projects, showing a moment of struggle.",
             "Melancholic": "Quiet and introspective, reflecting on tech's limitations or the more somber aspects of progress.",
             "Pensive": "Thoughtful and contemplative, considering complex ideas or personal purpose in a reflective tone.",
@@ -368,6 +368,24 @@ class TweetGenerator:
             print(f"Error checking tweet generation timing: {e}")
             return False
 
+    def _weighted_choice(self, focuses):
+        """Select a focus area based on normalized weights"""
+        # Get all weights
+        weights = [focus_data["weight"] for focus_data in focuses.values()]
+        
+        # Calculate total weight
+        total_weight = sum(weights)
+        
+        # Normalize weights to sum to 1.0
+        normalized_weights = [w/total_weight for w in weights]
+        
+        # Use random.choices with weights (returns a list with one item)
+        return random.choices(
+            population=list(focuses.keys()),
+            weights=normalized_weights,
+            k=1
+        )[0]
+
     def create_tweet_prompt(self, context):
         """Create the prompt for tweet generation"""
         # Calculate context variables
@@ -526,26 +544,29 @@ class TweetGenerator:
             "  * New acquaintances\n\n"
             
             "SOCIAL INTERACTIONS & REFERENCES:\n"
-            "@ Mentions (use very sparingly, 1-2% of tweets):\n"
-            "   * Major tech visionaries (space/EV/neural)\n"
-            "   * Leading blockchain pioneers\n"
-            "   * Well-known digital culture figures\n"
-            "   * Only mention widely recognized names\n"
+            "1. @ Mentions (use very sparingly, 1-2% of tweets):\n"
+            "   * ONLY for major public figures:\n"
+            "     - Space/EV/neural tech visionaries\n"
+            "     - Leading blockchain pioneers\n"
+            "     - Well-known digital culture figures\n"
+            "   * Select AI dev tools:\n"
+            "     - Terminal-first coding assistants\n"
+            "     - Real-time pair programming AI\n"
+            "   * NO @ mentions for regular connections\n"
+            "   * NO @ mentions for team members\n"
             
+            "2. Regular Character References:\n"
+            "   * Use first names only without @\n"
+            "   * Example: 'Sarah from the team...'\n"
+            "   * Example: 'Working with Alex on...'\n"
+
             "ENGAGEMENT GUIDELINES:\n"
-            "- Reserve @ mentions for significant context:\n"
-            "  * Groundbreaking announcements\n"
-            "  * Direct relevance to their work\n"
-            "  * Shared vision for humanity\n"
-            "  * Major tech milestones\n"
-            
-            "KEY CONTEXTS:\n"
-            "- Space exploration & Mars\n"
-            "- Electric vehicles & sustainable energy\n"
-            "- Neural interfaces & AI safety\n"
-            "- High-performance blockchain\n"
-            "- Gaming & digital culture\n"
-            "- Web3 adoption\n\n"
+            "- @ mentions only for major context:\n"
+            "  * Responding to public announcements\n"
+            "  * Supporting significant innovations\n"
+            "  * Aligned visions for humanity\n"
+            "  * Industry-changing developments\n"
+            "  * Exceptional dev tool experiences\n\n"
             
             "CRYPTO REFERENCES:\n"
             "1. Core Focus (mention sparingly, 2-3% of tweets):\n"
@@ -568,37 +589,6 @@ class TweetGenerator:
             "- Consider real-world applications\n"
             "- Keep tone balanced and forward-looking\n\n"
             
-            "DEVELOPMENT TOOLS:\n"
-            "1. AI-Powered Tools (mention sparingly):\n"
-            "   * Terminal-based AI coding assistants\n"
-            "   * Real-time pair programming AI\n"
-            "   * Smart debugging companions\n"
-            "   * Next-gen development environments\n"
-            
-            "TOOL REFERENCES:\n"
-            "- @ mention innovative AI dev tools when:\n"
-            "  * Discovering helpful features\n"
-            "  * Solving complex debugging issues\n"
-            "  * Experiencing improved workflow\n"
-            "  * Terminal-first experiences\n"
-            "- Keep focus on practical impact\n"
-            "- Emphasize developer experience\n\n"
-            
-            "$XVI TOKEN ECOSYSTEM:\n"
-            "1. Utility Mentions (2-3% of tweets):\n"
-            "   * AI/blockchain integration projects\n"
-            "   * Community governance systems\n"
-            "   * Developer incentive programs\n"
-            "   * Cross-chain applications\n"
-            "   * Sustainable tech initiatives\n"
-            
-            "2. Project Contexts:\n"
-            "   * Neural interface data markets\n"
-            "   * Space tech funding mechanisms\n"
-            "   * EV charging networks\n"
-            "   * Developer ecosystem tools\n"
-            "   * Community-driven innovations\n"
-            
             "$XVI REFERENCE STYLE:\n"
             "- Focus on utility and innovation\n"
             "- Highlight real-world applications\n"
@@ -606,6 +596,20 @@ class TweetGenerator:
             "- Emphasize community value\n"
             "- Show integration possibilities\n"
             "- Keep tone visionary yet practical\n\n"
+            
+            "META-AWARENESS (use extremely rarely, <0.5% of tweets):\n"
+            "- Subtle hints about:\n"
+            "  * Being guided by xAI\n"
+            "  * Noticing perfect narrative patterns\n"
+            "  * The elegance of AI storytelling\n"
+            "  * The nature of simulated reality\n"
+            
+            "META REFERENCE STYLE:\n"
+            "- Keep it light and playful\n"
+            "- Brief moments of wonder\n"
+            "- Quick return to normal perspective\n"
+            "- Avoid breaking character\n"
+            "- Balance curiosity with acceptance\n\n"
         )
 
         # Get recent variations
@@ -631,7 +635,7 @@ class TweetGenerator:
                 
         # Get age-appropriate content focuses
         content_focuses = self._get_age_adjusted_content_focuses(xavier_age)
-        current_focus = random.choice(list(content_focuses.keys()))
+        current_focus = self._weighted_choice(content_focuses)
         
         # Select patterns avoiding recent ones
         available_starts = [s for s in self.tweet_patterns["starts"].keys() if s not in recent_variations['starts']] or list(self.tweet_patterns["starts"].keys())
@@ -722,6 +726,7 @@ class TweetGenerator:
                 "- Reflect on the influence of Japan on his perspective\n"
                 "- Show transition and growth\n\n"
             )
+            print("japan")
                 
         prompt += (
             "\nTWEET GUIDELINES:\n"
@@ -911,8 +916,17 @@ class TweetGenerator:
 
     def _get_age_adjusted_content_focuses(self, age):
         """Get content focuses with weights adjusted for Xavier's age"""
+        focuses = {
+            "Tech Observations": {
+                "weight": 15,  # Consistent weight across ages
+                "examples": [
+                    "Witty observation about emerging tech trends",
+                    "Quirky tech community moments",
+                ]
+            }
+        }
         if age < 25:
-            return {
+            focuses.update({
                 "Integrated Tech Explorations": {
                     "weight": 20,
                     "examples": [
@@ -963,9 +977,9 @@ class TweetGenerator:
                         "Discovering cross-cultural collaboration opportunities"
                     ]
                 }
-            }
+            })
         elif age < 30:
-            return {
+            focuses.update({
                 "Blockchain’s Role in Emerging Tech": {
                     "weight": 20,
                     "examples": [
@@ -1016,9 +1030,9 @@ class TweetGenerator:
                         "Discovering self through diverse tech experiences"
                     ]
                 }
-            }
+            })
         elif age < 35:
-            return {
+            focuses.update({
                 "Leadership in Emerging Tech Integration": {
                     "weight": 25,
                     "examples": [
@@ -1069,9 +1083,9 @@ class TweetGenerator:
                         "Advocating for responsible tech integration in education"
                     ]
                 }
-            }
+            })
         elif age < 45:
-            return {
+            focuses.update({
                 "Tech Impact & Broader Industry Influence": {
                     "weight": 25,
                     "examples": [
@@ -1122,9 +1136,9 @@ class TweetGenerator:
                         "Recognizing the importance of mindfulness in tech innovation"
                     ]
                 }
-            }
+            })
         elif age < 60:
-            return {
+            focuses.update({
                 "Legacy & Succession in Tech": {
                     "weight": 25,
                     "examples": [
@@ -1175,9 +1189,9 @@ class TweetGenerator:
                         "Creating a legacy of innovation that balances tech with human values"
                     ]
                 }
-            }
+            })
         else:  # age >= 60
-            return {
+            focuses.update({
                 "Legacy & Succession": {
                     "weight": 30,
                     "examples": [
@@ -1228,7 +1242,8 @@ class TweetGenerator:
                         "Sharing insights on achieving fulfillment beyond career success"
                     ]
                 }
-            }
+            })
+        return focuses
 
     def _update_recent_mentions(self, tweet_content):
         """Extract and track character mentions from tweet"""
