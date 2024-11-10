@@ -1,0 +1,121 @@
+{
+  "tech_trees": {
+    "2025": {
+      "emerging_technologies": [
+        {
+          "name": "AI-Driven Autonomous Urban Planning",
+          "probability": 0.75,
+          "estimated_year": 2028,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Advanced AI",
+            "Big Data Analytics"
+          ],
+          "impact_areas": [
+            "Urban Development",
+            "Sustainable Technology"
+          ],
+          "description": "AI systems that can simulate and plan urban growth, optimizing for sustainability, traffic, and resource efficiency.",
+          "societal_implications": "Potential reduction in urban sprawl, improved quality of life, but raises issues around privacy and data security.",
+          "adoption_factors": "Requires robust AI capabilities, cooperation between government and tech companies, and public trust in AI decision-making."
+        },
+        {
+          "name": "Quantum Encryption for Secure Communications",
+          "probability": 0.8,
+          "estimated_year": 2027,
+          "innovation_type": "incremental",
+          "dependencies": [
+            "Quantum Computing",
+            "Cryptography"
+          ],
+          "impact_areas": [
+            "Digital Infrastructure",
+            "Security"
+          ],
+          "description": "Leveraging quantum mechanics for unbreakable encryption, ensuring secure data transmission.",
+          "societal_implications": "Enhanced security for personal and corporate data, with implications for international relations and espionage.",
+          "adoption_factors": "High initial costs, need for quantum computing infrastructure, and regulatory acceptance."
+        },
+        {
+          "name": "Neural-Linked Augmented Reality",
+          "probability": 0.6,
+          "estimated_year": 2029,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Neural Interfaces",
+            "AR Technology"
+          ],
+          "impact_areas": [
+            "Neural Technology",
+            "Entertainment",
+            "Education"
+          ],
+          "description": "AR systems that directly interface with the brain to provide enhanced sensory and cognitive experiences.",
+          "societal_implications": "Revolutionary for education, entertainment, and work; concerns about privacy, addiction, and mental health.",
+          "adoption_factors": "Ethical considerations, safety of neural tech, public perception, and need for extensive R&D."
+        },
+        {
+          "name": "Full-Stack AI Development Platforms",
+          "probability": 0.9,
+          "estimated_year": 2026,
+          "innovation_type": "incremental",
+          "dependencies": [
+            "AI Coding Assistants",
+            "Cloud Computing"
+          ],
+          "impact_areas": [
+            "Software Development",
+            "AI"
+          ],
+          "description": "Platforms where AI can autonomously handle all aspects of software development from coding to deployment.",
+          "societal_implications": "Shifts in job roles, potential for increased productivity, but also concerns over job displacement.",
+          "adoption_factors": "Requires significant advancements in AI, trust in AI decision-making, and integration with existing development tools."
+        }
+      ],
+      "mainstream_technologies": [
+        {
+          "name": "AI-Enhanced Software Development",
+          "from_emerging": true,
+          "original_emergence_year": 2025,
+          "maturity_year": 2030,
+          "impact_level": 8,
+          "description": "Tools that have evolved from simple code suggestions to full lifecycle management, including testing and deployment.",
+          "adoption_status": "Widespread adoption in tech companies, integration into educational curriculums, and acceptance by developers."
+        },
+        {
+          "name": "Blockchain for IoT Security",
+          "from_emerging": true,
+          "original_emergence_year": 2026,
+          "maturity_year": 2029,
+          "impact_level": 6,
+          "description": "Blockchain technology used to secure and manage the vast network of IoT devices.",
+          "adoption_status": "Integration into smart cities, industrial IoT, and consumer products for enhanced security and privacy."
+        }
+      ],
+      "epoch_themes": [
+        {
+          "theme": "AI as a Core Competency",
+          "description": "AI becomes fundamental across all sectors, driving efficiency, innovation, and decision-making processes.",
+          "related_technologies": [
+            "AI-Driven Autonomous Urban Planning",
+            "Full-Stack AI Development Platforms"
+          ],
+          "societal_impact": "Increased automation, potential job market shifts, and ethical debates around AI governance.",
+          "global_trends": "Global push towards AI education, ethical AI frameworks, and international AI collaboration."
+        },
+        {
+          "theme": "Sustainable Urban Living",
+          "description": "Focus on creating cities that are self-sustaining, smart, and environmentally friendly.",
+          "related_technologies": [
+            "AI-Driven Autonomous Urban Planning",
+            "Quantum Encryption for Secure Communications"
+          ],
+          "societal_impact": "Better urban living conditions, reduced environmental impact, but requires significant investment and regulatory support.",
+          "global_trends": "Urbanization trends, climate change initiatives, and the rise of green technology."
+        }
+      ],
+      "epoch_year": 2025
+    }
+  },
+  "last_updated": "2024-11-10T12:35:17.644749"
+}
