@@ -1,0 +1,134 @@
+{
+  "metadata": {
+    "generated_at": "2024-11-10T03:28:57.367427",
+    "base_year": 2025,
+    "end_year": 2075
+  },
+  "tech_trees": {
+    "2025": {
+      "emerging_technologies": [
+        {
+          "name": "AI-Driven Code Synthesis",
+          "probability": 0.85,
+          "estimated_year": 2026,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Advanced Machine Learning",
+            "Big Data Analytics"
+          ],
+          "impact_areas": [
+            "Software Development",
+            "Education"
+          ],
+          "description": "AI systems capable of autonomously developing complete software applications from high-level descriptions.",
+          "societal_implications": "Reduces need for human coders, changes educational focus from coding to system architecture and problem solving.",
+          "adoption_factors": "Requires significant trust in AI capabilities, ethical considerations around AI job displacement."
+        },
+        {
+          "name": "Neuromorphic Computing",
+          "probability": 0.75,
+          "estimated_year": 2027,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Quantum Computing",
+            "Neural Technology"
+          ],
+          "impact_areas": [
+            "AI",
+            "Robotics",
+            "Neural Interfaces"
+          ],
+          "description": "Computing systems designed to mimic the biological neural structures of the human brain, leading to more efficient AI processing.",
+          "societal_implications": "Potential for more intuitive AI-human interactions, ethical concerns about privacy and thought manipulation.",
+          "adoption_factors": "Dependent on advances in materials science and computational theory."
+        },
+        {
+          "name": "Space-Based Solar Power",
+          "probability": 0.6,
+          "estimated_year": 2028,
+          "innovation_type": "incremental",
+          "dependencies": [
+            "Space Exploration",
+            "Advanced Photovoltaics"
+          ],
+          "impact_areas": [
+            "Energy",
+            "Space Industry"
+          ],
+          "description": "Satellite systems in geostationary orbit that collect solar energy and beam it back to Earth as microwave or laser energy.",
+          "societal_implications": "Reduces reliance on fossil fuels, potential geopolitical issues regarding energy control.",
+          "adoption_factors": "Cost of launch, efficiency of energy transmission, international space law."
+        },
+        {
+          "name": "Blockchain-Based Digital Identity",
+          "probability": 0.8,
+          "estimated_year": 2025,
+          "innovation_type": "incremental",
+          "dependencies": [
+            "Blockchain",
+            "Cybersecurity"
+          ],
+          "impact_areas": [
+            "Privacy",
+            "Digital Infrastructure"
+          ],
+          "description": "A secure, decentralized system for managing personal digital identities, enhancing privacy and security.",
+          "societal_implications": "Improves online security, potential for misuse in anonymity crimes.",
+          "adoption_factors": "Regulatory acceptance, integration with existing systems, public trust in blockchain."
+        }
+      ],
+      "mainstream_technologies": [
+        {
+          "name": "AI Pair Programming",
+          "from_emerging": true,
+          "original_emergence_year": 2025,
+          "maturity_year": 2027,
+          "impact_level": 8,
+          "description": "AI systems that assist developers in real-time, suggesting code, debugging, and even writing parts of the software.",
+          "adoption_status": "Widely adopted in software development teams, enhancing productivity and reducing errors."
+        },
+        {
+          "name": "Autonomous Public Transport",
+          "from_emerging": true,
+          "original_emergence_year": 2025,
+          "maturity_year": 2030,
+          "impact_level": 7,
+          "description": "Fully autonomous buses and trains operating in urban environments, reducing human error in transit.",
+          "adoption_status": "Cities worldwide are implementing these systems, with public acceptance growing as safety is proven."
+        }
+      ],
+      "epoch_themes": [
+        {
+          "theme": "AI Transformation",
+          "description": "AI's role in reshaping industries, from software development to healthcare.",
+          "related_technologies": [
+            "AI-Driven Code Synthesis",
+            "Neuromorphic Computing",
+            "AI Pair Programming"
+          ],
+          "societal_impact": "Job displacement in coding, new job opportunities in AI ethics and oversight, shift in educational paradigms.",
+          "global_trends": "Global push for AI regulation, ethical AI frameworks, and AI education initiatives."
+        },
+        {
+          "theme": "Sustainable Innovation",
+          "description": "Focus on technologies that support environmental sustainability and resource efficiency.",
+          "related_technologies": [
+            "Space-Based Solar Power"
+          ],
+          "societal_impact": "Reduces carbon footprint, changes in energy policy and geopolitical dynamics.",
+          "global_trends": "International cooperation in space technology, increased investment in green technologies."
+        },
+        {
+          "theme": "Digital Sovereignty",
+          "description": "The rise of technologies aimed at enhancing digital privacy and security.",
+          "related_technologies": [
+            "Blockchain-Based Digital Identity"
+          ],
+          "societal_impact": "Enhanced personal data control, potential for digital divide between those who can and cannot afford advanced security.",
+          "global_trends": "Increased focus on cybersecurity laws, privacy rights, and digital infrastructure resilience."
+        }
+      ],
+      "epoch_year": 2025
+    }
+  }
+}
