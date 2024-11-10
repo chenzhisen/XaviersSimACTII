@@ -1,0 +1,139 @@
+{
+  "tech_trees": {
+    "2025": {
+      "emerging_technologies": [
+        {
+          "name": "AI-Driven Software Development Environment",
+          "probability": 0.85,
+          "estimated_year": 2027,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Machine Learning",
+            "Neural Networks"
+          ],
+          "impact_areas": [
+            "Software Development",
+            "Automation",
+            "Education"
+          ],
+          "description": "An environment where AI not only assists in coding but also manages entire software development cycles, from conception to deployment, with minimal human intervention.",
+          "societal_implications": "Reduces demand for entry-level coding positions, reshaping education and job markets towards AI collaboration.",
+          "adoption_factors": "High initial cost, need for trust in AI decision-making, and regulatory approval for critical systems."
+        },
+        {
+          "name": "Autonomous Drone Fleets",
+          "probability": 0.75,
+          "estimated_year": 2026,
+          "innovation_type": "incremental",
+          "dependencies": [
+            "Drones",
+            "AI"
+          ],
+          "impact_areas": [
+            "Logistics",
+            "Agriculture",
+            "Emergency Services"
+          ],
+          "description": "Fleets of drones capable of self-coordination for tasks like delivery, surveillance, and emergency response.",
+          "societal_implications": "Improves efficiency in delivery and emergency response but raises privacy concerns and potential job displacement.",
+          "adoption_factors": "Regulatory frameworks for airspace management, technological reliability, and public acceptance."
+        },
+        {
+          "name": "Neural Interface for Communication",
+          "probability": 0.6,
+          "estimated_year": 2028,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Brain-Computer Interfaces",
+            "AI"
+          ],
+          "impact_areas": [
+            "Healthcare",
+            "Communications",
+            "Education"
+          ],
+          "description": "Non-invasive brain interfaces allowing direct thought-to-thought communication.",
+          "societal_implications": "Could revolutionize how we interact, learn, and work, but poses significant ethical and privacy issues.",
+          "adoption_factors": "Health safety concerns, ethical guidelines, and technology maturity."
+        },
+        {
+          "name": "Space-based Solar Power",
+          "probability": 0.5,
+          "estimated_year": 2029,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Satellite Technology",
+            "Energy Transmission"
+          ],
+          "impact_areas": [
+            "Energy",
+            "Space Exploration"
+          ],
+          "description": "Solar panels in space capturing sunlight continuously and beaming the energy back to Earth.",
+          "societal_implications": "Offers a sustainable energy solution, but involves high initial investment and geopolitical considerations.",
+          "adoption_factors": "Cost-effectiveness compared to terrestrial renewable energy, technological breakthroughs in energy transmission."
+        },
+        {
+          "name": "Blockchain for Digital Identity",
+          "probability": 0.9,
+          "estimated_year": 2026,
+          "innovation_type": "incremental",
+          "dependencies": [
+            "Blockchain",
+            "Cryptography"
+          ],
+          "impact_areas": [
+            "Security",
+            "Digital Infrastructure"
+          ],
+          "description": "Secure, decentralized systems for managing digital identities, reducing fraud and enhancing privacy.",
+          "societal_implications": "Enhances online security and privacy but requires broad adoption to be effective.",
+          "adoption_factors": "User acceptance, regulatory support, and integration with existing systems."
+        }
+      ],
+      "mainstream_technologies": [
+        {
+          "name": "AI Pair Programming",
+          "from_emerging": true,
+          "original_emergence_year": 2025,
+          "maturity_year": 2028,
+          "impact_level": 7,
+          "description": "AI systems that pair with human developers to enhance coding efficiency, reducing errors and accelerating development.",
+          "adoption_status": "Widely adopted in tech companies, with AI tools becoming standard in developer toolkits."
+        },
+        {
+          "name": "Smart Contracts",
+          "from_emerging": true,
+          "original_emergence_year": 2023,
+          "maturity_year": 2027,
+          "impact_level": 8,
+          "description": "Automated, secure contracts using blockchain technology for transparent, reliable transactions.",
+          "adoption_status": "Commonplace in finance, real estate, and legal sectors, with regulatory frameworks established."
+        }
+      ],
+      "epoch_themes": [
+        {
+          "theme": "AI-Driven Automation",
+          "description": "A period marked by the integration of AI into all facets of technology and daily life, focusing on automation.",
+          "related_technologies": [
+            "AI-Driven Software Development",
+            "Autonomous Drone Fleets"
+          ],
+          "societal_impact": "Significant shifts in employment, education, and human-AI interaction paradigms.",
+          "global_trends": "Increased focus on AI ethics, job displacement mitigation, and AI literacy programs."
+        },
+        {
+          "theme": "Space Utilization for Earth's Benefit",
+          "description": "Advancements in space technology aimed at improving life on Earth through resource management and energy.",
+          "related_technologies": [
+            "Space-based Solar Power"
+          ],
+          "societal_impact": "Potential for new energy markets, space-based industries, and international space law.",
+          "global_trends": "Increased investment in space technology, international cooperation, and environmental sustainability."
+        }
+      ],
+      "epoch_year": 2025
+    }
+  },
+  "last_updated": "2024-11-10T10:10:43.295276"
+}
