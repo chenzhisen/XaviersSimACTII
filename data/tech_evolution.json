@@ -1,0 +1,127 @@
+{
+  "metadata": {
+    "generated_at": "2024-11-10T03:11:49.328611",
+    "base_year": 2025,
+    "end_year": 2075
+  },
+  "tech_trees": {
+    "2025": {
+      "emerging_technologies": [
+        {
+          "name": "AI-Driven Code Synthesis",
+          "probability": 0.8,
+          "estimated_year": 2026,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "AI Coding Assistants",
+            "Machine Learning"
+          ],
+          "impact_areas": [
+            "Software Development",
+            "Education"
+          ],
+          "description": "AI systems capable of writing entire software modules from high-level requirements, reducing human involvement to oversight and strategic decision-making.",
+          "societal_implications": "Reduces demand for entry-level coding jobs, pushes human developers towards more creative and strategic roles, potential for increased software innovation.",
+          "adoption_factors": "Requires trust in AI accuracy, regulatory acceptance of AI-generated code, and integration into existing development workflows."
+        },
+        {
+          "name": "Neuromorphic Chips",
+          "probability": 0.6,
+          "estimated_year": 2027,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Neural Technology",
+            "AI"
+          ],
+          "impact_areas": [
+            "AI",
+            "Robotics",
+            "Computational Neuroscience"
+          ],
+          "description": "Processors designed to mimic the brain's architecture, significantly increasing AI's ability to handle complex, adaptive tasks with lower energy consumption.",
+          "societal_implications": "Could lead to smarter, more efficient AI systems, impacting job automation, privacy issues, and ethical considerations around AI decision-making.",
+          "adoption_factors": "Requires advancements in hardware manufacturing, integration into existing tech ecosystems, and overcoming skepticism regarding AI's true cognitive abilities."
+        },
+        {
+          "name": "Autonomous Urban Air Mobility",
+          "probability": 0.7,
+          "estimated_year": 2029,
+          "innovation_type": "incremental",
+          "dependencies": [
+            "Autonomous Systems",
+            "Battery Technology",
+            "Regulation"
+          ],
+          "impact_areas": [
+            "Transportation",
+            "Urban Planning"
+          ],
+          "description": "Electric vertical take-off and landing (eVTOL) vehicles for urban transport, fully autonomous with integrated AI for traffic management.",
+          "societal_implications": "Reduces urban congestion, changes urban landscapes, potential for social stratification based on access to air mobility.",
+          "adoption_factors": "Requires regulatory approval, public trust in autonomous flight, and infrastructure development for vertiports."
+        },
+        {
+          "name": "Blockchain for Energy Trading",
+          "probability": 0.9,
+          "estimated_year": 2028,
+          "innovation_type": "incremental",
+          "dependencies": [
+            "Blockchain",
+            "IoT",
+            "Smart Grids"
+          ],
+          "impact_areas": [
+            "Energy",
+            "Sustainability"
+          ],
+          "description": "A decentralized energy trading platform where individuals can buy and sell renewable energy directly, optimizing energy distribution and usage.",
+          "societal_implications": "Promotes energy independence, reduces carbon footprint, but requires widespread adoption of smart meters and energy storage solutions.",
+          "adoption_factors": "Regulatory frameworks, consumer education on blockchain technology, and integration with existing energy infrastructure."
+        }
+      ],
+      "mainstream_technologies": [
+        {
+          "name": "AI Pair Programming",
+          "from_emerging": true,
+          "original_emergence_year": 2025,
+          "maturity_year": 2027,
+          "impact_level": 7,
+          "description": "AI systems that work alongside developers, providing real-time suggestions, debugging, and learning from the developer's coding style.",
+          "adoption_status": "Highly adopted in software development teams, with integration into most IDEs and becoming a standard tool for productivity enhancement."
+        },
+        {
+          "name": "Space Habitats",
+          "from_emerging": true,
+          "original_emergence_year": 2025,
+          "maturity_year": 2030,
+          "impact_level": 6,
+          "description": "Modular habitats for long-term human habitation in space, with life support systems, renewable resources, and autonomous maintenance.",
+          "adoption_status": "Used in space missions, with early commercial applications for space tourism and research."
+        }
+      ],
+      "epoch_themes": [
+        {
+          "theme": "Autonomous Everything",
+          "description": "A period where autonomous technology becomes ubiquitous, from transport to daily home appliances.",
+          "related_technologies": [
+            "Autonomous Urban Air Mobility",
+            "AI-Driven Code Synthesis"
+          ],
+          "societal_impact": "Significant impact on employment, urban planning, and personal independence, with ethical and privacy concerns.",
+          "global_trends": "Rise in demand for engineers specialized in AI and autonomous systems, regulatory frameworks for AI governance."
+        },
+        {
+          "theme": "Sustainable Living",
+          "description": "Focus on technologies that promote sustainability, reducing environmental impact through energy efficiency and resource management.",
+          "related_technologies": [
+            "Blockchain for Energy Trading",
+            "Neuromorphic Chips"
+          ],
+          "societal_impact": "Shift towards greener economies, changes in energy consumption patterns, and potential new energy markets.",
+          "global_trends": "Increased investment in green technologies, international agreements for sustainability, and consumer demand for eco-friendly products."
+        }
+      ],
+      "epoch_year": 2025
+    }
+  }
+}
