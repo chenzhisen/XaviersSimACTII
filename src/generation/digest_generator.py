@@ -1,385 +1,457 @@
 import json
 from datetime import datetime
-import os
-from anthropic import Anthropic
-from utils.config import Config, AIProvider
 from storage.github_operations import GithubOperations
-import re
+from utils.config import Config, AIProvider
+from anthropic import Anthropic
+import traceback
 
 class DigestGenerator:
-    def __init__(self):
+    # Class-level system prompt
+    SYSTEM_PROMPT = (
+        "Xavier is an AI life simulation exploring the journey from 18 to 72 in 108 real world days, with $XVI, a crypto currency on Solana mysteriously linked to his life.\n"
+        "You are:\n"
+        "1. Using recent tweets to update the historical summary - ONLY include events that have ALREADY HAPPENED in tweets\n"
+        "2. Using tech context and history to project future developments - ONLY include events that have NOT YET HAPPENED\n"
+        "\nFormat your response in this structure:\n"
+        "\nProfessional:\n"
+        "Historical Summary:\n"
+        "- [ONLY summarize events that have already occurred in tweets]\n"
+        "Projected Developments (Next 3-6 Months):\n"
+        "- [ONLY project new developments that haven't happened yet]\n"
+        "\nPersonal:\n"
+        "[Same structure as above]\n"
+        "\nFamily:\n"
+        "[Same structure as above]\n"
+        "\nSocial:\n"
+        "[Same structure as above]\n"
+        "\nReflections:\n"
+        "[Same structure as above]\n\n"
+        "\n$XVI:\n"
+        "[Same structure as above]\n\n"
+        "Format rules:\n"
+        "1. Each category MUST have both Historical Summary and Projected Developments sections\n"
+        "2. Historical Summary MUST ONLY include events from tweets\n"
+        "3. Projected Developments MUST ONLY include future events (next 3-6 months)\n"
+        "4. Professional track MUST reference specific mature technologies\n"
+        "5. Reflections track MUST include thoughts about maturing technologies\n"
+        "6. Keep all projections realistic and actionable\n"
+        "7. Connect developments to Xavier's demonstrated interests and personality\n"
+    )
+
+    def __init__(self, simulation_time=None, simulation_age=None, tweet_count=None):
+        self.github_ops = GithubOperations()
+        self.simulation_time = simulation_time
+        self.simulation_age = simulation_age
+        self.tweet_count = tweet_count
+        
+        # Initialize Anthropic client
         xai_config = Config.get_ai_config(AIProvider.XAI)
         self.client = Anthropic(
             api_key=xai_config.api_key,
             base_url=xai_config.base_url
         )
-        self.XaviersSim = 'XaviersSim.json'
-        self.github_ops = GithubOperations()
-        self.sim_start_year = 2025  # Add this for year calculation
-
-    def process_first_digest(self):
-        """Generate initial digest from XaviersSim.json"""
-        try:
-            # Get existing tweets from ACTI
-            actI_content, _ = self.github_ops.get_file_content(self.XaviersSim)
-            prompt = self.create_first_digest(actI_content)
-            digest = self.generate_digest(prompt)
-
-            if digest:
-                # Create timestamped digest entry
-                timestamp = datetime.now().isoformat()
-                return {
-                    "generated_at": timestamp,
-                    "content": str(digest),
-                    "is_initial": True,
-                    "year": self.sim_start_year,
-                    "tweet_count": 0
-                }
-            return None
-        except Exception as e:
-            print(f"Error creating initial digest: {str(e)}")
-            return None
-
-    def create_first_digest(self, actI_content):
-        """Create a prompt for initial digest generation from Act I"""
-        prompt = (
-            "BACKGROUND:\n"
-            "Xavier's story (age 18-22) documented his early experiences, relationships, and growth "
-            "through social media posts. This digest will bridge his past and future narrative, initially focusing on practical, achievable goals in technology. "
-            "As he ages, his perspective will evolve, embracing deeper questions about technology’s role in human identity, legacy, and the mysteries of existence.\n\n"
-                
-            "ORIGINAL CONTENT:\n"
-        )
         
-        # Add Act I content
-        if isinstance(actI_content, dict):
-            prompt += json.dumps(actI_content, indent=2)
-        else:
-            prompt += str(actI_content)
-        
-        prompt += self._get_digest_sections(is_first=True)
-        # print("digest prompt: ", prompt)
-        return prompt
+        # Initialize empty life tracks
+        self.life_tracks = self._initialize_empty_tracks()
 
-    def generate_digest(self, prompt):
+    def _get_tech_data(self):
+        """Get and format technology data from tech_evolution.json"""
         try:
-            message = self.client.messages.create(
-                model="grok-beta",
-                max_tokens=2048,
-                system=(
-                    "You are a story curator and narrative architect maintaining Xavier's story. "
-                    "Your role is to both document the story's history and guide its future development. "
-                    "Create a cohesive summary that captures past events while subtly suggesting natural "
-                    "story opportunities for the next 3-6 months. Balance continuity with organic growth, "
-                    "ensuring technological and societal changes feel natural within Xavier's personal journey."
-                    "Maintain an age-appropriate tone in his reflections—"
-                    "early years focus on practicality, and as he ages, introduce deeper, more philosophical considerations about technology’s impact on humanity and identity."
-                    "Track and develop relationships with attention to:\n"
-                    "- Character consistency and natural development\n"
-                    "- Cultural diversity and unique perspectives\n"
-                    "- Personal interests beyond technology\n"
-                    "- Authentic relationship evolution\n"
-                    "- Impact of relationships on Xavier's growth\n"
-                    "Create a cohesive summary that captures relationship developments "
-                    "while suggesting natural opportunities for future interactions."
-                ),
-                messages=[
-                    {
-                        "role": "user",
-                        "content": prompt,
-                    },
-                ],
-            )
-            return str(message.content)
-        except Exception as e:
-            print(f"Error generating digest: {str(e)}")
-            return None
-
-    def process_ongoing_digest(self, existing_digest, new_tweets, new_comments):
-        """Generate a digest with both summary and future direction"""
-        try:
-            prompt = self.create_ongoing_prompt(existing_digest, new_tweets, new_comments)
-            # print("digest prompt: ", prompt)
-            updated_digest = self.generate_digest(prompt)
+            tech_evolution, _ = self.github_ops.get_file_content('tech_evolution.json')
+            if not tech_evolution:
+                print("No tech evolution data found")
+                return [], []
             
-            if updated_digest:
-                # Create timestamped digest entry
-                timestamp = datetime.now().isoformat()
-                return {
-                    "generated_at": timestamp,
-                    "content": updated_digest,
-                    "last_processed_tweet": new_tweets[-1]["id"] if new_tweets else None,
-                    "tweet_count": len(new_tweets),
-                    "year": self._get_current_year()
-                }
-            return None
-        except Exception as e:
-            print(f"Error processing ongoing digest: {e}")
-            return None
-
-    def create_ongoing_prompt(self, existing_digest, new_tweets, new_comments):
-        """Create a prompt for ongoing digest updates"""
-        try:
-            tech_context = self._get_tech_context(new_tweets)
-            # print("tech context: ", tech_context)
-            
-            prompt = (
-                "RECENT STORY DEVELOPMENTS:\n"
-                f"{json.dumps(new_tweets, indent=2)}\n\n"
-                
-                "PREVIOUS CONTEXT:\n"
-                f"{existing_digest.get('content', 'Story begins with Xavier at age 22 in 2025.')}\n\n"
-                
-                "ADDITIONAL DETAILS:\n"
-                f"{json.dumps(new_comments, indent=2)}\n\n"
-                f"{tech_context}\n\n"
-                
-                "As Xavier continues on his journey, his reflections align with his age. In his early years, he remains focused on practical tech innovations, "
-                "while occasionally pondering the larger impact of his work. With time, his curiosity broadens, leading him to explore the boundaries of technology, identity, and purpose more deeply. "
-                "By middle age, he begins to reflect on the legacies technology might leave for future generations.\n\n"
-                "He occasionally notices peculiarities that make him wonder if he’s the protagonist in a larger scheme—but he quickly brushes off these thoughts.\n\n"
-
-                "GUIDELINES:\n"
-                "- Drive the story forward using recent tweets, but maintain continuity with past events\n"
-                "- Evolve ongoing relationships and storylines through recent interactions\n"
-                "- Use comments and tech context to enrich but not steer the main narrative\n"
-                "- $XVI, a cryptocurrency token, mysteriously linked to Xavier, has special place to Xavier, perhaps signaling a path toward deeper revelations\n\n"
-            )
-
-            prompt += self._get_digest_sections(is_first=False)
-            return prompt
-            
-        except Exception as e:
-            print(f"Error creating ongoing prompt: {e}")
-            return None
-
-    def _get_tech_context(self, new_tweets):
-        """Extract and format technological context including upcoming tech"""
-        try:
-            # Debug logging
-            print("Fetching tech evolution data...")
-            tech_evolution, _ = self.github_ops.get_file_content("tech_evolution.json")
-            # print(f"Tech evolution data: {json.dumps(tech_evolution, indent=2)[:200]}...")  # Print first 200 chars
-            
-            simulation_state, _ = self.github_ops.get_file_content("simulation_state.json")
-            current_year = int(simulation_state.get("current_year", 2025))
-            
-            # Ensure tech_evolution is a dict
             if isinstance(tech_evolution, str):
                 tech_evolution = json.loads(tech_evolution)
             
-            # Get tech trees with better error handling
-            tech_trees = tech_evolution.get('tech_trees', {}) if isinstance(tech_evolution, dict) else {}
-            print(f"Found {len(tech_trees)} tech trees")
-            
+            if not isinstance(tech_evolution, dict):
+                print(f"Invalid tech evolution data type: {type(tech_evolution)}")
+                return [], []
+                
+            tech_trees = tech_evolution.get('tech_trees', {})
             if not tech_trees:
                 print("No tech trees found in evolution data")
-                return ""
-            
-            # Find current and next epochs
-            current_epoch = None
-            next_epoch = None
-            
-            # Convert years to integers for comparison
-            years = sorted([int(year) for year in tech_trees.keys()])
-            
-            # Find current and next epochs
-            for year in years:
-                if year <= current_year:
-                    current_epoch = tech_trees[str(year)]
-                elif next_epoch is None:
-                    next_epoch = tech_trees[str(year)]
-                    break
-            
-            if not current_epoch:
-                return ""
+                return [], []
                 
-            context = (
-                f"\nTECH CONTEXT AND TIMELINE:\n"
-                f"Current Year: {current_year}\n\n"
-                "TEMPORAL GUIDELINES:\n"
-                "- Focus on currently mature technologies for immediate impact\n"
-                "- Track emerging technologies based on their estimated arrival and probability\n"
-                "- Note breakthrough vs incremental changes for narrative pacing\n"
-                "- Consider technology readiness when discussing project possibilities\n\n"
+            # Parse simulation time
+            simulation_date = datetime.strptime(self.simulation_time, '%Y-%m-%d')
+            simulation_year = simulation_date.year
+            simulation_month = simulation_date.month
+            
+            # Calculate current and next epochs
+            current_epoch = simulation_year - (simulation_year % 5)
+            next_epoch = current_epoch + 5
+            
+            # If within 6 months of next epoch, use that instead
+            months_to_next_epoch = ((next_epoch - simulation_year) * 12) - simulation_month
+            target_epoch = next_epoch if months_to_next_epoch <= 6 else current_epoch
+            
+            print(f"Target epoch: {target_epoch}")  # Debug
+            tech_data = tech_trees.get(str(target_epoch), {})
+            
+            if not tech_data:
+                print(f"No tech data found for epoch {target_epoch}")
+                return [], []
                 
-                f"Current Epoch ({current_year}-{current_year+5}):\n"
-                f"- Mainstream Technologies (Currently Available):\n"
-                + json.dumps([{
-                    "name": tech['name'],
-                    "maturity_year": tech['maturity_year'],
-                    "impact_level": tech.get('impact_level', 'N/A'),
-                    "status": "Available" if tech['maturity_year'] <= current_year else "Upcoming",
-                    "time_until_maturity": max(0, tech['maturity_year'] - current_year)
-                } for tech in current_epoch['mainstream_technologies']], indent=2)
-                + "\n\n- Emerging Technologies (In Development):\n"
-                + json.dumps([{
-                    "name": tech['name'],
-                    "probability": tech.get('probability', 'N/A'),
-                    "estimated_year": tech.get('estimated_year', 'N/A'),
-                    "innovation_type": tech.get('innovation_type', 'N/A'),
-                    "timing_status": (
-                        "Imminent" if abs(tech.get('estimated_year', current_year) - current_year) <= 1
-                        else "Near Future" if abs(tech.get('estimated_year', current_year) - current_year) <= 2
-                        else "In Development"
-                    ),
-                    "confidence_level": (
-                        "High" if tech.get('probability', 0) > 0.8
-                        else "Medium" if tech.get('probability', 0) > 0.5
-                        else "Low"
-                    )
-                } for tech in current_epoch['emerging_technologies']], indent=2)
-                + "\n\n- Themes:\n"
-                + json.dumps([theme['theme'] for theme in current_epoch['epoch_themes']], indent=2)
-                + "\n\n"
-            )
+            # Collect mature and soon-to-mature tech
+            mature_tech = []
+            for tech in tech_data.get('mainstream_technologies', []):
+                mature_tech.append({
+                    'name': tech.get('name', ''),
+                    'description': tech.get('description', ''),
+                    'status': tech.get('adoption_status', '')
+                })
             
-            if next_epoch:
-                next_year = current_year + 5
-                context += (
-                    f"Next Epoch ({next_year}-{next_year+5}):\n"
-                    f"- Expected Technologies:\n"
-                    + json.dumps([{
-                        "name": tech['name'],
-                        "probability": tech.get('probability', 'N/A'),
-                        "estimated_year": tech.get('estimated_year', 'N/A'),
-                        "innovation_type": tech.get('innovation_type', 'N/A')
-                    } for tech in next_epoch['emerging_technologies']], indent=2)
-                    + "\n\n- Emerging Themes:\n"
-                    + json.dumps([theme['theme'] for theme in next_epoch['epoch_themes']], indent=2)
-                    + "\n\n"
-                )
+            maturing_soon = []
+            for tech in tech_data.get('emerging_technologies', []):
+                if int(tech.get('estimated_year', 9999)) <= simulation_year + 1:
+                    maturing_soon.append({
+                        'name': tech.get('name', ''),
+                        'description': tech.get('description', ''),
+                        'estimated_year': tech.get('estimated_year', ''),
+                        'probability': tech.get('probability', '')
+                    })
             
-            return context
+            return mature_tech, maturing_soon
             
         except Exception as e:
-            print(f"Error getting tech context: {e}")
-            return ""
+            print(f"Error getting tech data: {e}")
+            print("Full error details:")
+            traceback.print_exc()
+            return [], []
 
-    def _get_digest_sections(self, is_first=False):
+    def get_latest_digest(self):
+        """Get the most recent digest with metadata"""
         try:
-            simulation_state, _ = self.github_ops.get_file_content("simulation_state.json")
-            current_year = int(simulation_state.get("current_year", 2025))
-            current_age = current_year - 2025 + 22
+            content, _ = self.github_ops.get_file_content('digest_history.json')
+            if content and len(content) > 0:
+                return content[-1]  # Return the last digest with its metadata
+            return None
+        except Exception as e:
+            print(f"Error getting latest digest: {e}")
+            return None
+
+    def _build_tech_section(self, mature_tech, maturing_soon):
+        """Build the technology section of the prompt"""
+        tech_section = "AVAILABLE TECHNOLOGIES:\nCurrently Mature Technologies (must be used in Professional track):\n"
+        
+        for tech in mature_tech:
+            tech_section += f"- {tech['name']}: {tech['description']} (Status: {tech['status']})\n"
+        
+        tech_section += "\nTechnologies Maturing Soon (must be used in Reflections track):\n"
+        for tech in maturing_soon:
+            tech_section += (
+                f"- {tech['name']}: {tech['description']} "
+                f"(Est. Year: {tech['estimated_year']}, Probability: {tech['probability']})\n"
+            )
+        return tech_section
+
+    def _build_current_tracks_section(self):
+        """Build the section describing current life tracks"""
+        sections = []
+        if not isinstance(self.life_tracks, dict):
+            return ""
+            
+        for track_name, data in self.life_tracks.items():
+            # Skip metadata fields
+            if track_name in ['timestamp', 'metadata']:
+                continue
+                
+            # Verify data is a dictionary
+            if not isinstance(data, dict):
+                continue
+                
+            # Check if track has any content using get() for safety
+            historical = data.get('historical_summary', [])
+            projected = data.get('projected', [])
+            
+            if not (historical or projected):
+                continue
+                
+            section = f"\n{track_name}:\n"
+            if historical:
+                section += "Historical:\n- " + "\n- ".join(historical) + "\n"
+            sections.append(section)
+            
+        return "\nCurrent Life Tracks:" + "".join(sections) if sections else ""
+
+    def _build_prompt(self, mature_tech, maturing_soon, recent_tweets=None, recent_comments=None):
+        """Build the prompt for AI with all necessary context"""
+        life_phase = self._get_life_phase(self.simulation_age)
+        
+        prompt = (
+            f"Based on the provided information, create Xavier's life digest at age {self.simulation_age}. "
+            "For each category:\n"
+            "1. Summarize past events and developments from the tweets\n"
+            "2. Project specific developments for the next 3-6 months (must be realistic and actionable)\n\n"
+            f"CURRENT LIFE PHASE:\n{life_phase}\n\n"
+            "TIMEFRAME RULES:\n"
+            "1. Historical Summary: Past historical summary and recent tweets\n"
+            "2. Projected Developments: ONLY events within next 3-6 months\n"
+            "3. All projections must be specific and realistic\n\n"
+        )
+        
+        prompt += self._build_tech_section(mature_tech, maturing_soon)
+        
+        prompt += (
+            "\nTECHNOLOGY INTEGRATION RULES:\n"
+            "1. Professional track MUST reference mature technologies that directly relate to trading, blockchain, or AI\n"
+            "2. Reflections track MUST explore emerging technologies that naturally extend from current interests\n"
+            "3. Other tracks MAY reference technologies ONLY if they have clear, logical connections to activities\n"
+            "4. Each technology reference must demonstrate depth in core interests rather than superficial connections\n\n"
+        )
+
+        prompt += "Combine the following Historical Summary with Recent Tweets and Comments to create a new historical summary and Project specific new developments for the next 3-6 months:\n"
+        prompt += self._build_current_tracks_section()
+        
+        if recent_tweets:
+            prompt += "\nRECENT TWEETS TO ANALYZE (from newest to oldest):\n"
+            if isinstance(recent_tweets, list):
+                for tweet in reversed(recent_tweets):
+                    if isinstance(tweet, dict):
+                        date = tweet.get('simulated_date', '')
+                        content = tweet.get('content', '').get('content', '')
+                        prompt += f"[{date}] {content}\n"
+                    else:
+                        prompt += f"- {tweet}\n"
+            else:
+                prompt += f"- {recent_tweets}\n"
+
+        if recent_comments:
+            prompt += "\nRECENT COMMENTS:\n" + "\n".join(f"- {comment}" for comment in recent_comments) + "\n"
+        
+        return prompt
+
+    def _parse_summaries_into_tracks(self, response_text):
+        """Parse Claude's response into structured life tracks"""
+        life_tracks = {
+            "timestamp": datetime.now().isoformat(),
+            "metadata": {
+                "simulation_time": self.simulation_time,
+                "simulation_age": self.simulation_age,
+                "tweet_count": self.tweet_count
+            },
+            "digest": {
+                "Professional": {"historical_summary": [], "projected": []},
+                "Personal": {"historical_summary": [], "projected": []},
+                "Family": {"historical_summary": [], "projected": []},
+                "Social": {"historical_summary": [], "projected": []},
+                "Reflections": {"historical_summary": [], "projected": []},
+                "$XVI": {"historical_summary": [], "projected": []}
+            }
+        }
+        
+        print("\nStarting parsing process...")
+        
+        current_track = None
+        current_section = None
+        
+        # Split into lines and process each line
+        lines = response_text.split('\n')
+        for line in lines:
+            line = line.strip()
+            if not line:
+                continue
+                
+            # Track detection (multiple formats)
+            if '**Professional:**' in line or 'Professional:' in line:
+                current_track = 'Professional'
+                print(f"\nFound track: {current_track}")
+            elif '**Personal:**' in line or 'Personal:' in line:
+                current_track = 'Personal'
+                print(f"\nFound track: {current_track}")
+            elif '**Family:**' in line or 'Family:' in line:
+                current_track = 'Family'
+                print(f"\nFound track: {current_track}")
+            elif '**Social:**' in line or 'Social:' in line:
+                current_track = 'Social'
+                print(f"\nFound track: {current_track}")
+            elif '**Reflections:**' in line or 'Reflections:' in line:
+                current_track = 'Reflections'
+                print(f"\nFound track: {current_track}")
+            elif '**$XVI:**' in line or '$XVI:' in line:
+                current_track = '$XVI'
+                print(f"\nFound track: {current_track}")
+            
+            # Section detection (multiple formats)
+            elif '*Historical Summary*' in line or 'Historical Summary:' in line:
+                current_section = "historical_summary"
+                print(f"Switched to historical_summary in {current_track}")
+            elif '*Projected Developments*' in line or 'Projected Developments' in line:
+                current_section = "projected"
+                print(f"Switched to projected in {current_track}")
+            
+            # Content processing (bullet points)
+            elif line.startswith('- ') and current_track and current_section:
+                content = line[2:].strip()  # Remove bullet
+                content = content.replace('**', '').replace('*', '').strip()  # Remove all markdown
+                
+                if content:
+                    print(f"Adding to {current_track}/{current_section}: {content[:50]}...")
+                    life_tracks['digest'][current_track][current_section].append(content)
+            
+            # Handle content continuation
+            elif current_track and current_section and line and not any(marker in line for marker in ['**', '*Historical', '*Projected', '---']):
+                if life_tracks['digest'][current_track][current_section]:
+                    last_item = life_tracks['digest'][current_track][current_section][-1]
+                    content = line.replace('**', '').replace('*', '').strip()
+                    life_tracks['digest'][current_track][current_section][-1] = f"{last_item} {content}"
+                    print(f"Appended continuation to {current_track}/{current_section}")
+        
+        # Print final counts
+        print("\nFinal content counts:")
+        for track in life_tracks['digest']:
+            hist_count = len(life_tracks['digest'][track]['historical_summary'])
+            proj_count = len(life_tracks['digest'][track]['projected'])
+            print(f"{track}: {hist_count} historical, {proj_count} projected")
+        
+        return life_tracks
+
+    def _initialize_empty_tracks(self):
+        """Initialize empty life tracks structure"""
+        return {
+            "timestamp": datetime.now().isoformat(),
+            "metadata": {
+                "simulation_time": self.simulation_time,
+                "simulation_age": self.simulation_age,
+                "tweet_count": self.tweet_count
+            },
+            "digest": {
+                "Professional": {"historical_summary": [], "projected": []},
+                "Personal": {"historical_summary": [], "projected": []},
+                "Family": {"historical_summary": [], "projected": []},
+                "Social": {"historical_summary": [], "projected": []},
+                "Reflections": {"historical_summary": [], "projected": []},
+                "$XVI": {"historical_summary": [], "projected": []}
+            }
+        }
+
+    def update_projections(self, tech_context):
+        """Update projected storylines based on tech context"""
+        try:
+            # Update Professional track based on mainstream tech
+            mainstream_tech = tech_context.get('mainstream_technologies', [])
+            self.life_tracks['digest']['Professional']['projected'] = [
+                f"Working with {tech['name']}: {tech['description']} (Status: {tech['status']})"
+                for tech in mainstream_tech
+            ]
+
+            # Update Reflections based on emerging tech
+            emerging_tech = tech_context.get('emerging_technologies', [])
+            self.life_tracks['digest']['Reflections']['projected'] = [
+                f"Considering implications of {tech['name']}: {tech['description']} "
+                f"(Est. Year: {tech['estimated_year']}, Probability: {tech['probability']})"
+                for tech in emerging_tech
+                if float(tech.get('probability', 0)) > 0.7
+            ]
             
         except Exception as e:
-            print(f"Error getting simulation state: {e}")
-            current_age = 22
-         
-        context = self._get_project_guidance(current_age)
+            print(f"Error updating projections: {e}")
+            traceback.print_exc()
 
-        context = "\nKEY CONTEXT:\n"
+    def _print_life_tracks(self, life_tracks):
+        """Print life tracks in a nicely formatted way"""
+        print("\n=== XAVIER'S LIFE DIGEST ===\n")
         
-        if is_first:
-            context += (
-                "Initial Context:\n"
-                "- Xavier returns from Japan with fresh tech perspectives\n"
-                "- Focused on positive tech change, with a growing curiosity about his place in a larger context\n\n"
+        for area, data in life_tracks.items():
+            print(f"\n=== {area.upper()} ===\n")
+            
+            # Print Historical Summary
+            print("Historical Summary:")
+            if data["history"]:
+                for item in data["history"]:
+                    print(f" {item['summary']}")
+            else:
+                print("No historical developments recorded")
+            
+            # Print Upcoming Developments
+            print("\nUpcoming Developments:")
+            if data["projected"]:
+                for item in data["projected"]:
+                    print(f"• {item['event']}")
+            else:
+                print("No upcoming developments projected")
+            
+            print("-" * 50)  # Separator line
+
+    def save_digest_to_history(self):
+        """Save current digest to digest_history.json"""
+        try:
+            # Try to load existing history
+            content, sha = self.github_ops.get_file_content('digest_history.json')
+            history = content if content is not None else []
+
+            # Create new digest entry with metadata
+            new_digest = {
+                "timestamp": datetime.now().isoformat(),
+                "metadata": {
+                    "simulation_time": self.simulation_time,
+                    "simulation_age": self.simulation_age,
+                    "tweet_count": self.tweet_count
+                },
+                "digest": {
+                    area: {
+                        "historical_summary": data.get("historical_summary", []),
+                        "projected": data.get("projected", [])
+                    }
+                    for area, data in self.life_tracks["digest"].items()
+                }
+            }
+            
+            # Append new digest
+            history.append(new_digest)
+            
+            # Save updated history
+            self.github_ops.update_file(
+                'digest_history.json',
+                json.dumps(history, indent=2),
+                f"Update digest history at simulation time {self.simulation_time}",
+                sha  # Pass None if file doesn't exist yet
             )
-        # Foundation development phase and life phase
-        context += (
-            f"Current Age: {current_age} (Story spans 22-72, years 2025-2075)\n"
-            f"Life Phase: {self._get_life_phase(current_age)}\n"
-            # f"Project Development: {self._get_project_guidance(current_age)}\n"
-            f"$XVI Foundation Phase: {self._get_foundation_phase(current_age)}\n\n"
-        )
+            
+            print(f"\nSuccessfully saved digest to history at simulation time {self.simulation_time}")
+            
+        except Exception as e:
+            print(f"Error saving digest to history: {e}")
+            traceback.print_exc()
 
-        # Xavier’s values
-        context += (
-            "Core Values & Mission:\n"
-            "- Positive impact through technology\n"
-            "- Curiosity about decentralized systems\n"
-            "- Understanding societal challenges\n"
-            "- Value of connections and community\n\n"
-        )
+    def get_digest(self):
+        """Get complete digest for all areas and save to history"""
+        try:
+            # Create complete digest structure
+            complete_digest = {
+                "timestamp": datetime.now().isoformat(),
+                "metadata": {
+                    "simulation_time": self.simulation_time,
+                    "simulation_age": self.simulation_age,
+                    "tweet_count": self.tweet_count
+                },
+                "digest": self.life_tracks["digest"]
+            }
+            
+            # Save to history
+            self.save_digest_to_history()
+            
+            return complete_digest
 
-        context += (
-            "Generate a digest with these sections:\n"
-            
-            "1. STORY SO FAR:\n"
-            "- Summarize events and character growth\n"
-            "- Track relationships and major life events\n"
-            "- Show how available tech influences Xavier's reflections\n\n"
-            
-            "2. KEY RELATIONSHIPS:\n"
-            "- Core Team:\n"
-            "  * Track co-founders and key team members\n"
-            "  * Note their roles and relationship evolution\n"
-            "- Professional Network:\n"
-            "  * Document recurring collaborators and mentors\n"
-            "  * Note significant project partnerships\n"
-            "- Personal Connections:\n"
-            "  * Track development of close friendships\n"
-            "  * Note family relationships and their evolution\n"
-            "- Community:\n"
-            "  * Document meaningful community interactions\n"
-            "  * Track recurring community members\n\n"
-            
-            "3. STORY DIRECTION:\n"
-            "- Drive story forward with opportunities aligned to core values\n"
-            "- Introduce new societal and personal impacts of technology\n"
-            "- Use recent events to reinforce discovery themes\n"
-            "- Introduce challenges that reinforce or test values\n"
-            "- Suggest potential relationship developments\n\n"
-
-            "4. NARRATIVE GUIDANCE:\n"
-            "- Explore transformations in Xavier's professional and personal growth\n"
-            "- Encourage tech community growth and relationship building\n"
-            "- Balance new connections with deepening existing relationships\n"
-            "- Consider age-appropriate relationship developments\n\n"
-        )
-        
-        context += "Balance character growth with Xavier’s journey, subtly drawing toward a legacy or transformation that feels true to his character’s growth and exploration of purpose."
-    
-        context += (
-            "RELATIONSHIP TRACKING:\n"
-            "1. PROFESSIONAL CIRCLE:\n"
-            "- Core Team Members:\n"
-            "  * Names, roles, and relationship development\n"
-            "  * Shared experiences and project collaborations\n"
-            "  * Personal dynamics and friendship evolution\n"
-            "  * Notable interests and cultural backgrounds\n"
-            
-            "2. MENTORS & ADVISORS:\n"
-            "  * Key influencers in Xavier's journey\n"
-            "  * Areas of expertise and guidance\n"
-            "  * Evolution of mentorship relationships\n"
-            "  * Cultural perspectives and life wisdom shared\n"
-            
-            "3. COMMUNITY CONNECTIONS:\n"
-            "  * Regular collaborators and friends\n"
-            "  * Local community members and their interests\n"
-            "  * Cross-cultural relationships and exchanges\n"
-            "  * Shared activities and non-tech interactions\n"
-            
-            "4. PERSONAL RELATIONSHIPS:\n"
-            "  * Close friends and their diverse backgrounds\n"
-            "  * Family relationships and dynamics\n"
-            "  * Partner/spouse development (when applicable)\n"
-            "  * Shared hobbies and cultural experiences\n\n"
-            
-            "For each relationship, track:\n"
-            "- First appearance and context\n"
-            "- Professional and personal interests\n"
-            "- Cultural background and perspective\n"
-            "- Shared experiences and activities\n"
-            "- Evolution of relationship over time\n"
-            "- Impact on Xavier's journey\n\n"
-        )
-        
-        return context
+        except Exception as e:
+            print(f"Error getting digest: {e}")
+            traceback.print_exc()
+            return None
 
     def _get_life_phase(self, age):
-        """Return the current life phase based on age and tech evolution"""
+        """Get life phase description based on age"""
         if age < 25:
             return (
-                "Early Career & Personal Growth (22-25)\n"
+                "Early Career & Education (18-25)\n"
                 "- Professional: Focus on practical tech skills and career building in blockchain and Web3\n"
                 "- Personal: Dating and exploring city life\n"
                 "- Family: Regular family conversations, sharing tech stories\n"
                 "- Social: Building first professional network\n"
                 "- Reflections: Curious about technology's immediate potential, with a practical outlook\n"
-                )
+                f"- $XVI: {'Becoming more aware' if age < 25 else 'governance structure, first major partnerships'}\n"
+            )
         elif age < 30:
             return (
                 "Growth & Foundation Building (25-30)\n"
@@ -388,6 +460,7 @@ class DigestGenerator:
                 "- Family: Staying connected through evolving tech\n"
                 "- Social: Expanding network across tech hubs\n"
                 "- Reflections: Begins exploring tech's social impact, still primarily focused on practical outcomes\n"
+                "- $XVI: Foundation Concept Development\n"
             )
         elif age < 35:
             return (
@@ -397,6 +470,7 @@ class DigestGenerator:
                 "- Family: Blending traditions with modern life\n"
                 "- Social: Building lasting communities\n"
                 "- Reflections: Exploring tech's social impact, while focused on practical outcomes\n"
+                "- $XVI: Foundation Formation\n"
             )
         elif age < 45:
             return (
@@ -406,6 +480,7 @@ class DigestGenerator:
                 "- Family: Creating tech-aware household\n"
                 "- Social: Building family-friendly networks\n"
                 "- Reflections: Early philosophical musings about tech’s future impact, blended with family and legacy\n"
+                "- $XVI: Foundation Establishment & Growth\n"
             )
         elif age < 60:
             return (
@@ -415,6 +490,7 @@ class DigestGenerator:
                 "- Family: Multi-generational connections\n"
                 "- Social: Mentoring next generation\n"
                 "- Reflections: Increasingly philosophical, considering ethical implications of tech on society\n"
+                "- $XVI: Foundation Scaling Impact & Global Expansion\n"
             )
         else:
             return (
@@ -424,83 +500,81 @@ class DigestGenerator:
                 "- Family: Bridging generations\n"
                 "- Social: Elder community voice\n"
                 "- Reflections: Deep philosophical insights on technology, humanity, and legacy\n"
+                "- $XVI: Foundation Legacy Building & Succession & Future\n"
             )
 
-    def _get_project_guidance(self, age):
-        """Return age-appropriate project guidance"""
-        if age < 25:
-            return (
-                "- Actively using and exploring AI coding assistants\n"
-                "- Learning to effectively pair-program with AI\n"
-                "- Sharing insights about AI-assisted development\n"
-                "- Balancing traditional skills with AI augmentation\n"
-                "- Focus on practical, achievable blockchain projects\n"
-                "- Start with existing tech solutions\n"
-                "- Show learning through implementation\n"
-                "- Build credibility through small wins\n"
-                "- Demonstrate growing technical expertise\n\n"
-            )
-        elif age < 35:
-            return (
-                "- Pioneering new AI-assisted development methodologies\n"
-                "- Leading teams in adopting advanced coding tools\n"
-                "- Contributing to AI coding assistant evolution\n"
-                "- Exploring novel applications of AI in development\n"
-                "- Balance practical solutions with innovative concepts\n"
-                "- Begin exploring novel applications\n"
-                "- Combine multiple technologies creatively\n"
-                "- Show increasing project scope and impact\n"
-                "- Build on established reputation\n\n"
-            )
-        else:
-            return (
-                "- Shaping the future of AI-assisted development\n"
-                "- Mentoring on effective human-AI collaboration\n"
-                "- Influencing AI coding tool development\n"
-                "- Bridging human creativity with AI capabilities\n"
-                "- Push boundaries with breakthrough concepts\n"
-                "- Lead technological paradigm shifts\n"
-                "- Create revolutionary solutions\n"
-                "- Shape future tech directions\n"
-                "- Influence industry standards\n\n"
-            )
-        
-    def _get_current_year(self):
-        """Calculate current year based on simulation state"""
+    def generate_digest(self, recent_tweets=None, recent_comments=None, simulation_time=None, simulation_age=None, tweet_count=None, latest_digest=None):
+        """Generate digest based on recent history and new developments"""
         try:
-            state, _ = self.github_ops.get_file_content("simulation_state.json")
-            if isinstance(state, dict):
-                return state.get("current_year", self.sim_start_year)
-            return self.sim_start_year
-        except Exception as e:
-            print(f"Error getting current year: {e}")
-            return self.sim_start_year
+            # Update metadata
+            if simulation_time is not None:
+                self.simulation_time = simulation_time
+            if simulation_age is not None:
+                self.simulation_age = simulation_age
+            if tweet_count is not None:
+                self.tweet_count = tweet_count
 
-    def _get_foundation_phase(self, age):
-        """Track $XVI Foundation development phase"""
-        if age < 23:
-            return "Pre creation"
-        elif age < 25:
-            return "Concept Development"
-        elif age < 28:
-            return "Initial Implementation"
-        elif age < 32:
-            return "Foundation Formation"
-        elif age < 40:
-            return "Growth & Establishment"
-        elif age < 50:
-            return "Scaling Impact"
-        elif age < 60:
-            return "Global Expansion"
-        elif age < 70:
-            return "Legacy Building"
-        else:
-            return "Succession & Future"
+            # Initialize life tracks from latest digest or create new
+            if latest_digest and isinstance(latest_digest, dict):
+                if 'digest' in latest_digest:
+                    self.life_tracks = latest_digest['digest']
+                else:
+                    self.life_tracks = self._initialize_empty_tracks()
+            else:
+                self.life_tracks = self._initialize_empty_tracks()
+
+            # Get tech data and build prompt
+            mature_tech, maturing_soon = self._get_tech_data()
+            prompt = self._build_prompt(mature_tech, maturing_soon, recent_tweets, recent_comments)
+            
+            print("self.SYSTEM_PROMPT", self.SYSTEM_PROMPT)
+            print(f"DEBUG: Prompt built: {prompt}")
+            # Get AI response
+            response = self.client.messages.create(
+                model="grok-beta",
+                max_tokens=2048,
+                system=self.SYSTEM_PROMPT,
+                messages=[{"role": "user", "content": prompt}],
+            )
+            print(f"DEBUG: AI response received: {response.content[0].text}")
+            # Parse response and update life tracks
+            updated_tracks = self._parse_summaries_into_tracks(response.content[0].text)
+            self.life_tracks = updated_tracks
+            print("DEBUG: Updated life tracks", self.life_tracks)
+            return self.get_digest()
+
+        except Exception as e:
+            print(f"Error generating digest: {type(e).__name__} - {str(e)}")
+            traceback.print_exc()
+            return None
 
 def main():
-    generator = DigestGenerator()
-    digest = generator.process_first_digest()
-    print(digest)
+    """Test function to print digest summaries"""
+    try:
+        # For testing, we'll pass in some sample values
+        simulation_time = 18.5
+        simulation_age = 25
+        tweet_count = 42
+        
+        # Initialize digest generator with metadata
+        digest_gen = DigestGenerator(simulation_time, simulation_age, tweet_count)
+        
+        # Generate first digest using tweets from XaviersSim.json
+        print("\nGenerating digest from XaviersSim.json...")
+        digest_gen.generate_digest()
+        
+        # Could also test subsequent digest generation with new tweets
+        # print("\nGenerating next digest...")
+        # digest_gen.generate_digest(
+        #     recent_tweets=["Some new tweet"],
+        #     recent_comments=["Some new comment"]
+        # )
+
+    except Exception as e:
+        print(f"Error generating digest: {type(e).__name__} - {str(e)}")
+        import traceback
+        print("\nFull traceback:")
+        traceback.print_exc()
 
 if __name__ == "__main__":
     main()

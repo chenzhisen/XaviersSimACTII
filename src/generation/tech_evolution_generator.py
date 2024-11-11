@@ -22,8 +22,6 @@ class TechEvolutionGenerator:
                 base_url=ai_config.base_url
             )
         
-        print(f"Using model: {ai_config.model}")
-        print(ai_config.api_key, ai_config.base_url)
         self.model = ai_config.model
         self.base_year = 2025
         self.end_year = 2080
@@ -32,14 +30,7 @@ class TechEvolutionGenerator:
             "last_updated": datetime.now().isoformat()
         }
 
-    def get_data_directory(self):
-        """Ensure data directory exists and return its path"""
-        data_dir = os.path.join(os.path.dirname(__file__), 'data')
-        if not os.path.exists(data_dir):
-            os.makedirs(data_dir)
-        return data_dir
-
-    def get_most_recent_evolution_file(self):
+    def get_tech_evolution(self):
         """Get the most recently saved tech evolution file"""
         try:
             github_ops = GithubOperations()
@@ -77,7 +68,7 @@ class TechEvolutionGenerator:
 
     def _load_tech_trees(self):
         """Load and combine saved and current tech trees"""
-        recent_file = self.get_most_recent_evolution_file()
+        recent_file = self.get_tech_evolution()
         saved_data = {}
         
         if recent_file:

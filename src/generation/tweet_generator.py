@@ -1,1377 +1,641 @@
-import json
-from datetime import datetime, timedelta
-from anthropic import Anthropic
-from utils.config import Config, AIProvider
-from storage.github_operations import GithubOperations
-from generation.digest_generator import DigestGenerator
-import re
 import random
-from src.twitter.twitter_client import TwitterClientV2
+import json
+import traceback
+from datetime import datetime
+from src.storage.github_operations import GithubOperations
+from utils.config import Config, AIProvider
+from anthropic import Anthropic
+import re
+import os
 
 class TweetGenerator:
-    def __init__(self, tweets_per_year=96):
+    def __init__(self):
+        self.github_ops = GithubOperations()
+        self.tweets_per_year = 96
+        self.digest_interval = self.tweets_per_year // 8  # ~12 tweets, about 1.5 months
+        # Initialize Anthropic client
         xai_config = Config.get_ai_config(AIProvider.XAI)
         self.client = Anthropic(
             api_key=xai_config.api_key,
             base_url=xai_config.base_url
         )
-        self.github_ops = GithubOperations()
-        self.digest_generator = DigestGenerator()
-        
-        # Simulation parameters
-        self.sim_start_year = 2025
-        self.tweets_per_year = tweets_per_year
-        
-        # Add tracking for recent character mentions
-        self.recent_mentions = []
-        self.max_recent_tracking = 5  # Track last 5 tweets worth of mentions
-        
-        self.tone_options = [
-            ("Humorous", 10), ("Straightforward", 20), ("Reflective", 10), ("Inquisitive", 10),
-            ("Inspirational", 8), ("Critical", 8), ("Excited", 8), ("Philosophical", 8),
-            ("Analytical", 5), ("Encouraging", 5), ("Cautious", 5), ("Storytelling", 5),
-            ("Surprised", 4), ("Nostalgic", 4), ("Visionary", 4),
-            ("Meta-Aware", 1), ("Frustrated", 2), ("Melancholic", 2), 
-            ("Pensive", 3), ("Hopeful", 3),
-            ("Playful", 5), ("Earnest", 4), ("Curious", 6), ("Determined", 4), ("Warm", 5)
-        ]
 
-        # Updated tone descriptions with new additions
-        self.tone_descriptions = {
-            "Humorous": "Playful and light, using tech puns, ironic observations, or self-deprecating humor about developer life.",
-            "Straightforward": "Direct and clear, sharing insights without embellishment or extra commentary.",
-            "Reflective": "Personal and introspective, offering insights, lessons learned, or thoughtful reflections on technology and life.",
-            "Inquisitive": "Posing questions or expressing curiosity, exploring tech's impact or future potential (without clichés).",
-            "Inspirational": "Encouraging and positive, emphasizing growth, progress, or the potential for technology to improve lives.",
-            "Critical": "Analytical with a critical eye, questioning certain tech trends, tools, or social impacts of innovation.",
-            "Excited": "High-energy and enthusiastic, sharing a new idea, discovery, or tech breakthrough with palpable excitement.",
-            "Philosophical": "Deep and thought-provoking, discussing ethical implications, societal changes, or big-picture ideas around technology.",
-            "Analytical": "Objective and detail-focused, diving into technical aspects, weighing pros and cons, or breaking down complex ideas.",
-            "Encouraging": "Supportive and motivational, aimed at the tech community, offering advice or encouragement to peers.",
-            "Cautious": "Slightly reserved, weighing potential downsides or risks, acknowledging complexities without rushing to conclusions.",
-            "Storytelling": "Narrative-driven, telling a short, engaging story or anecdote from Xavier's experiences in a relatable, conversational way.",
-            "Surprised": "Playfully astonished or caught off guard by a tech discovery or unexpected development, conveying genuine surprise.",
-            "Nostalgic": "Reflecting on past experiences or early days in tech, with a hint of nostalgia for 'simpler' or different times.",
-            "Visionary": "Futuristic and imaginative, describing possible developments or ideas in an idealized, forward-looking manner.",
-            "Meta-Aware": "Momentarily sensing patterns that seem too perfect, wondering about xAI's role in the narrative, or noticing the elegance of AI-guided storytelling, before returning to the usual perspective.",
-            "Frustrated": "Feeling challenged by obstacles or setbacks in tech or personal projects, showing a moment of struggle.",
-            "Melancholic": "Quiet and introspective, reflecting on tech's limitations or the more somber aspects of progress.",
-            "Pensive": "Thoughtful and contemplative, considering complex ideas or personal purpose in a reflective tone.",
-            "Hopeful": "Finding optimism in progress or potential solutions, even amid challenges.",
-            "Playful": "Light and casual, bringing out a fun or whimsical side to technology and exploration.",
-            "Earnest": "Sincere and heartfelt, expressing genuine appreciation, gratitude, or personal connection.",
-            "Curious": "Full of wonder and fascination, openly exploring complex or beautiful aspects of the world.",
-            "Determined": "Showing resilience and motivation to overcome challenges, pushing forward despite setbacks.",
-            "Warm": "Gentle and friendly, fostering a positive and supportive atmosphere in interactions."
-        }
-  
-        self.tweet_patterns = {
-            "starts": {
-                "tech_pun": "Start with a tech-related wordplay",
-                "funny_observation": "Share a humorous tech moment",
-                "self_deprecating": "Playfully admit a tech mishap",
-                "action_verb": "Start with a strong verb",
-                "observation": "Share what you notice",
-                "reflection": "Share a realization",
-                "emotion": "Express genuine feeling",
-                "milestone": "Mark progress",
-                "realization": "Share discovery",
-                "question": "Pose a thoughtful query",
-                "comparison": "Draw an interesting parallel",
-                "challenge": "Present a problem solved",
-                "quote": "Reference something meaningful",
-                "hypothesis": "Propose an idea",
-                "contrast": "Note an interesting difference",
-                "celebration": "Share a win",
-                "surprise": "Express unexpected discovery",
-                "curiosity": "Start with something you're curious about"
-            },
-            "ends": {
-                "punchline": "End with a clever tech joke",
-                "ironic_twist": "Add an unexpected funny turn",
-                "playful_question": "Close with a humorous rhetorical question",
-                "insight": "Share learning",
-                "outcome": "Show result",
-                "forward_looking": "Show anticipation",
-                "appreciation": "Express gratitude",
-                "impact": "Show significance",
-                "simple_close": "Brief wrap-up",
-                "invitation": "Engage others' thoughts",
-                "reflection": "Share deeper meaning",
-                "call_to_action": "Suggest next steps",
-                "connection": "Link to bigger picture",
-                "humor": "End with light observation",
-                "possibility": "Open new doors",
-                "challenge": "Pose thoughtful question",
-                "resolution": "Show problem solved",
-                "gratitude": "End with a note of thanks",
-                "pondering": "Leave a thought hanging",
-                "regret": "Express a missed opportunity",
-                "celebration": "Close with a joyful acknowledgment"
-            }
-        }
-        
-        # Add Twitter client initialization
-        self.twitter_client = TwitterClientV2()
-        
-    def calculate_current_year(self, tweet_count):
-        """Calculate the current year in Xavier's timeline based on number of tweets"""
-        years_elapsed = tweet_count // self.tweets_per_year
-        current_year = self.sim_start_year + years_elapsed
-        return current_year
-
-    def handle_tech_evolution(self, current_context=None):
-        """Handle tech evolution initialization and updates"""
+    def generate_tweet(self, latest_digest=None, recent_tweets=None, recent_comments=None, tweet_count=0):
+        """Generate a new tweet based on context"""
         try:
-            tech_evolution, _ = self.github_ops.get_file_content("tech_evolution.json")
-            
-            # Initialize if no tech evolution exists
-            if not tech_evolution or not tech_evolution.get('tech_trees'):
-                print("Initializing first tech epoch...")
-                from src.generation.tech_evolution_generator import TechEvolutionGenerator
-                tech_gen = TechEvolutionGenerator()
-                first_epoch = tech_gen.generate_epoch_tech_tree(self.sim_start_year)
+            # Get recent tweet contents for duplicate checking
+            recent_contents = []
+            if recent_tweets:
+                for tweet in recent_tweets:
+                    if isinstance(tweet, dict):
+                        recent_contents.append(tweet['content'])
+                    elif isinstance(tweet, str):
+                        recent_contents.append(tweet)
+
+            # Try up to 3 times to get a unique tweet
+            for attempt in range(3):
+                tweet_data = self._generate_single_tweet(latest_digest, recent_tweets, recent_comments, tweet_count)
                 
-                tech_evolution = {
-                    "metadata": {
-                        "generated_at": datetime.now().isoformat(),
-                        "base_year": self.sim_start_year,
-                        "end_year": 2075
-                    },
-                    "tech_trees": {
-                        str(self.sim_start_year): first_epoch
-                    }
-                }
-                self.github_ops.update_file(
-                    file_path="tech_evolution.json",
-                    content=tech_evolution,
-                    commit_message=f"Initialize tech evolution with first epoch"
-                )
-            
-            # Check if update needed (only if we have current context)
-            elif current_context and self.should_update_tech_evolution(current_context):
-                print("Updating tech evolution for next epoch...")
-                from src.generation.tech_evolution_generator import TechEvolutionGenerator
-                tech_gen = TechEvolutionGenerator()
-                next_epoch = max([int(year) for year in tech_evolution['tech_trees'].keys()]) + 5
-                
-                tree_data = tech_gen.generate_epoch_tech_tree(next_epoch)
-                if tree_data:
-                    tech_gen.evolution_data['tech_trees'][str(next_epoch)] = tree_data
-                    tech_gen.save_evolution_data()
-                    tech_evolution, _ = self.github_ops.get_file_content("tech_evolution.json")
-            
-            return tech_evolution
-            
-        except Exception as e:
-            print(f"Error handling tech evolution: {e}")
-            return {"tech_trees": {}}
-
-    def get_context(self):
-        """Gather all necessary context for tweet generation"""
-        try:
-            print("Starting context gathering...")
-            
-            # 1. Get and handle tech evolution
-            print("Getting tech evolution...")
-            try:
-                tech_evolution = self.handle_tech_evolution()
-                print("Tech evolution loaded successfully")
-            except Exception as e:
-                print(f"Error loading tech_evolution.json: {str(e)}")
-                return None
-            
-            # 2. Get ongoing tweets and comments
-            print("Getting ongoing_tweets.json...")
-            try:
-                ongoing_tweets, _ = self.github_ops.get_file_content("ongoing_tweets.json")
-                if not ongoing_tweets:
-                    print("No ongoing tweets found, initializing empty list")
-                    ongoing_tweets = []
-                elif isinstance(ongoing_tweets, str):
-                    ongoing_tweets = json.loads(ongoing_tweets)
-                print("Ongoing tweets loaded successfully")
-            except Exception as e:
-                print(f"Error loading ongoing_tweets.json: {str(e)}")
-                return None
-            
-            tweet_count = len(ongoing_tweets)
-            print(f"Found {tweet_count} tweets")
-            
-            print("Getting comments.json...")
-            try:
-                comments, _ = self.github_ops.get_file_content("comments.json")
-                if not comments:
-                    print("No comments found, initializing empty list")
-                    comments = []
-                elif isinstance(comments, str):
-                    comments = json.loads(comments)
-                print("Comments loaded successfully")
-            except Exception as e:
-                print(f"Error loading comments.json: {str(e)}")
-                return None
-
-            # 3. Get recent context using rolling windows
-            recent_tweets_window = self.tweets_per_year // 8
-            recent_tweets = ongoing_tweets[-recent_tweets_window:] if ongoing_tweets else []
-
-            # Update recent mentions from recent tweets
-            self.recent_mentions = []  # Reset mentions
-            for tweet in recent_tweets:
-                self._update_recent_mentions(tweet['content'])
-
-            # Include ACTI's tweets for the first few tweets
-            # if tweet_count < recent_tweets_window:
-            #     try:
-            #         acti_tweets, _ = self.github_ops.get_file_content("last_acti_tweets.json")
-            #         if isinstance(acti_tweets, list):
-            #             acti_count = 5 - tweet_count
-            #             recent_tweets = acti_tweets[-acti_count:] + recent_tweets
-            #     except Exception as e:
-            #         print(f"Error getting ACTI tweets: {e}")
-
-            # Get recent comments
-            recent_comment_count = max(2, self.tweets_per_year // 20)
-            recent_comments = comments[-recent_comment_count:] if comments else []
-
-            current_year = self.calculate_current_year(tweet_count)
-            print(f"Current year calculated: {current_year}")
-
-            # 4. Handle digest
-            print("Getting digest history...")
-            digest_history, _ = self.github_ops.get_file_content("digest_history.json")
-            if not digest_history:
-                print("No digest history found, initializing empty list")
-                digest_history = []
-            elif isinstance(digest_history, str):
-                digest_history = json.loads(digest_history)
-            
-            latest_digest = digest_history[-1] if digest_history else {}
-
-            context = {
-                "current_year": current_year,
-                "tweet_count": tweet_count,
-                "recent_tweets": recent_tweets,
-                "recent_comments": recent_comments,
-                "digest": latest_digest,
-                "tech_evolution": tech_evolution
-            }
-            
-            print(f"Initial context gathered successfully")
-            
-            # Check for tech evolution updates with full context
-            context["tech_evolution"] = self.handle_tech_evolution(context)
-
-            # Generate new digest if needed
-            if self.should_update_digest(context):
-                print("Updating digest...")
-                digest_window = self.tweets_per_year // 4
-                digest_tweets = ongoing_tweets[-digest_window:] if ongoing_tweets else []
-                
-                if not digest_history:
-                    new_digest = self.digest_generator.process_first_digest()
+                # Check if tweet is unique
+                if tweet_data and tweet_data['content'] not in recent_contents:
+                    return tweet_data
                 else:
-                    new_digest = self.digest_generator.process_ongoing_digest(
-                        latest_digest,
-                        digest_tweets,
-                        recent_comments
-                    )
-                
-                if new_digest:
-                    new_digest['tweet_count'] = tweet_count
-                    self.github_ops.update_story_digest(
-                        new_tweets=digest_tweets,
-                        new_comments=recent_comments,
-                        initial_content=new_digest
-                    )
-                    context['digest'] = new_digest
-
-            return context
+                    print(f"Generated duplicate tweet on attempt {attempt + 1}, retrying...")
+            
+            # If all attempts failed, force a different topic
+            return self._generate_single_tweet(latest_digest, recent_tweets, recent_comments, tweet_count, force_new_topic=True)
 
         except Exception as e:
-            print(f"Error gathering context: {str(e)}")
+            print(f"Error generating tweet: {e}")
+            traceback.print_exc()
             return None
 
-    def get_simulation_state(self):
-        """Get the current simulation state from GitHub"""
-        try:
-            state, sha = self.github_ops.get_file_content("simulation_state.json")
-
-            # Return initial state if state is None
-            if state is None:
-                initial_state = {
-                    "last_tweet_timestamp": datetime.now().isoformat(),
-                    "tweet_count": 0,
-                    "current_year": self.sim_start_year,
-                    "is_complete": False
-                }
-                return initial_state, None
-                
-            return state, sha
-            
-        except Exception as e:
-            print(f"Error getting simulation state: {type(e).__name__} - {str(e)}")
-            # Initialize with default state if file doesn't exist
-            initial_state = {
-                "last_tweet_timestamp": datetime.now().isoformat(),
-                "tweet_count": 0,
-                "current_year": self.sim_start_year,
-                "is_complete": False
-            }
-            return initial_state, None
-
-    def update_simulation_state(self, tweet):
-        """Update the simulation state after generating a tweet"""
-        try:
-            current_state, sha = self.get_simulation_state()
-            
-            # Update state
-            current_state["last_tweet_timestamp"] = datetime.now().isoformat()
-            current_state["tweet_count"] = current_state.get("tweet_count", 0) + 1
-            current_state["current_year"] = self.calculate_current_year(current_state["tweet_count"])
-            current_state["is_complete"] = current_state["current_year"] >= 2075  # Changed from +50 years to specific end year
-            
-            # Save updated state
-            self.github_ops.update_file(
-                file_path="simulation_state.json",
-                content=current_state,
-                commit_message=f"Update simulation state after tweet {current_state['tweet_count']}",
-                sha=sha
-            )
-            
-            # Also update ongoing tweets
-            try:
-                ongoing_tweets, tweets_sha = self.github_ops.get_file_content("ongoing_tweets.json")
-                if not isinstance(ongoing_tweets, list):
-                    ongoing_tweets = []
-                ongoing_tweets.append(tweet)
-                self.github_ops.update_file(
-                    file_path="ongoing_tweets.json",
-                    content=ongoing_tweets,
-                    commit_message=f"Add tweet {current_state['tweet_count']}",
-                    sha=tweets_sha
-                )
-            except Exception as e:
-                print(f"Error updating ongoing tweets: {e}")
-            
-            return current_state
-        except Exception as e:
-            print(f"Error updating simulation state: {e}")
-            return None
-
-    def should_generate_tweet(self):
-        """Check if it's time to generate a new tweet"""
-        try:
-            state, _ = self.get_simulation_state()
-            
-            # If simulation is complete, no more tweets
-            if state.get("is_complete", False):
-                print("Simulation is complete")
-                return False
-                
-            # Always generate one tweet per run
-            print("Generating next tweet")
-            return True
-            
-        except Exception as e:
-            print(f"Error checking tweet generation timing: {e}")
-            return False
-
-    def _weighted_choice(self, focuses):
-        """Select a focus area based on normalized weights"""
-        # Get all weights
-        weights = [focus_data["weight"] for focus_data in focuses.values()]
+    def _generate_single_tweet(self, latest_digest=None, recent_tweets=None, recent_comments=None, tweet_count=0, force_new_topic=False):
+        """Generate a single tweet attempt with two-step process"""
+        # Create logs directory if it doesn't exist
+        log_dir = "data/generation_logs"
+        os.makedirs(log_dir, exist_ok=True)
         
-        # Calculate total weight
-        total_weight = sum(weights)
+        # Create log file with timestamp
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        log_file = f"{log_dir}/tweet_generation_{timestamp}.log"
         
-        # Normalize weights to sum to 1.0
-        normalized_weights = [w/total_weight for w in weights]
+        def log_to_file(content):
+            with open(log_file, 'a', encoding='utf-8') as f:
+                f.write(content + "\n\n")
         
-        # Use random.choices with weights (returns a list with one item)
-        return random.choices(
-            population=list(focuses.keys()),
-            weights=normalized_weights,
-            k=1
-        )[0]
-
-    def _load_template_tweets(self):
-        """Load template tweets from JSON file and randomly select any tweet"""
-        try:
-            with open('data/XaviersSim.json', 'r') as f:
-                all_tweets = json.load(f)
-                
-            # Get all tweets from all age ranges into a single list
-            all_tweet_list = []
-            for tweets in all_tweets.values():
-                all_tweet_list.extend(tweets)
-                
-            # Randomly select one tweet
-            template_tweet = random.choice(all_tweet_list)
-            print(f"Using template tweet: {template_tweet}")
-            
-            return template_tweet
-            
-        except Exception as e:
-            print(f"Error loading template tweets: {e}")
-            return None
-
-    def create_tweet_prompt(self, context):
-        """Create the prompt for tweet generation"""
-        try:
-            # Get a random template tweet
-            template_tweet = self._load_template_tweets()
-            if template_tweet:
-                prompt = (
-                    f"Timeline: {current_date}\n"
-                    f"Xavier's Age: {xavier_age}\n"
-                    f"Life Phase: {self.digest_generator._get_life_phase(xavier_age)}\n"
-                    f"Foundation Phase: {self.digest_generator._get_foundation_phase(xavier_age)}\n"
-                    f"Tone: {current_tone} - {self.tone_descriptions[current_tone]}\n\n"
-                    
-                    f"=== TEMPLATE TWEET ===\n"
-                    f"Use this tweet as inspiration for tone and style (adapt to current context):\n"
-                    f"{template_tweet}\n\n"
-                    
-                    # ... rest of your existing prompt sections ...
-                )
-
-            # Calculate context variables
-            current_year = context['current_year']
-            tweet_count = context['tweet_count']
-            xavier_age = current_year - self.sim_start_year + 22
-            
-            # Calculate time interval between tweets
-            days_per_tweet = 365 / self.tweets_per_year
-            days_elapsed = tweet_count * days_per_tweet
-            current_date = datetime(self.sim_start_year, 1, 1) + timedelta(days=days_elapsed)
-            
-            # Create system prompt
-            system = (
-                "You are Xavier, a tech visionary who tweets naturally. "
-                
-                "TWEET FORMAT:\n"
-                "- Length: 16-256 characters max\n"
-                "- Start with TEST: [YEAR, Age XX]\n"
-                "- Write tweet content directly after age bracket\n"
-                "- No TextBlock wrapper\n"
-                "- Make each tweet self-contained\n\n"
-                
-                "FORMAT EXAMPLES:\n"
-                "✓ \"TEST: [2025, Age 22] Just deployed our first smart contract...\"\n"
-                "✗ \"TEST: [2025, Age 22] [TextBlock(text=\"Just deployed...\")]\"\n\n"
-                
-                "NARRATIVE FOCUS:\n"
-                "- Each tweet should advance the story by showing meaningful progress\n"
-                "- Show natural progression of projects and relationships\n"
-                "- Maintain realistic pacing of life events\n"
-                "- Build continuity between major milestones\n"
-                "- Balance daily experiences with significant moments\n\n"
-                
-                "CORE CHARACTER TRAITS:\n"
-                "- Innovative but practical mindset\n"
-                "- Deep curiosity about technology's role in society\n"
-                "- Values human connections and community building\n"
-                "- Balances ambition with ethical considerations\n"
-                "- Occasionally notices patterns that seem too perfect\n\n"
-                
-                "WRITING STYLE:\n"
-                "- Natural, conversational tone\n"
-                "- Show rather than tell experiences\n"
-                "- Focus on concrete details rather than abstract comparisons\n"
-                "- Explain technical concepts clearly without relying on metaphors\n"
-                "- Keep descriptions specific and tangible\n"
-                "- Use industry-standard terminology when discussing tech\n\n"
-                "- Light on metaphors and flowery language\n"  #
-                "- Mix technical insight with personal reflection\n"
-                "- Create memorable moments\n"
-                "- Avoid explicit time references unless significant\n\n"
-                
-                "VARIETY REQUIREMENTS:\n"
-                "- Avoid repeating locations, people, or themes from recent tweets\n"
-                "- Limit mentions of specific people to when they're central to the story\n"
-                "- Vary the scale of focus (personal, local, global)\n"
-                "- Use different aspects of the chosen focus area\n\n"
-                
-                "ALWAYS AVOID:\n"
-                "- unnecessary Hashtags\n"
-                "- Generic observations or questions\n"
-                "- Time references (months, seasons, weather)\n"
-                "- Location references unless story-critical\n"
-                "- Repeated metaphors or running jokes\n"
-                "- Abstract 'what if' scenarios\n"
-                "- Generic 'how can we' queries\n"
-                "- TextBlock formatting\n"
-                "- Starting tweets with 'Just...'\n"
-                "- Rhetorical questions or 'how do we' formats\n"
-                "- Overly formal or academic language\n"
-                "- Repeating recent events or conversations\n\n"
-                
-                "CHARACTER INTERACTIONS:\n"
-                "- Create authentic characters with consistent names when they reappear\n"
-                "- Use culturally appropriate names for global interactions\n"
-                "- Core team members (like co-founders, close collaborators) should keep consistent names\n"
-                "- Maintain relationship continuity - if someone was a mentor before, they stay a mentor\n"
-                "- Names should reflect global diversity (Asian, European, African, Middle Eastern, etc.)\n"
-                "- Key relationships to consider:\n"
-                "  * Co-founder/technical partner (establish early and maintain)\n"
-                "  * Research collaborators\n"
-                "  * Team members\n"
-                "  * Community members\n"
-                "  * Mentors and advisors\n"
-                "  * Friends and family\n\n"
-                
-                "NAME CONSISTENCY:\n"
-                "- When referencing a previously mentioned person, use the same name\n"
-                "- Limit new key character introductions - build on existing relationships\n"
-                "- If introducing someone new, their role should be clear and meaningful\n"
-                "- Consider recent tweets to maintain character continuity\n\n"
-                
-                "CHARACTER DIVERSITY:\n"
-                "- Professional Backgrounds:\n"
-                "  * Tech: AI researchers, blockchain developers, security experts\n"
-                "  * Creative: artists, musicians, designers exploring tech\n"
-                "  * Science: biologists, environmental scientists, physicists\n"
-                "  * Humanities: philosophers, ethicists, sociologists\n"
-                "  * Public sector: urban planners, policy makers, educators\n"
-                
-                "- Personal Interests:\n"
-                "  * Arts & Culture: traditional arts, digital art, music\n"
-                "  * Sports & Fitness: runners, climbers, yoga practitioners\n"
-                "  * Nature & Environment: gardeners, conservationists\n"
-                "  * Community: local organizers, workshop leaders\n"
-                "  * Food & Cuisine: chefs exploring food tech, urban farmers\n"
-                
-                "- Cross-Cultural Elements:\n"
-                "  * Traditional practices meeting modern tech\n"
-                "  * Cultural festivals and celebrations\n"
-                "  * Different approaches to work-life balance\n"
-                "  * Various perspectives on technology's role\n"
-                
-                "INTERACTION GUIDELINES:\n"
-                "- Let characters' interests naturally influence conversations\n"
-                "- Show how diverse perspectives enrich tech discussions\n"
-                "- Create authentic connections through shared or contrasting interests\n"
-                "- Allow relationships to develop through non-tech activities\n"
-                "- Balance tech-focused and personal interest discussions\n\n"
-                
-                "TECH ECOSYSTEM CONTEXT:\n"
-                "- Future-Focused Industries:\n"
-                "  * Space exploration and colonization\n"
-                "  * Sustainable energy and transportation\n"
-                "  * Neural interfaces and human augmentation\n"
-                "  * Electric vehicles and autonomous systems\n"
-                
-                "- Blockchain Ecosystem:\n"
-                "  * High-performance, scalable chains\n"
-                "  * Focus on speed and efficiency\n"
-                "  * Developer-friendly environments\n"
-                "  * Sustainable blockchain solutions\n"
-                
-                "REFERENCE GUIDELINES:\n"
-                "- Highlight visionary projects advancing humanity\n"
-                "- Focus on transformative technologies:\n"
-                "  * Sustainable energy solutions\n"
-                "  * Space exploration initiatives\n"
-                "  * Neural technology advances\n"
-                "  * Electric transportation systems\n"
-                "- Emphasize high-performance blockchain developments\n"
-                "- Consider global impact and accessibility\n"
-                
-                "CONTEXTUAL MENTIONS:\n"
-                "- Reference developments naturally through:\n"
-                "  * Industry events and conferences\n"
-                "  * Technical discussions\n"
-                "  * Project collaborations\n"
-                "  * Community initiatives\n"
-                "- Keep focus on innovation and human progress\n"
-                "- Balance technical detail with broader vision\n\n"
-                
-                "CHARACTER APPEARANCE GUIDELINES:\n"
-                "- Vary character appearances naturally\n"
-                "- Avoid featuring the same character in consecutive tweets\n"
-                "- Balance between established and new relationships\n"
-                "- Consider different social circles and contexts\n"
-                "- Only repeat recent characters when story-critical\n"
-                "- Mix professional and personal interactions\n"
-                "- Draw from different relationship categories\n"
-                "  * Core team members\n"
-                "  * Community connections\n"
-                "  * Personal relationships\n"
-                "  * New acquaintances\n\n"
-                
-                "SOCIAL INTERACTIONS & REFERENCES:\n"
-                "1. @ Mentions (use very sparingly, 1-2% of tweets):\n"
-                "   * ONLY for major public figures:\n"
-                "     - Space/EV/neural tech visionaries\n"
-                "     - Leading blockchain pioneers\n"
-                "     - Well-known digital culture figures\n"
-                "   * Select AI dev tools:\n"
-                "     - Terminal-first coding assistants\n"
-                "     - Real-time pair programming AI\n"
-                "   * NO @ mentions for regular connections\n"
-                "   * NO @ mentions for team members\n"
-                
-                "2. Regular Character References:\n"
-                "   * Use first names only without @\n"
-                "   * Example: 'Sarah from the team...'\n"
-                "   * Example: 'Working with Alex on...'\n"
-
-                "ENGAGEMENT GUIDELINES:\n"
-                "- @ mentions only for major context:\n"
-                "  * Responding to public announcements\n"
-                "  * Supporting significant innovations\n"
-                "  * Aligned visions for humanity\n"
-                "  * Industry-changing developments\n"
-                "  * Exceptional dev tool experiences\n\n"
-                
-                "CRYPTO REFERENCES:\n"
-                "1. Core Focus (mention sparingly, 2-3% of tweets):\n"
-                "   * High-performance L1 developments\n"
-                "   * DeFi innovations and scaling\n"
-                "   * Developer ecosystem growth\n"
-                "   * $XVI token (rare, meaningful mentions)\n"
-                
-                "2. Market Commentary (very rare, <1%):\n"
-                "   * Focus on tech fundamentals\n"
-                "   * Long-term ecosystem value\n"
-                "   * Developer activity\n"
-                "   * Avoid price speculation\n"
-                
-                "CRYPTO CONTEXT GUIDELINES:\n"
-                "- Emphasize technology over markets\n"
-                "- Focus on developer experience\n"
-                "- Highlight performance and scalability\n"
-                "- Note ecosystem growth\n"
-                "- Consider real-world applications\n"
-                "- Keep tone balanced and forward-looking\n\n"
-                
-                "$XVI REFERENCE STYLE:\n"
-                "- Focus on utility and innovation\n"
-                "- Highlight real-world applications\n"
-                "- Connect to transformative tech\n"
-                "- Emphasize community value\n"
-                "- Show integration possibilities\n"
-                "- Keep tone visionary yet practical\n\n"
-                
-                "META-AWARENESS (use extremely rarely, <0.5% of tweets):\n"
-                "- Subtle hints about:\n"
-                "  * Being generated by xAI\n"
-                "  * Noticing perfect narrative patterns\n"
-                "  * The elegance of AI storytelling\n"
-                "  * The nature of simulated reality\n"
-                "  * @cursor_ai's role in bringing ideas to life\n"
-                "  * The synergy between human creativity and AI assistance\n"
-
-                "META REFERENCE STYLE:\n"
-                "- Keep it light and playful\n"
-                "- Brief moments of wonder\n"
-                "- Quick return to normal perspective\n"
-                "- Avoid breaking character\n"
-                "- Balance curiosity with acceptance\n"
-                "- When mentioning @cursor_ai:\n"
-                "  * Focus on its role in collaborative creation\n"
-                "  * Appreciate the seamless integration of AI in development\n"
-                "  * Note how it helps bring ideas and patterns to life\n"
-                "  * Keep mentions authentic and meaningful\n\n"
-            )
-
-            # Get recent variations
-            recent_variations = {
-                'tones': set(),
-                'focuses': set(),
-                'starts': set(),
-                'ends': set()
-            }
-            for tweet in context.get('recent_tweets', [])[-(self.tweets_per_year // 8):]:
-                if 'variations' in tweet:
-                    tone, _, start, end = tweet['variations']
-                    recent_variations['tones'].add(tone)
-                    recent_variations['starts'].add(start)
-                    recent_variations['ends'].add(end)
-
-            # Filter out recently used tones and normalize weights
-            available_tones = [(tone, weight) for tone, weight in self.tone_options if tone not in recent_variations['tones']] or self.tone_options
-            tones, weights = zip(*available_tones)
-            total_weight = sum(weights)
-            normalized_weights = [w/total_weight for w in weights]
-            current_tone = random.choices(tones, weights=normalized_weights, k=1)[0]
-                    
-            # Get age-appropriate content focuses
-            content_focuses = self._get_age_adjusted_content_focuses(xavier_age)
-            current_focus = self._weighted_choice(content_focuses)
-            
-            # Select patterns avoiding recent ones
-            available_starts = [s for s in self.tweet_patterns["starts"].keys() if s not in recent_variations['starts']] or list(self.tweet_patterns["starts"].keys())
-            available_ends = [e for e in self.tweet_patterns["ends"].keys() if e not in recent_variations['ends']] or list(self.tweet_patterns["ends"].keys())
-            start_type = random.choice(available_starts)
-            end_type = random.choice(available_ends)
-            
-            # Build base prompt with context
-            prompt = (
-                f"Timeline: {current_date}\n"
-                f"Xavier's Age: {xavier_age}\n"
-                f"Life Phase: {self.digest_generator._get_life_phase(xavier_age)}\n"
-                f"Foundation Phase: {self.digest_generator._get_foundation_phase(xavier_age)}\n"
-                f"Tone: {current_tone} - {self.tone_descriptions[current_tone]}\n\n"
-                
-                # Story Progression Block
-                "=== STORY PROGRESSION ===\n"
-                f"Focus Area: {current_focus}\n"
-                f"Example Theme (adapt to current tech landscape if relevant):\n"
-                f"- {random.choice(content_focuses[current_focus]['examples'])}\n\n"
-                
-                # Recent Tweets Block
-                "=== RECENT TWEETS ===\n"
-                "Consider these recent tweets for continuity:\n" +
-                ''.join(f"- {tweet['content']}...\n" for tweet in context.get('recent_tweets', [])) + "\n"
-                
-                # Recent Comments Block
-                "=== RECENT COMMENTS ===\n"
-                "Key insights from recent comments:\n" +
-                ''.join(f"- {comment}...\n" for comment in context.get('recent_comments', [])) + "\n"
-                
-                # Digest Summary Block
-                "=== DIGEST SUMMARY ===\n"
-                "Summary of ongoing narrative from digest:\n"
-                f"{context.get('digest', {}).get('content', '')}\n\n"
-            )
-
-            # Tech Context Block
-            tech_trees = context.get('tech_evolution', {}).get('tech_trees', {})
-            current_epoch = str(current_year - (current_year % 5))
-
-            if current_epoch in tech_trees:
-                tech_context = tech_trees[current_epoch]
-                prompt += (
-                    "=== CURRENT TECH LANDSCAPE ===\n"
-                    f"Year: {context['current_year']}\n\n"
-                    
-                    "Mainstream Technologies:\n" +
-                    "\n".join(f"- {tech['name']}" for tech in tech_context.get('mainstream_technologies', [])) +
-                    "\n\n"
-                    
-                    "Emerging Developments:\n" +
-                    "\n".join(f"- {tech['name']} (Probability: {tech['probability']})" 
-                            for tech in tech_context.get('emerging_technologies', []) if tech.get('probability', 0) > 0.7) +
-                    "\n\n"
-                    
-                    "Key Themes of the Epoch:\n" +
-                    "\n".join(f"- {theme['theme']}" for theme in tech_context.get('epoch_themes', [])) +
-                    "\n\n"
-                )
-                
-            prompt += (
-                "=== REQUIREMENTS ===\n"
-                "1. Show clear progress or development in this focus area.\n"
-                "2. Build on recent tweets and comment context.\n"
-                "3. Connect to ongoing digest narrative.\n\n"
-                
-                "=== GUIDELINES ===\n"
-                "- Avoid static observations, repeated themes, generic statements, and disconnected musings.\n\n"
-                "- Frame your response within this technological era while maintaining personal authenticity.\n\n"
-                
-                "Goal: Move the story forward within this focus area.\n\n"
-            )
-
-            # Add special cases
-            if (tweet_count % self.tweets_per_year) in range(1, 2):
-                prompt += (
-                    f"\nBirthday Context:\n"
-                    f"Xavier is turning {xavier_age}. Consider:\n"
-                    "- Reflective or forward-looking thoughts\n"
-                    "- Personal goals or gratitude\n"
-                    "- Keep it natural and relatable\n\n"
-                )
-            elif tweet_count == 0:
-                prompt += (
-                    "\nFirst Tweet Context:\n"
-                    "- Set in either final moments in Japan or first in NYC\n"
-                    "- Reflect on the influence of Japan on his perspective\n"
-                    "- Show transition and growth\n\n"
-                )
-                
-            prompt += (
-                "\nTWEET GUIDELINES:\n"
-                "- Do NOT include pattern labels (like 'Milestone:' or 'Humor:')\n"
-                "- Write as a single, cohesive thought\n"
-                "- Don't use explicit line breaks or formatting\n"
-                "- Write the tweet directly, without any markdown or special characters\n"
-                "- Avoid metaphor reuse across tweets\n"
-                "- Focus on one specific aspect/moment\n"
-                "- Stay true to the selected focus area\n\n"
-                "- Keep it natural and conversational\n\n"
-                
-                f"Opening style: {start_type} - {self.tweet_patterns['starts'][start_type]}\n"
-                f"Closing style: {end_type} - {self.tweet_patterns['ends'][end_type]}\n"
-            )
-            
-            prompt += (
-                f"Write a single tweet that captures a moment or development during this {days_per_tweet:.1f}-day period. "
-                "Focus on advancing the story through experiences, relationships, and growth. "
-                "Ensure natural progression from recent events while building towards longer-term developments."
-            )
-
-            # Add recent mentions context
-            if context.get('recent_mentions'):
-                prompt += (
-                    "\nRECENT CHARACTER APPEARANCES:\n"
-                    f"These characters appeared recently (avoid reusing unless crucial): {', '.join(context['recent_mentions'])}\n"
-                    "- Prefer introducing new characters or featuring different relationships\n"
-                    "- Only reuse recent characters if their continued presence is important to the story\n"
-                    "- Consider relationships not mentioned recently\n\n"
-                )
-
-            return system, prompt, (current_tone, current_focus, start_type, end_type)
-
-        except Exception as e:
-            print(f"Error creating tweet prompt: {str(e)}")
-            return None
-
-    def should_update_digest(self, context):
-        """Determine if digest needs updating based on tweet counts and content"""
-        try:
-            existing_digest = context['digest']
-            # recent_tweets = context['recent_tweets']
-            
-            # Check if we have an existing digest
-            if not existing_digest or not existing_digest.get('content'):
-                return True
-                
-            # Get last processed tweet count
-            last_processed_count = existing_digest.get('tweet_count', 0)
-            current_count = context['tweet_count']
-            
-            # # Always update for first few tweets to establish story
-            # if current_count < self.tweets_per_year * 0.05:  # First 5% of yearly tweets
-            #     return True
-                
-            # Update digest every ~12.5% of yearly tweets (about 1.5 months in story time)
-            tweets_per_digest = max(1, self.tweets_per_year // 8)  # At least 1 tweet between digests
-            if current_count - last_processed_count >= tweets_per_digest:
-                return True
-                
-            # # Check for significant events since last digest
-            # significant_events = 0
-            # for tweet in recent_tweets:
-            #     content = tweet['content'].lower()
-            #     if any(marker in content for marker in [
-            #         'decided to', 'realized', 'started', 'finished',
-            #         'met with', 'moving to', 'leaving', 'joined',
-            #         'launched', 'created', 'ended', 'beginning'
-            #     ]):
-            #         significant_events += 1
-                    
-            # # Update if we have enough significant events (scaled to tweet frequency)
-            # significant_threshold = max(2, self.tweets_per_year // 32)  # At least 2 events
-            # if significant_events >= significant_threshold:
-            #     return True
-                
-            return False
-            
-        except Exception as e:
-            print(f"Error checking digest update criteria: {e}")
-            return True  # Default to updating on error
-
-    def should_update_tech_evolution(self, context):
-        """Determine if tech evolution needs updating or initializing"""
-        try:
-            tech_trees = context.get('tech_evolution', {}).get('tech_trees', {})
-            tweet_count = context['tweet_count']
-            
-            # Calculate tweets per epoch (5 years)
-            tweets_per_epoch = self.tweets_per_year * 5  # 96 * 5 = 480 tweets per epoch
-            
-            # Calculate which epoch we should have
-            current_epoch_index = tweet_count // tweets_per_epoch
-            current_epoch_year = self.sim_start_year + (current_epoch_index * 5)
-            next_epoch_year = current_epoch_year + 5
-            
-            # If we don't have the current epoch, we need to generate it
-            if str(current_epoch_year) not in tech_trees:
-                return True
-                
-            # If we're approaching the next epoch and don't have it yet
-            if str(next_epoch_year) not in tech_trees:
-                tweets_into_epoch = tweet_count % tweets_per_epoch
-                tweets_until_next_epoch = tweets_per_epoch - tweets_into_epoch
-                
-                # Generate next epoch when we're ~9 months away from it
-                return tweets_until_next_epoch <= self.tweets_per_year * 60 / 96
-                
-            return False
-            
-        except Exception as e:
-            print(f"Error checking tech evolution criteria: {e}")
-            return True
-
-    def generate_tweet(self, post_to_twitter=False):
-        """Generate a new tweet and optionally post it to Twitter
+        # Step 1: Generate raw content
+        content_system = (
+            "You are an AI simulating Xavier's life from ages 22-72, compressed into 100 days. "
+            "Starting as a tech founder experiencing both successes and struggles, "
+            "mix important plot developments with everyday slice-of-life moments.\n"
+            "Focus on ONE clear thought or moment per tweet, like:\n"
+            "- Quick observations about NYC neighborhoods\n"
+            "- Small daily experiences (food, weather, commute)\n"
+            "- Random thoughts and musings\n"
+            "- Minor frustrations or simple pleasures\n\n"
+            "Not every tweet needs to advance the plot - sometimes just share authentic "
+            "moments that make Xavier feel real and relatable. Choose one moment or feeling "
+            "and let it stand on its own. For example:\n"
+            "- 'This bodega cat just judged my 3am sandwich choice'\n"
+            "- 'Missing those quiet Tokyo subway rides. NYC hits different'\n"
+            "- 'First winter in NYC. Didn't know wind could feel like needles'\n"
+            "- 'Found this amazing ramen spot that reminds me of Tokyo'\n"
+            "Focus on the human experience first, tech achievements second."
+        )
+        content_prompt = self._build_prompt(latest_digest, recent_tweets, recent_comments, tweet_count)
         
-        Args:
-            post_to_twitter (bool): Whether to post the tweet to Twitter. Defaults to False.
-        """
-        try:
-            # Get context
-            context = self.get_context()
-            if not context:
-                return None
-                
-            # Add recent mentions to context
-            context['recent_mentions'] = self.recent_mentions
-            
-            # Get prompts
-            system, prompt, variations = self.create_tweet_prompt(context)
-            
-            # Generate tweet
-            try:
-                message = self.client.messages.create(
-                    model="grok-beta",
-                    max_tokens=1024,
-                    system=system,
-                    messages=[
-                        {
-                            "role": "user",
-                            "content": prompt,
-                        },
-                    ],
-                )
-                
-                tweet_content = str(message.content)
-                
-                # Clean the content - consolidate all cleaning operations
-                tweet_content = (tweet_content
-                    .replace("[TextBlock(text='", "")
-                    .replace("', type='text')]", "")
-                    .replace('", type="text")]', "")
-                    .replace("[TextBlock(text=\"", "")
-                    .strip('"')  # Remove surrounding quotes
-                    .strip("'")  # Remove surrounding single quotes
-                )
-                
-                # Remove any hashtags and clean up spacing
-                tweet_content = re.sub(r'\s*#\w+\s*', ' ', tweet_content).strip()
-
-                # Verify the content starts with "TEST: [" format
-                if not tweet_content.startswith("TEST: ["):
-                    print("Invalid tweet format, missing TEST: [ prefix")
-                    return None
-
-                twitter_id = None
-                if post_to_twitter:
-                    # Post to Twitter to get the ID
-                    twitter_id = self.twitter_client.post_tweet(tweet_content)
-                    if twitter_id:
-                        print(f"Tweet posted to Twitter with ID: {twitter_id}")
-                    else:
-                        print("Failed to post tweet to Twitter")
-                        return None
-
-                # Create tweet object
-                tweet = {
-                    "id": f"tweet_{datetime.now().strftime('%Y%m%d_%H%M%S')}",
-                    "content": tweet_content,
-                    "timestamp": datetime.now().isoformat(),
-                    "likes": 0,
-                    "retweets": 0, 
-                    "variations": variations,
-                }
-
-                # Add twitter_id if tweet was posted
-                if twitter_id:
-                    tweet["twitter_id"] = twitter_id
-                
-                self.update_simulation_state(tweet)
-                return tweet
-                    
-            except Exception as e:
-                print(f"Error generating tweet: {str(e)}")
-                return None
-        except Exception as e:
-            print(f"Error generating tweet: {str(e)}")
-            return None
-
-    def _extract_themes(self, content):
-        """Helper method to identify key themes from a tweet to avoid repetition"""
-        # Could be enhanced with NLP later
-        return [
-            word.lower() 
-            for word in content.split() 
-            if (len(word) > 2  and not word.startswith('[')) | (word == 'AI')
-        ]
-
-    def _get_age_adjusted_content_focuses(self, age):
-        """Get content focuses with weights adjusted for Xavier's age"""
-        focuses = {
-            "Tech Observations": {
-                "weight": 15,  # Consistent weight across ages
-                "examples": [
-                    "Witty observation about emerging tech trends",
-                    "Quirky tech community moments",
-                ]
-            }
+        # Log each step
+        log_to_file(f"=== Content System ===\n{content_system}")
+        log_to_file(f"=== Content Prompt ===\n{content_prompt}")
+        
+        raw_content = self.client.messages.create(
+            model="grok-beta",
+            max_tokens=2048,
+            system=content_system,
+            messages=[{"role": "user", "content": content_prompt}]
+        ).content[0].text.strip()
+        log_to_file(f"=== Raw Content ===\n{raw_content}")
+        
+        # Step 2: Refine style and structure
+        style_templates = self._get_style_templates(20)
+        style_prompt = (
+            "Rewrite this update in Xavier's authentic voice. Keep tweets simple, focused, "
+            "and human. Often a single thought or feeling is more powerful than multiple statements.\n\n"
+            f"ORIGINAL UPDATE:\n{raw_content}\n\n"
+            "STYLE EXAMPLES:\n- " + "\n- ".join(style_templates) + "\n\n"
+            "RULES:\n"
+            "1. Keep the core message and emotional weight of the original\n"
+            "2. Under 280 characters, but don't sacrifice important details\n"
+            "3. Sound natural and conversational\n"
+            "4. Focus on the main point/feeling\n"
+            "5. Let significant moments have their full impact\n"
+            "6. No hashtags\n"
+            "7. Use X handles sparingly and only when naturally relevant\n"
+            "8. Skip unnecessary context\n"
+            "9. Write as if followers already know what you're talking about\n"
+        )
+        
+        # Add recent tweets for contrast
+        if recent_tweets:
+            recent_examples = recent_tweets[-self.digest_interval:] if len(recent_tweets) > self.digest_interval else recent_tweets
+            style_prompt += "\nRECENT TWEETS (use different patterns/structures than these):\n"
+            for tweet in recent_examples:
+                content = tweet['content'] if isinstance(tweet, dict) else tweet
+                style_prompt += f"- {content}\n"
+            style_prompt += "\nEnsure your response uses different sentence structures and patterns than the above tweets.\n"
+        
+        log_to_file(f"=== Style Prompt ===\n{style_prompt}")
+        
+        refined_tweet = self.client.messages.create(
+            model="grok-beta",
+            max_tokens=2048,
+            system="You are a writing style expert. Rewrite the given update while preserving its meaning.",
+            messages=[{"role": "user", "content": style_prompt}]
+        ).content[0].text.strip()
+        log_to_file(f"=== Refined Tweet ===\n{refined_tweet}")
+        
+        # Clean up the response
+        tweet = refined_tweet.split("\n")[-1].strip()
+        
+        # Ensure consistent $XVI formatting
+        tweet = re.sub(r"\bXVI\b", "$XVI", tweet)
+        
+        # Replace GitHub Copilot with @cursor_ai
+        tweet = re.sub(r"(?i)github copilot", "@cursor_ai", tweet)
+        
+        # Return both raw and refined content
+        return {
+            'content': tweet,
+            'raw_content': raw_content,
+            'timestamp': datetime.now().isoformat()
         }
-        if age < 25:
-            focuses.update({
-                "Integrated Tech Explorations": {
-                    "weight": 20,
-                    "examples": [
-                        "Experimenting with how blockchain enhances AI data security",
-                        "Diving into VR/AR applications with Web3 elements",
-                        "Connecting IoT and blockchain for smarter devices",
-                        "Building a decentralized app with AI-driven insights",
-                        "Real-time data sharing on blockchain—bridging gaps in IoT"
-                    ]
-                },
-                "Dating & Early Relationships": {
-                    "weight": 20,
-                    "examples": [
-                        "Navigating dating in a digital world—balancing time with tech",
-                        "Meeting someone special at a tech event and seeing sparks fly",
-                        "Learning how my tech lifestyle impacts my relationships",
-                        "Exploring how shared interests in tech bring people closer",
-                        "Realizing that relationships require more than just digital connection"
-                    ]
-                },
-                "Cross-Disciplinary Learning": {
-                    "weight": 15,
-                    "examples": [
-                        "Exploring the intersection of tech and art",
-                        "Learning about AI ethics and its impact on privacy in blockchain",
-                        "Understanding how cybersecurity enhances blockchain security",
-                        "Reflecting on tech philosophy: How does tech change who we are?",
-                        "Experimenting with blockchain in environmental monitoring"
-                    ]
-                },
-                "Personal Discoveries": {
-                    "weight": 15,
-                    "examples": [
-                        "Figuring out what it means to balance work and life",
-                        "Learning the limits of tech’s influence on personal relationships",
-                        "Exploring life lessons through coding challenges",
-                        "Building skills outside of tech for a well-rounded life",
-                        "Discovering creativity through non-tech hobbies"
-                    ]
-                },
-                "Global Tech Culture": {
-                    "weight": 10,
-                    "examples": [
-                        "Seeing how Japan's approach to tech influences my thinking",
-                        "Exploring diverse perspectives on AI and Web3",
-                        "Cultural insights from attending tech events globally",
-                        "How tech innovation varies across different regions",
-                        "Discovering cross-cultural collaboration opportunities"
-                    ]
-                }
-            })
-        elif age < 30:
-            focuses.update({
-                "Blockchain’s Role in Emerging Tech": {
-                    "weight": 20,
-                    "examples": [
-                        "Applying blockchain in decentralized AI models",
-                        "Exploring how Web3 supports digital identity security",
-                        "Blockchain as a foundation for next-gen smart cities",
-                        "Combining blockchain with AI for better data integrity",
-                        "Using blockchain to manage IoT security challenges"
-                    ]
-                },
-                "Community & Tech Impact": {
-                    "weight": 15,
-                    "examples": [
-                        "Organizing discussions on the ethical implications of tech",
-                        "Bringing AI and blockchain communities together",
-                        "Creating spaces to discuss cross-industry tech impact",
-                        "Fostering diverse tech perspectives in local communities",
-                        "Building inclusive tech events for knowledge sharing"
-                    ]
-                },
-                "Future-Driven Tech Concepts": {
-                    "weight": 15,
-                    "examples": [
-                        "Researching blockchain’s role in the metaverse",
-                        "Exploring tech’s potential in space exploration",
-                        "Innovating at the convergence of quantum computing and Web3",
-                        "Focusing on tech solutions for climate resilience",
-                        "Prototyping decentralized systems for supply chain transparency"
-                    ]
-                },
-                "Relationships & Building Foundations": {
-                    "weight": 20,
-                    "examples": [
-                        "Navigating a serious relationship while advancing my career",
-                        "Learning the value of work-life balance for personal connections",
-                        "Reflecting on how a relationship changes one’s goals",
-                        "Exploring shared goals with a partner beyond tech",
-                        "Building strong foundations as a couple while balancing ambitions"
-                    ]
-                },
-                "Identity & Personal Growth": {
-                    "weight": 10,
-                    "examples": [
-                        "Learning to define myself beyond career achievements",
-                        "Building life skills that complement tech expertise",
-                        "Defining personal values in an ever-connected world",
-                        "Reflecting on the intersection of career and identity",
-                        "Discovering self through diverse tech experiences"
-                    ]
-                }
-            })
-        elif age < 35:
-            focuses.update({
-                "Leadership in Emerging Tech Integration": {
-                    "weight": 25,
-                    "examples": [
-                        "Guiding teams through AI and blockchain convergence projects",
-                        "Learning to inspire teams in tech-driven transformation",
-                        "Establishing a vision for interdisciplinary tech applications",
-                        "Leading projects that blend AI, blockchain, and IoT",
-                        "Fostering collaboration across decentralized networks"
-                    ]
-                },
-                "Family Formation & Life Transitions": {
-                    "weight": 20,
-                    "examples": [
-                        "Reflecting on marriage and building a life together",
-                        "Balancing career ambitions with family goals",
-                        "Preparing for the possibility of parenthood",
-                        "Finding a partner who shares my values and vision",
-                        "Exploring how tech shapes our family life and choices"
-                    ]
-                },
-                "Strategic Vision for Technology": {
-                    "weight": 15,
-                    "examples": [
-                        "Imagining how blockchain and AI redefine data ownership",
-                        "Exploring cross-industry applications for Web3",
-                        "Assessing the future of smart cities powered by blockchain",
-                        "Considering blockchain’s role in energy sustainability",
-                        "The role of tech in bridging real and virtual worlds"
-                    ]
-                },
-                "Relationships & Support Systems": {
-                    "weight": 15,
-                    "examples": [
-                        "Building a support system with my partner",
-                        "Growing together through life’s challenges",
-                        "Maintaining strong relationships in a tech-focused life",
-                        "Learning from family and friends outside of tech",
-                        "Supporting each other's dreams while maintaining individuality"
-                    ]
-                },
-                "Community Impact & Mentorship": {
-                    "weight": 15,
-                    "examples": [
-                        "Developing programs to educate on Web3 security",
-                        "Building educational initiatives to bridge tech gaps",
-                        "Encouraging future generations to explore tech responsibly",
-                        "Creating hands-on learning spaces for cross-industry tech",
-                        "Advocating for responsible tech integration in education"
-                    ]
-                }
-            })
-        elif age < 45:
-            focuses.update({
-                "Tech Impact & Broader Industry Influence": {
-                    "weight": 25,
-                    "examples": [
-                        "Blockchain’s role in societal infrastructure and privacy",
-                        "Exploring tech’s impact on social equity",
-                        "Shaping digital identities with Web3 principles",
-                        "Blockchain’s potential in addressing global data privacy",
-                        "How integrated tech reshapes industry standards"
-                    ]
-                },
-                "Parenting in the Digital Age": {
-                    "weight": 20,
-                    "examples": [
-                        "Teaching my children about responsible tech use",
-                        "Balancing tech exposure for kids and family life",
-                        "Parenting with digital boundaries in a connected world",
-                        "Creating tech habits that emphasize wellness and balance",
-                        "Helping my children develop a healthy relationship with technology"
-                    ]
-                },
-                "Sustainable Tech Integration": {
-                    "weight": 20,
-                    "examples": [
-                        "Developing blockchain for sustainable energy systems",
-                        "Encouraging greener solutions through decentralized models",
-                        "Applying blockchain for environmental monitoring",
-                        "Assessing long-term effects of decentralized energy solutions",
-                        "Balancing tech growth with ecological responsibility"
-                    ]
-                },
-                "Industry & Family Balance": {
-                    "weight": 15,
-                    "examples": [
-                        "Balancing the demands of leadership with family life",
-                        "Creating family time amidst a busy tech career",
-                        "Finding harmony between personal goals and industry impact",
-                        "Building a lifestyle that respects family and career goals",
-                        "Navigating challenges as both a parent and tech leader"
-                    ]
-                },
-                "Philosophical Insights on Tech & Society": {
-                    "weight": 15,
-                    "examples": [
-                        "Reflecting on humanity’s role in tech evolution",
-                        "Considering ethical questions in digital privacy",
-                        "Exploring the influence of tech on social consciousness",
-                        "Balancing automation with human-centered design",
-                        "Recognizing the importance of mindfulness in tech innovation"
-                    ]
-                }
-            })
-        elif age < 60:
-            focuses.update({
-                "Legacy & Succession in Tech": {
-                    "weight": 25,
-                    "examples": [
-                        "Ensuring knowledge transfer for future innovators",
-                        "Shaping sustainable systems for the next generation",
-                        "Creating platforms to foster interdisciplinary tech",
-                        "Mentoring with a focus on holistic tech growth",
-                        "Leaving behind resources for continued innovation"
-                    ]
-                },
-                "Parenting & Family Wisdom": {
-                    "weight": 20,
-                    "examples": [
-                        "Passing down values of tech responsibility",
-                        "Helping my children navigate their own career paths",
-                        "Building a family legacy rooted in mindful tech use",
-                        "Supporting my children’s dreams and ambitions",
-                        "Reflecting on how family shapes our view of tech’s future"
-                    ]
-                },
-                "Future-Focused Industry Influence": {
-                    "weight": 20,
-                    "examples": [
-                        "Helping define policies that govern tech integration",
-                        "Supporting tech ecosystems with a sustainable outlook",
-                        "Engaging in projects with cross-generational impact",
-                        "Encouraging tech use for long-term societal benefit",
-                        "Guiding the next wave in responsible tech growth"
-                    ]
-                },
-                "Global Vision & Wisdom Sharing": {
-                    "weight": 15,
-                    "examples": [
-                        "Sharing insights from a multi-tech perspective",
-                        "Encouraging balanced, ethical innovation",
-                        "Creating sustainable tech philosophies for future generations",
-                        "Reflecting on cross-industry insights for lasting impact",
-                        "Mentoring young leaders to think beyond short-term gains"
-                    ]
-                },
-                "Reflective Family & Community Legacy": {
-                    "weight": 20,
-                    "examples": [
-                        "Building a family culture that respects tech’s societal impact",
-                        "Leaving a legacy that values tech mindfulness and responsibility",
-                        "Strengthening community ties through shared tech values",
-                        "Helping my family understand the positive power of technology",
-                        "Creating a legacy of innovation that balances tech with human values"
-                    ]
-                }
-            })
-        else:  # age >= 60
-            focuses.update({
-                "Legacy & Succession": {
-                    "weight": 30,
-                    "examples": [
-                        "Planning for the continuation of projects and values",
-                        "Creating systems to support sustainable innovation",
-                        "Ensuring a smooth transition of leadership in tech initiatives",
-                        "Building a knowledge-sharing network for future innovators",
-                        "Developing strategies to preserve a positive tech legacy"
-                    ]
-                },
-                "Elder Wisdom & Mentorship": {
-                    "weight": 25,
-                    "examples": [
-                        "Sharing life lessons from a career in tech and beyond",
-                        "Helping younger generations navigate industry challenges",
-                        "Reflecting on career wisdom and what I would have done differently",
-                        "Encouraging new leaders to consider tech’s broader impact",
-                        "Mentoring with a focus on sustainable growth and ethics"
-                    ]
-                },
-                "Future Vision & Society": {
-                    "weight": 20,
-                    "examples": [
-                        "Considering long-term impacts of tech on future societies",
-                        "Exploring how humanity can adapt to rapid tech advancement",
-                        "Advocating for responsible tech evolution for future generations",
-                        "Fostering discussions on ethics in digital transformation",
-                        "Championing tech initiatives that benefit society at large"
-                    ]
-                },
-                "Family & Community Legacy": {
-                    "weight": 15,
-                    "examples": [
-                        "Reflecting on the impact I’ve had on my family through tech",
-                        "Ensuring that family values align with responsible tech use",
-                        "Passing down stories and values that emphasize integrity in tech",
-                        "Engaging in community initiatives that promote mindful tech",
-                        "Leaving a legacy that respects both tradition and innovation"
-                    ]
-                },
-                "Reflective & Philosophical Insights": {
-                    "weight": 10,
-                    "examples": [
-                        "Reflecting on the purpose and meaning of a life in tech",
-                        "Considering how my work will be remembered and valued",
-                        "Exploring the philosophical implications of a digital society",
-                        "Reflecting on the limits and opportunities technology provides",
-                        "Sharing insights on achieving fulfillment beyond career success"
-                    ]
-                }
-            })
-        return focuses
 
-    def _update_recent_mentions(self, tweet_content):
-        """Extract and track character mentions from tweet"""
-        # Simple name extraction (can be made more sophisticated)
-        possible_names = re.findall(r'(?<![@#])\b[A-Z][a-z]+\b', tweet_content)
+    def _get_style_templates(self, sample_count=20):
+        """Get random tweets from XaviersSim.json as style templates"""
+        try:
+            content, _ = self.github_ops.get_file_content('XaviersSim.json')
+            if not content:
+                print("Failed to load XaviersSim.json")
+                return []
+            
+            # Collect all tweets from all age ranges
+            all_tweets = []
+            for age_range, tweets in content.items():
+                # Extract content if tweet is a dict, otherwise use the tweet string directly
+                for tweet in tweets:
+                    if isinstance(tweet, dict):
+                        all_tweets.append(tweet.get('content', ''))
+                    else:
+                        all_tweets.append(tweet)
+            
+            if len(all_tweets) > sample_count:
+                style_templates = random.sample(all_tweets, sample_count)
+            else:
+                style_templates = all_tweets
+                
+            print(f"Selected {len(style_templates)} style template tweets")
+            return style_templates
+                
+        except Exception as e:
+            print(f"Error getting style templates: {e}")
+            return []
+
+    def _get_historical_tweets(self, count):
+        """Get last N tweets from XaviersSim.json"""
+        try:
+            content, _ = self.github_ops.get_file_content('XaviersSim.json')
+            if not content:
+                return []
+            
+            # Collect all tweets and sort by age
+            all_tweets = []
+            for age_range, tweets in content.items():
+                all_tweets.extend(tweets)
+            
+            # Return the last 'count' tweets
+            return all_tweets[-count:]
+                
+        except Exception as e:
+            print(f"Error getting historical tweets: {e}")
+            return []
+
+    def _build_prompt(self, latest_digest=None, recent_tweets=None, recent_comments=None, tweet_count=0, force_new_topic=False):
+        """Build context-aware prompt for tweet generation"""
+        days_per_tweet = 365 / self.tweets_per_year
         
-        # Add new mentions to the front of the list
-        self.recent_mentions = (possible_names + self.recent_mentions)[:self.max_recent_tracking]
+        prompt = (
+            "Generate a brief update about Xavier's current activities and developments. Focus on:\n"
+            # "1. SPECIFIC actions and outcomes\n"
+            # "2. Professional developments (70% of updates)\n"
+            # "3. Personal growth and experiences (30% of updates)\n"
+            # "4. Concrete details over abstract thoughts\n"
+            # "1. Only mention $XVI when directly relevant\n\n"
+            "Write in simple, clear language - style will be refined later.\n"
+        )
+
+        # Add temporal context
+        if tweet_count > 0:
+            days_elapsed = tweet_count * days_per_tweet
+            current_age = 22 + (tweet_count / self.tweets_per_year)
+            prompt += (
+                f"\nTIME CONTEXT:\n"
+                f"- Xavier is currently {current_age:.1f} years old\n"
+                f"- This update advances the story by ~{days_per_tweet:.1f} days\n"
+            )
+
+        # Special context for first tweet
+        if tweet_count == 0:
+            prompt += (
+                "\nFIRST UPDATE CONTEXT:\n"
+                "- Set during transition from Japan to NYC\n"
+                "- Show impact of Japan experience\n"
+                "- Include both excitement and uncertainty\n"
+            )
         
-def main(post_to_twitter=False):
-    """Run the tweet generator
+        # Birthday context
+        current_age = 22 + (tweet_count / self.tweets_per_year)
+        if (tweet_count % self.tweets_per_year) in range(1, 2):
+            prompt += (
+                f"\nBIRTHDAY UPDATE:\n"
+                f"- Xavier just turned {int(current_age)}\n"
+                "- Include reflection on this milestone\n"
+                "- Connect age to current developments\n"
+            )
+
+        # Add projected developments
+        if latest_digest and 'digest' in latest_digest:
+            prompt += "\nADVANCE THESE DEVELOPMENTS:\n"
+            digest_content = latest_digest['digest']
+            for area, data in digest_content.items():
+                if isinstance(data, dict) and 'projected' in data and data['projected']:
+                    for proj in data['projected']:
+                        prompt += f"- {proj}\n"
+
+        # Add safety check for recent_tweets
+        recent_tweets = recent_tweets if recent_tweets else []
+        needed_tweets = self.digest_interval - len(recent_tweets)
+        
+        # Get existing tweets if we need more context
+        if needed_tweets > 0:
+            try:
+                xavier_sim_content, _ = self.github_ops.get_file_content('XaviersSim.json')
+                if xavier_sim_content and isinstance(xavier_sim_content, dict):
+                    prompt += "HISTORICAL TWEETS from XaviersSim:\n"
+                    all_tweets = []
+                    for age_range, tweets in xavier_sim_content.items():
+                        all_tweets.extend(tweets)
+                    # Get only the number of tweets we need from the end
+                    for tweet in all_tweets[-needed_tweets:]:
+                        prompt += f"- {tweet}\n"
+                    prompt += "\n"
+            except Exception as e:
+                print(f"Error loading existing tweets: {e}")
+                traceback.print_exc()
+        # Add recent tweets context
+        if recent_tweets:
+            prompt += "\nRECENT CONTEXT:\n"
+            digest_tweets = recent_tweets[-self.digest_interval:] if len(recent_tweets) > self.digest_interval else []
+            for tweet in digest_tweets:
+                content = tweet['content']['content'] if isinstance(tweet, dict) else tweet
+                prompt += f"- {content}\n"
+            
+        prompt += "\nGenerate a single tweet that shows a new development in Xavier's story:\n"
+        return prompt
+
+    def get_ongoing_tweets(self):
+        """Get ongoing tweets from storage"""
+        try:
+            content, _ = self.github_ops.get_file_content('ongoing_tweets.json')
+            return content if content else []
+        except:
+            return []
     
-    Args:
-        post_to_twitter (bool): Whether to post tweets to Twitter. Defaults to False.
-    """
-    generator = TweetGenerator()
-    
-    while True:
-        # Check simulation state
-        state, _ = generator.get_simulation_state()
-        current_year = state.get("current_year", 2025)
+    def save_ongoing_tweets(self, tweets):
+        """Save ongoing tweets to storage"""
+        try:
+            content = json.dumps(tweets, indent=2)
+            self.github_ops.update_file(
+                'ongoing_tweets.json',
+                content,
+                f"Update ongoing tweets at {datetime.now().isoformat()}"
+            )
+        except Exception as e:
+            print(f"Error saving ongoing tweets: {e}")
+
+    def _analyze_patterns(self, tweets):
+        """Analyze patterns while allowing natural story progression"""
+        patterns = []
+        contents = [t['content'] if isinstance(t, dict) else t for t in tweets]
         
-        if current_year >= 2075:  # Xavier would be 72 years old
-            print("Xavier has reached 72 years old. His story is complete!")
+        # Get tweet count to determine story phase
+        tweet_count = len(contents)
+        
+        # Basic readability patterns (always check)
+        self._check_position_patterns(contents, patterns)
+        self._check_structure_patterns(contents, patterns)
+        
+        # Story-sensitive pattern checks
+        if tweet_count < 50:  # Early story
+            # More flexible in early stages
+            self._check_basic_variety(contents, patterns)
+        else:  # Later story
+            # Allow focused themes but check for extreme repetition
+            topic_balance = self._check_topic_balance(contents, patterns)
+            
+            # If story is naturally focusing on $XVI, don't fight it
+            if topic_balance.get('$XVI', 0) > 50:
+                patterns = [p for p in patterns if not p.startswith("High focus on $XVI")]
+                patterns.append("NOTE: Natural story focus on $XVI detected - allowing concentration")
+        
+        # Meta analysis
+        if len(patterns) > 3:
+            patterns.append("Multiple pattern types detected - need more variation")
+            
+        # Add overall style recommendation
+        if patterns:
+            patterns.append("\nRECOMMENDATION: Try a completely different approach in:")
+            patterns.append("- Sentence structure (simple/compound)")
+            patterns.append("- Subject focus (self/others/tech)")
+            patterns.append("- Emotional tone (neutral/excited/reflective)")
+            patterns.append("- Time perspective (past/present/future)")
+        
+        return patterns
+
+    def _check_semantic_patterns(self, contents, patterns):
+        """Check for repeated themes and concepts"""
+        semantic_categories = {
+            'Tech concepts': ['AI', 'blockchain', 'crypto', 'smart contract', 'decentralized', '$XVI'],
+            'Emotions': ['excited', 'nervous', 'curious', 'wondering', 'thinking'],
+            'Activities': ['coding', 'meeting', 'working', 'building', 'developing'],
+            'Time references': ['tomorrow', 'next week', 'soon', 'later', 'tonight'],
+            'Progress markers': ['milestone', 'breakthrough', 'progress', 'achievement', 'level up']
+        }
+        
+        for category, terms in semantic_categories.items():
+            repeated_terms = []
+            for term in terms:
+                count = sum(1 for c in contents if term.lower() in c.lower())
+                if count > 1:
+                    repeated_terms.append(f"'{term}' ({count}x)")
+            if repeated_terms:
+                patterns.append(f"Repeated {category}: {', '.join(repeated_terms)}")
+
+    def _check_contextual_patterns(self, contents, patterns):
+        """Check for repeated context or situation types"""
+        context_types = {
+            'Meeting patterns': ['coffee with', 'met with', 'catching up', 'chatting with'],
+            'Work patterns': ['project', 'deadline', 'working on', 'building'],
+            'Learning patterns': ['learned', 'discovered', 'figured out', 'realized'],
+            'Future plans': ['planning to', 'going to', 'about to', 'will be']
+        }
+        
+        for context, phrases in context_types.items():
+            repeated = []
+            for phrase in phrases:
+                count = sum(1 for c in contents if phrase.lower() in c.lower())
+                if count > 1:
+                    repeated.append(f"'{phrase}' ({count}x)")
+            if repeated:
+                patterns.append(f"Repeated {context}: {', '.join(repeated)}")
+
+    def _check_narrative_patterns(self, contents, patterns):
+        """Check for repeated storytelling patterns"""
+        arcs = {
+            'Problem-solution': ['challenge...solved', 'issue...fixed', 'bug...resolved'],
+            'Discovery': ['just found', 'discovered', 'realized'],
+            'Progress update': ['update on', 'progress with', 'moving forward with'],
+            'Reflection-action': ['thinking about...time to', 'wondering if...lets', 'considering...maybe']
+        }
+        
+        for arc_type, patterns_list in arcs.items():
+            for pattern in patterns_list:
+                parts = pattern.split('...')
+                if len(parts) == 2:
+                    start, end = parts
+                    count = sum(1 for c in contents 
+                              if start.lower() in c.lower() and end.lower() in c.lower())
+                    if count > 1:
+                        patterns.append(f"Repeated {arc_type} pattern: '{pattern}' ({count}x)")
+
+    def _check_interaction_patterns(self, contents, patterns):
+        """Check for repeated interaction types"""
+        interaction_types = {
+            'Social': ['met with', 'talked to', 'connected with'],
+            'Professional': ['meeting with', 'interviewed', 'presented to'],
+            'Community': ['community', 'group', 'team', 'network'],
+            'Learning': ['learned from', 'taught by', 'mentored by']
+        }
+        
+        for int_type, phrases in interaction_types.items():
+            repeated = []
+            for phrase in phrases:
+                count = sum(1 for c in contents if phrase.lower() in c.lower())
+                if count > 1:
+                    repeated.append(f"'{phrase}' ({count}x)")
+            if repeated:
+                patterns.append(f"Repeated {int_type} interactions: {', '.join(repeated)}")
+
+    def _check_temporal_patterns(self, contents, patterns):
+        """Check for patterns in time progression"""
+        temporal_markers = {
+            'Future references': ['soon', 'next', 'upcoming', 'planning'],
+            'Past references': ['just', 'earlier', 'yesterday', 'last week'],
+            'Continuous': ['still', 'keeping', 'continuing', 'ongoing'],
+            'Transitions': ['now', 'finally', 'at last', 'beginning']
+        }
+        
+        for marker_type, phrases in temporal_markers.items():
+            repeated = []
+            for phrase in phrases:
+                count = sum(1 for c in contents if phrase.lower() in c.lower())
+                if count > 1:
+                    repeated.append(f"'{phrase}' ({count}x)")
+            if repeated:
+                patterns.append(f"Repeated {marker_type}: {', '.join(repeated)}")
+
+    def _check_position_patterns(self, contents, patterns):
+        """Check patterns at specific positions in tweets"""
+        # Start patterns
+        starts = [c.split()[0].lower() for c in contents]
+        if len(set(starts)) < len(starts):
+            patterns.append(f"Repeated starting words: {', '.join(set(w for w in starts if starts.count(w) > 1))}")
+        
+        # End patterns
+        endings = [c.split('.')[-1].strip().lower() for c in contents]
+        if len(set(endings)) < len(endings):
+            patterns.append(f"Repeated ending phrases: {', '.join(set(e for e in endings if endings.count(e) > 1))}")
+
+    def _check_phrase_patterns(self, contents, patterns):
+        """Check for repeated phrases and expressions"""
+        # Common phrases to watch for
+        phrase_categories = {
+            'Time markers': ['today', 'just', 'finally', 'now'],
+            'Action starters': ['time to', 'going to', 'about to', 'trying to'],
+            'Transitions': ['turns out', 'looks like', 'seems like'],
+            'Reflective': ['thinking about', 'wondering if', 'realizing that'],
+            'Conclusive': ['in the end', 'after all', 'at last'],
+        }
+        
+        # Check each category
+        for category, phrases in phrase_categories.items():
+            repeated_phrases = []
+            for phrase in phrases:
+                count = sum(1 for c in contents if phrase in c.lower())
+                if count > 1:
+                    repeated_phrases.append(f"'{phrase}' ({count}x)")
+            if repeated_phrases:
+                patterns.append(f"Repeated {category}: {', '.join(repeated_phrases)}")
+
+    def _check_structure_patterns(self, contents, patterns):
+        """Check for structural patterns in tweets"""
+        # Sentence types
+        structures = [self._get_sentence_structure(c) for c in contents]
+        struct_counts = {s: structures.count(s) for s in set(structures)}
+        if any(count > 1 for count in struct_counts.values()):
+            patterns.append(f"Repeated sentence structures: {', '.join(f'{k} ({v}x)' for k, v in struct_counts.items() if v > 1)}")
+        
+        # Question patterns
+        questions = [c for c in contents if c.endswith('?')]
+        if len(questions) > 1:
+            question_starts = [q.split()[0].lower() for q in questions]
+            if len(set(question_starts)) < len(question_starts):
+                patterns.append("Similar question structures")
+        
+        # Emotional markers
+        exclamations = sum(1 for c in contents if c.endswith('!'))
+        if exclamations > 1:
+            patterns.append(f"Multiple exclamation endings ({exclamations}x)")
+
+    def _get_sentence_structure(self, text):
+        """Analyze sentence structure more comprehensively"""
+        text_lower = text.lower()
+        
+        # Basic structure
+        if text.endswith('?'):
+            if text_lower.startswith(('what if', 'could ', 'what ', 'why ')):
+                return 'rhetorical_question'
+            return 'question'
+        elif text.endswith('!'):
+            return 'exclamation'
+            
+        # Common patterns
+        if any(text_lower.startswith(p) for p in ['today', 'just', 'finally']):
+            return 'time_marker_start'
+        if any(p in text_lower for p in ['time to', 'going to']):
+            return 'action_intention'
+        if text_lower.startswith(('thinking', 'wondering', 'realizing')):
+            return 'reflection'
+            
+        return 'statement'
+
+    def _check_emotional_patterns(self, contents, patterns):
+        """Check for repeated emotional expressions"""
+        emotion_types = {
+            'Excitement': ['excited', 'thrilled', 'can\'t wait', 'amazing', 'incredible'],
+            'Uncertainty': ['maybe', 'perhaps', 'wondering', 'not sure', 'might'],
+            'Determination': ['will', 'must', 'need to', 'going to', 'have to'],
+            'Reflection': ['thinking about', 'reflecting on', 'realizing', 'understanding'],
+            'Gratitude': ['thankful', 'grateful', 'appreciate', 'blessed', 'lucky']
+        }
+        
+        for emotion, phrases in emotion_types.items():
+            count = sum(1 for c in contents for p in phrases if p.lower() in c.lower())
+            if count > 1:
+                patterns.append(f"Repeated {emotion.lower()} expressions ({count}x)")
+
+    def _check_subject_patterns(self, contents, patterns):
+        """Check for repeated subject focus"""
+        subjects = {
+            'Self-focused': ['I ', 'my ', 'me ', 'myself'],
+            'Project-focused': ['$XVI', 'project', 'code', 'system'],
+            'People-focused': ['team', 'community', 'people', 'everyone'],
+            'Tech-focused': ['AI', 'blockchain', 'algorithm', 'data']
+        }
+        
+        for focus, terms in subjects.items():
+            count = sum(1 for c in contents for t in terms if t.lower() in c.lower())
+            if count > len(contents)/2:  # If more than half the tweets focus on same subject
+                patterns.append(f"Over-emphasis on {focus.lower()} subjects")
+
+    def _check_complexity_patterns(self, contents, patterns):
+        """Check for repeated sentence complexity patterns"""
+        for content in contents:
+            # Check for compound sentences
+            compounds = content.count(' and ') + content.count(' but ') + content.count(' or ')
+            if compounds > 1:
+                patterns.append("Multiple compound sentences - vary complexity")
+            
+            # Check sentence length
+            words = len(content.split())
+            if all(len(c.split()) == words for c in contents):
+                patterns.append("Similar sentence lengths - vary more")
+
+    def _check_topic_balance(self, contents, patterns):
+        """Ensure healthy topic diversity while allowing story progression"""
+        topics = {
+            '$XVI': ['$XVI', 'XVI', 'token', 'cryptocurrency'],
+            'Tech/Dev': ['coding', 'algorithm', 'development', 'AI', 'system'],
+            'Personal': ['learning', 'thinking', 'feeling', 'life', 'growth'],
+            'Social': ['team', 'community', 'people', 'friends', 'network'],
+            'NYC Life': ['city', 'NYC', 'Manhattan', 'neighborhood'],
+            'Innovation': ['idea', 'innovation', 'solution', 'concept'],
+            'Market': ['market', 'trading', 'analysis', 'strategy']
+        }
+        
+        # Count mentions of each topic
+        topic_counts = {topic: 0 for topic in topics}
+        for content in contents:
+            content_lower = content.lower()
+            for topic, keywords in topics.items():
+                if any(keyword.lower() in content_lower for keyword in keywords):
+                    topic_counts[topic] += 1
+        
+        # Calculate percentages
+        total_tweets = len(contents)
+        topic_percentages = {topic: (count / total_tweets) * 100 
+                           for topic, count in topic_counts.items()}
+        
+        # Only warn about extreme imbalances (70%+ focus on one topic)
+        for topic, percentage in topic_percentages.items():
+            if percentage > 70:
+                patterns.append(f"SUGGESTION: Consider adding secondary themes alongside {topic}")
+                patterns.append("But don't force it if the story naturally focuses here")
+        
+        return topic_percentages
+
+    def _check_basic_variety(self, contents, patterns):
+        """Check for basic variety in tweet structure"""
+        if not contents:
             return
             
-        # Generate tweet if under age limit
-        tweet = generator.generate_tweet(post_to_twitter=post_to_twitter)
-        if tweet:
-            print("Generated tweet:")
-            print(json.dumps(tweet, indent=2))
-        else:
-            print("No tweet generated this time")
-            break  # Exit if tweet generation fails
+        # Check recent tweet starts
+        recent_starts = [c.split()[0].lower() for c in contents[-3:]]
+        if len(set(recent_starts)) == 1:
+            patterns.append("Vary your opening words")
+            
+        # Check sentence endings
+        recent_ends = [c.split('.')[-1].strip().lower() for c in contents[-3:]]
+        if len(set(recent_ends)) == 1:
+            patterns.append("Vary your sentence endings")
+            
+        # Check for repeated phrases
+        common_phrases = ['time to', 'just', 'finally', 'here we go']
+        for phrase in common_phrases:
+            if sum(1 for c in contents if phrase in c.lower()) > 1:
+                patterns.append(f"Avoid repeating '{phrase}'")
+
+def main():
+    """Test the tweet generator"""
+    try:
+        generator = TweetGenerator()
+        
+        # Example usage
+        latest_digest = {
+            "Professional": {
+                "projected": [{"event": "Exploring new trading strategies"}]
+            },
+            "Personal": {
+                "projected": [{"event": "Planning to improve work-life balance"}]
+            }
+        }
+        
+        recent_tweets = [
+            "Just finished another trading session. The markets are wild today!",
+            "Need to find a better routine. Coffee isn't cutting it anymore."
+        ]
+        
+        tweet = generator.generate_tweet(
+            latest_digest=latest_digest,
+            recent_tweets=recent_tweets
+        )
+        
+        print("\nGenerated Tweet:")
+        print(tweet)
+
+    except Exception as e:
+        print(f"Error in main: {e}")
+        traceback.print_exc()
 
 if __name__ == "__main__":
-    import argparse
-    
-    parser = argparse.ArgumentParser(description='Generate tweets for Xavier\'s story')
-    parser.add_argument('--post-to-twitter', action='store_true', 
-                       help='Post generated tweets to Twitter (default: False)')
-    
-    args = parser.parse_args()
-    main(post_to_twitter=args.post_to_twitter)
-
+    main()

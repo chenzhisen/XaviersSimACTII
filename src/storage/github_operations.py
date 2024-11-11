@@ -2,7 +2,7 @@ import json
 import base64
 import requests
 from datetime import datetime
-from src.utils.config import Config
+from utils.config import Config
 
 class GithubOperations:
     def __init__(self):
@@ -30,7 +30,7 @@ class GithubOperations:
             content = base64.b64decode(content_data['content']).decode('utf-8')
             
             # Debug: Print first 200 chars of content
-            print(f"Raw content from {file_path} (first 200 chars): {content[:200]}")
+            # print(f"Raw content from {file_path} (first 200 chars): {content[:200]}")
             
             try:
                 parsed_content = json.loads(content)
@@ -90,15 +90,45 @@ class GithubOperations:
             print(f"Error storing {file_path}: {str(e)}")
             raise
 
-    def add_tweet(self, tweet):
-        tweets, sha = self.get_file_content(self.ongoing_tweets_path)
-        tweets.append(tweet)
-        self.update_file(self.ongoing_tweets_path, tweets, f"Add tweet: {tweet['id']}", sha)
+    def _update_file_with_retry(self, file_path, content, message, sha=None, max_retries=3):
+        """Helper method to update a file with retry logic"""
+        for attempt in range(max_retries):
+            try:
+                response = self.update_file(file_path, content, message, sha)
+                return response
+            except Exception as e:
+                if attempt == max_retries - 1:
+                    raise
+                print(f"Attempt {attempt + 1} failed, retrying...")
+        return None
 
-        # Also update the story digest
-        story_digest, digest_sha = self.get_file_content(self.story_digest_path)
-        story_digest.append(tweet)
-        self.update_file(self.story_digest_path, story_digest, f"Update story digest with tweet: {tweet['id']}", digest_sha)
+    def add_tweet(self, tweet, tweet_count=None, simulated_date=None, age=None):
+        """Add a tweet to ongoing_tweets.json"""
+        try:
+            # Handle ongoing tweets
+            tweets, sha = self.get_file_content(self.ongoing_tweets_path)
+            tweets = tweets or []
+            
+            # Add metadata to tweet
+            tweet_with_metadata = {
+                **tweet,
+                "tweet_count": tweet_count,
+                "simulated_date": simulated_date,
+                "age": age
+            }
+            
+            if not any(existing.get('id') == tweet.get('id') for existing in tweets):
+                tweets.append(tweet_with_metadata)
+                self._update_file_with_retry(
+                    self.ongoing_tweets_path,
+                    tweets,
+                    f"Add tweet: {tweet.get('id', 'new')}",
+                    sha
+                )
+                
+        except Exception as e:
+            print(f"Error saving ongoing tweets: {str(e)}")
+            raise
 
     def add_comments(self, tweet_id, comments):
         all_comments, sha = self.get_file_content(self.comments_path)
