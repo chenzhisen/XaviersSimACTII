@@ -1,0 +1,119 @@
+{
+  "tech_trees": {
+    "2025": {
+      "emerging_technologies": [
+        {
+          "name": "Neural Swarm Intelligence",
+          "probability": 0.85,
+          "estimated_year": 2027,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "AI Assistants",
+            "Neural Interfaces"
+          ],
+          "impact_areas": [
+            "AI",
+            "Cognitive Enhancement"
+          ],
+          "description": "A collective intelligence formed by interconnected neural interfaces, allowing for real-time, large-scale problem solving and decision making.",
+          "societal_implications": "Potential for increased efficiency in decision-making but raises concerns about privacy and the autonomy of individual thought.",
+          "adoption_factors": "Dependent on advancements in neural tech and acceptance of brain-computer interfaces in daily life."
+        },
+        {
+          "name": "Quantum Blockchain",
+          "probability": 0.7,
+          "estimated_year": 2028,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Blockchain",
+            "Quantum Computing"
+          ],
+          "impact_areas": [
+            "Digital Infrastructure",
+            "Security"
+          ],
+          "description": "A blockchain system leveraging quantum computing for enhanced security, enabling unbreakable encryption and faster transaction processing.",
+          "societal_implications": "Could revolutionize financial systems, secure communications, and data integrity, but requires significant computational infrastructure.",
+          "adoption_factors": "Widespread adoption hinges on the maturity of quantum computing and regulatory acceptance."
+        },
+        {
+          "name": "Autonomous Urban Planning",
+          "probability": 0.9,
+          "estimated_year": 2026,
+          "innovation_type": "incremental",
+          "dependencies": [
+            "Autonomous Systems",
+            "AI"
+          ],
+          "impact_areas": [
+            "Infrastructure",
+            "Sustainability"
+          ],
+          "description": "AI-driven systems for real-time urban development planning, optimizing for sustainability and efficiency.",
+          "societal_implications": "Could lead to more sustainable cities but might face resistance from traditional urban planning bodies.",
+          "adoption_factors": "Adoption will depend on governmental policies, public acceptance, and proof of concept through pilot projects."
+        },
+        {
+          "name": "Martian Resource Extraction",
+          "probability": 0.65,
+          "estimated_year": 2030,
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Space Exploration",
+            "Autonomous Systems"
+          ],
+          "impact_areas": [
+            "Space Exploration",
+            "Resource Management"
+          ],
+          "description": "Robotic systems designed to extract resources like water, minerals, and gases on Mars for use in colonization efforts.",
+          "societal_implications": "Paves the way for self-sustaining Martian colonies, but requires overcoming significant technical challenges.",
+          "adoption_factors": "Dependent on the success of Mars missions and the economic viability of extraterrestrial mining."
+        }
+      ],
+      "mainstream_technologies": [
+        {
+          "name": "AI-Driven Software Development",
+          "from_emerging": true,
+          "original_emergence_year": 2025,
+          "maturity_year": 2027,
+          "impact_level": 7,
+          "description": "AI systems that not only assist but also autonomously develop software, reducing human involvement in coding.",
+          "adoption_status": "Widely adopted in tech industries, leading to increased productivity but also concerns about job displacement."
+        },
+        {
+          "name": "Personalized Medicine via AI",
+          "from_emerging": true,
+          "original_emergence_year": 2026,
+          "maturity_year": 2029,
+          "impact_level": 9,
+          "description": "AI algorithms analyze individual genetic data to tailor medical treatments, leading to more effective and personalized healthcare.",
+          "adoption_status": "Becoming standard in healthcare, with significant regulatory frameworks to ensure ethical use of genetic data."
+        }
+      ],
+      "epoch_themes": [
+        {
+          "theme": "Human-Tech Symbiosis",
+          "description": "Advancements in neural interfaces and AI leading to deeper integration between human cognition and technology.",
+          "related_technologies": [
+            "Neural Swarm Intelligence",
+            "AI-Driven Software Development"
+          ],
+          "societal_impact": "Raises questions about the nature of consciousness, privacy, and the ethical implications of cognitive enhancement.",
+          "global_trends": "Increased focus on neuroethics, regulation of cognitive technologies, and societal debates on the limits of human enhancement."
+        },
+        {
+          "theme": "Sustainable Urbanization",
+          "description": "Technologies aimed at making urban environments more sustainable through autonomous systems and AI.",
+          "related_technologies": [
+            "Autonomous Urban Planning"
+          ],
+          "societal_impact": "Promotes environmental resilience and quality of life in cities, but could face pushback from traditional urban development stakeholders.",
+          "global_trends": "A push towards smart cities, green infrastructure, and circular economy models."
+        }
+      ],
+      "epoch_year": 2025
+    }
+  },
+  "last_updated": "2024-11-13T15:10:06.128337"
+}
