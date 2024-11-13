@@ -1,0 +1,106 @@
+{
+  "tech_trees": {
+    "2025": {
+      "emerging_technologies": [
+        {
+          "name": "AI-Driven Development Automation",
+          "probability": "0.8",
+          "estimated_year": "2026",
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Advanced Machine Learning",
+            "Neural Networks"
+          ],
+          "impact_areas": [
+            "Software Development",
+            "Education",
+            "Business"
+          ],
+          "description": "Systems capable of autonomously developing software applications from high-level human directives.",
+          "societal_implications": "Reduces the need for human coders, potentially leading to job displacement but also significantly increasing productivity and innovation speed.",
+          "adoption_factors": "Requires widespread trust in AI systems, regulatory frameworks for AI ethics, and significant investment in AI research."
+        },
+        {
+          "name": "Mind Uploading Beta",
+          "probability": "0.4",
+          "estimated_year": "2028",
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Neural Interfaces",
+            "Quantum Computing"
+          ],
+          "impact_areas": [
+            "Healthcare",
+            "Ethics",
+            "Identity"
+          ],
+          "description": "Initial experiments in transferring human consciousness into digital formats for preservation or virtual existence.",
+          "societal_implications": "Raises profound ethical, legal, and philosophical questions about identity, life, and death.",
+          "adoption_factors": "Highly dependent on breakthroughs in neural science, ethical considerations, and public acceptance."
+        },
+        {
+          "name": "Planetary Resource Extraction AI",
+          "probability": "0.7",
+          "estimated_year": "2029",
+          "innovation_type": "incremental",
+          "dependencies": [
+            "Autonomous Systems",
+            "AI"
+          ],
+          "impact_areas": [
+            "Mining",
+            "Space Exploration",
+            "Economy"
+          ],
+          "description": "AI systems designed to locate, extract, and manage resources on extraterrestrial bodies.",
+          "societal_implications": "Could lead to new economic models, space treaties, and environmental considerations for other planets.",
+          "adoption_factors": "Success in space missions, technological advancements in AI and robotics, and international cooperation."
+        }
+      ],
+      "mainstream_technologies": [
+        {
+          "name": "Quantum Encryption",
+          "from_emerging": true,
+          "original_emergence_year": "2025",
+          "maturity_year": "2030",
+          "impact_level": "8",
+          "description": "Utilization of quantum mechanics to provide unbreakable encryption for secure communication.",
+          "adoption_status": "Becoming standard in government, financial, and high-security industries due to the need for unbreachable security."
+        },
+        {
+          "name": "Autonomous Urban Transport",
+          "from_emerging": true,
+          "original_emergence_year": "2025",
+          "maturity_year": "2027",
+          "impact_level": "9",
+          "description": "Fully autonomous vehicles and public transportation systems managing urban mobility.",
+          "adoption_status": "Integrated into urban planning, reducing traffic, pollution, and enhancing safety."
+        }
+      ],
+      "epoch_themes": [
+        {
+          "theme": "Digital Consciousness",
+          "description": "Exploring the boundaries of human consciousness through digital means.",
+          "related_technologies": [
+            "Mind Uploading Beta",
+            "Neural Interfaces"
+          ],
+          "societal_impact": "Challenges traditional views on existence, identity, and immortality; necessitates new ethical frameworks.",
+          "global_trends": "Increased interest in cognitive science, transhumanism, and digital rights."
+        },
+        {
+          "theme": "Sustainable Space Exploration",
+          "description": "Advancements in technology aimed at making space exploration sustainable and less resource-intensive.",
+          "related_technologies": [
+            "Planetary Resource Extraction AI",
+            "SpaceX's Interplanetary Travel"
+          ],
+          "societal_impact": "Potential for new resource bases, geopolitical shifts, and environmental considerations for space.",
+          "global_trends": "Growing interest in space colonization, resource management, and sustainable practices beyond Earth."
+        }
+      ],
+      "epoch_year": 2025
+    }
+  },
+  "last_updated": "2024-11-13T17:53:20.406834"
+}
