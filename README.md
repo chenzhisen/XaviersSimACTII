@@ -22,7 +22,7 @@ The system consists of three main components that work together to create a cohe
 
 ### 2. Technology Evolution
 - Generates in 5-year epochs (2025-2030, 2030-2035, etc.)
-- Updates ~9 months (60 tweets) before next epoch begins
+- Updates ~6 months (48 tweets) before next epoch begins
 - Each epoch contains:
   - Mainstream technologies (fully adopted)
   - Emerging technologies (in development)

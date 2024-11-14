@@ -11,24 +11,20 @@ import math
 
 
 class TechEvolutionGenerator:
-    def __init__(self, provider: AIProvider = AIProvider.XAI):
-        ai_config = Config.get_ai_config(provider)
-        
-        if provider == AIProvider.ANTHROPIC:
-            self.client = Anthropic(api_key=ai_config.api_key)
-        elif provider == AIProvider.XAI:
-            self.client = Anthropic( 
-                api_key=ai_config.api_key,
-                base_url=ai_config.base_url
-            )
-        
-        self.model = ai_config.model
+    def __init__(self, github_ops, client, model):
+        """Initialize the tech evolution generator"""
+        self.github_ops = github_ops
+        self.client = client
+        self.model = model
         self.base_year = 2025
-        self.end_year = 2080
-        self.evolution_data = {
+        self.tech_evolution = {
             "tech_trees": {},
             "last_updated": datetime.now().isoformat()
         }
+        
+        # Create logs directory
+        self.log_dir = "logs/tech_evolution"
+        os.makedirs(self.log_dir, exist_ok=True)
 
     def get_tech_evolution(self):
         """Get the most recently saved tech evolution file"""
@@ -79,7 +75,7 @@ class TechEvolutionGenerator:
         
         return {
             **saved_data.get("tech_trees", {}),
-            **self.evolution_data.get("tech_trees", {})
+            **self.tech_evolution.get("tech_trees", {})
         }
 
     def _process_emerging_tech(self, previous_tech, prev_data):
@@ -113,60 +109,66 @@ class TechEvolutionGenerator:
 
     def generate_epoch_tech_tree(self, epoch_year):
         try:
+            # Create log file with timestamp and epoch
+            timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+            log_path = f"{self.log_dir}/epoch_{epoch_year}_{timestamp}.txt"
+            
             previous_tech = self.get_previous_technologies(epoch_year)
             years_from_base = epoch_year - self.base_year
+            
             acceleration_factor = math.exp(years_from_base / 30)
+            emerging_tech = json.dumps(previous_tech.get('emerging', []), indent=2)
+            mainstream_tech = json.dumps(previous_tech.get('mainstream', []), indent=2)
 
-            prompt = f"""Generate technological advancements for the period {epoch_year} to {epoch_year + 5}. 
+            prompt = f"""Generate technological advancements from {epoch_year} to {epoch_year + 5}. 
 
             CONTEXT:
             - Current epoch: {epoch_year}
-            - Years from 2025: {years_from_base}
-            - Tech acceleration (exponential growth): {acceleration_factor:.2f}x faster than in 2025
-            - Previous emerging technologies: {json.dumps(previous_tech.get('emerging', []))}
-            - Current mainstream technologies: {json.dumps(previous_tech.get('mainstream', []))}
+            - Years since 2025: {years_from_base}
+            - Tech growth rate: {acceleration_factor:0.2f}x faster than in 2025
+            - Prior technologies include:
+                * Emerging: {emerging_tech}
+                * Mainstream: {mainstream_tech}
 
-            DEVELOPMENT GUIDELINES:
+            GUIDELINES FOR TECHNOLOGY DEVELOPMENT:
 
-            1. FOCUS AREAS & INTEGRATIONS:
-                - **Artificial Intelligence**: 
-                    * AI Coding Assistants (like @cursor_ai, Copilot)
-                    * Impact on software development practices
-                    * Evolution from code completion to full development automation
-                    * Integration with version control and deployment
-                    * Real-time collaborative coding and debugging
-                    * Encompasses advancements in machine learning, automation, and intelligent systems across various applications.
-                - **Autonomous Systems**: Involves self-operating technologies across transportation, infrastructure, and daily life.
-                - **Neural Technology**: Explores human-computer interactions, brain interfaces, and enhanced cognitive tools.
-                - **Space Exploration**: Envisions humanity’s ventures into space, including settlement, resource management, and exploration.
-                - **Sustainable Technology**: Focuses on energy efficiency, environmental resilience, and sustainability-driven innovations.
-                - **Digital Infrastructure**: Centers on privacy, security, and advancements in digital infrastructure for a connected world.
+            1. **FOCUS AREAS**:
+            - **Artificial Intelligence**: Envision a progression from AI assistants to fully automated development, impacting software practices and human-computer interaction. This may include life extension, cognitive enhancement, and development automation.
+            - **Autonomous Systems**: Extend advancements in self-operating tech across transport, infrastructure, and resource management, reaching multi-planetary and urban-scale applications.
+            - **Neural Interfaces**: Develop human-computer interface tech (e.g., brain-to-machine connections, cognitive tools). Include speculative possibilities like mind uploading, memory storage, or digital consciousness.
+            - **Space Exploration**: Envision humanity's ventures beyond Earth, such as lunar and Mars bases, planetary resource management, and technology for interplanetary travel.
+            - **Sustainable Technology**: Focus on developments addressing climate challenges, clean energy, and environmental resilience with impacts on long-term planetary health.
+            - **Digital Infrastructure**: Prioritize privacy, security, blockchain advancements, and other foundational technologies for a connected, secure digital world.
 
-            2. DEVELOPMENT PRINCIPLES:
-                - **Exponential Growth**: Technologies should develop at an exponential rate, with earlier emergence and faster sophistication due to compounding advancements.
-                - **Stage-Based Evolution**: Major technologies should appear as emerging stages, prototypes, or early versions before maturing into mainstream applications.
-                - **Practical Applications**: Prioritize technologies that offer practical and tangible benefits, and consider real-world constraints for societal adoption.
-                - **Societal Impact**: Emphasize technologies that consider ethical implications, regulatory challenges, and social adoption factors.
-                - **Blockchain Integration**: Include blockchain innovations where applicable, especially in areas of security, privacy, and digital infrastructure.
-                - **Balance**: Aim for a mix of breakthrough and incremental improvements to reflect the diverse pace of tech development.
-                - **Developer Tools Evolution**:
-                    * Track progression from basic code completion to advanced pair programming
-                    * Consider impact on software development lifecycle
-                    * Note changes in how developers work and learn
-                    * Include social coding and knowledge sharing aspects
+            2. **INSPIRATION FROM INDUSTRY LEADERS**:
+            Prominent companies likely influencing each area include:
+                - **Tesla**: Sustainable energy, electric vehicles, and autonomous driving systems.
+                - **SpaceX**: Space exploration, interplanetary travel, and Mars colonization.
+                - **Neuralink**: Neural tech, brain-machine interfaces, and cognitive enhancement.
+                - **Boring Company**: Infrastructure tech, urban transport tunnels, and autonomous systems.
+                - **xAI**: Advanced AI, automated development, and collaborative problem-solving.
 
-            3. EXCLUDE:
-                - Isolated developments without clear predecessors or dependencies.
-                - Overly futuristic breakthroughs without foundational technologies.
-                - Technologies with no foreseeable path to real-world impact or adoption.
+            3. **DEVELOPMENT PRINCIPLES**:
+            - **Exponential Growth**: Technologies should evolve at an accelerated rate, compounding prior advancements to reach breakthroughs sooner.
+            - **Stage-Based Evolution**: Major tech should first appear in early forms or experimental stages before reaching full mainstream adoption.
+            - **Practical Applications**: Emphasize advancements with tangible, real-world applications; describe societal or industry-specific impacts.
+            - **Societal and Ethical Considerations**: Note any societal impacts or regulatory challenges, especially around privacy, security, and human augmentation.
+            - **Blockchain Integration**: Where applicable, reference blockchain innovations in security, transparency, or decentralized governance.
+
+            4. **FORMAT AND STRUCTURE**:
+            - Exclude isolated tech with no connection to prior advancements or foundations.
+            - Avoid highly speculative, far-future developments without credible paths.
+
+            Ensure each new technology builds on prior epochs to maintain continuity in the narrative.
+
 
             RETURN FORMAT (JSON):
             {{
                 "emerging_technologies": [
                     {{
                         "name": "technology name",
-                        "probability": 0.0-1.0,
-                        "estimated_year": YYYY,
+                        "probability": "0.0 to 1.0",
+                        "estimated_year": "YYYY",
                         "innovation_type": "incremental|breakthrough",
                         "dependencies": ["tech1", "tech2"],
                         "impact_areas": ["area1", "area2"],
@@ -179,9 +181,9 @@ class TechEvolutionGenerator:
                     {{
                         "name": "technology name",
                         "from_emerging": true,
-                        "original_emergence_year": YYYY,
-                        "maturity_year": YYYY,
-                        "impact_level": 1-10,
+                        "original_emergence_year": "YYYY",
+                        "maturity_year": "YYYY",
+                        "impact_level": "1 to 10",
                         "description": "brief description",
                         "adoption_status": "adoption analysis"
                     }}
@@ -197,8 +199,11 @@ class TechEvolutionGenerator:
                 ]
             }}
             """
-            # print(prompt)
-            
+            # Log prompt before API call
+            with open(log_path, 'w', encoding='utf-8') as f:
+                f.write(f"=== PROMPT FOR EPOCH {epoch_year} ===\n")
+                f.write(prompt)
+                
             print("\nSending request to API...")
             response = self.client.messages.create(
                 model=self.model,
@@ -214,32 +219,65 @@ class TechEvolutionGenerator:
             # Process response
             if hasattr(response, 'content') and len(response.content) > 0:
                 text_content = response.content[0].text
-                clean_response = text_content.replace('```json\n', '').replace('```', '').strip()
-                print(clean_response)
+                print("Got text content from response")
+                
+                # Log raw response
+                with open(log_path, 'a', encoding='utf-8') as f:
+                    f.write("\n\n=== RAW RESPONSE ===\n")
+                    f.write(text_content)
+                
                 try:
+                    clean_response = text_content.replace('```json\n', '').replace('```', '').strip()
                     tree_data = json.loads(clean_response)
+                    
+                    # Log parsed JSON
+                    with open(log_path, 'a', encoding='utf-8') as f:
+                        f.write("\n\n=== PARSED JSON ===\n")
+                        f.write(json.dumps(tree_data, indent=2))
+                    
                     # Validate the structure
                     required_keys = ['emerging_technologies', 'mainstream_technologies', 'epoch_themes']
                     if not all(key in tree_data for key in required_keys):
-                        raise ValueError(f"Missing required keys in response. Got: {list(tree_data.keys())}")
+                        error_msg = f"Missing required keys in response. Got: {list(tree_data.keys())}"
+                        print(error_msg)  # Add debug print
+                        with open(log_path, 'a', encoding='utf-8') as f:
+                            f.write("\n\n=== VALIDATION ERROR ===\n")
+                            f.write(error_msg)
+                        raise ValueError(error_msg)
                     
                     # Add epoch identifier and store the data
                     tree_data["epoch_year"] = epoch_year
-                    self.evolution_data["tech_trees"][str(epoch_year)] = tree_data
+                    self.tech_evolution["tech_trees"][str(epoch_year)] = tree_data
                     
                     print(f"\nGenerated for {epoch_year}:")
                     print(f"- Emerging technologies: {len(tree_data['emerging_technologies'])}")
                     print(f"- Mainstream technologies: {len(tree_data['mainstream_technologies'])}")
                     print(f"- Epoch themes: {len(tree_data['epoch_themes'])}")
                     
+                    # Log summary
+                    with open(log_path, 'a', encoding='utf-8') as f:
+                        f.write("\n\n=== GENERATION SUMMARY ===\n")
+                        f.write(f"Epoch: {epoch_year}\n")
+                        f.write(f"Emerging technologies: {len(tree_data['emerging_technologies'])}\n")
+                        f.write(f"Mainstream technologies: {len(tree_data['mainstream_technologies'])}\n")
+                        f.write(f"Epoch themes: {len(tree_data['epoch_themes'])}\n")
+                    
                     return tree_data
                     
                 except json.JSONDecodeError as e:
-                    print(f"JSON parse error: {e}")
-                    print("Clean response:", clean_response[:500])  # Print first 500 chars
+                    error_msg = f"JSON parse error: {e}\nClean response: {clean_response[:500]}"
+                    # Log parsing error
+                    with open(log_path, 'a', encoding='utf-8') as f:
+                        f.write("\n\n=== PARSING ERROR ===\n")
+                        f.write(error_msg)
                     raise ValueError("Could not parse response as JSON")
             else:
-                raise ValueError("No content received in response")
+                error_msg = "No content received in response"
+                # Log empty response error
+                with open(log_path, 'a', encoding='utf-8') as f:
+                    f.write("\n\n=== ERROR ===\n")
+                    f.write(error_msg)
+                raise ValueError(error_msg)
                 
         except Exception as e:
             print(f"Failed to generate tech tree for {epoch_year}: {e}")
@@ -262,7 +300,7 @@ class TechEvolutionGenerator:
                     
                     # Merge tech trees
                     existing_trees = existing_content.get('tech_trees', {})
-                    existing_trees.update(self.evolution_data.get('tech_trees', {}))
+                    existing_trees.update(self.tech_evolution.get('tech_trees', {}))
                     
                     # Create updated content
                     updated_content = {
@@ -270,13 +308,13 @@ class TechEvolutionGenerator:
                         'last_updated': datetime.now().isoformat()
                     }
                 else:
-                    updated_content = self.evolution_data
+                    updated_content = self.tech_evolution
                 
                 print(f"Total tech trees after merge: {len(updated_content['tech_trees'])}")
                 
             except Exception as e:
                 print(f"No existing file found or error: {e}")
-                updated_content = self.evolution_data
+                updated_content = self.tech_evolution
                 sha = None
 
             # Convert to JSON string before saving

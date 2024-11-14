@@ -2,22 +2,37 @@ from src.storage.github_operations import GithubOperations
 from src.generation.tech_evolution_generator import TechEvolutionGenerator
 from src.generation.digest_generator import DigestGenerator
 from src.generation.tweet_generator import TweetGenerator
+from src.utils.config import Config, AIProvider
+from anthropic import Anthropic
 
+import anthropic
 import json
 from datetime import datetime, timedelta
 import math
+import traceback
 
 class SimulationWorkflow:
-    def __init__(self, tweets_per_year=96):
-        self.tweet_gen = TweetGenerator()
+    def __init__(self, tweets_per_year=96, provider: AIProvider = AIProvider.XAI):
+        ai_config = Config.get_ai_config(provider)
+        if provider == AIProvider.ANTHROPIC:
+            self.client = Anthropic(api_key=ai_config.api_key)
+        elif provider == AIProvider.XAI:
+            self.client = Anthropic( 
+                api_key=ai_config.api_key,
+                base_url=ai_config.base_url
+            )
+        self.model = ai_config.model
+
+        self.tweet_gen = TweetGenerator(self.client, self.model)
         self.github_ops = GithubOperations()
+        
         self.tweets_per_year = tweets_per_year
         self.digest_interval = tweets_per_year // 8
         self.tech_preview_tweets = 60
         
         self.start_date = datetime(2025, 1, 1)
         self.days_per_tweet = 365 / tweets_per_year
-        self.start_age = 22
+        self.start_age = 22.0
         
     def get_current_date(self, tweet_count):
         """Calculate current simulation date based on tweet count"""
@@ -47,19 +62,30 @@ class SimulationWorkflow:
                 tweet_count = 0
                 current_date = self.start_date
                 current_age = self.start_age
+                current_date
             
             print(f"Current tweet count: {tweet_count}")
             print(f"Current simulation date: {current_date.strftime('%Y-%m-%d')}")
             print(f"Current age: {current_age:.2f}")
             
-            # 1. Check/Generate tech evolution
-            tech_gen = TechEvolutionGenerator()
+            # 1. Initialize components with current state
+            tech_gen = TechEvolutionGenerator(self.github_ops, self.client, self.model)
+            digest_gen = DigestGenerator(
+                github_ops=self.github_ops,
+                client=self.client,
+                model=self.model,
+                simulation_time=current_date.strftime('%Y-%m-%d'),
+                simulation_age=current_age,
+                tweet_count=tweet_count
+            )
+            
+            # 2. Check/Generate tech evolution
             if not tech_gen.get_tech_evolution():
                 print("Generating initial tech evolution...")
                 tech_gen.generate_epoch_tech_tree(tech_gen.base_year)
                 tech_gen.save_evolution_data()
             
-            # 2. Check if new tech evolution needed
+            # 3. Check if new tech evolution needed
             current_year = current_date.year
             next_epoch = current_year + (5 - (current_year % 5))
             
@@ -70,8 +96,7 @@ class SimulationWorkflow:
                 tech_gen.generate_epoch_tech_tree(next_epoch)
                 tech_gen.save_evolution_data()
             
-            # 3. Check/Generate digest
-            digest_gen = DigestGenerator()
+            # 4. Check/Generate digest
             latest_digest = digest_gen.get_latest_digest()
             
             def is_digest_empty(digest):
@@ -84,24 +109,18 @@ class SimulationWorkflow:
                 return True
             
             if is_digest_empty(latest_digest):
-                print("Generating initial digest...")
+                print("Generating initial digest from historical tweets...")
                 # Get historical tweets from XaviersSim.json
                 xavier_sim_content, _ = self.github_ops.get_file_content('XaviersSim.json')
-                historical_tweets = []
                 if xavier_sim_content and isinstance(xavier_sim_content, dict):
-                    for age_range, tweets in xavier_sim_content.items():
-                        historical_tweets.extend(tweets)
-                
-                simulation_time = current_date.strftime('%Y-%m-%d')
-                latest_digest = digest_gen.generate_digest(
-                    simulation_time=simulation_time,
-                    simulation_age=current_age,
-                    tweet_count=tweet_count,
-                    latest_digest=None,
-                    recent_tweets=historical_tweets  # Pass historical tweets for initial context
-                )
+                    print("Processing historical tweets by age brackets...")
+                    latest_digest = digest_gen.generate_first_digest(xavier_sim_content)
+                    if latest_digest:
+                        print("Successfully generated first digest")
+                    else:
+                        print("Failed to generate first digest")
             
-            # 4. Check if new digest needed
+            # 5. Check if new digest needed
             if latest_digest:
                 # Get the tweet count from the last digest's metadata
                 last_digest_tweet_count = latest_digest.get('metadata', {}).get('tweet_count', 0)
@@ -124,11 +143,11 @@ class SimulationWorkflow:
                         latest_digest=latest_digest
                     )
 
-            # 5. Extract values from latest digest
+            # 6. Extract values from latest digest
             simulation_time = latest_digest.get('metadata', {}).get('simulation_time')
             simulation_age = latest_digest.get('metadata', {}).get('simulation_age')
             
-            # 6. Generate and store new tweet
+            # 7. Generate and store new tweet
             new_tweet = self.tweet_gen.generate_tweet( 
                 latest_digest=latest_digest,
                 recent_tweets=ongoing_tweets[-self.digest_interval:] if ongoing_tweets else None,
@@ -151,14 +170,12 @@ class SimulationWorkflow:
                 print(f"Generated tweet for {next_date.strftime('%Y-%m-%d')} (age {next_age:.2f}): {new_tweet}")
             
         except Exception as e:
-            print(f"Error in simulation workflow: {e}")
-            import traceback
+            print(f"Error in simulation workflow: {str(e)}")
             traceback.print_exc()
 
 def main():
     workflow = SimulationWorkflow()
-    while True: 
-        workflow.run()
+    workflow.run()
 
 if __name__ == "__main__":
     main() 

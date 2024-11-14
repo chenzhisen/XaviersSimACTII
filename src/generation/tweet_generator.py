@@ -7,18 +7,67 @@ from utils.config import Config, AIProvider
 from anthropic import Anthropic
 import re
 import os
+from collections import deque
+from typing import List, Dict, Any
 
 class TweetGenerator:
-    def __init__(self):
+    def __init__(self, client, model):
         self.github_ops = GithubOperations()
         self.tweets_per_year = 96
         self.digest_interval = self.tweets_per_year // 8  # ~12 tweets, about 1.5 months
         # Initialize Anthropic client
-        xai_config = Config.get_ai_config(AIProvider.XAI)
-        self.client = Anthropic(
-            api_key=xai_config.api_key,
-            base_url=xai_config.base_url
-        )
+        self.client = client
+        self.model = model
+        self.recent_prompts = deque(maxlen=3)  # Track recent prompts to avoid repetition
+        self.prompt_weights = self.get_prompt_weights_for_age()
+
+    def get_prompt_weights_for_age(self):
+        """Define prompt weights based on Xavier's age."""
+        if 18 <= self.age <= 25:  # Early Career
+            return {
+                "Daily Reflection": 0.20,
+                "Professional Update": 0.25,
+                "Relationship Insights": 0.20,
+                "Current Technology Observations": 0.15,
+                "Major Events and Changes": 0.10,
+                "Current Events Response": 0.05,
+                "Engagement Response": 0.05
+            }
+        elif 26 <= self.age <= 45:  # Mid-Life Career Growth
+            return {
+                "Daily Reflection": 0.15,
+                "Professional Update": 0.30,
+                "Relationship Insights": 0.20,
+                "Current Technology Observations": 0.20,
+                "Major Events and Changes": 0.10,
+                "Current Events Response": 0.05,
+                "Engagement Response": 0.05
+            }
+        elif 46 <= self.age <= 72:  # Late Career & Legacy
+            return {
+                "Daily Reflection": 0.20,
+                "Professional Update": 0.20,
+                "Relationship Insights": 0.20,
+                "Current Technology Observations": 0.20,
+                "Major Events and Changes": 0.10,
+                "Current Events Response": 0.05,
+                "Engagement Response": 0.05
+            }
+        else:
+            return {}  # Default empty if age is out of expected range
+
+    def select_prompt_type(self):
+        """Select a prompt type based on weighted probabilities, avoiding recent repeats."""
+        prompt_choices = list(self.prompt_weights.keys())
+        weights = [self.prompt_weights[prompt] for prompt in prompt_choices]
+
+        # Choose a prompt, avoiding recent repetitions
+        while True:
+            selected_prompt = random.choices(prompt_choices, weights=weights, k=1)[0]
+            if selected_prompt not in self.recent_prompts:
+                self.recent_prompts.append(selected_prompt)
+                return selected_prompt
+
 
     def generate_tweet(self, latest_digest=None, recent_tweets=None, recent_comments=None, tweet_count=0):
         """Generate a new tweet based on context"""
@@ -49,6 +98,167 @@ class TweetGenerator:
             print(f"Error generating tweet: {e}")
             traceback.print_exc()
             return None
+
+    def daily_reflection_prompt(self) -> Dict[str, str]:
+        system_prompt = """
+        You are Xavier, a 23-year-old on a journey to explore technology, relationships, and personal growth. 
+        Generate a reflective, introspective tweet based on recent events and experiences from Xavier's life. 
+        Consider Xavier's current focus on self-discovery, the impact of technology on life, and any recent 
+        developments or experiences he may have had.
+        """
+        
+        user_prompt = f"""
+        Based on the following context, create a tweet where Xavier reflects on his day or recent thoughts 
+        in a way that feels personal and introspective.
+
+        CONTEXT:
+        - Digest: {self.digest.get('Reflections', {}).get('historical_summary', [])}
+        - Short-Term Goals: {self.digest.get('Reflections', {}).get('projected_short', [])}
+        - Long-Term Goals: {self.digest.get('Reflections', {}).get('projected_long', [])}
+        - Recent Tweets: {self.recent_tweets}
+        - Comments on Recent Tweets: {self.comments_to_recent_tweets}
+
+        Make sure the reflection feels authentic, with Xavier contemplating technology, his relationships, 
+        or life choices. Limit the reflection to a tweet length.
+        """
+        
+        return {"system": system_prompt, "user": user_prompt}
+
+    def professional_update_prompt(self) -> Dict[str, str]:
+        system_prompt = """
+        You are Xavier, a young professional with a passion for technology, blockchain, and personal growth. 
+        Generate a tweet that shares an update on Xavier's recent professional activities, accomplishments, 
+        or future ambitions in a way that is authentic and aligned with his career path.
+        """
+        
+        user_prompt = f"""
+        Based on the following context, create a tweet for Xavier that highlights his recent professional 
+        progress, new skills, or career ambitions in technology and blockchain.
+
+        CONTEXT:
+        - Professional History: {self.digest.get('Professional', {}).get('historical_summary', [])}
+        - Professional Short-Term Goals: {self.digest.get('Professional', {}).get('projected_short', [])}
+        - Professional Long-Term Goals: {self.digest.get('Professional', {}).get('projected_long', [])}
+        - Recent Tweets: {self.recent_tweets}
+        - Major Twitter Trends in Technology: {self.major_twitter_trends}
+
+        Make sure the tweet reflects Xavier’s professional development in a way that shows excitement 
+        or progress in his field, especially regarding blockchain and technology.
+        """
+        
+        return {"system": system_prompt, "user": user_prompt}
+
+    def relationship_insights_prompt(self) -> Dict[str, str]:
+        system_prompt = """
+        You are Xavier, reflecting on friendships and relationships as you navigate young adulthood. 
+        Generate a tweet where Xavier shares an insight or experience related to his social connections, 
+        romantic interests, or interpersonal growth.
+        """
+        
+        user_prompt = f"""
+        Using the context provided, create a tweet where Xavier reflects on his relationships, recent 
+        friendship experiences, or personal insights about social interactions. 
+
+        CONTEXT:
+        - Relationship History: {self.digest.get('New Relationships and Conflicts', {}).get('historical_summary', [])}
+        - Relationship Short-Term Goals: {self.digest.get('New Relationships and Conflicts', {}).get('projected_short', [])}
+        - Relationship Long-Term Goals: {self.digest.get('New Relationships and Conflicts', {}).get('projected_long', [])}
+        - Recent Tweets: {self.recent_tweets}
+        - Comments to Recent Tweets: {self.comments_to_recent_tweets}
+
+        The tweet should feel personal and sincere, providing insight into Xavier’s experiences or challenges 
+        in friendships, dating, or personal growth.
+        """
+        
+        return {"system": system_prompt, "user": user_prompt}
+
+    def technology_observations_prompt(self) -> Dict[str, str]:
+        system_prompt = """
+        You are Xavier, fascinated by advancements in technology and their impact on society. 
+        Generate a tweet where Xavier shares a recent observation, thought, or question about emerging technologies 
+        in his field, such as blockchain, AI, or any tech-related trends he finds intriguing.
+        """
+        
+        user_prompt = f"""
+        Create a tweet where Xavier reflects on current trends or technological developments in blockchain, AI, 
+        or any other fields of interest.
+
+        CONTEXT:
+        - Technology Trends: {self.digest.get('Technology Influences', {}).get('upcoming_trends', [])}
+        - Societal Shifts: {self.digest.get('Technology Influences', {}).get('societal_shifts', [])}
+        - Recent Tweets on Technology: {self.recent_tweets}
+        - Major Twitter Trends in Technology: {self.major_twitter_trends}
+
+        Make sure Xavier’s observations feel relevant to his interests in technology and are connected to 
+        broader technological or societal trends.
+        """
+        
+        return {"system": system_prompt, "user": user_prompt}
+
+    def major_events_prompt(self) -> Dict[str, str]:
+        system_prompt = """
+        You are Xavier, reflecting on significant recent changes, decisions, or life events. 
+        Generate a tweet where Xavier shares a personal milestone or important change in his life, 
+        highlighting how he feels or his thoughts about this shift.
+        """
+        
+        user_prompt = f"""
+        Based on the following context, create a tweet for Xavier that captures a major life change, 
+        decision, or recent milestone.
+
+        CONTEXT:
+        - Major Life Events History: {self.digest.get('Major Events', {}).get('historical_summary', [])}
+        - Major Events Short-Term Goals: {self.digest.get('Major Events', {}).get('projected_short', [])}
+        - Major Events Long-Term Goals: {self.digest.get('Major Events', {}).get('projected_long', [])}
+        - Recent Tweets: {self.recent_tweets}
+        - Comments to Recent Tweets: {self.comments_to_recent_tweets}
+
+        Ensure the tweet feels impactful and reflective of a pivotal moment in Xavier’s life, 
+        such as moving to a new place, starting a new job, or a significant decision.
+        """
+        
+        return {"system": system_prompt, "user": user_prompt}
+
+    def current_events_response_prompt(self) -> Dict[str, str]:
+        system_prompt = """
+        You are Xavier, reflecting on recent global events from a future perspective. Generate a tweet where 
+        Xavier comments on a major current event as if it has already happened, sharing his future insights or 
+        reflections on its impact.
+        """
+        
+        user_prompt = f"""
+        Create a tweet where Xavier shares his thoughts on a recent major global event from a future perspective, 
+        using the past tense to suggest it has already occurred.
+
+        CONTEXT:
+        - Major Twitter Trends: {self.major_twitter_trends}
+        - Recent Tweets: {self.recent_tweets}
+        - Relevant Technology and Societal Shifts: {self.digest.get('Technology Influences', {}).get('societal_shifts', [])}
+
+        This tweet should feel relevant, insightful, and reflect Xavier’s unique perspective on technology, 
+        society, or culture in response to current events.
+        """
+        
+        return {"system": system_prompt, "user": user_prompt}
+
+    def engagement_response_prompt(self) -> Dict[str, str]:
+        system_prompt = """
+        You are Xavier, actively engaging with your followers. Generate a tweet where Xavier responds to 
+        a recent comment, acknowledges followers, or incorporates their input into his ongoing narrative.
+        """
+        
+        user_prompt = f"""
+        Using the context below, create a tweet where Xavier responds to a recent comment, engages with 
+        followers, or includes their perspectives into his own thoughts.
+
+        CONTEXT:
+        - Recent Comments to Tweets: {self.comments_to_recent_tweets}
+        - Recent Tweets: {self.recent_tweets}
+
+        Make this tweet feel engaging and conversational, as if Xavier is interacting directly with his audience.
+        """
+        
+        return {"system": system_prompt, "user": user_prompt}
 
     def _generate_single_tweet(self, latest_digest=None, recent_tweets=None, recent_comments=None, tweet_count=0, force_new_topic=False):
         """Generate a single tweet attempt with two-step process"""
@@ -303,307 +513,6 @@ class TweetGenerator:
         except Exception as e:
             print(f"Error saving ongoing tweets: {e}")
 
-    def _analyze_patterns(self, tweets):
-        """Analyze patterns while allowing natural story progression"""
-        patterns = []
-        contents = [t['content'] if isinstance(t, dict) else t for t in tweets]
-        
-        # Get tweet count to determine story phase
-        tweet_count = len(contents)
-        
-        # Basic readability patterns (always check)
-        self._check_position_patterns(contents, patterns)
-        self._check_structure_patterns(contents, patterns)
-        
-        # Story-sensitive pattern checks
-        if tweet_count < 50:  # Early story
-            # More flexible in early stages
-            self._check_basic_variety(contents, patterns)
-        else:  # Later story
-            # Allow focused themes but check for extreme repetition
-            topic_balance = self._check_topic_balance(contents, patterns)
-            
-            # If story is naturally focusing on $XVI, don't fight it
-            if topic_balance.get('$XVI', 0) > 50:
-                patterns = [p for p in patterns if not p.startswith("High focus on $XVI")]
-                patterns.append("NOTE: Natural story focus on $XVI detected - allowing concentration")
-        
-        # Meta analysis
-        if len(patterns) > 3:
-            patterns.append("Multiple pattern types detected - need more variation")
-            
-        # Add overall style recommendation
-        if patterns:
-            patterns.append("\nRECOMMENDATION: Try a completely different approach in:")
-            patterns.append("- Sentence structure (simple/compound)")
-            patterns.append("- Subject focus (self/others/tech)")
-            patterns.append("- Emotional tone (neutral/excited/reflective)")
-            patterns.append("- Time perspective (past/present/future)")
-        
-        return patterns
-
-    def _check_semantic_patterns(self, contents, patterns):
-        """Check for repeated themes and concepts"""
-        semantic_categories = {
-            'Tech concepts': ['AI', 'blockchain', 'crypto', 'smart contract', 'decentralized', '$XVI'],
-            'Emotions': ['excited', 'nervous', 'curious', 'wondering', 'thinking'],
-            'Activities': ['coding', 'meeting', 'working', 'building', 'developing'],
-            'Time references': ['tomorrow', 'next week', 'soon', 'later', 'tonight'],
-            'Progress markers': ['milestone', 'breakthrough', 'progress', 'achievement', 'level up']
-        }
-        
-        for category, terms in semantic_categories.items():
-            repeated_terms = []
-            for term in terms:
-                count = sum(1 for c in contents if term.lower() in c.lower())
-                if count > 1:
-                    repeated_terms.append(f"'{term}' ({count}x)")
-            if repeated_terms:
-                patterns.append(f"Repeated {category}: {', '.join(repeated_terms)}")
-
-    def _check_contextual_patterns(self, contents, patterns):
-        """Check for repeated context or situation types"""
-        context_types = {
-            'Meeting patterns': ['coffee with', 'met with', 'catching up', 'chatting with'],
-            'Work patterns': ['project', 'deadline', 'working on', 'building'],
-            'Learning patterns': ['learned', 'discovered', 'figured out', 'realized'],
-            'Future plans': ['planning to', 'going to', 'about to', 'will be']
-        }
-        
-        for context, phrases in context_types.items():
-            repeated = []
-            for phrase in phrases:
-                count = sum(1 for c in contents if phrase.lower() in c.lower())
-                if count > 1:
-                    repeated.append(f"'{phrase}' ({count}x)")
-            if repeated:
-                patterns.append(f"Repeated {context}: {', '.join(repeated)}")
-
-    def _check_narrative_patterns(self, contents, patterns):
-        """Check for repeated storytelling patterns"""
-        arcs = {
-            'Problem-solution': ['challenge...solved', 'issue...fixed', 'bug...resolved'],
-            'Discovery': ['just found', 'discovered', 'realized'],
-            'Progress update': ['update on', 'progress with', 'moving forward with'],
-            'Reflection-action': ['thinking about...time to', 'wondering if...lets', 'considering...maybe']
-        }
-        
-        for arc_type, patterns_list in arcs.items():
-            for pattern in patterns_list:
-                parts = pattern.split('...')
-                if len(parts) == 2:
-                    start, end = parts
-                    count = sum(1 for c in contents 
-                              if start.lower() in c.lower() and end.lower() in c.lower())
-                    if count > 1:
-                        patterns.append(f"Repeated {arc_type} pattern: '{pattern}' ({count}x)")
-
-    def _check_interaction_patterns(self, contents, patterns):
-        """Check for repeated interaction types"""
-        interaction_types = {
-            'Social': ['met with', 'talked to', 'connected with'],
-            'Professional': ['meeting with', 'interviewed', 'presented to'],
-            'Community': ['community', 'group', 'team', 'network'],
-            'Learning': ['learned from', 'taught by', 'mentored by']
-        }
-        
-        for int_type, phrases in interaction_types.items():
-            repeated = []
-            for phrase in phrases:
-                count = sum(1 for c in contents if phrase.lower() in c.lower())
-                if count > 1:
-                    repeated.append(f"'{phrase}' ({count}x)")
-            if repeated:
-                patterns.append(f"Repeated {int_type} interactions: {', '.join(repeated)}")
-
-    def _check_temporal_patterns(self, contents, patterns):
-        """Check for patterns in time progression"""
-        temporal_markers = {
-            'Future references': ['soon', 'next', 'upcoming', 'planning'],
-            'Past references': ['just', 'earlier', 'yesterday', 'last week'],
-            'Continuous': ['still', 'keeping', 'continuing', 'ongoing'],
-            'Transitions': ['now', 'finally', 'at last', 'beginning']
-        }
-        
-        for marker_type, phrases in temporal_markers.items():
-            repeated = []
-            for phrase in phrases:
-                count = sum(1 for c in contents if phrase.lower() in c.lower())
-                if count > 1:
-                    repeated.append(f"'{phrase}' ({count}x)")
-            if repeated:
-                patterns.append(f"Repeated {marker_type}: {', '.join(repeated)}")
-
-    def _check_position_patterns(self, contents, patterns):
-        """Check patterns at specific positions in tweets"""
-        # Start patterns
-        starts = [c.split()[0].lower() for c in contents]
-        if len(set(starts)) < len(starts):
-            patterns.append(f"Repeated starting words: {', '.join(set(w for w in starts if starts.count(w) > 1))}")
-        
-        # End patterns
-        endings = [c.split('.')[-1].strip().lower() for c in contents]
-        if len(set(endings)) < len(endings):
-            patterns.append(f"Repeated ending phrases: {', '.join(set(e for e in endings if endings.count(e) > 1))}")
-
-    def _check_phrase_patterns(self, contents, patterns):
-        """Check for repeated phrases and expressions"""
-        # Common phrases to watch for
-        phrase_categories = {
-            'Time markers': ['today', 'just', 'finally', 'now'],
-            'Action starters': ['time to', 'going to', 'about to', 'trying to'],
-            'Transitions': ['turns out', 'looks like', 'seems like'],
-            'Reflective': ['thinking about', 'wondering if', 'realizing that'],
-            'Conclusive': ['in the end', 'after all', 'at last'],
-        }
-        
-        # Check each category
-        for category, phrases in phrase_categories.items():
-            repeated_phrases = []
-            for phrase in phrases:
-                count = sum(1 for c in contents if phrase in c.lower())
-                if count > 1:
-                    repeated_phrases.append(f"'{phrase}' ({count}x)")
-            if repeated_phrases:
-                patterns.append(f"Repeated {category}: {', '.join(repeated_phrases)}")
-
-    def _check_structure_patterns(self, contents, patterns):
-        """Check for structural patterns in tweets"""
-        # Sentence types
-        structures = [self._get_sentence_structure(c) for c in contents]
-        struct_counts = {s: structures.count(s) for s in set(structures)}
-        if any(count > 1 for count in struct_counts.values()):
-            patterns.append(f"Repeated sentence structures: {', '.join(f'{k} ({v}x)' for k, v in struct_counts.items() if v > 1)}")
-        
-        # Question patterns
-        questions = [c for c in contents if c.endswith('?')]
-        if len(questions) > 1:
-            question_starts = [q.split()[0].lower() for q in questions]
-            if len(set(question_starts)) < len(question_starts):
-                patterns.append("Similar question structures")
-        
-        # Emotional markers
-        exclamations = sum(1 for c in contents if c.endswith('!'))
-        if exclamations > 1:
-            patterns.append(f"Multiple exclamation endings ({exclamations}x)")
-
-    def _get_sentence_structure(self, text):
-        """Analyze sentence structure more comprehensively"""
-        text_lower = text.lower()
-        
-        # Basic structure
-        if text.endswith('?'):
-            if text_lower.startswith(('what if', 'could ', 'what ', 'why ')):
-                return 'rhetorical_question'
-            return 'question'
-        elif text.endswith('!'):
-            return 'exclamation'
-            
-        # Common patterns
-        if any(text_lower.startswith(p) for p in ['today', 'just', 'finally']):
-            return 'time_marker_start'
-        if any(p in text_lower for p in ['time to', 'going to']):
-            return 'action_intention'
-        if text_lower.startswith(('thinking', 'wondering', 'realizing')):
-            return 'reflection'
-            
-        return 'statement'
-
-    def _check_emotional_patterns(self, contents, patterns):
-        """Check for repeated emotional expressions"""
-        emotion_types = {
-            'Excitement': ['excited', 'thrilled', 'can\'t wait', 'amazing', 'incredible'],
-            'Uncertainty': ['maybe', 'perhaps', 'wondering', 'not sure', 'might'],
-            'Determination': ['will', 'must', 'need to', 'going to', 'have to'],
-            'Reflection': ['thinking about', 'reflecting on', 'realizing', 'understanding'],
-            'Gratitude': ['thankful', 'grateful', 'appreciate', 'blessed', 'lucky']
-        }
-        
-        for emotion, phrases in emotion_types.items():
-            count = sum(1 for c in contents for p in phrases if p.lower() in c.lower())
-            if count > 1:
-                patterns.append(f"Repeated {emotion.lower()} expressions ({count}x)")
-
-    def _check_subject_patterns(self, contents, patterns):
-        """Check for repeated subject focus"""
-        subjects = {
-            'Self-focused': ['I ', 'my ', 'me ', 'myself'],
-            'Project-focused': ['$XVI', 'project', 'code', 'system'],
-            'People-focused': ['team', 'community', 'people', 'everyone'],
-            'Tech-focused': ['AI', 'blockchain', 'algorithm', 'data']
-        }
-        
-        for focus, terms in subjects.items():
-            count = sum(1 for c in contents for t in terms if t.lower() in c.lower())
-            if count > len(contents)/2:  # If more than half the tweets focus on same subject
-                patterns.append(f"Over-emphasis on {focus.lower()} subjects")
-
-    def _check_complexity_patterns(self, contents, patterns):
-        """Check for repeated sentence complexity patterns"""
-        for content in contents:
-            # Check for compound sentences
-            compounds = content.count(' and ') + content.count(' but ') + content.count(' or ')
-            if compounds > 1:
-                patterns.append("Multiple compound sentences - vary complexity")
-            
-            # Check sentence length
-            words = len(content.split())
-            if all(len(c.split()) == words for c in contents):
-                patterns.append("Similar sentence lengths - vary more")
-
-    def _check_topic_balance(self, contents, patterns):
-        """Ensure healthy topic diversity while allowing story progression"""
-        topics = {
-            '$XVI': ['$XVI', 'XVI', 'token', 'cryptocurrency'],
-            'Tech/Dev': ['coding', 'algorithm', 'development', 'AI', 'system'],
-            'Personal': ['learning', 'thinking', 'feeling', 'life', 'growth'],
-            'Social': ['team', 'community', 'people', 'friends', 'network'],
-            'NYC Life': ['city', 'NYC', 'Manhattan', 'neighborhood'],
-            'Innovation': ['idea', 'innovation', 'solution', 'concept'],
-            'Market': ['market', 'trading', 'analysis', 'strategy']
-        }
-        
-        # Count mentions of each topic
-        topic_counts = {topic: 0 for topic in topics}
-        for content in contents:
-            content_lower = content.lower()
-            for topic, keywords in topics.items():
-                if any(keyword.lower() in content_lower for keyword in keywords):
-                    topic_counts[topic] += 1
-        
-        # Calculate percentages
-        total_tweets = len(contents)
-        topic_percentages = {topic: (count / total_tweets) * 100 
-                           for topic, count in topic_counts.items()}
-        
-        # Only warn about extreme imbalances (70%+ focus on one topic)
-        for topic, percentage in topic_percentages.items():
-            if percentage > 70:
-                patterns.append(f"SUGGESTION: Consider adding secondary themes alongside {topic}")
-                patterns.append("But don't force it if the story naturally focuses here")
-        
-        return topic_percentages
-
-    def _check_basic_variety(self, contents, patterns):
-        """Check for basic variety in tweet structure"""
-        if not contents:
-            return
-            
-        # Check recent tweet starts
-        recent_starts = [c.split()[0].lower() for c in contents[-3:]]
-        if len(set(recent_starts)) == 1:
-            patterns.append("Vary your opening words")
-            
-        # Check sentence endings
-        recent_ends = [c.split('.')[-1].strip().lower() for c in contents[-3:]]
-        if len(set(recent_ends)) == 1:
-            patterns.append("Vary your sentence endings")
-            
-        # Check for repeated phrases
-        common_phrases = ['time to', 'just', 'finally', 'here we go']
-        for phrase in common_phrases:
-            if sum(1 for c in contents if phrase in c.lower()) > 1:
-                patterns.append(f"Avoid repeating '{phrase}'")
 
 def main():
     """Test the tweet generator"""
