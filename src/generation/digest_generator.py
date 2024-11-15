@@ -355,11 +355,7 @@ class DigestGenerator:
                 history = []
 
             # Add new digest with timestamp
-            history.append({
-                'timestamp': datetime.now().isoformat(),
-                'metadata': digest.get('metadata', {}),
-                'digest': digest
-            })
+            history.append(digest)
 
             # Convert history to JSON string
             history_json = json.dumps(history, indent=2)
@@ -606,9 +602,10 @@ class DigestGenerator:
                     "- New Relationships & Conflicts: Fostering relationships with younger generations, resolving conflicts peacefully.\n"
                 )
                 
-    def generate_digest(self, recent_tweets=None, simulation_time=None, simulation_age=None, tweet_count=None):
+    def generate_digest(self, recent_tweets=None, simulation_time=None, simulation_age=None, tweet_count=None, latest_digest=None):
         """Generate digest based on recent history and new developments"""
         try:
+            self.life_tracks = latest_digest
             # Create logs directory
             log_dir = "logs/digests"
             os.makedirs(log_dir, exist_ok=True)

@@ -102,7 +102,7 @@ class GithubOperations:
                 print(f"Attempt {attempt + 1} failed, retrying...")
         return None
 
-    def add_tweet(self, tweet, tweet_count=None, simulated_date=None, age=None):
+    def add_tweet(self, tweet, id=None, tweet_count=None, simulated_date=None, age=None):
         """Add a tweet to ongoing_tweets.json"""
         try:
             # Handle ongoing tweets
@@ -112,11 +112,11 @@ class GithubOperations:
             # Add metadata to tweet
             tweet_with_metadata = {
                 **tweet,
+                "id": id,
                 "tweet_count": tweet_count,
                 "simulated_date": simulated_date,
                 "age": age
             }
-            
             if not any(existing.get('id') == tweet.get('id') for existing in tweets):
                 tweets.append(tweet_with_metadata)
                 self._update_file_with_retry(
@@ -125,7 +125,7 @@ class GithubOperations:
                     f"Add tweet: {tweet.get('id', 'new')}",
                     sha
                 )
-                
+            print(f"Successfully added tweet: {len(tweets)}")
         except Exception as e:
             print(f"Error saving ongoing tweets: {str(e)}")
             raise
