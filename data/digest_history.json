@@ -1,0 +1,214 @@
+[
+  {
+    "digest": {
+      "Career & Growth": {
+        "historical_summary": {
+          "MTM": [
+            {
+              "Summary": "Struggling with coding assignments and calculus, feeling overwhelmed.",
+              "Patterns": "Feeling behind, overwhelmed by workload, self-doubt",
+              "Goals": "Improve coding skills, pass calculus, seek academic support",
+              "Transition": "Seeking help or considering academic adjustments."
+            }
+          ],
+          "LTM": [
+            {
+              "Milestone": "Starting college at age 18, facing academic challenges.",
+              "Implications": "First major educational transition, setting foundation for career path.",
+              "Lessons": "College is a significant leap, it's normal to struggle, seeking help is key",
+              "Age": 18.5
+            }
+          ]
+        },
+        "projected_goals": {
+          "short_term": [
+            {
+              "goal": "Enroll in a coding bootcamp or online course to enhance coding skills",
+              "duration_days": 90
+            },
+            {
+              "goal": "Seek academic support through tutoring or study groups for calculus",
+              "duration_days": 60
+            }
+          ],
+          "long_term": [
+            "Complete degree with a focus on computer science or related field, potentially shifting to a more applied or practical area of study.",
+            "Secure an internship or entry-level job in tech to gain practical experience."
+          ]
+        }
+      },
+      "Personal Life & Relationships": {
+        "historical_summary": {
+          "MTM": [
+            {
+              "Summary": "Making new friends and experiencing mixed social interactions.",
+              "Patterns": "Forming new friendships, awkward social moments, seeking belonging",
+              "Goals": "Build stronger relationships, improve social skills, find community",
+              "Transition": "Navigating the social landscape of college."
+            }
+          ],
+          "LTM": [
+            {
+              "Milestone": "Transitioning into college life, making first friends.",
+              "Implications": "First experience with a new social environment outside high school.",
+              "Lessons": "Social growth is important, peer support is valuable, personal growth takes time",
+              "Age": 18.5
+            }
+          ]
+        },
+        "projected_goals": {
+          "short_term": [
+            {
+              "goal": "Join at least two social clubs or groups to expand social network",
+              "duration_days": 45
+            },
+            {
+              "goal": "Attend a social skills workshop or seek counseling for social anxiety",
+              "duration_days": 60
+            }
+          ],
+          "long_term": [
+            "Develop a close-knit group of friends for support and belonging.",
+            "Cultivate long-lasting relationships that provide emotional support and personal growth."
+          ]
+        }
+      },
+      "Health & Well-being": {
+        "historical_summary": {
+          "MTM": [
+            {
+              "Summary": "Experiencing existential crises and questioning belonging.",
+              "Patterns": "Nighttime existential crises, feeling out of place, questioning happiness",
+              "Goals": "Address mental health, find purpose, explore coping strategies",
+              "Transition": "Seeking support or self-reflection to address existential issues."
+            }
+          ],
+          "LTM": [
+            {
+              "Milestone": "Encountering first significant existential crisis in college.",
+              "Implications": "A pivotal moment in personal growth and self-awareness.",
+              "Lessons": "Life's purpose is complex, self-reflection is valuable, seeking help is necessary",
+              "Age": 18.5
+            }
+          ]
+        },
+        "projected_goals": {
+          "short_term": [
+            {
+              "goal": "Begin therapy or counseling sessions to address existential crises",
+              "duration_days": 90
+            },
+            {
+              "goal": "Practice mindfulness or meditation daily to manage anxiety",
+              "duration_days": 30
+            }
+          ],
+          "long_term": [
+            "Develop a strong sense of self-awareness and purpose, integrating personal values into daily life.",
+            "Maintain mental health through continuous self-care practices and community support."
+          ]
+        }
+      },
+      "Financial Trajectory": {
+        "historical_summary": {
+          "MTM": [
+            {
+              "Summary": "Concerned about finances due to high living costs in NYC.",
+              "Patterns": "Awareness of financial strain, managing expenses, concern over financial situation",
+              "Goals": "Create a budget, seek part-time work, explore financial aid",
+              "Transition": "Developing financial independence and responsibility."
+            }
+          ],
+          "LTM": []
+        },
+        "projected_goals": {
+          "short_term": [
+            {
+              "goal": "Create a detailed budget plan and track expenses for 3 months",
+              "duration_days": 90
+            },
+            {
+              "goal": "Apply for part-time work or seek campus jobs",
+              "duration_days": 30
+            }
+          ],
+          "long_term": [
+            "Achieve financial independence by managing expenses effectively and saving for future investments.",
+            "Explore financial aid options for education and consider part-time work to reduce debt."
+          ]
+        }
+      },
+      "Reflections & Philosophy": {
+        "historical_summary": {
+          "MTM": [
+            {
+              "Summary": "Reflecting on life's facade and happiness.",
+              "Patterns": "Reflecting on life changes, questioning authenticity, pondering happiness",
+              "Goals": "Seek deeper meaning, understand personal values, find genuine happiness",
+              "Transition": "Exploring philosophical questions about life and happiness."
+            }
+          ],
+          "LTM": [
+            {
+              "Milestone": "First significant philosophical reflections on life and happiness.",
+              "Implications": "Marks the beginning of a lifelong philosophical journey.",
+              "Lessons": "Happiness is subjective, life is complex, self-awareness is key",
+              "Age": 18.5
+            }
+          ]
+        },
+        "projected_goals": {
+          "short_term": [
+            {
+              "goal": "Read at least two philosophical books or attend philosophy lectures",
+              "duration_days": 60
+            },
+            {
+              "goal": "Start a journal to reflect on personal values and happiness",
+              "duration_days": 30
+            }
+          ],
+          "long_term": [
+            "Continue the journey of self-discovery, integrating philosophical insights into personal and professional life.",
+            "Cultivate a life philosophy that guides personal decisions and interactions."
+          ]
+        }
+      },
+      "$XVI & Technology": {
+        "historical_summary": {
+          "MTM": [
+            {
+              "Summary": "Feeling frustrated with coding and Java.",
+              "Patterns": "Struggling with coding, disinterest in coding for fun, frustration with technology",
+              "Goals": "Improve coding skills, explore other tech areas, seek coding support",
+              "Transition": "Considering a shift in tech-related interests or activities."
+            }
+          ],
+          "LTM": []
+        },
+        "projected_goals": {
+          "short_term": [
+            {
+              "goal": "Complete a project in a new programming language to broaden tech skills",
+              "duration_days": 90
+            },
+            {
+              "goal": "Attend a hackathon or tech meetup to network and learn from peers",
+              "duration_days": 30
+            }
+          ],
+          "long_term": [
+            "Shift focus towards areas of technology that align more with personal interest or where there is a perceived need in the market.",
+            "Develop expertise in emerging technologies to remain competitive in the tech industry."
+          ]
+        }
+      }
+    },
+    "metadata": {
+      "simulation_age": 18.5,
+      "simulation_time": "2021-07-02T16:45:00",
+      "tweet_count": 0,
+      "age_bracket": "age 18-18.5"
+    }
+  }
+]
