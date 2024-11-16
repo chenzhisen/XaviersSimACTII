@@ -69,5 +69,21 @@
     "tweet_count": 6,
     "simulated_date": "2025-01-23",
     "age": 22.0625
+  },
+  {
+    "content": "NYC's got me buzzing. Just set up my trading desk, ready to let the city's energy fuel my trades. Here we go, a new chapter.",
+    "current_location": [
+      "No location detected",
+      "You are a location-detection assistant. Your task is to analyze a given text and identify if it mentions a new location or city where the speaker currently is or has just arrived. If a location is mentioned (such as 'arrived in Tokyo'), return the name of that location. If there is no mention of a location, respond with 'No location detected'.",
+      "NYC's got me buzzing. Just set up my trading desk, ready to let the city's energy fuel my trades. Here we go, a new chapter.",
+      "No location detected"
+    ],
+    "raw_content": "\ud83d\uddfd Just set up my trading desk in NYC. The city buzz and my travel insights are now my trading fuel. Here we go! #TradingJourney #NYC #Growth",
+    "timestamp": "2024-11-15T21:57:53.169773",
+    "category": "Professional Update",
+    "id": "tweet_7",
+    "tweet_count": 7,
+    "simulated_date": "2025-01-27",
+    "age": 22.072916666666668
   }
 ]
