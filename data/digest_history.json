@@ -93,5 +93,106 @@
       "tweet_count": 0,
       "age_bracket": "age 18-18.5"
     }
+  },
+  {
+    "Career & Growth": {
+      "MTM": [
+        {
+          "Summary": "Balancing research and coding with a vision to run my own empire one day.",
+          "Patterns": "research, coding, entrepreneurial mindset",
+          "Goals": "improve technical skills, develop business acumen",
+          "Transition": "Exploring entrepreneurial opportunities."
+        }
+      ],
+      "LTM": [
+        {
+          "Milestone": "Landed a summer internship in finance through family connections.",
+          "Implications": "First step towards a career in finance and networking.",
+          "Lessons": "leverage connections, value of internships, importance of professional exposure",
+          "age": 19.0
+        }
+      ]
+    },
+    "Personal Life & Relationships": {
+      "MTM": [
+        {
+          "Summary": "Navigating social life changes with the transition to college.",
+          "Patterns": "making new friends, feeling disconnected from high school friends",
+          "Goals": "strengthen new friendships, maintain old connections",
+          "Transition": "Adjusting to a new social environment."
+        }
+      ],
+      "LTM": [
+        {
+          "Milestone": "Transitioned from high school to college social life.",
+          "Implications": "Learning to build new relationships and manage existing ones.",
+          "Lessons": "adaptability, open-mindedness, importance of social networks",
+          "age": 19.0
+        },
+        {
+          "Milestone": "Had a first date with someone from class; chemistry was brewing just right.",
+          "Implications": "Exploring romantic connections in a new environment.",
+          "Lessons": "openness to new experiences, balancing academic and personal life",
+          "age": 19.0
+        }
+      ]
+    },
+    "Health & Well-being": {
+      "MTM": [
+        {
+          "Summary": "Experiencing the stress of college life and adjusting to new living conditions.",
+          "Patterns": "stress from early mornings, existential crises, roommate issues",
+          "Goals": "develop coping mechanisms, improve sleep hygiene",
+          "Transition": "Adapting to college lifestyle."
+        }
+      ],
+      "LTM": []
+    },
+    "Financial Trajectory": {
+      "MTM": [
+        {
+          "Summary": "Exploring new financial avenues like trading and blockchain.",
+          "Patterns": "reading about trading, intrigued by blockchain",
+          "Goals": "understand financial markets, gain investment experience",
+          "Transition": "Transitioning from basic financial management to investment."
+        }
+      ],
+      "LTM": [
+        {
+          "Milestone": "First experience managing personal finances in a high-cost city.",
+          "Implications": "Gaining financial independence and responsibility.",
+          "Lessons": "frugal living, budgeting, seeking financial aid",
+          "age": 19.0
+        }
+      ]
+    },
+    "Reflections & Philosophy": {
+      "MTM": [
+        {
+          "Summary": "Reflecting on life's fast pace and personal growth.",
+          "Patterns": "overhearing conversations, feeling like life is moving fast",
+          "Goals": "find personal meaning, develop philosophical outlook",
+          "Transition": "Exploring deeper life questions."
+        }
+      ],
+      "LTM": []
+    },
+    "$XVI & Technology": {
+      "MTM": [
+        {
+          "Summary": "Curious about blockchain and cryptocurrency.",
+          "Patterns": "overhearing about Bitcoin, intrigued by trading",
+          "Goals": "learn about blockchain technology, understand trading dynamics",
+          "Transition": "Gaining interest in emerging technologies."
+        }
+      ],
+      "LTM": []
+    },
+    "metadata": {
+      "simulation_age": 19.0,
+      "simulation_time": "2022-01-01T04:45:00",
+      "tweet_count": 0,
+      "age_bracket": "age 18.5-19"
+    }
   }
 ]
