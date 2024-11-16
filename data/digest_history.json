@@ -347,5 +347,93 @@
       "tweet_count": 0,
       "age_bracket": "age 19.5-20"
     }
+  },
+  {
+    "Career & Growth": {
+      "MTM": [
+        {
+          "Summary": "Taking a leave of absence from college to focus on quant trading.",
+          "Patterns": "leave of absence from college, quant trading focus, job offer from quant firm",
+          "Goals": "become financially independent, find career passion",
+          "Transition": "Transitioning from academic to entrepreneurial pursuits."
+        }
+      ],
+      "LTM": [
+        {
+          "Milestone": "Decided to take a leave of absence from college to pursue quant trading.",
+          "Implications": "Significant shift towards self-directed career path.",
+          "Lessons": "courage to take risks, importance of self-reliance, adaptability",
+          "age": 20.5
+        }
+      ]
+    },
+    "Personal Life & Relationships": {
+      "MTM": [
+        {
+          "Summary": "Communicating major life decisions with family and contemplating personal relationships.",
+          "Patterns": "discussing leave of absence with mom, feeling torn between choices, contemplating relationships",
+          "Goals": "strengthen relationships, expand social network",
+          "Transition": "Navigating the complexities of social life."
+        }
+      ],
+      "LTM": []
+    },
+    "Health & Well-being": {
+      "MTM": [
+        {
+          "Summary": "Celebrating career developments with excitement and gratitude.",
+          "Patterns": "celebrating job offer, feeling overwhelmed but excited, ending day feeling grateful",
+          "Goals": "enhance self-awareness, manage stress",
+          "Transition": "Adopting unconventional approaches to well-being."
+        }
+      ],
+      "LTM": []
+    },
+    "Financial Trajectory": {
+      "MTM": [
+        {
+          "Summary": "Investing in new ventures and planning financial independence.",
+          "Patterns": "investing in $XVI, exploring online businesses, trading simulations, poker game",
+          "Goals": "grow wealth, diversify income sources",
+          "Transition": "Taking proactive steps towards financial independence."
+        }
+      ],
+      "LTM": []
+    },
+    "Reflections & Philosophy": {
+      "MTM": [
+        {
+          "Summary": "Realizing the importance of personal relationships and contemplating life changes.",
+          "Patterns": "reflecting on personal relationships, feeling start of something big",
+          "Goals": "find personal fulfillment, define life's direction",
+          "Transition": "Reevaluating life choices and future aspirations."
+        }
+      ],
+      "LTM": [
+        {
+          "Milestone": "Realization of the importance of personal relationships.",
+          "Implications": "Shift in focus towards valuing relationships alongside career.",
+          "Lessons": "balance in life, importance of relationships, self-awareness",
+          "age": 20.5
+        }
+      ]
+    },
+    "$XVI & Technology": {
+      "MTM": [
+        {
+          "Summary": "Increasing involvement with $XVI and exploring related technologies.",
+          "Patterns": "investing in $XVI, tracking market trends, engaging with Crypto Twitter",
+          "Goals": "capitalize on $XVI's potential, understand market dynamics",
+          "Transition": "Becoming more invested in $XVI's journey."
+        }
+      ],
+      "LTM": []
+    },
+    "metadata": {
+      "simulation_age": 20.5,
+      "simulation_time": "2023-07-02T16:45:00",
+      "tweet_count": 0,
+      "age_bracket": "age 20-20.5"
+    }
   }
 ]
