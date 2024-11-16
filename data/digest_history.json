@@ -1,0 +1,186 @@
+[
+  {
+    "digest": {
+      "Career & Growth": {
+        "historical_summary": {
+          "STM": [
+            "Struggling with the pace and difficulty of college courses, particularly in Computer Science and Calculus.",
+            "Feeling overwhelmed by the academic workload but finding some solace in making new friends in class."
+          ],
+          "MTM": [
+            {
+              "Summary": "Struggling with college coursework.",
+              "Patterns": "Difficulty with CS and Calculus, feeling overwhelmed, seeking solace in new friendships",
+              "Goals": "Improve grades, manage workload, maintain social connections",
+              "Transition": "Adapting to college academic life."
+            }
+          ],
+          "LTM": [
+            {
+              "Milestone": "Starting college at age 18.",
+              "Implications": "Marks the beginning of higher education journey.",
+              "Lessons": "Time management, self-discipline, networking",
+              "age": 18.5
+            }
+          ]
+        },
+        "projected_goals": {
+          "short_term": [
+            "Secure a part-time job related to field of study",
+            "Join a study group for CS and Calculus"
+          ],
+          "long_term": [
+            "Complete undergraduate degree with good grades",
+            "Develop a professional network through internships and events"
+          ]
+        }
+      },
+      "Personal Life & Relationships": {
+        "historical_summary": {
+          "STM": [
+            "Feeling disconnected from high school friends due to the fast pace of life changes.",
+            "Experiencing the typical awkwardness of dorm life with roommates and dorm social events.",
+            "Attempting to connect with new people but facing challenges, including awkward conversations and social missteps."
+          ],
+          "MTM": [
+            {
+              "Summary": "Facing challenges in maintaining and building new relationships.",
+              "Patterns": "Disconnection from high school friends, awkwardness with roommates, social missteps",
+              "Goals": "Strengthen existing relationships, form new bonds, improve social skills",
+              "Transition": "Navigating the social dynamics of college life."
+            }
+          ],
+          "LTM": [
+            {
+              "Milestone": "Transition to dorm life at college.",
+              "Implications": "Significant shift in living environment and social circle.",
+              "Lessons": "Independence, adaptability, conflict resolution",
+              "age": 18.5
+            }
+          ]
+        },
+        "projected_goals": {
+          "short_term": [
+            "Attend campus social events to meet new people",
+            "Schedule regular calls with high school friends"
+          ],
+          "long_term": [
+            "Build a supportive social network at college",
+            "Improve interpersonal skills through workshops or counseling"
+          ]
+        }
+      },
+      "Health & Well-being": {
+        "historical_summary": {
+          "STM": [
+            "Dealing with sleep deprivation due to early morning classes and late-night noise in the dorms.",
+            "Concerned about personal health due to questionable dining hall food and the stress of college life."
+          ],
+          "MTM": [
+            {
+              "Summary": "Experiencing sleep deprivation and health concerns.",
+              "Patterns": "Sleep issues due to dorm environment, health concerns from dining hall food",
+              "Goals": "Establish sleep routine, prioritize healthy eating, reduce stress",
+              "Transition": "Adjusting to college living conditions."
+            }
+          ],
+          "LTM": []
+        },
+        "projected_goals": {
+          "short_term": [
+            "Create and follow a sleep schedule",
+            "Explore healthier eating options on or off-campus"
+          ],
+          "long_term": [
+            "Maintain a consistent exercise routine",
+            "Adopt stress management techniques like meditation or yoga"
+          ]
+        }
+      },
+      "Financial Trajectory": {
+        "historical_summary": {
+          "STM": [
+            "Noticed the high cost of living in NYC, feeling the financial pinch from everyday expenses like coffee.",
+            "Realizing the need for better time management to balance academic demands with personal time, potentially impacting financial planning."
+          ],
+          "MTM": [
+            {
+              "Summary": "Realizing the financial realities of college life.",
+              "Patterns": "High living costs, need for better time management",
+              "Goals": "Budget effectively, seek part-time work, manage finances",
+              "Transition": "Learning to manage finances independently."
+            }
+          ],
+          "LTM": []
+        },
+        "projected_goals": {
+          "short_term": [
+            "Create a monthly budget",
+            "Apply for on-campus jobs or scholarships"
+          ],
+          "long_term": [
+            "Save for future educational expenses",
+            "Learn about investing and financial planning"
+          ]
+        }
+      },
+      "Reflections & Philosophy": {
+        "historical_summary": {
+          "STM": [
+            "Questioning life decisions and feeling out of place, pondering if everyone else is pretending to have it together.",
+            "Reflecting on the authenticity of happiness and the societal expectations of college life."
+          ],
+          "MTM": [
+            {
+              "Summary": "Questioning life decisions and societal expectations.",
+              "Patterns": "Feeling out of place, pondering authenticity of happiness",
+              "Goals": "Find personal direction, define own success, embrace authenticity",
+              "Transition": "Reflecting on personal identity in a new environment."
+            }
+          ],
+          "LTM": [
+            {
+              "Milestone": "First significant self-reflection in college.",
+              "Implications": "Influences future decisions and personal growth.",
+              "Lessons": "Self-awareness, resilience, questioning norms",
+              "age": 18.5
+            }
+          ]
+        },
+        "projected_goals": {
+          "short_term": [
+            "Start a journal to document personal growth",
+            "Discuss life goals with a mentor or counselor"
+          ],
+          "long_term": [
+            "Develop a clear personal philosophy",
+            "Align career choices with personal values and passions"
+          ]
+        }
+      },
+      "$XVI & Technology": {
+        "historical_summary": {
+          "STM": [],
+          "MTM": [],
+          "LTM": []
+        },
+        "projected_goals": {
+          "short_term": [
+            "Explore new software tools relevant to studies",
+            "Learn basic coding for personal projects"
+          ],
+          "long_term": [
+            "Stay updated with emerging technologies",
+            "Consider how technology can enhance personal and career development"
+          ]
+        }
+      }
+    },
+    "metadata": {
+      "simulation_age": 18.5,
+      "simulation_time": "2021-07-02T16:45:00",
+      "tweet_count": 0,
+      "age_bracket": "age 18-18.5"
+    }
+  }
+]
