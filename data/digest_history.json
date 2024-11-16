@@ -1,0 +1,192 @@
+[
+  {
+    "digest": {
+      "Career & Growth": {
+        "historical_summary": {
+          "STM": [
+            "Struggling with the workload of college courses, especially in Computer Science and Calculus",
+            "Feeling overwhelmed by the fast pace and high expectations of college life"
+          ],
+          "MTM": [
+            {
+              "Summary": "Struggling with the demands of college coursework.",
+              "Patterns": "Difficulty with Computer Science, Calculus, high expectations",
+              "Goals": "Improve time management, seek academic help",
+              "Transition": "Transitioning from high school to college life."
+            }
+          ],
+          "LTM": []
+        },
+        "projected_goals": {
+          "short_term": [
+            "Complete all required coursework with at least a B average",
+            "Attend tutoring sessions for Computer Science and Calculus"
+          ],
+          "long_term": [
+            "Secure an internship in a tech-related field",
+            "Develop proficiency in at least two programming languages"
+          ]
+        }
+      },
+      "Personal Life & Relationships": {
+        "historical_summary": {
+          "STM": [
+            "Made a couple of friends in class, finding some comfort in social connections",
+            "Feeling disconnected from high school friends due to the rapid change in lifestyle"
+          ],
+          "MTM": [
+            {
+              "Summary": "Navigating social connections in a new environment.",
+              "Patterns": "Making new friends, feeling disconnected from old friends",
+              "Goals": "Build new relationships, maintain old ones",
+              "Transition": "Adapting to the rapid change in lifestyle."
+            }
+          ],
+          "LTM": [
+            {
+              "Milestone": "First year of college.",
+              "Implications": "Significant shift in social dynamics.",
+              "Lessons": "New environments offer new opportunities, change is inevitable"
+            }
+          ]
+        },
+        "projected_goals": {
+          "short_term": [
+            "Join at least two campus clubs or groups",
+            "Schedule weekly calls with family and old friends"
+          ],
+          "long_term": [
+            "Build a supportive network of friends and mentors",
+            "Cultivate meaningful long-term relationships"
+          ]
+        }
+      },
+      "Health & Well-being": {
+        "historical_summary": {
+          "STM": [
+            "Experiencing the stress of college life, including early mornings and late-night disturbances",
+            "Dealing with existential thoughts and feelings of not belonging"
+          ],
+          "MTM": [
+            {
+              "Summary": "Feeling stressed by college life and existential concerns.",
+              "Patterns": "Stress from workload, existential thoughts, feeling out of place",
+              "Goals": "Manage stress, find a sense of belonging",
+              "Transition": "Adjusting to new responsibilities and self-identity."
+            }
+          ],
+          "LTM": [
+            {
+              "Milestone": "First experience with college stress.",
+              "Implications": "Recognizing the importance of mental health.",
+              "Lessons": "Self-care is essential, seek support when needed"
+            }
+          ]
+        },
+        "projected_goals": {
+          "short_term": [
+            "Practice mindfulness or meditation daily",
+            "Find a counselor or therapist for regular sessions"
+          ],
+          "long_term": [
+            "Develop a sustainable routine for physical and mental health",
+            "Achieve a balanced lifestyle that includes time for relaxation and hobbies"
+          ]
+        }
+      },
+      "Financial Trajectory": {
+        "historical_summary": {
+          "STM": [
+            "Realization of the high cost of living in NYC, particularly with expenses like coffee",
+            "Feeling broke due to the demands of college life and urban living"
+          ],
+          "MTM": [
+            {
+              "Summary": "Realizing the high cost of living in NYC.",
+              "Patterns": "Expensive lifestyle, feeling financially constrained",
+              "Goals": "Budgeting, seeking financial aid",
+              "Transition": "Learning to manage finances independently."
+            }
+          ],
+          "LTM": []
+        },
+        "projected_goals": {
+          "short_term": [
+            "Create and stick to a monthly budget",
+            "Apply for scholarships or part-time jobs"
+          ],
+          "long_term": [
+            "Save enough for a semester abroad or summer program",
+            "Begin investing in a retirement fund"
+          ]
+        }
+      },
+      "Reflections & Philosophy": {
+        "historical_summary": {
+          "STM": [
+            "Questioning if anyone is truly happy or just pretending",
+            "Feeling like college isn't matching up to the expectations of freedom and fun"
+          ],
+          "MTM": [
+            {
+              "Summary": "Questioning societal norms and personal expectations.",
+              "Patterns": "Doubt about happiness, mismatch between expectations and reality",
+              "Goals": "Find personal purpose, redefine success",
+              "Transition": "Shifting from idealism to realism in college life."
+            }
+          ],
+          "LTM": [
+            {
+              "Milestone": "First philosophical reflection on happiness.",
+              "Implications": "Acknowledging the complexity of personal fulfillment.",
+              "Lessons": "Happiness is subjective, societal norms can be questioned"
+            }
+          ]
+        },
+        "projected_goals": {
+          "short_term": [
+            "Read at least one book on philosophy or personal development each month",
+            "Journal weekly about personal growth and philosophical insights"
+          ],
+          "long_term": [
+            "Develop a personal philosophy that guides life choices",
+            "Contribute to discussions or writings on societal norms and personal fulfillment"
+          ]
+        }
+      },
+      "$XVI & Technology": {
+        "historical_summary": {
+          "STM": [
+            "Frustrated with coding assignments, particularly in Java",
+            "Struggling to find enjoyment in programming"
+          ],
+          "MTM": [
+            {
+              "Summary": "Struggling with coding assignments.",
+              "Patterns": "Frustration with Java, lack of enjoyment in programming",
+              "Goals": "Improve coding skills, find motivation in tech",
+              "Transition": "Moving from enthusiasm to frustration in tech learning."
+            }
+          ],
+          "LTM": []
+        },
+        "projected_goals": {
+          "short_term": [
+            "Complete a small coding project outside of coursework",
+            "Attend coding workshops or hackathons"
+          ],
+          "long_term": [
+            "Gain a solid understanding of software development principles",
+            "Create or contribute to an open-source project"
+          ]
+        }
+      }
+    },
+    "metadata": {
+      "simulation_age": 18.5,
+      "simulation_time": "2021-07-02T16:45:00",
+      "tweet_count": 0,
+      "age_bracket": "age 18-18.5"
+    }
+  }
+]
