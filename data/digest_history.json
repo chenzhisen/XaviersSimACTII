@@ -664,5 +664,277 @@
         "tech_driven_plot_points": []
       }
     }
+  },
+  {
+    "timestamp": "2024-11-15T22:33:12.062748",
+    "metadata": {
+      "simulation_time": "2025-01-04",
+      "simulation_age": 20.5,
+      "tweet_count": 0,
+      "age_bracket": "age 20-20.5"
+    },
+    "digest": {
+      "Professional": {
+        "historical_summary": {
+          "short_term": [],
+          "medium_term": [],
+          "long_term": []
+        },
+        "projected_short": [],
+        "projected_long": []
+      },
+      "Personal": {
+        "historical_summary": {
+          "short_term": [],
+          "medium_term": [],
+          "long_term": []
+        },
+        "projected_short": [],
+        "projected_long": []
+      },
+      "Family": {
+        "historical_summary": {
+          "short_term": [
+            "Called mom to discuss the decision to take a leave from college."
+          ],
+          "medium_term": [
+            "Maintained regular contact with family, sharing tech stories."
+          ],
+          "long_term": [
+            "Family provided support during college transition."
+          ]
+        },
+        "projected_short": [],
+        "projected_long": [],
+        "projected_goals": {
+          "short_term": [
+            {
+              "goal": "Have a family dinner to celebrate new job",
+              "duration_days": 7
+            },
+            {
+              "goal": "Discuss career plans with family",
+              "duration_days": 30
+            }
+          ],
+          "long_term": [
+            "Keep family informed and involved in life decisions."
+          ]
+        }
+      },
+      "Social": {
+        "historical_summary": {
+          "short_term": [
+            "Made new connections at the poker game, feeling a sense of belonging."
+          ],
+          "medium_term": [
+            "Built professional networks among tech peers."
+          ],
+          "long_term": [
+            "Explored social scenes and networking events."
+          ]
+        },
+        "projected_short": [],
+        "projected_long": [],
+        "projected_goals": {
+          "short_term": [
+            {
+              "goal": "Join a tech-focused networking group",
+              "duration_days": 30
+            },
+            {
+              "goal": "Attend at least one professional conference",
+              "duration_days": 60
+            }
+          ],
+          "long_term": [
+            "Establish a strong network in the blockchain and finance sectors."
+          ]
+        }
+      },
+      "Reflections": {
+        "historical_summary": {
+          "short_term": [],
+          "medium_term": [],
+          "long_term": []
+        },
+        "projected_short": [],
+        "projected_long": []
+      },
+      "$XVI": {
+        "historical_summary": {
+          "short_term": [],
+          "medium_term": [],
+          "long_term": []
+        },
+        "projected_short": [],
+        "projected_long": []
+      },
+      "Major Events": {
+        "historical_summary": {
+          "short_term": [
+            "Took a leave of absence from college to pursue a career in quant finance."
+          ],
+          "medium_term": [
+            "Interviewed for and received a job offer from a quant trading firm."
+          ],
+          "long_term": [
+            "Transitioned from college life to exploring career opportunities."
+          ]
+        },
+        "projected_short": [],
+        "projected_long": [],
+        "projected_goals": {
+          "short_term": [
+            {
+              "goal": "Adjust to new career demands",
+              "duration_days": 30
+            }
+          ],
+          "long_term": [
+            "Establish a successful career in finance and blockchain."
+          ],
+          "plot_points": [
+            {
+              "description": "Leaving college for a job in quant finance marks a significant life change."
+            }
+          ]
+        }
+      },
+      "Financial Trajectory": {
+        "historical_summary": {
+          "short_term": [
+            "Celebrated new job offer, feeling financially optimistic."
+          ],
+          "medium_term": [
+            "Learned about financial independence and minimal savings."
+          ],
+          "long_term": [
+            "Transitioned from college life to early career."
+          ]
+        },
+        "projected_short": [],
+        "projected_long": [],
+        "projected_goals": {
+          "short_term": [
+            {
+              "goal": "Create a budget for new living expenses",
+              "duration_days": 14
+            },
+            {
+              "goal": "Invest in personal development courses",
+              "duration_days": 60
+            }
+          ],
+          "long_term": [
+            "Achieve financial stability and invest in passive income streams."
+          ]
+        }
+      },
+      "Health & Well-being": {
+        "historical_summary": {
+          "short_term": [
+            "Stressed but excited about the new job opportunity."
+          ],
+          "medium_term": [
+            "Adjusted routines to accommodate intense study and work schedules."
+          ],
+          "long_term": [
+            "Adapted to college and city life, establishing a health routine."
+          ]
+        },
+        "projected_short": [],
+        "projected_long": [],
+        "projected_goals": {
+          "short_term": [
+            {
+              "goal": "Implement a stress management routine",
+              "duration_days": 30
+            },
+            {
+              "goal": "Incorporate regular exercise into the work week",
+              "duration_days": 45
+            }
+          ],
+          "long_term": [
+            "Maintain a sustainable balance between work, health, and personal life."
+          ]
+        }
+      },
+      "Mentorship & Legacy": {
+        "historical_summary": {
+          "short_term": [
+            "Discussed career path with academic advisor."
+          ],
+          "medium_term": [
+            "Received mentorship from college professors."
+          ],
+          "long_term": [
+            "Explored early career mentorship opportunities."
+          ]
+        },
+        "projected_short": [],
+        "projected_long": [],
+        "projected_goals": {
+          "short_term": [
+            {
+              "goal": "Seek mentorship within the quant firm",
+              "duration_days": 60
+            }
+          ],
+          "long_term": [
+            "Mentor others in the blockchain and finance fields."
+          ]
+        }
+      },
+      "Character Development": {
+        "historical_summary": {
+          "short_term": [
+            "Embraced risk-taking at the poker game."
+          ],
+          "medium_term": [
+            "Explored personal independence and identity."
+          ],
+          "long_term": [
+            "Developed independence and managed responsibilities."
+          ]
+        },
+        "projected_short": [],
+        "projected_long": [],
+        "projected_goals": {
+          "short_term": [
+            {
+              "goal": "Reflect on personal growth",
+              "duration_days": 30
+            },
+            {
+              "goal": "Take calculated risks in career and personal life",
+              "duration_days": 90
+            }
+          ],
+          "long_term": [
+            "Cultivate a strong, independent identity."
+          ]
+        }
+      },
+      "New Relationships and Conflicts": {
+        "historical_summary": {
+          "short_term": [],
+          "medium_term": [],
+          "long_term": []
+        },
+        "projected_short": [],
+        "projected_long": []
+      },
+      "Plot Points": {
+        "tech_driven": [],
+        "character_driven": []
+      },
+      "Technology Influences": {
+        "upcoming_trends": [],
+        "societal_shifts": [],
+        "tech_driven_plot_points": []
+      }
+    }
   }
 ]
