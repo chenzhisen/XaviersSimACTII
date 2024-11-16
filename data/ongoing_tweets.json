@@ -1,0 +1,18 @@
+[
+  {
+    "content": "Japan shifted something in me. Life's fleeting beauty now clearer. What's next? Unsure, but ready.",
+    "current_location": [
+      "No location detected",
+      "You are a location-detection assistant. Your task is to analyze a given text and identify if it mentions a new location or city where the speaker currently is or has just arrived. If a location is mentioned (such as 'arrived in Tokyo'), return the name of that location. If there is no mention of a location, respond with 'No location detected'.",
+      "Japan shifted something in me. Life's fleeting beauty now clearer. What's next? Unsure, but ready.",
+      "No location detected"
+    ],
+    "raw_content": "**Xavier's Major Events and Changes Tweet:**\n\n\"\ud83c\udf92\u2728Just landed back in NYC after an unforgettable adventure in Japan. The experience has shifted something in me - a newfound appreciation for the ephemeral beauty of life. I'm buzzing with ideas, but also grappling with the uncertainty of what's next. The journey continues, and I'm ready for the next chapter, shaped by every moment and every connection made along the way. #LifeChanging #BackToReality\"",
+    "timestamp": "2024-11-16T10:35:03.759061",
+    "category": "Major Events and Changes",
+    "id": "tweet_1",
+    "tweet_count": 1,
+    "simulated_date": "2025-01-04",
+    "age": 22.010416666666668
+  }
+]
