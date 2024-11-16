@@ -53,5 +53,21 @@
     "tweet_count": 5,
     "simulated_date": "2025-01-20",
     "age": 22.052083333333332
+  },
+  {
+    "content": "NYC's energy has me listening, really listening, to people. Every chat feels like a lesson in being me. Connections are my classroom.",
+    "current_location": [
+      "No location detected",
+      "You are a location-detection assistant. Your task is to analyze a given text and identify if it mentions a new location or city where the speaker currently is or has just arrived. If a location is mentioned (such as 'arrived in Tokyo'), return the name of that location. If there is no mention of a location, respond with 'No location detected'.",
+      "NYC's energy has me listening, really listening, to people. Every chat feels like a lesson in being me. Connections are my classroom.",
+      "No location detected"
+    ],
+    "raw_content": "**Relationship Insight:** \"Navigating the bustling streets of NYC, I've found that every interaction, every laugh shared over coffee, teaches me more about who I am. Learning to listen actively, not just to respond, but to understand. Growth is in the connections we make. #NYC #PersonalGrowth\"",
+    "timestamp": "2024-11-15T21:57:26.387568",
+    "category": "Relationship Insights",
+    "id": "tweet_6",
+    "tweet_count": 6,
+    "simulated_date": "2025-01-23",
+    "age": 22.0625
   }
 ]
