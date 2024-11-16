@@ -1,0 +1,211 @@
+[
+  {
+    "timestamp": "2024-11-16T00:20:39.068396",
+    "metadata": {
+      "simulation_time": "2025-01-04",
+      "simulation_age": 18.5,
+      "tweet_count": 0,
+      "age_bracket": "age 18-18.5"
+    },
+    "digest": {
+      "Career & Growth": {
+        "historical_summary": {
+          "STM": [
+            "Struggled with coding assignments, questioning choice of major.",
+            "Felt overwhelmed by workload in Comp Sci."
+          ],
+          "MTM": [
+            "Adapting to the college environment, learning the ropes of academic rigor.",
+            "Starting to form connections with peers, potentially beneficial for future career."
+          ],
+          "LTM": [
+            "Transitioned from high school to college, aiming for a career in tech."
+          ]
+        },
+        "projected_goals": {
+          "short_term": [
+            {
+              "goal": "Complete current coding assignments successfully",
+              "duration_days": 14
+            },
+            {
+              "goal": "Seek help from professors or TAs for better understanding of Comp Sci concepts",
+              "duration_days": 30
+            }
+          ],
+          "long_term": [
+            "Gain proficiency in blockchain and Web3 technologies.",
+            "Explore internship opportunities in tech startups."
+          ]
+        },
+        "plot_points": [
+          {
+            "description": "Xavier might reconsider his major or seek additional resources to manage workload."
+          }
+        ]
+      },
+      "Personal Life & Relationships": {
+        "historical_summary": {
+          "STM": [
+            "Made friends in class, feeling more comfortable in social settings.",
+            "Felt disconnected from high school friends.",
+            "Struggled with social interactions and small talk."
+          ],
+          "MTM": [
+            "Adjusting to college life, experiencing ups and downs in social connections.",
+            "Learning to navigate independence and forming new relationships."
+          ],
+          "LTM": [
+            "Transitioned from high school to college, exploring new social dynamics."
+          ]
+        },
+        "projected_goals": {
+          "short_term": [
+            {
+              "goal": "Attend college social events to expand social circle",
+              "duration_days": 45
+            },
+            {
+              "goal": "Reconnect with high school friends for a sense of continuity",
+              "duration_days": 30
+            }
+          ],
+          "long_term": [
+            "Establish a diverse and supportive network of friends and mentors.",
+            "Develop meaningful romantic relationships."
+          ]
+        },
+        "plot_points": [
+          {
+            "description": "Xavier navigates the complexities of new friendships and potential romantic interests while dealing with homesickness."
+          }
+        ]
+      },
+      "Health & Well-being": {
+        "historical_summary": {
+          "STM": [
+            "Struggled with sleep due to demanding schedules.",
+            "Felt overwhelmed by academic pressure."
+          ],
+          "MTM": [
+            "Adjusted to new environment, including diet and sleep patterns.",
+            "Started exploring mental health resources on campus."
+          ],
+          "LTM": [
+            "Adapted to college life, focusing on establishing health routines."
+          ]
+        },
+        "projected_goals": {
+          "short_term": [
+            {
+              "goal": "Establish a regular sleep schedule",
+              "duration_days": 45
+            },
+            {
+              "goal": "Explore campus wellness programs for stress management",
+              "duration_days": 60
+            }
+          ],
+          "long_term": [
+            "Maintain a balanced lifestyle with regular exercise and mental health check-ins."
+          ]
+        },
+        "plot_points": []
+      },
+      "Financial Trajectory": {
+        "historical_summary": {
+          "STM": [
+            "Felt the pinch of NYC living expenses.",
+            "Questioned financial decisions regarding college choice."
+          ],
+          "MTM": [
+            "Learned about budgeting and managing student loans.",
+            "Explored part-time work opportunities."
+          ],
+          "LTM": [
+            "Started college with limited financial experience, learning financial independence."
+          ]
+        },
+        "projected_goals": {
+          "short_term": [
+            {
+              "goal": "Secure a part-time job or freelance work",
+              "duration_days": 60
+            },
+            {
+              "goal": "Create a basic budget to manage expenses",
+              "duration_days": 30
+            }
+          ],
+          "long_term": [
+            "Develop financial literacy, including investments in cryptocurrencies like $XVI.",
+            "Achieve financial stability and independence."
+          ]
+        },
+        "plot_points": []
+      },
+      "Reflections & Philosophy": {
+        "historical_summary": {
+          "STM": [
+            "Questioned happiness and authenticity in college life.",
+            "Reflected on the existential aspects of college experience."
+          ],
+          "MTM": [
+            "Began to think critically about life choices and societal expectations.",
+            "Explored philosophical ideas through personal experiences."
+          ],
+          "LTM": [
+            "Developed a foundation in philosophical thinking, influenced by life transitions."
+          ]
+        },
+        "projected_goals": {
+          "short_term": [
+            {
+              "goal": "Join a philosophy or discussion group on campus",
+              "duration_days": 60
+            },
+            {
+              "goal": "Reflect on personal values and future aspirations",
+              "duration_days": 90
+            }
+          ],
+          "long_term": [
+            "Develop a personal philosophy that guides life decisions.",
+            "Contribute to discussions on technology's role in society."
+          ]
+        },
+        "plot_points": []
+      },
+      "$XVI & Technology": {
+        "historical_summary": {
+          "STM": [
+            "No direct involvement with $XVI or blockchain technology."
+          ],
+          "MTM": [
+            "Increased interest in technology and its applications, particularly in finance."
+          ],
+          "LTM": [
+            "Began exploring the potential of blockchain and cryptocurrencies in college."
+          ]
+        },
+        "projected_goals": {
+          "short_term": [
+            {
+              "goal": "Research $XVI and its governance models",
+              "duration_days": 90
+            },
+            {
+              "goal": "Participate in campus blockchain or Web3 events",
+              "duration_days": 60
+            }
+          ],
+          "long_term": [
+            "Leverage $XVI to shape a decentralized financial system.",
+            "Contribute to the $XVI ecosystem through partnerships or projects."
+          ]
+        },
+        "plot_points": []
+      }
+    }
+  }
+]
