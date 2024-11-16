@@ -207,5 +207,241 @@
         "plot_points": []
       }
     }
+  },
+  {
+    "timestamp": "2024-11-16T00:21:11.757831",
+    "metadata": {
+      "simulation_time": "2025-01-04",
+      "simulation_age": 19.0,
+      "tweet_count": 0,
+      "age_bracket": "age 18.5-19"
+    },
+    "digest": {
+      "Career & Growth": {
+        "historical_summary": {
+          "STM": [
+            "Landed a summer internship at a quant trading firm, thanks to a family connection.",
+            "Started reading about trading and exploring Wall Street Bets."
+          ],
+          "MTM": [
+            "Increased interest in trading and blockchain technology, influenced by peers and online forums.",
+            "Expressed a desire to explore internship opportunities in quant finance."
+          ],
+          "LTM": [
+            "Transitioned from high school to college, focusing on tech-related fields.",
+            "Struggled with coding assignments, questioning major choice."
+          ]
+        },
+        "projected_goals": {
+          "short_term": [
+            {
+              "goal": "Complete current coding assignments successfully",
+              "duration_days": 14
+            },
+            {
+              "goal": "Seek help from professors or TAs for better understanding of Comp Sci concepts",
+              "duration_days": 30
+            },
+            {
+              "goal": "Learn the basics of blockchain and trading",
+              "duration_days": 45
+            }
+          ],
+          "long_term": [
+            "Gain proficiency in blockchain and Web3 technologies.",
+            "Explore internship opportunities in tech startups."
+          ]
+        },
+        "plot_points": [
+          {
+            "description": "Xavier might reconsider his major or seek additional resources to manage workload."
+          }
+        ]
+      },
+      "Personal Life & Relationships": {
+        "historical_summary": {
+          "STM": [
+            "Met someone from class for coffee, chemistry brewing.",
+            "Explored social events, feeling more comfortable with new connections."
+          ],
+          "MTM": [
+            "Felt disconnected from high school friends, navigating new social dynamics.",
+            "Adjusting to college life, experiencing ups and downs in social connections."
+          ],
+          "LTM": [
+            "Transitioned from high school to college, exploring new social dynamics.",
+            "Struggled with social interactions and small talk."
+          ]
+        },
+        "projected_goals": {
+          "short_term": [
+            {
+              "goal": "Attend college social events to expand social circle",
+              "duration_days": 45
+            },
+            {
+              "goal": "Reconnect with high school friends for a sense of continuity",
+              "duration_days": 30
+            },
+            {
+              "goal": "Explore dating apps or campus events for romantic connections",
+              "duration_days": 60
+            }
+          ],
+          "long_term": [
+            "Establish a diverse and supportive network of friends and mentors.",
+            "Develop meaningful romantic relationships."
+          ]
+        },
+        "plot_points": [
+          {
+            "description": "Xavier navigates the complexities of new friendships and potential romantic interests while dealing with homesickness."
+          }
+        ]
+      },
+      "Health & Well-being": {
+        "historical_summary": {
+          "STM": [
+            "Struggled with sleep due to demanding schedules.",
+            "Felt overwhelmed by academic pressure."
+          ],
+          "MTM": [
+            "Adjusted to new environment, including diet and sleep patterns.",
+            "Started exploring mental health resources on campus."
+          ],
+          "LTM": [
+            "Adapted to college life, focusing on establishing health routines."
+          ]
+        },
+        "projected_goals": {
+          "short_term": [
+            {
+              "goal": "Establish a regular sleep schedule",
+              "duration_days": 45
+            },
+            {
+              "goal": "Explore campus wellness programs for stress management",
+              "duration_days": 60
+            }
+          ],
+          "long_term": [
+            "Maintain a balanced lifestyle with regular exercise and mental health check-ins."
+          ]
+        },
+        "plot_points": []
+      },
+      "Financial Trajectory": {
+        "historical_summary": {
+          "STM": [
+            "Felt the pinch of NYC living expenses.",
+            "Questioned financial decisions regarding college choice."
+          ],
+          "MTM": [
+            "Learned about budgeting and managing student loans.",
+            "Explored part-time work opportunities."
+          ],
+          "LTM": [
+            "Started college with limited financial experience, learning financial independence."
+          ]
+        },
+        "projected_goals": {
+          "short_term": [
+            {
+              "goal": "Secure a part-time job or freelance work",
+              "duration_days": 60
+            },
+            {
+              "goal": "Create a basic budget to manage expenses",
+              "duration_days": 30
+            }
+          ],
+          "long_term": [
+            "Develop financial literacy, including investments in cryptocurrencies like $XVI.",
+            "Achieve financial stability and independence."
+          ]
+        },
+        "plot_points": [
+          {
+            "description": "Xavier might explore ways to reduce living expenses or find additional income sources."
+          }
+        ]
+      },
+      "Reflections & Philosophy": {
+        "historical_summary": {
+          "STM": [
+            "Questioned happiness and authenticity in college life.",
+            "Reflected on the existential aspects of college experience."
+          ],
+          "MTM": [
+            "Began to think critically about life choices and societal expectations.",
+            "Explored philosophical ideas through personal experiences."
+          ],
+          "LTM": [
+            "Developed a foundation in philosophical thinking, influenced by life transitions."
+          ]
+        },
+        "projected_goals": {
+          "short_term": [
+            {
+              "goal": "Join a philosophy or discussion group on campus",
+              "duration_days": 60
+            },
+            {
+              "goal": "Reflect on personal values and future aspirations",
+              "duration_days": 90
+            },
+            {
+              "goal": "Explore philosophical implications of emerging technologies",
+              "duration_days": 90
+            }
+          ],
+          "long_term": [
+            "Develop a personal philosophy that guides life decisions.",
+            "Contribute to discussions on technology's role in society."
+          ]
+        },
+        "plot_points": []
+      },
+      "$XVI & Technology": {
+        "historical_summary": {
+          "STM": [
+            "Discovered Ethereum and blockchain integration in gaming.",
+            "Expressed interest in learning more about $XVI."
+          ],
+          "MTM": [
+            "Increased interest in technology and its applications, particularly in finance.",
+            "Explored blockchain and cryptocurrencies in college."
+          ],
+          "LTM": [
+            "Began exploring the potential of blockchain and cryptocurrencies in college."
+          ]
+        },
+        "projected_goals": {
+          "short_term": [
+            {
+              "goal": "Research $XVI and its governance models",
+              "duration_days": 90
+            },
+            {
+              "goal": "Participate in campus blockchain or Web3 events",
+              "duration_days": 60
+            },
+            {
+              "goal": "Experiment with small-scale investments in $XVI",
+              "duration_days": 60
+            }
+          ],
+          "long_term": [
+            "Leverage $XVI to shape a decentralized financial system.",
+            "Contribute to the $XVI ecosystem through partnerships or projects."
+          ]
+        },
+        "plot_points": [
+          {
+            "description": "Xavier might explore ways to integrate $XVI into his trading strategies or seek mentorship within the $XVI community."
+          }
+        ]
+      }
+    }
   }
 ]
