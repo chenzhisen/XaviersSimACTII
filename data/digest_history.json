@@ -172,5 +172,92 @@
       "tweet_count": 0,
       "age_bracket": "age 18.5-19"
     }
+  },
+  {
+    "Career & Growth": {
+      "MTM": [
+        {
+          "Summary": "Balancing coursework with interests in trading and blockchain.",
+          "Patterns": "juggling school, exploring startups, trading simulations",
+          "Goals": "find balance, expand professional interests",
+          "Transition": "Exploring new opportunities while managing academic commitments."
+        }
+      ],
+      "LTM": [
+        {
+          "Milestone": "Landed first summer internship.",
+          "Implications": "Marks the beginning of professional career.",
+          "Lessons": "importance of networking, value of practical experience",
+          "age": 19.5
+        }
+      ]
+    },
+    "Personal Life & Relationships": {
+      "MTM": [
+        {
+          "Summary": "Navigating new social environments and relationships.",
+          "Patterns": "feeling disconnected from old friends, exploring romantic interests",
+          "Goals": "deepen new friendships, maintain old connections",
+          "Transition": "Adapting to the social dynamics of college life."
+        },
+        {
+          "Summary": "Exploring romantic relationships.",
+          "Patterns": "first dates, casual conversations, investment strategy",
+          "Goals": "develop meaningful relationships, balance social life",
+          "Transition": "Transitioning into romantic exploration."
+        }
+      ],
+      "LTM": []
+    },
+    "Health & Well-being": {
+      "MTM": [
+        {
+          "Summary": "Feeling overwhelmed by college life demands.",
+          "Patterns": "stress from deadlines, existential crisis, skipping class",
+          "Goals": "find balance, reduce stress, adapt to new environment",
+          "Transition": "Adjusting to increased pressure and new environment."
+        }
+      ],
+      "LTM": []
+    },
+    "Financial Trajectory": {
+      "MTM": [
+        {
+          "Summary": "Engaging with trading and financial tools.",
+          "Patterns": "using trading tools, discussing market trends, startup investment",
+          "Goals": "improve financial literacy, make informed investment decisions",
+          "Transition": "Taking steps towards financial independence."
+        }
+      ],
+      "LTM": []
+    },
+    "Reflections & Philosophy": {
+      "MTM": [
+        {
+          "Summary": "Reflecting on life's pace, reality, and personal authenticity.",
+          "Patterns": "questioning reality, feeling life moves fast, algorithm destiny",
+          "Goals": "gain clarity, develop personal philosophy, embrace authenticity",
+          "Transition": "Reevaluating personal goals and values."
+        }
+      ],
+      "LTM": []
+    },
+    "$XVI & Technology": {
+      "MTM": [
+        {
+          "Summary": "Exploring blockchain, cryptocurrency, and the implications of $XVI.",
+          "Patterns": "researching $XVI, considering investments, exploring tech startups",
+          "Goals": "understand new technology, explore investment opportunities",
+          "Transition": "Developing a relationship with technology."
+        }
+      ],
+      "LTM": []
+    },
+    "metadata": {
+      "simulation_age": 19.5,
+      "simulation_time": "2022-07-02T16:45:00",
+      "tweet_count": 0,
+      "age_bracket": "age 19-19.5"
+    }
   }
 ]
