@@ -10,5 +10,17 @@
     "id": "tweet_1",
     "tweet_count": 1,
     "simulated_date": "2025-01-04"
+  },
+  {
+    "content": "Turning 22 and starting a gratitude journal to keep track of my growth and connections. Here's to documenting the journey!",
+    "raw_content": "Reflecting on turning 22, I've realized how much I've grown. Starting a gratitude journal to document this journey and keep those connections strong!",
+    "type": "personal",
+    "age": 22.020833333333332,
+    "location": "NYC",
+    "days_elapsed": 3.8020833333333335,
+    "timestamp": "2024-11-17T16:51:40.152486",
+    "id": "tweet_2",
+    "tweet_count": 2,
+    "simulated_date": "2025-01-08"
   }
 ]
