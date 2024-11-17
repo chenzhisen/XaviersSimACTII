@@ -22,5 +22,29 @@
     "id": "tweet_1",
     "tweet_count": 1,
     "simulated_date": "2025-01-04"
+  },
+  {
+    "content": "Turning 22 and reflecting on health. Starting yoga to balance mind and body in NYC's hustle. \ud83e\uddd8\u200d\u2642\ufe0f",
+    "raw_content": "Turning 22 has me reflecting on my health journey. Excited to start integrating yoga into my routine, aiming for consistency to balance my mind and body amidst the hustle of NYC. \ud83e\uddd8\u200d\u2642\ufe0f #mentalhealth #yogaeverydamnday",
+    "type": "health",
+    "age": 22.020833333333332,
+    "location": "NYC",
+    "days_elapsed": 3.8020833333333335,
+    "timestamp": "2024-11-17T15:04:38.897054",
+    "related_goals": [
+      {
+        "goal": "Develop a consistent routine for mental health practices like meditation or yoga",
+        "phase": "early",
+        "category": "Health & Well-being"
+      },
+      {
+        "goal": "Research and plan a wellness retreat or personal retreat to reset and rejuvenate",
+        "phase": "early",
+        "category": "Health & Well-being"
+      }
+    ],
+    "id": "tweet_2",
+    "tweet_count": 2,
+    "simulated_date": "2025-01-08"
   }
 ]
