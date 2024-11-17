@@ -22,5 +22,29 @@
     "id": "tweet_1",
     "tweet_count": 1,
     "simulated_date": "2025-01-04"
+  },
+  {
+    "content": "Turning 22 today and diving into my investment portfolio. Excited to see where this new age takes me financially! \ud83c\udf82\ud83c\udf70",
+    "raw_content": "\ud83c\udf82 Turning 22 today, and what better way to celebrate than by diving into my investment portfolio? Reflecting on my journey from spontaneous spending to strategic investing, I'm excited to see where this new age takes me financially! \ud83c\udf70 #FinanceGoals #PortfolioReview",
+    "type": "finance",
+    "age": 22.020833333333332,
+    "location": "NYC",
+    "days_elapsed": 3.8020833333333335,
+    "timestamp": "2024-11-17T14:51:42.738970",
+    "related_goals": [
+      {
+        "goal": "Review and adjust investment portfolio to reflect current market trends and personal financial goals",
+        "phase": "early",
+        "category": "Financial Trajectory"
+      },
+      {
+        "goal": "Set up and follow a budget that allows for both savings and spontaneous spending",
+        "phase": "early",
+        "category": "Financial Trajectory"
+      }
+    ],
+    "id": "tweet_2",
+    "tweet_count": 2,
+    "simulated_date": "2025-01-08"
   }
 ]
