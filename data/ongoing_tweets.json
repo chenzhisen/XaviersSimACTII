@@ -22,5 +22,29 @@
     "id": "tweet_1",
     "tweet_count": 1,
     "simulated_date": "2025-01-04"
+  },
+  {
+    "content": "Just turned 22 and my birthday wish? To connect deeper through art. Planning my first cultural event in Japan to kick off this new chapter! \ud83c\udfa8\u2728",
+    "raw_content": "Just turned 22 and realized that my birthday wish this year is to deepen my connections through art. Planning my first cultural event in Japan to celebrate this new chapter!",
+    "type": "personal",
+    "age": 22.020833333333332,
+    "location": "Japan",
+    "days_elapsed": 3.8020833333333335,
+    "timestamp": "2024-11-17T16:26:04.370142",
+    "related_goals": [
+      {
+        "goal": "Organize and participate in a local art or cultural event to expand social connections",
+        "phase": "early",
+        "category": "Personal Life & Relationships"
+      },
+      {
+        "goal": "Initiate a weekly gratitude journal to reflect on personal growth and relationships",
+        "phase": "early",
+        "category": "Personal Life & Relationships"
+      }
+    ],
+    "id": "tweet_2",
+    "tweet_count": 2,
+    "simulated_date": "2025-01-08"
   }
 ]
