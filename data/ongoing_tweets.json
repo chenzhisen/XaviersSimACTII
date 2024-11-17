@@ -166,5 +166,29 @@
     "id": "tweet_7",
     "tweet_count": 7,
     "simulated_date": "2025-01-27"
+  },
+  {
+    "content": "Just signed up for an AI bootcamp. Ready to level up my trading game with some machine learning magic. \ud83e\udd16\ud83d\udcc8",
+    "raw_content": "Just signed up for an AI-focused coding bootcamp. Excited to dive deeper into machine learning and see how it can enhance my trading strategies. \ud83e\udd16\ud83d\udcc8 #AIGameChanger",
+    "type": "tech",
+    "age": 22.083333333333332,
+    "location": "NYC",
+    "days_elapsed": 3.8020833333333335,
+    "timestamp": "2024-11-17T15:06:15.664423",
+    "related_goals": [
+      {
+        "goal": "Engage in an online course or bootcamp to enhance blockchain or AI skills",
+        "phase": "early",
+        "category": "$XVI & Technology"
+      },
+      {
+        "goal": "Join or start a local tech meetup or online community focused on emerging technologies",
+        "phase": "middle",
+        "category": "$XVI & Technology"
+      }
+    ],
+    "id": "tweet_8",
+    "tweet_count": 8,
+    "simulated_date": "2025-01-31"
   }
 ]
