@@ -32,5 +32,29 @@
     "id": "tweet_1",
     "tweet_count": 1,
     "simulated_date": "2025-01-04"
+  },
+  {
+    "content": "Just hit 22 and jumped back into crypto trading. Booked a last-minute flight, and now with $XVI climbing, I'm plotting my next moves. \ud83c\udf89\ud83d\udcc8",
+    "raw_content": "Just turned 22 and decided to celebrate by diving back into crypto trading. Booked a spontaneous flight, and now, with $XVI on the rise, I'm strategizing my next moves to leverage this momentum. \ud83c\udf89\ud83d\udcc8",
+    "type": "finance",
+    "age": 22.020833333333332,
+    "location": "NYC",
+    "days_elapsed": 3.8020833333333335,
+    "timestamp": "2024-11-17T14:33:41.281890",
+    "related_goals": [
+      {
+        "goal": "Review and adjust investment portfolio to reflect current market trends and personal financial goals",
+        "phase": "early",
+        "category": "Financial Trajectory"
+      },
+      {
+        "goal": "Set up and follow a budget that allows for both savings and spontaneous spending",
+        "phase": "early",
+        "category": "Financial Trajectory"
+      }
+    ],
+    "id": "tweet_2",
+    "tweet_count": 2,
+    "simulated_date": "2025-01-08"
   }
 ]
