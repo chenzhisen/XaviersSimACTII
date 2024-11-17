@@ -106,5 +106,17 @@
     "id": "tweet_7",
     "tweet_count": 7,
     "simulated_date": "2025-01-27"
+  },
+  {
+    "content": "Age 22.1. Just wrapped up a project on predictive analytics in my ML course. Can't wait to see how this tech shakes up trading strategies!",
+    "raw_content": "[Age 22.1] Diving deep into the machine learning course - just finished a project on predictive analytics. Exciting to see how this tech can revolutionize trading strategies! #QuantTrading #ML",
+    "type": "career",
+    "age": 22.083333333333332,
+    "location": "NYC",
+    "days_elapsed": 3.8020833333333335,
+    "timestamp": "2024-11-17T16:31:44.470047",
+    "id": "tweet_8",
+    "tweet_count": 8,
+    "simulated_date": "2025-01-31"
   }
 ]
