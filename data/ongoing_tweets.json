@@ -32,5 +32,39 @@
     "id": "tweet_1",
     "tweet_count": 1,
     "simulated_date": "2025-01-04"
+  },
+  {
+    "content": "Just turned 22 in NYC and decided to get serious about health. Yoga in the morning and a wellness retreat next month. \ud83e\uddd8\u200d\u2642\ufe0f",
+    "raw_content": "Turning 22 in NYC and integrating health into my routine. Today, I started my day with a 20-minute yoga session and planned a 5-day wellness retreat next month to reset and rejuvenate. \ud83e\uddd8\u200d\u2642\ufe0f #MindfulLiving #HealthGoals",
+    "type": "health",
+    "age": 22.020833333333332,
+    "location": "NYC",
+    "days_elapsed": 3.8020833333333335,
+    "timestamp": "2024-11-17T10:51:28.633683",
+    "related_goals": [
+      {
+        "goal": "Develop a consistent routine for mental health practices like meditation or yoga",
+        "phase": "early",
+        "category": "Health & Well-being"
+      },
+      {
+        "goal": "Research and plan a wellness retreat or personal retreat to reset and rejuvenate",
+        "phase": "early",
+        "category": "Health & Well-being"
+      },
+      {
+        "goal": "Integrate health and well-being into daily life through a balanced lifestyle that includes regular exercise, mindfulness, and periodic travel for personal growth",
+        "phase": "early",
+        "category": "Health & Well-being"
+      },
+      {
+        "goal": "Explore and potentially engage in alternative health practices, such as psychedelic therapy, for deeper self-discovery and mental health",
+        "phase": "early",
+        "category": "Health & Well-being"
+      }
+    ],
+    "id": "tweet_2",
+    "tweet_count": 2,
+    "simulated_date": "2025-01-08"
   }
 ]
