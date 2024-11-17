@@ -46,5 +46,29 @@
     "id": "tweet_2",
     "tweet_count": 2,
     "simulated_date": "2025-01-08"
+  },
+  {
+    "content": "Registered for a data analysis course. Can't wait to level up my skills and see where this journey leads! \ud83d\udcca\ud83d\udc68\u200d\ud83d\udcbb",
+    "raw_content": "Just registered for a data analysis course. Excited to sharpen my skills and see where this knowledge takes my career next! \ud83d\udcca\ud83d\udc68\u200d\ud83d\udcbb",
+    "type": "career",
+    "age": 22.03125,
+    "location": "NYC",
+    "days_elapsed": 3.8020833333333335,
+    "timestamp": "2024-11-17T15:04:50.653037",
+    "related_goals": [
+      {
+        "goal": "Complete a professional development course in data analysis or machine learning to enhance skills relevant to quant trading and creative outlets",
+        "phase": "early",
+        "category": "Career & Growth"
+      },
+      {
+        "goal": "Build a portfolio of creative work by producing at least 5 pieces for public viewing or sale",
+        "phase": "early",
+        "category": "Career & Growth"
+      }
+    ],
+    "id": "tweet_3",
+    "tweet_count": 3,
+    "simulated_date": "2025-01-12"
   }
 ]
