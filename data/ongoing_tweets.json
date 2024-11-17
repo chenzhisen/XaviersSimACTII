@@ -70,5 +70,29 @@
     "id": "tweet_3",
     "tweet_count": 3,
     "simulated_date": "2025-01-12"
+  },
+  {
+    "content": "Just reviewed my portfolio. $XVI's recent performance suggests a potential breakout. Might shift some assets to ride this wave. \ud83d\udcc8\ud83d\udcbc",
+    "raw_content": "Just reviewed my portfolio. $XVI's recent performance suggests a potential breakout. Considering reallocating some assets to capitalize on this trend. \ud83d\udcc8\ud83d\udcbc",
+    "type": "finance",
+    "age": 22.041666666666668,
+    "location": "NYC",
+    "days_elapsed": 3.8020833333333335,
+    "timestamp": "2024-11-17T15:05:05.066011",
+    "related_goals": [
+      {
+        "goal": "Review and adjust investment portfolio to reflect current market trends and personal financial goals",
+        "phase": "middle",
+        "category": "Financial Trajectory"
+      },
+      {
+        "goal": "Set up and follow a budget that allows for both savings and spontaneous spending",
+        "phase": "early",
+        "category": "Financial Trajectory"
+      }
+    ],
+    "id": "tweet_4",
+    "tweet_count": 4,
+    "simulated_date": "2025-01-16"
   }
 ]
