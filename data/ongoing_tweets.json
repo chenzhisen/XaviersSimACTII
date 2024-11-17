@@ -94,5 +94,29 @@
     "id": "tweet_4",
     "tweet_count": 4,
     "simulated_date": "2025-01-16"
+  },
+  {
+    "content": "Morning was all about my first portfolio piece - data-driven art. Numbers meet creativity. \ud83c\udfa8\ud83d\udcca",
+    "raw_content": "Spent the morning working on my first piece for the portfolio - a data-driven art project. Combining numbers with creativity feels like a new frontier. \ud83c\udfa8\ud83d\udcca",
+    "type": "career",
+    "age": 22.052083333333332,
+    "location": "NYC",
+    "days_elapsed": 3.8020833333333335,
+    "timestamp": "2024-11-17T15:05:21.514903",
+    "related_goals": [
+      {
+        "goal": "Complete a professional development course in data analysis or machine learning to enhance skills relevant to quant trading and creative outlets",
+        "phase": "early",
+        "category": "Career & Growth"
+      },
+      {
+        "goal": "Build a portfolio of creative work by producing at least 5 pieces for public viewing or sale",
+        "phase": "early",
+        "category": "Career & Growth"
+      }
+    ],
+    "id": "tweet_5",
+    "tweet_count": 5,
+    "simulated_date": "2025-01-20"
   }
 ]
