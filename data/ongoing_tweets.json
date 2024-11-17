@@ -46,5 +46,29 @@
     "id": "tweet_2",
     "tweet_count": 2,
     "simulated_date": "2025-01-08"
+  },
+  {
+    "content": "Enrolled in a machine learning course to level up my trading game. Can't wait to see the impact on my portfolio! \ud83d\udcc8\u2728",
+    "raw_content": "Just enrolled in a machine learning course to sharpen my quant trading strategies. Excited to see how this new knowledge will boost my portfolio performance! \ud83d\udcc8\u2728",
+    "type": "career",
+    "age": 22.03125,
+    "location": "NYC",
+    "days_elapsed": 3.8020833333333335,
+    "timestamp": "2024-11-17T14:52:46.131377",
+    "related_goals": [
+      {
+        "goal": "Complete a professional development course in data analysis or machine learning to enhance skills relevant to quant trading and creative outlets",
+        "phase": "early",
+        "category": "Career & Growth"
+      },
+      {
+        "goal": "Build a portfolio of creative work by producing at least 5 pieces for public viewing or sale",
+        "phase": "early",
+        "category": "Career & Growth"
+      }
+    ],
+    "id": "tweet_3",
+    "tweet_count": 3,
+    "simulated_date": "2025-01-12"
   }
 ]
