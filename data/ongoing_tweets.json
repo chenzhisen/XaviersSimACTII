@@ -22,5 +22,29 @@
     "id": "tweet_1",
     "tweet_count": 1,
     "simulated_date": "2025-01-04"
+  },
+  {
+    "content": "Turned 22 and feeling reflective. Planning a local art event to celebrate this new chapter and connect with more creatives. Let the planning begin!",
+    "raw_content": "Just turned 22 and reflecting on my journey so far. Organizing a local art event feels like the perfect way to celebrate this new chapter and expand my connections. Time to start planning!",
+    "type": "personal",
+    "age": 22.020833333333332,
+    "location": "NYC",
+    "days_elapsed": 3.8020833333333335,
+    "timestamp": "2024-11-17T16:28:29.085756",
+    "related_goals": [
+      {
+        "goal": "Organize and participate in a local art or cultural event to expand social connections",
+        "phase": "early",
+        "category": "Personal Life & Relationships"
+      },
+      {
+        "goal": "Initiate a weekly gratitude journal to reflect on personal growth and relationships",
+        "phase": "early",
+        "category": "Personal Life & Relationships"
+      }
+    ],
+    "id": "tweet_2",
+    "tweet_count": 2,
+    "simulated_date": "2025-01-08"
   }
 ]
