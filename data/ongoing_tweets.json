@@ -20,5 +20,16 @@
     "id": "tweet_2",
     "tweet_count": 2,
     "simulated_date": "2025-01-08"
+  },
+  {
+    "content": "Just signed up for an AI bootcamp in NYC. Ready to level up my trading game with some machine learning magic.",
+    "raw_content": "Just signed up for an AI bootcamp in NYC. Excited to dive deeper into machine learning and see how it can enhance my trading algorithms. #TechJourney #AIBootcamp",
+    "type": "tech",
+    "age": 22.03125,
+    "location": "NYC",
+    "timestamp": "2024-11-17T20:55:37.553734",
+    "id": "tweet_3",
+    "tweet_count": 3,
+    "simulated_date": "2025-01-12"
   }
 ]
