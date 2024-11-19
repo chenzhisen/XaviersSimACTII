@@ -9,5 +9,16 @@
     "id": "tweet_1",
     "tweet_count": 1,
     "simulated_date": "2025-01-04"
+  },
+  {
+    "content": "Just turned 22 and now I'm at an AI workshop in NYC. If my trading algorithms start quoting poetry, you'll know why.",
+    "raw_content": "Just turned 22 and diving into an AI workshop in NYC. The intersection of tech and creativity is sparking new ideas for my trading algorithms. Excited to see how this will shape my next project. #AIDev #TechBirthday",
+    "type": "tech",
+    "age": 22.020833333333332,
+    "location": "NYC",
+    "timestamp": "2024-11-19T12:29:06.648157",
+    "id": "tweet_2",
+    "tweet_count": 2,
+    "simulated_date": "2025-01-08"
   }
 ]
