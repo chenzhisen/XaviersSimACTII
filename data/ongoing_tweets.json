@@ -42,5 +42,16 @@
     "id": "tweet_4",
     "tweet_count": 4,
     "simulated_date": "2025-01-16"
+  },
+  {
+    "content": "Just spent 3 days wrestling with Python's libraries for my AI finance course. Thought I'd cracked the code, but turns out, my model was predicting stock prices better than the actual market. Had to backtrack and debug, but hey, at least now I can spot overfitting from a mile away!",
+    "raw_content": "Just spent 3 days wrestling with Python's libraries for my AI finance course. Thought I'd cracked the code, but turns out, my model was predicting stock prices better than the actual market. Had to backtrack and debug, but hey, at least now I can spot overfitting from a mile away! #AIinFinance #LearningCurve",
+    "type": "career",
+    "age": 22.052083333333332,
+    "location": "NYC",
+    "timestamp": "2024-11-20T15:13:53.774793",
+    "id": "tweet_5",
+    "tweet_count": 5,
+    "simulated_date": "2025-01-20"
   }
 ]
