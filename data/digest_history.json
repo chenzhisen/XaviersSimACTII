@@ -1,0 +1,164 @@
+[
+  {
+    "digest": {
+      "Career & Growth": {
+        "historical_summary": {
+          "MTM": [
+            {
+              "Summary": "College courses are proving challenging, leading to reconsideration of future plans.",
+              "Patterns": "difficulty with complex subjects, questioning academic path, feeling overwhelmed",
+              "Goals": "improve time management, seek academic support, reconsider career choices",
+              "Transition": "The complexity of college courses has led to a reassessment of educational and career goals."
+            }
+          ],
+          "LTM": []
+        },
+        "projected_goals": {
+          "short_term": [
+            {
+              "goal": "Complete a coding bootcamp or online course to enhance coding skills",
+              "duration_days": 90
+            }
+          ],
+          "long_term": [
+            "Transition into a technology-related career, focusing on AI development or sustainable tech solutions."
+          ]
+        }
+      },
+      "Personal Life & Relationships": {
+        "historical_summary": {
+          "MTM": [
+            {
+              "Summary": "Navigating new social dynamics in college.",
+              "Patterns": "disconnection from old friends, making new friends, adjusting to new environment",
+              "Goals": "strengthen new friendships, maintain old connections, find a social balance",
+              "Transition": "The transition to college has led to a shift in social circles."
+            }
+          ],
+          "LTM": [
+            {
+              "Milestone": "First significant transition away from high school social circles.",
+              "Implications": "Long-term impact on personal identity and social development.",
+              "Lessons": "adaptability, importance of maintaining relationships, value of new connections",
+              "Age": 18.5
+            }
+          ]
+        },
+        "projected_goals": {
+          "short_term": [
+            {
+              "goal": "Organize a monthly meet-up or event to strengthen new college friendships",
+              "duration_days": 30
+            }
+          ],
+          "long_term": [
+            "Cultivate a network of diverse, supportive relationships that reflect personal growth and societal changes."
+          ]
+        }
+      },
+      "Health & Well-being": {
+        "historical_summary": {
+          "MTM": [
+            {
+              "Summary": "Experiencing sleep deprivation and existential questions.",
+              "Patterns": "poor sleep, existential crises, questioning happiness",
+              "Goals": "improve sleep hygiene, seek mental health support, find personal fulfillment",
+              "Transition": "The college environment has led to a reevaluation of well-being practices."
+            }
+          ],
+          "LTM": []
+        },
+        "projected_goals": {
+          "short_term": [
+            {
+              "goal": "Establish a consistent sleep schedule and incorporate mindfulness practices",
+              "duration_days": 60
+            }
+          ],
+          "long_term": [
+            "Develop a holistic approach to well-being, integrating mental health support and personal fulfillment."
+          ]
+        }
+      },
+      "Financial Trajectory": {
+        "historical_summary": {
+          "MTM": [
+            {
+              "Summary": "Concerned about financial independence and expenses in NYC.",
+              "Patterns": "high living costs, feeling broke, lack of free time",
+              "Goals": "budgeting, seeking part-time work, financial education",
+              "Transition": "The realization of high living costs has prompted a shift towards financial responsibility."
+            }
+          ],
+          "LTM": []
+        },
+        "projected_goals": {
+          "short_term": [
+            {
+              "goal": "Create and adhere to a detailed budget to manage living expenses in NYC",
+              "duration_days": 45
+            }
+          ],
+          "long_term": [
+            "Achieve financial independence through strategic investments and savings, potentially leveraging emerging technologies for income generation."
+          ]
+        }
+      },
+      "Reflections & Philosophy": {
+        "historical_summary": {
+          "MTM": [
+            {
+              "Summary": "Questioning societal norms and personal happiness.",
+              "Patterns": "questioning happiness, reflecting on life changes, societal critique",
+              "Goals": "self-discovery, defining personal values, seeking authenticity",
+              "Transition": "The college experience has sparked a deeper philosophical inquiry into personal life."
+            }
+          ],
+          "LTM": []
+        },
+        "projected_goals": {
+          "short_term": [
+            {
+              "goal": "Attend workshops or lectures on philosophy and personal development",
+              "duration_days": 90
+            }
+          ],
+          "long_term": [
+            "Engage in ongoing self-discovery and philosophical exploration, adapting personal values in response to technological and societal shifts."
+          ]
+        }
+      },
+      "$XVI & Technology": {
+        "historical_summary": {
+          "MTM": [
+            {
+              "Summary": "Struggling with coding and technology coursework.",
+              "Patterns": "frustration with coding, difficulty understanding programming, lack of enjoyment",
+              "Goals": "improve coding skills, seek additional resources, find motivation in technology",
+              "Transition": "The struggle with coding has led to a reevaluation of interest in technology."
+            }
+          ],
+          "LTM": []
+        },
+        "projected_goals": {
+          "short_term": [
+            {
+              "goal": "Explore AI-driven development tools to automate coding tasks",
+              "duration_days": 120
+            }
+          ],
+          "long_term": [
+            "Become proficient in AI-driven software development and contribute to sustainable space exploration technologies."
+          ]
+        }
+      }
+    },
+    "metadata": {
+      "simulation_age": 18.5,
+      "simulation_time": "2025-05-21",
+      "tweet_count": 0,
+      "age_bracket": "age 18-18.5",
+      "current_location": ""
+    }
+  }
+]
