@@ -9,5 +9,16 @@
     "id": "tweet_1",
     "tweet_count": 1,
     "simulated_date": "2025-01-04"
+  },
+  {
+    "content": "Just turned 22 and diving into AI-driven dev automation. Like ancient alchemists turning lead into gold, I'm exploring how AI can transform our code, making software development not just efficient, but magical.",
+    "raw_content": "\ud83c\udf82 Just turned 22 and diving into AI-driven dev automation. Like ancient alchemists turning lead into gold, I'm exploring how AI can transform our code, making software development not just efficient, but magical. #TechBirthday #AIJourney",
+    "type": "tech",
+    "age": 22.020833333333332,
+    "location": "NYC",
+    "timestamp": "2024-11-19T20:25:03.598194",
+    "id": "tweet_2",
+    "tweet_count": 2,
+    "simulated_date": "2025-01-08"
   }
 ]
