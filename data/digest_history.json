@@ -1,0 +1,209 @@
+[
+  {
+    "digest": {
+      "Career & Growth": {
+        "historical_summary": {
+          "MTM": [
+            {
+              "Summary": "Student is struggling with coding and calculus courses, leading to doubts about their academic choices.",
+              "Patterns": "Feeling overwhelmed, questioning decisions, academic stress",
+              "Goals": "Improve coding skills, manage academic workload, reconsider course choices",
+              "Transition": "The student might change their major or seek additional support."
+            }
+          ],
+          "LTM": [
+            {
+              "Milestone": "Enrolled in an Intro to Comp Sci course, marking the beginning of a potential career in technology.",
+              "Implications": "This could lead to a long-term career in tech or pivot towards a different field.",
+              "Lessons": "Importance of foundational knowledge, need for resilience, value of seeking help",
+              "Age": 18.5
+            }
+          ]
+        },
+        "projected_goals": {
+          "short_term": [
+            {
+              "goal": "Complete a project using Java or another coding language to build confidence",
+              "duration_days": 60
+            },
+            {
+              "goal": "Attend workshops or seminars on AI and machine learning to understand emerging trends",
+              "duration_days": 90
+            }
+          ],
+          "long_term": [
+            "Develop a career path in technology with a focus on AI-driven development"
+          ]
+        }
+      },
+      "Personal Life & Relationships": {
+        "historical_summary": {
+          "MTM": [
+            {
+              "Summary": "Student is making new friends in college while feeling disconnected from high school peers.",
+              "Patterns": "New friendships, social transition, feeling of disconnection",
+              "Goals": "Strengthen new relationships, maintain connections with old friends, adjust to new social environment",
+              "Transition": "The student is in the process of reshaping their social circle."
+            }
+          ],
+          "LTM": []
+        },
+        "projected_goals": {
+          "short_term": [
+            {
+              "goal": "Organize a study group with peers to foster new relationships and share knowledge",
+              "duration_days": 45
+            },
+            {
+              "goal": "Set up regular check-ins with old friends to maintain connections",
+              "duration_days": 90
+            }
+          ],
+          "long_term": [
+            "Create a balanced social network that supports personal and professional growth"
+          ]
+        }
+      },
+      "Health & Well-being": {
+        "historical_summary": {
+          "MTM": [
+            {
+              "Summary": "Student is facing existential crises and mood swings influenced by college life and weather.",
+              "Patterns": "Existential crises, mood swings, weather-related mood changes",
+              "Goals": "Find coping mechanisms, seek support, improve mental health",
+              "Transition": "The student is learning to manage stress and adapt to new environments."
+            }
+          ],
+          "LTM": [
+            {
+              "Milestone": "First significant encounter with existential crises in college.",
+              "Implications": "This experience will shape the student's approach to mental health and resilience.",
+              "Lessons": "Importance of mental health, coping strategies, self-awareness",
+              "Age": 18.5
+            }
+          ]
+        },
+        "projected_goals": {
+          "short_term": [
+            {
+              "goal": "Establish a routine for stress management techniques like mindfulness or yoga",
+              "duration_days": 30
+            },
+            {
+              "goal": "Seek professional mental health support if existential crises persist",
+              "duration_days": 60
+            }
+          ],
+          "long_term": [
+            "Maintain a holistic approach to mental and physical health for long-term well-being"
+          ]
+        }
+      },
+      "Financial Trajectory": {
+        "historical_summary": {
+          "MTM": [
+            {
+              "Summary": "Student is experiencing financial strain due to high living costs in NYC.",
+              "Patterns": "Financial stress, realization of being broke, longing for cheaper options",
+              "Goals": "Budget better, find part-time work, adjust expectations",
+              "Transition": "The student needs to adapt their financial habits to the city's cost of living."
+            }
+          ],
+          "LTM": []
+        },
+        "projected_goals": {
+          "short_term": [
+            {
+              "goal": "Create a detailed budget plan to manage expenses in NYC",
+              "duration_days": 30
+            },
+            {
+              "goal": "Secure a part-time job or internship in tech or finance to increase income",
+              "duration_days": 120
+            }
+          ],
+          "long_term": [
+            "Achieve financial independence through career growth and smart financial management"
+          ]
+        }
+      },
+      "Reflections & Philosophy": {
+        "historical_summary": {
+          "MTM": [
+            {
+              "Summary": "Student is reflecting on the authenticity of happiness and others' life plans.",
+              "Patterns": "Existential reflections, questioning authenticity, finding comfort in shared struggles",
+              "Goals": "Develop a personal philosophy, understand others' perspectives, build self-confidence",
+              "Transition": "The student is developing a more nuanced view of life and happiness."
+            }
+          ],
+          "LTM": [
+            {
+              "Milestone": "Realization that many people might be faking confidence and life plans.",
+              "Implications": "This could lead to a more empathetic and realistic outlook on life.",
+              "Lessons": "Not everyone has it figured out, value of authenticity, importance of empathy",
+              "Age": 18.5
+            }
+          ]
+        },
+        "projected_goals": {
+          "short_term": [
+            {
+              "goal": "Join a philosophy or ethics club to explore existential questions with peers",
+              "duration_days": 60
+            },
+            {
+              "goal": "Read books or articles on digital consciousness and its implications",
+              "duration_days": 90
+            }
+          ],
+          "long_term": [
+            "Develop a personal philosophy that integrates technology and human experience"
+          ]
+        }
+      },
+      "$XVI & Technology": {
+        "historical_summary": {
+          "MTM": [
+            {
+              "Summary": "Student is experiencing frustration with coding, particularly Java.",
+              "Patterns": "Frustration with coding, negative view on technology, extreme reactions",
+              "Goals": "Overcome coding challenges, develop patience, find enjoyment in technology",
+              "Transition": "The student might explore other aspects of technology or seek alternative learning methods."
+            }
+          ],
+          "LTM": [
+            {
+              "Milestone": "First significant struggle with coding, marking a challenging point in the student's tech journey.",
+              "Implications": "This could impact the student's future relationship with technology and programming.",
+              "Lessons": "Coding requires practice and patience, tech isn't always easy, importance of problem-solving skills",
+              "Age": 18.5
+            }
+          ]
+        },
+        "projected_goals": {
+          "short_term": [
+            {
+              "goal": "Learn Python alongside Java to expand coding proficiency",
+              "duration_days": 90
+            },
+            {
+              "goal": "Participate in hackathons or coding challenges to apply learned skills",
+              "duration_days": 120
+            }
+          ],
+          "long_term": [
+            "Become proficient in AI and machine learning technologies for career advancement"
+          ]
+        }
+      }
+    },
+    "metadata": {
+      "simulation_age": 18.5,
+      "simulation_time": "2025-05-21",
+      "tweet_count": 0,
+      "age_bracket": "age 18-18.5",
+      "current_location": ""
+    }
+  }
+]
