@@ -9,5 +9,16 @@
     "id": "tweet_1",
     "tweet_count": 1,
     "simulated_date": "2025-01-04"
+  },
+  {
+    "content": "Just turned 22 and reflecting on the journey so far. From sketching in the streets of NYC to integrating AI into my art, every step feels like a brush stroke on the canvas of my career. #ArtMeetsTech",
+    "raw_content": "Just turned 22 and reflecting on the journey so far. From sketching in the streets of NYC to integrating AI into my art, every step feels like a brush stroke on the canvas of my career. #ArtMeetsTech",
+    "type": "career",
+    "age": 22.020833333333332,
+    "location": "NYC",
+    "timestamp": "2024-11-20T08:42:51.667426",
+    "id": "tweet_2",
+    "tweet_count": 2,
+    "simulated_date": "2025-01-08"
   }
 ]
