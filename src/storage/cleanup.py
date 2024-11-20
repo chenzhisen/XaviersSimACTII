@@ -66,6 +66,7 @@ if __name__ == "__main__":
         'comm': 'comments.json',
         'sim': 'simulation_state.json',
         'digest': 'digest_history.json',
+        'digest_acti': 'digest_history_acti.json',
         'tech': 'tech_evolution.json'
     }
     

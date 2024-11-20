@@ -9,6 +9,7 @@ load_dotenv()
 class AIProvider(Enum):
     XAI = "XAI"
     ANTHROPIC = "ANTHROPIC"
+    OPENAI = "OPENAI"
 
 @dataclass
 class AIConfig:
@@ -44,6 +45,11 @@ class Config:
         AIProvider.ANTHROPIC: AIConfig(
             api_key=os.getenv('ANTHROPIC_API_KEY'),
             model="claude-3-opus-20240229"
+        ),
+        AIProvider.OPENAI: AIConfig(
+            api_key=os.getenv('OPENAI_API_KEY'),
+            model=os.getenv('OPENAI_MODEL', 'gpt-4'),
+            base_url="https://api.openai.com/v1"
         )
     }
 

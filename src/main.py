@@ -4,6 +4,7 @@ from src.generation.digest_generator import DigestGenerator
 from src.generation.tweet_generator import TweetGenerator
 from src.utils.config import Config, AIProvider
 from anthropic import Anthropic
+from openai import OpenAI
 
 import anthropic
 import json
@@ -11,24 +12,39 @@ from datetime import datetime, timedelta
 import math
 import traceback
 import os
+import argparse
 
 class SimulationWorkflow:
-    def __init__(self, tweets_per_year=96, provider: AIProvider = AIProvider.XAI):
+    def __init__(self, tweets_per_year=96, digest_interval=8, provider: AIProvider = AIProvider.XAI):
         ai_config = Config.get_ai_config(provider)
+        
         if provider == AIProvider.ANTHROPIC:
             self.client = Anthropic(api_key=ai_config.api_key)
+        elif provider == AIProvider.OPENAI:
+            self.client = OpenAI(
+                api_key=ai_config.api_key,
+            )
         elif provider == AIProvider.XAI:
             self.client = Anthropic( 
                 api_key=ai_config.api_key,
                 base_url=ai_config.base_url
             )
         self.model = ai_config.model
+        self.digest_interval = digest_interval
 
-        self.tweet_gen = TweetGenerator(self.client, self.model)
+        # Initialize GitHub operations
         self.github_ops = GithubOperations()
+
+        # Initialize tweet generator first
+        self.tweet_gen = TweetGenerator(
+            client=self.client, 
+            model=self.model,
+            tweets_per_year=tweets_per_year,
+            digest_interval=self.digest_interval
+        )
         
         self.tweets_per_year = tweets_per_year
-        self.digest_interval = tweets_per_year // 4
+        self.digest_interval = tweets_per_year // 12
         self.tech_preview_months = 6
         
         self.start_date = datetime(2025, 1, 1)
@@ -48,20 +64,27 @@ class SimulationWorkflow:
         
     def run(self):
         try:
-            # 0. Read ongoing tweets
+            # 0. Read ongoing tweets with proper history
             ongoing_tweets = self.tweet_gen.get_ongoing_tweets()
-            ongoing_comments = None #self.tweet_gen.get_ongoing_comments()
-            trends = None #self.tweet_gen.get_trends()
+            xavier_sim_content, _ = self.github_ops.get_file_content('XaviersSim.json')
+            ongoing_comments = None
+            trends = None
+
+            # Initialize counters and location
+            tweet_count = 0
+            current_age = 22.0
+            current_location = "Japan"  # Default starting location
             
+            # Extract latest state from ongoing tweets
             if ongoing_tweets:
                 last_tweet = ongoing_tweets[-1]
-                tweet_count = last_tweet.get('tweet_count', 0)
-                if len(ongoing_tweets) < self.digest_interval:
-                    ongoing_tweets = self.tweet_gen.get_acti_tweets()[-self.digest_interval+len(ongoing_tweets):] + ongoing_tweets
-            else:
-                ongoing_tweets = self.tweet_gen.get_acti_tweets()[-self.digest_interval:]
-                tweet_count = 0
-            
+                if isinstance(last_tweet, dict):
+                    tweet_count = last_tweet.get('tweet_count', 0)
+                    # Get location from last tweet, fallback to Japan if not found
+                    current_location = last_tweet.get('location', current_location)
+                    current_age = last_tweet.get('age', 22.0)
+            print(f"tweet_count: {tweet_count}")
+
             current_date = self.get_current_date(tweet_count + 1)
             current_age = self.get_current_age(tweet_count + 1)
             print(f"Current tweet count: {tweet_count}")
@@ -76,7 +99,8 @@ class SimulationWorkflow:
                 model=self.model,
                 simulation_time=current_date.strftime('%Y-%m-%d'),
                 simulation_age=current_age,
-                tweet_count=tweet_count
+                tweet_count=tweet_count,
+                tweet_generator=self.tweet_gen
             )
             
             # 2. Check/Generate tech evolution
@@ -117,8 +141,6 @@ class SimulationWorkflow:
                     print("Loaded latest digest from GitHub.")
                 else:
                     print("Generating initial digest from historical tweets...")
-                    # Get historical tweets from XaviersSim.json
-                    xavier_sim_content, _ = self.github_ops.get_file_content('XaviersSim.json')
                     if xavier_sim_content and isinstance(xavier_sim_content, dict):
                         print("Processing historical tweets by age brackets...")
                         latest_digest = digest_gen.generate_first_digest(xavier_sim_content)
@@ -143,14 +165,19 @@ class SimulationWorkflow:
                     recent_tweets = ongoing_tweets[-self.digest_interval:]
                     simulation_time = current_date.strftime('%Y-%m-%d')
                     latest_digest = digest_gen.generate_digest(
-                        recent_tweets=recent_tweets,
-                        simulation_time=simulation_time,
-                        simulation_age=current_age,
-                        tweet_count=tweet_count,
-                        latest_digest=latest_digest
+                        latest_digest=latest_digest,
+                        tweets=recent_tweets,
+                        current_age=current_age,
+                        current_date=current_date,
+                        tweet_count=tweet_count
                     )
 
-            # 6. Extract values from latest digest
+            # Handle case where digest generation fails
+            if latest_digest is None:
+                print("Failed to generate digest")
+                return
+            
+            # Extract metadata from digest
             simulation_time = latest_digest.get('metadata', {}).get('simulation_time')
             
             # 7. Generate and store new tweet
@@ -160,6 +187,7 @@ class SimulationWorkflow:
                 recent_comments=ongoing_comments[-self.digest_interval:] if ongoing_comments else None,
                 age=current_age,
                 tweet_count=tweet_count,
+                current_location=current_location,
                 trends=trends
             )
             if new_tweet:
@@ -177,8 +205,42 @@ class SimulationWorkflow:
             traceback.print_exc()
 
 def main():
-    workflow = SimulationWorkflow()
-    workflow.run()
+    # Add command line argument parsing
+    parser = argparse.ArgumentParser(description='Run Xavier Simulation')
+    parser.add_argument(
+        '--provider', 
+        type=str, 
+        choices=['XAI', 'ANTHROPIC', 'OPENAI'],
+        default='XAI',
+        help='AI provider to use (XAI, ANTHROPIC, or OPENAI)'
+    )
+    parser.add_argument(
+        '--tweets-per-year',
+        type=int,
+        default=96,
+        help='Number of tweets to generate per year'
+    )
+    parser.add_argument(
+        '--digest-interval',
+        type=int,
+        default=8,
+        help='Number of tweets between digest generations'
+    )
+    
+    args = parser.parse_args()
+    
+    # Convert string to enum
+    provider = AIProvider[args.provider]
+    
+    print(f"Starting simulation with {provider.value} provider")
+    workflow = SimulationWorkflow(
+        tweets_per_year=args.tweets_per_year,
+        digest_interval=args.digest_interval,
+        provider=provider
+    )
+    
+    while True:
+        workflow.run()
 
 if __name__ == "__main__":
     main() 

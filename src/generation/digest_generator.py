@@ -1,39 +1,53 @@
 import json
-from datetime import datetime
+from datetime import datetime, timedelta
 from storage.github_operations import GithubOperations
 from utils.config import Config, AIProvider
 from anthropic import Anthropic
 import traceback
 import os
 import time
+from src.utils.ai_completion import AICompletion
 
 class DigestGenerator:
         
-    def __init__(self, github_ops, client, model, simulation_time=None, simulation_age=None, tweet_count=0):
+    def __init__(self, github_ops, client, model, tweet_generator, simulation_time=None, simulation_age=None, tweet_count=0):
         """Initialize the digest generator"""
         self.github_ops = github_ops
         self.client = client
         self.model = model
+        self.tweet_generator = tweet_generator
         self.simulation_time = simulation_time or datetime.now().strftime('%Y-%m-%d')
-        self.simulation_age = float(simulation_age) if simulation_age is not None else 22.0  # Default age
+        self.simulation_age = float(simulation_age) if simulation_age is not None else 22.0
         self.tweet_count = tweet_count
-        print(f"DigestGenerator initialized with age: {self.simulation_age}")
+        self.ai = AICompletion(client, model)
+
+        # Initialize logging directories
+        self.log_dir = "logs"
+        self.digest_log_dir = os.path.join(self.log_dir, "digest")
+        self.first_digest_log_dir = os.path.join(self.log_dir, "first_digest")
+        os.makedirs(self.digest_log_dir, exist_ok=True)
+        os.makedirs(self.first_digest_log_dir, exist_ok=True)
         
-        # Initialize empty life tracks
-        self.life_tracks = self._initialize_empty_tracks()
+        # Initialize life tracks
+        self.life_tracks = self._initialize_life_tracks()
 
     def _get_tech_data(self):
-        """Get and format technology data from tech_evolution.json"""
+        """Get technology data relevant to the current simulation time"""
         try:
-            tech_evolution, _ = self.github_ops.get_file_content('tech_evolution.json')
-            if not tech_evolution:
-                print("No tech evolution data found")
-                return [], [], []
-
-            if isinstance(tech_evolution, str):
-                tech_evolution = json.loads(tech_evolution)
+            # Clean up the timestamp format - strip any time component
+            if 'T' in self.simulation_time:
+                self.simulation_time = self.simulation_time.split('T')[0]
             
-            tech_trees = tech_evolution.get('tech_trees', {})
+            simulation_date = datetime.strptime(self.simulation_time, '%Y-%m-%d')
+            
+            tech_data, _ = self.github_ops.get_file_content('tech_evolution.json')
+            if not tech_data:
+                return [], [], []
+            
+            if isinstance(tech_data, str):
+                tech_data = json.loads(tech_data)
+            
+            tech_trees = tech_data.get('tech_trees', {})
             if not tech_trees:
                 print("No tech trees found in evolution data")
                 return [], [], []
@@ -82,12 +96,6 @@ class DigestGenerator:
             print(f"Error getting tech data: {e}")
             traceback.print_exc()
             return [], [], []
-            
-        except Exception as e:
-            print(f"Error getting tech data: {e}")
-            print("Full error details:")
-            traceback.print_exc()
-            return [], []
 
     def get_latest_digest(self):
         """Get the most recent digest with metadata"""
@@ -129,182 +137,285 @@ class DigestGenerator:
         return tech_section
         
     def _build_current_tracks_section(self):
-        """Build the section describing current life tracks"""
+        """Build the section describing current life tracks."""
         sections = []
         if not isinstance(self.life_tracks, dict):
             return ""
-        
-        for track_name, data in self.life_tracks['digest'].items():
+
+        for track_name, data in self.life_tracks.get('digest', {}).items():
             # Skip metadata fields
             if track_name in ['timestamp', 'metadata']:
                 continue
-            
-            # Verify data is a dictionary
+
+            # Ensure data is a dictionary
             if not isinstance(data, dict):
                 continue
-            
-            # Handle Plot Points separately
-            if track_name == "Plot Points":
-                tech_plot_points = data.get("tech_driven", [])
-                char_plot_points = data.get("character_driven", [])
-                
-                section = f"\n{track_name}:\n"
 
-                # Tech-driven plot points
-                if tech_plot_points:
-                    section += "Tech-Driven Plot Points:\n- " + "\n- ".join(tech_plot_points) + "\n"
-
-                # Character-driven plot points
-                if char_plot_points:
-                    section += "Character-Driven Plot Points:\n- " + "\n- ".join(char_plot_points) + "\n"
-
-                sections.append(section)
-                continue  # Skip to the next track after handling Plot Points
-            
-            # Handle Technology Influences separately
-            if track_name == "Technology Influences":
-                upcoming_trends = data.get("upcoming_trends", [])
-                societal_shifts = data.get("societal_shifts", [])
-                tech_plot_points = data.get("tech_driven_plot_points", [])
-                
-                section = f"\n{track_name}:\n"
-
-                # Upcoming Trends
-                if upcoming_trends:
-                    section += "Upcoming Trends:\n- " + "\n- ".join(upcoming_trends) + "\n"
-
-                # Societal Shifts
-                if societal_shifts:
-                    section += "Societal Shifts:\n- " + "\n- ".join(societal_shifts) + "\n"
-
-                # Tech-Driven Plot Points
-                if tech_plot_points:
-                    section += "Tech-Driven Plot Points:\n- " + "\n- ".join(tech_plot_points) + "\n"
-
-                sections.append(section)
-                continue  # Skip to the next track after handling Technology Influences
-            
-            # General handling for other sections
+            # Initialize section header
             section = f"\n{track_name}:\n"
-            historical = data.get('historical_summary', [])
-            projected_short = data.get('projected_short', [])
-            projected_long = data.get('projected_long', [])
-            tech_plot_points = data.get("plot_points", {}).get("tech_driven", [])
-            char_plot_points = data.get("plot_points", {}).get("character_driven", [])
+
+            # General handling for simplified categories
+            historical = data.get('historical_summary', {"STM": [], "MTM": [], "LTM": []})
+            projected_short = data.get('projected_goals', {}).get('short_term', [])
+            projected_long = data.get('projected_goals', {}).get('long_term', [])
+            plot_points = data.get('plot_points', [])
 
             # Historical summary
             if historical:
-                section += "Historical:\n- " + "\n- ".join(historical) + "\n"
+                section += "Historical Summary:\n"
+                for tier, summaries in historical.items():
+                    if summaries:
+                        section += f"  {tier}:\n"
+                        for summary in summaries:
+                            section += f"    - {summary}\n"
 
-            # Short-term projections
+            # Short-term goals
             if projected_short:
-                section += "Short-Term Goals:\n- " + "\n- ".join(projected_short) + "\n"
-            
-            # Long-term projections
+                section += "Short-Term Goals:\n"
+                for short_goal in projected_short:
+                    if isinstance(short_goal, dict):
+                        goal = short_goal.get("goal", "Unnamed Goal")
+                        duration = short_goal.get("duration_days", "N/A")
+                        section += f"- {goal} (Duration: {duration} days)\n"
+                    else:
+                        section += f"- {short_goal}\n"
+
+            # Long-term goals
             if projected_long:
-                section += "Long-Term Goals:\n- " + "\n- ".join(projected_long) + "\n"
+                section += "Long-Term Goals:\n"
+                for long_goal in projected_long:
+                    section += f"- {long_goal}\n"
 
-            # Tech-driven plot points
-            if tech_plot_points:
-                section += "Tech-Driven Plot Points:\n- " + "\n- ".join(tech_plot_points) + "\n"
-
-            # Character-driven plot points
-            if char_plot_points:
-                section += "Character-Driven Plot Points:\n- " + "\n- ".join(char_plot_points) + "\n"
+            # Plot points
+            if plot_points:
+                section += "Plot Points:\n"
+                for plot_point in plot_points:
+                    description = plot_point.get("description", "No description provided.")
+                    section += f"- {description}\n"
 
             sections.append(section)
 
-        return "\nCurrent Life Tracks:" + "".join(sections) if sections else ""
-
-    def _parse_summaries_into_tracks(self, response_text):
-        """Parse AI's response into structured life tracks with historical summaries and projections."""
+        return "\nPrevious Life Tracks:" + "".join(sections) if sections else ""
         
-        life_tracks = self._initialize_empty_tracks()
-        print("Initialized empty life tracks.")  # Debug
-
-        try:
-            # Clean the response text
-            cleaned_response = response_text.strip()
-            
-            # Check if the response starts with a markdown code block
-            if cleaned_response.startswith("```json"):
-                cleaned_response = cleaned_response[7:]  # Remove the initial ```json
-            if cleaned_response.endswith("```"):
-                cleaned_response = cleaned_response[:-3]  # Remove the trailing ```
-            
-            # Parse the JSON response
-            response_data = json.loads(cleaned_response)
-            print("Successfully parsed JSON response.")  # Debug
-            
-            for track_name, track_data in response_data.items():
-                print(f"Processing track: {track_name}")  # Debug
-                if track_name not in life_tracks['digest']:
-                    life_tracks['digest'][track_name] = {}  # Initialize if not present
-                    print(f"Initialized track: {track_name}")  # Debug
-                
-                for section, items in track_data.items():
-                    print(f"Processing section: {section} with {len(items)} items")  # Debug
-                    if section not in life_tracks['digest'][track_name]:
-                        life_tracks['digest'][track_name][section] = {} if isinstance(items, dict) else []  # Initialize if not present
-                        print(f"Initialized section: {section}")  # Debug
-                    
-                    if isinstance(items, list):
-                        life_tracks['digest'][track_name][section].extend(items)
-                        print(f"Added {len(items)} items to section: {section}")  # Debug
-                    elif isinstance(items, dict):
-                        for sub_section, sub_items in items.items():
-                            if sub_section not in life_tracks['digest'][track_name][section]:
-                                life_tracks['digest'][track_name][section][sub_section] = []
-                            life_tracks['digest'][track_name][section][sub_section].extend(sub_items)
-                            print(f"Added {len(sub_items)} items to sub-section: {sub_section}")  # Debug
-        
-        except json.JSONDecodeError as e:
-            print(f"Error parsing JSON: {e}")
-            traceback.print_exc()
-        
-        return life_tracks
-
-    def _initialize_empty_tracks(self):
-        """Initialize and return the empty structure for life tracks."""
+    def _get_empty_structure(self):
+        """Return the empty structure for responses."""
         return {
-            "timestamp": datetime.now().isoformat(),
-            "metadata": {
-                "simulation_time": self.simulation_time,
-                "simulation_age": self.simulation_age,
-                "tweet_count": self.tweet_count
-            },
-            "digest": {
-                "Professional": {"historical_summary": [], "projected_short": [], "projected_long": [], "plot_points": {"tech_driven": [], "character_driven": []}},
-                "Personal": {"historical_summary": [], "projected_short": [], "projected_long": [], "plot_points": {"tech_driven": [], "character_driven": []}},
-                "Family": {"historical_summary": [], "projected_short": [], "projected_long": [], "plot_points": {"tech_driven": [], "character_driven": []}},
-                "Social": {"historical_summary": [], "projected_short": [], "projected_long": [], "plot_points": {"tech_driven": [], "character_driven": []}},
-                "Reflections": {"historical_summary": [], "projected_short": [], "projected_long": [], "plot_points": {"tech_driven": [], "character_driven": []}},
-                "$XVI": {"historical_summary": [], "projected_short": [], "projected_long": [], "plot_points": {"tech_driven": [], "character_driven": []}},
-                "Major Events": {"historical_summary": [], "projected_short": [], "projected_long": [], "plot_points": {"tech_driven": [], "character_driven": []}},
-                "Financial Trajectory": {"historical_summary": [], "projected_short": [], "projected_long": [], "plot_points": {"tech_driven": [], "character_driven": []}},
-                "Health & Well-being": {"historical_summary": [], "projected_short": [], "projected_long": [], "plot_points": {"tech_driven": [], "character_driven": []}},
-                "Mentorship & Legacy": {"historical_summary": [], "projected_short": [], "projected_long": [], "plot_points": {"tech_driven": [], "character_driven": []}},
-                "Character Development": {"historical_summary": [], "projected_short": [], "projected_long": [], "plot_points": {"tech_driven": [], "character_driven": []}},
-                "New Relationships and Conflicts": {"historical_summary": [], "projected_short": [], "projected_long": [], "plot_points": {"tech_driven": [], "character_driven": []}},
-                "Plot Points": {"tech_driven": [], "character_driven": []},
-                "Technology Influences": {"upcoming_trends": [], "societal_shifts": [], "tech_driven_plot_points": []}
+            "Career & Growth": {"MTM": [], "LTM": []},
+            "Personal Life & Relationships": {"MTM": [], "LTM": []},
+            "Health & Well-being": {"MTM": [], "LTM": []},
+            "Financial Trajectory": {"MTM": [], "LTM": []},
+            "Reflections & Philosophy": {"MTM": [], "LTM": []},
+            "$XVI & Technology": {"MTM": [], "LTM": []}
+        }
+
+    def _parse_response(self, response_text, step_name, current_age=None):
+        """Parse response text into JSON, with focused debugging."""
+        try:
+            # Remove any markdown formatting
+            clean_text = response_text.replace('```json\n', '').replace('\n```', '').strip()
+            
+            try:
+                parsed = json.loads(clean_text)
+                
+                # Convert list to dictionary if needed (for STM)
+                if isinstance(parsed, list):
+                    print(f"Warning: {step_name} returned list format, converting to dictionary")
+                    return self._categorize_list_response(parsed)
+                
+                # Validate structure based on step
+                if step_name == "STM extraction":
+                    return self._validate_stm_response(parsed)
+                elif step_name == "historical summary":
+                    return self._validate_historical_response(parsed, current_age)
+                
+                return parsed
+                
+            except json.JSONDecodeError as e:
+                print(f"\nERROR: JSON parsing failed in {step_name}")
+                print(f"Error location: Line {e.lineno}, Column {e.colno}")
+                print(f"Context: ...{clean_text[max(0, e.pos-50):min(len(clean_text), e.pos+50)]}...")
+                if step_name == "historical summary" and hasattr(self, 'life_tracks'):
+                    print("Falling back to existing life tracks")
+                    return self.life_tracks.get('digest', self._get_empty_structure())
+                return self._get_empty_structure()
+                
+        except Exception as e:
+            print(f"\nERROR in {step_name}: {str(e)}")
+            traceback.print_exc()
+            return self._get_empty_structure()
+
+    def _validate_stm_response(self, parsed):
+        """Validate and fix STM response structure."""
+        expected_categories = [
+            "Career & Growth",
+            "Personal Life & Relationships",
+            "Health & Well-being",
+            "Financial Trajectory",
+            "Reflections & Philosophy",
+            "$XVI & Technology"
+        ]
+        
+        result = {}
+        for category in expected_categories:
+            result[category] = parsed.get(category, [])
+            if not isinstance(result[category], list):
+                result[category] = []
+        
+        return result
+
+    def _validate_historical_response(self, response, current_age):
+        """Validate the historical response format and content."""
+        try:
+            required_categories = [
+                "Career & Growth",
+                "Personal Life & Relationships",
+                "Health & Well-being",
+                "Financial Trajectory",
+                "Reflections & Philosophy",
+                "$XVI & Technology"
+            ]
+            
+            validated_response = {}
+            existing_ltm = self._get_existing_ltm(self.life_tracks)  # Get existing LTM
+            
+            for category in required_categories:
+                if category not in response:
+                    print(f"Missing required category: {category}")
+                    return None
+                
+                # Validate MTM and LTM arrays exist
+                if 'MTM' not in response[category]:
+                    print(f"Missing MTM array for {category}")
+                    return None
+                if 'LTM' not in response[category]:
+                    print(f"Missing LTM array for {category}")
+                    return None
+
+                # For MTM, use new entries (overwrite)
+                new_mtm = response[category]['MTM']
+                
+                # For LTM, merge with existing while preserving age
+                merged_ltm = []
+                if category in existing_ltm:
+                    merged_ltm.extend(existing_ltm[category])
+                
+                # Add new LTM entries with age if they're not duplicates
+                for new_ltm in response[category]['LTM']:
+                    is_duplicate = False
+                    for existing in merged_ltm:
+                        if (existing.get('Milestone') == new_ltm.get('Milestone') and 
+                            existing.get('Implications') == new_ltm.get('Implications')):
+                            is_duplicate = True
+                            break
+                    if not is_duplicate:
+                        if 'Age' not in new_ltm:
+                            new_ltm['Age'] = current_age
+                        merged_ltm.append(new_ltm)
+                
+                # Sort LTM entries by age
+                merged_ltm.sort(key=lambda x: float(x.get('Age', 0)))
+                
+                validated_response[category] = {
+                    'historical_summary': {
+                        'MTM': new_mtm,  # Use new MTM entries
+                        'LTM': merged_ltm  # Use merged LTM entries
+                    }
+                }
+            
+            print("Successfully validated historical response")
+            return validated_response
+
+        except Exception as e:
+            print(f"Error validating historical response: {str(e)}")
+            return None
+
+    def _categorize_list_response(self, items):
+        """Categorize a list response into the proper structure."""
+        categories = self._get_empty_structure()
+        
+        for item in items:
+            if any(word in item.lower() for word in ["career", "job", "study", "code"]):
+                categories["Career & Growth"].append(item)
+            elif any(word in item.lower() for word in ["friend", "relationship", "social"]):
+                categories["Personal Life & Relationships"].append(item)
+            elif any(word in item.lower() for word in ["health", "sleep", "stress"]):
+                categories["Health & Well-being"].append(item)
+            elif any(word in item.lower() for word in ["money", "finance", "cost"]):
+                categories["Financial Trajectory"].append(item)
+            elif any(word in item.lower() for word in ["think", "feel", "question"]):
+                categories["Reflections & Philosophy"].append(item)
+            elif any(word in item.lower() for word in ["tech", "crypto", "blockchain", "xvi"]):
+                categories["$XVI & Technology"].append(item)
+            else:
+                # Default to Reflections if no clear category
+                categories["Reflections & Philosophy"].append(item)
+        
+        return categories
+
+    def _initialize_life_tracks(self):
+        """Initialize empty life tracks structure."""
+        return {
+            'digest': {
+                'Career & Growth': {
+                    'historical_summary': {'MTM': [], 'LTM': []},
+                    'projected_goals': {'short_term': [], 'long_term': []}
+                },
+                'Personal Life & Relationships': {
+                    'historical_summary': {'MTM': [], 'LTM': []},
+                    'projected_goals': {'short_term': [], 'long_term': []}
+                },
+                'Health & Well-being': {
+                    'historical_summary': {'MTM': [], 'LTM': []},
+                    'projected_goals': {'short_term': [], 'long_term': []}
+                },
+                'Financial Trajectory': {
+                    'historical_summary': {'MTM': [], 'LTM': []},
+                    'projected_goals': {'short_term': [], 'long_term': []}
+                },
+                'Reflections & Philosophy': {
+                    'historical_summary': {'MTM': [], 'LTM': []},
+                    'projected_goals': {'short_term': [], 'long_term': []}
+                },
+                '$XVI & Technology': {
+                    'historical_summary': {'MTM': [], 'LTM': []},
+                    'projected_goals': {'short_term': [], 'long_term': []}
+                }
             }
         }
 
     def _print_life_tracks(self, life_tracks):
-        """Print life tracks in a nicely formatted way"""
+        """Print life tracks in a nicely formatted way."""
         print("\n=== XAVIER'S LIFE DIGEST ===\n")
         
         for area, data in life_tracks['digest'].items():
             print(f"\n=== {area.upper()} ===\n")
             
-            # Print Historical Summary
+            # Print Historical Summary with Tiered Memory
             print("Historical Summary:")
-            if data.get("historical_summary"):
-                for item in data["historical_summary"]:
-                    print(f" - {item}")
+            historical_summary = data.get("historical_summary", {})
+            if historical_summary:
+                print("\n  Short-Term Memory (Most Recent):")
+                if historical_summary.get("short_term"):
+                    for item in historical_summary["short_term"]:
+                        print(f"   - {item}")
+                else:
+                    print("   No short-term historical data available.")
+                
+                print("\n  Medium-Term Memory (Moderately Recent):")
+                if historical_summary.get("medium_term"):
+                    for item in historical_summary["medium_term"]:
+                        print(f"   - {item}")
+                else:
+                    print("   No medium-term historical data available.")
+                
+                print("\n  Long-Term Memory (Older History):")
+                if historical_summary.get("long_term"):
+                    for item in historical_summary["long_term"]:
+                        print(f"   - {item}")
+                else:
+                    print("   No long-term historical data available.")
             else:
-                print("No historical developments recorded")
+                print("No historical developments recorded.")
             
             # Print Short-Term Projections
             print("\nShort-Term Projections (3-6 months):")
@@ -312,7 +423,7 @@ class DigestGenerator:
                 for item in data["projected_short"]:
                     print(f"• {item}")
             else:
-                print("No short-term developments projected")
+                print("No short-term developments projected.")
             
             # Print Long-Term Projections
             print("\nLong-Term Projections (1-5 years):")
@@ -320,7 +431,7 @@ class DigestGenerator:
                 for item in data["projected_long"]:
                     print(f"• {item}")
             else:
-                print("No long-term developments projected")
+                print("No long-term developments projected.")
             
             # Print Plot Points - Tech-Driven and Character-Driven
             plot_points = data.get("plot_points", {})
@@ -330,35 +441,35 @@ class DigestGenerator:
                 for item in plot_points["tech_driven"]:
                     print(f"• {item}")
             else:
-                print("No tech-driven plot points recorded")
+                print("No tech-driven plot points recorded.")
             
             print("\nCharacter-Driven Plot Points:")
             if plot_points.get("character_driven"):
                 for item in plot_points["character_driven"]:
                     print(f"• {item}")
             else:
-                print("No character-driven plot points recorded")
+                print("No character-driven plot points recorded.")
             
             print("-" * 50)  # Separator line
 
     def save_digest_to_history(self, digest):
-        """Save the current digest to history on GitHub"""
+        """Save the current digest to history on GitHub."""
         try:
             if digest is None:
                 print("Digest is None, not saving to history.")
                 return
-            
+
             # Load existing history from GitHub
             history, sha = self.github_ops.get_file_content('digest_history.json')
-
             if history is None:
                 history = []
 
-            # Add new digest with timestamp
+            # Append the current digest to history
             history.append(digest)
 
             # Convert history to JSON string
             history_json = json.dumps(history, indent=2)
+
             # Commit the updated history to GitHub
             self.github_ops.update_file(
                 file_path='digest_history.json',
@@ -366,321 +477,703 @@ class DigestGenerator:
                 commit_message=f"Update digest history at {datetime.now().isoformat()}",
                 sha=sha
             )
-            
+
             print(f"Saved digest to history on GitHub (age: {digest.get('metadata', {}).get('simulation_age')})")
-            
+
         except Exception as e:
             print(f"Error saving digest to history on GitHub: {str(e)}")
             traceback.print_exc()
 
-    def get_digest(self):
-        """Get complete digest for all areas and save to history"""
-        try:
-            # Create complete digest structure
-            complete_digest = {
-                "timestamp": datetime.now().isoformat(),
-                "metadata": {
-                    "simulation_time": self.simulation_time,
-                    "simulation_age": self.simulation_age,
-                    "tweet_count": self.tweet_count
-                },
-                "digest": self.life_tracks["digest"]
-            }
-            
-            print("Complete Digest:", complete_digest)  # Debugging line
-            
-            # Save to history
-            self.save_digest_to_history(complete_digest)
-            
-            return complete_digest
-
-        except Exception as e:
-            print(f"Error getting digest: {e}")
-            traceback.print_exc()
-            return None
-            
-
     def _get_life_phase(self, age, has_major_event=False):
-        """Get life phase description based on age, with optional flexibility for major life events"""
+        """Get life phase description based on age, with optional flexibility for major life events."""
 
         if age < 25:
-            if has_major_event:
-                return (
-                    "Early Career & Exploration (18-25) with resilience through recent challenges.\n"
-                    "- Professional: Building foundational tech skills in blockchain and Web3, while adapting to challenges.\n"
-                    "- Personal: Navigating relationships, independence, and unexpected life shifts.\n"
-                    "- Family: Relying on family support and strengthening connections.\n"
-                    "- Social: Building a network, often leaning on friendships through changes.\n"
-                    "- Reflections: Practical, adaptive outlook due to recent events.\n"
-                    "- $XVI: Governance ideas and early partnerships; navigating potential obstacles.\n"
-                    "- Major Events: College life, early career challenges, initial exploration in blockchain.\n"
-                    "- Financial Trajectory: Learning financial independence, adapting to new priorities.\n"
-                    "- Health & Well-being: Establishing routines amidst changes.\n"
-                    "- Mentorship & Legacy: Seeking guidance, reflecting on early experiences.\n"
-                    "- Character Development: Strengthening resilience, exploring self-identity.\n"
-                    "- New Relationships & Conflicts: Building connections, resolving early-life conflicts.\n"
-                )
-            else:
-                return (
-                    "Early Career & Exploration (18-25)\n"
-                    "- Professional: Focus on foundational tech skills and career building in blockchain and Web3.\n"
-                    "- Personal: Formative relationships, dating, and exploring independence in a big city.\n"
-                    "- Family: Regular family conversations, sharing tech stories, and maintaining close connections.\n"
-                    "- Social: Building a professional network, especially among tech peers.\n"
-                    "- Reflections: Exploring technology's immediate potential with a pragmatic outlook.\n"
-                    "- $XVI: Initial awareness, considering governance and early partnerships.\n"
-                    "- Major Events: Transitioning to college life, first job or internship, initial explorations in blockchain.\n"
-                    "- Financial Trajectory: Minimal savings or early investments, possibly learning financial independence.\n"
-                    "- Health & Well-being: Adjusting to college life and city living, establishing a health routine.\n"
-                    "- Mentorship & Legacy: Receiving mentorship from college professors or early career mentors.\n"
-                    "- Character Development: Developing independence, managing responsibilities, and exploring identity.\n"
-                    "- New Relationships & Conflicts: Meeting diverse personalities, navigating friendships, and minor conflicts.\n"
-                )
-        elif age < 30:
-            if has_major_event:
-                return (
-                    "Growth & Foundation Building (25-30) while adapting to significant life changes.\n"
-                    "- Professional: Advancing in career, handling larger projects, adapting to new challenges.\n"
-                    "- Personal: Strengthening serious relationships, possibly relocating or making big life choices.\n"
-                    "- Family: Staying connected with family as a support system.\n"
-                    "- Social: Deepening networks; building support through challenges.\n"
-                    "- Reflections: Pragmatic look at tech’s impact; balancing values with career growth.\n"
-                    "- $XVI: Concept development, possibly facing obstacles or new insights.\n"
-                    "- Major Events: Relocation, major relationship shift, or career pivot.\n"
-                    "- Financial Trajectory: Managing finances, building assets; possible major expenses.\n"
-                    "- Health & Well-being: Emphasis on stability, adapting to increased demands.\n"
-                    "- Mentorship & Legacy: Mentoring others, finding meaning in contributions.\n"
-                    "- Character Development: Resilience, re-evaluating goals, strengthening relationships.\n"
-                    "- New Relationships & Conflicts: Forming alliances, managing conflicts in personal/professional life.\n"
-                )
-            else:
-                return (
-                    "Growth & Foundation Building (25-30)\n"
-                    "- Professional: Advancing in career, taking on larger projects or first leadership roles.\n"
-                    "- Personal: Building serious relationships, possibly relocating for career growth.\n"
-                    "- Family: Staying connected through evolving tech, occasionally involving family in projects.\n"
-                    "- Social: Expanding network across tech hubs, frequenting industry events, and building deeper connections.\n"
-                    "- Reflections: Starting to examine tech’s social impact and ethical questions.\n"
-                    "- $XVI: Foundation Concept Development; exploring governance structures and first significant partnerships.\n"
-                    "- Major Events: Potential relocation, entering a committed relationship, considering major career changes.\n"
-                    "- Financial Trajectory: Higher income, considering substantial investments or crypto holdings.\n"
-                    "- Health & Well-being: Increased focus on work-life balance as career responsibilities grow.\n"
-                    "- Mentorship & Legacy: Beginning to mentor younger professionals, giving back to the community.\n"
-                    "- Character Development: Evolving self-awareness, embracing career goals, and forming long-term connections.\n"
-                    "- New Relationships & Conflicts: Forming key alliances and managing emerging conflicts or rivalries.\n"
-                )
-        elif age < 35:
-            if has_major_event:
-                return (
-                    "Stability & Partnership (30-35) with focus on resilience and adaptation.\n"
-                    "- Professional: Leading significant projects or ventures while adapting to recent changes.\n"
-                    "- Personal: Deepening personal relationships, potentially facing challenges together.\n"
-                    "- Family: Relying on family for support and stability.\n"
-                    "- Social: Close-knit community focus, finding support through relationships.\n"
-                    "- Reflections: Revisiting values, adapting beliefs in light of recent events.\n"
-                    "- $XVI: Expanding ecosystem, adapting governance in challenging conditions.\n"
-                    "- Major Events: Family changes, significant career pivot, major achievements.\n"
-                    "- Financial Trajectory: Securing finances, preparing for future or unexpected events.\n"
-                    "- Health & Well-being: Stress management, long-term health goals.\n"
-                    "- Mentorship & Legacy: Focus on resilience; becoming a source of wisdom for others.\n"
-                    "- Character Development: Fostering patience, resilience, and empathy.\n"
-                    "- New Relationships & Conflicts: Strengthening bonds, resolving higher-stakes conflicts.\n"
-                )
-            else:
-                return (
-                    "Stability & Partnership (30-35)\n"
-                    "- Professional: Growing leadership in tech, possibly founding a company or leading a significant project.\n"
-                    "- Personal: Partnership/marriage, beginning to contemplate long-term family planning.\n"
-                    "- Family: Integrating tech into family life; introducing new family members to technology.\n"
-                    "- Social: Strong community connections; focused on building lasting friendships and professional relationships.\n"
-                    "- Reflections: Considering the ethical and social dimensions of decentralization and AI.\n"
-                    "- $XVI: Foundation Formation; expanding the ecosystem, establishing resilient infrastructure.\n"
-                    "- Major Events: Potential marriage or major relationship commitment, key career milestones.\n"
-                    "- Financial Trajectory: Stable finances with growing investments in tech and real estate.\n"
-                    "- Health & Well-being: Health and fitness become priority, establishing long-term habits.\n"
-                    "- Mentorship & Legacy: Taking on mentor roles, considering contributions to industry and society.\n"
-                    "- Character Development: Embracing leadership, refining values, and strengthening core relationships.\n"
-                    "- New Relationships & Conflicts: Dealing with high-stakes relationships, new partnerships, and professional rivalries.\n"
-                )
-        elif age < 45:
-            if has_major_event:
-                return (
-                    "Family & Leadership (35-45) while navigating major responsibilities and changes.\n"
-                    "- Professional: Leading projects with a focus on balancing family and professional responsibilities.\n"
-                    "- Personal: Parenthood or deepening family roles, handling recent life changes.\n"
-                    "- Family: Building a tech-aware household, emphasizing family unity.\n"
-                    "- Social: Strong community focus, managing relationships through life adjustments.\n"
-                    "- Reflections: Deep philosophical introspection on legacy and ethics.\n"
-                    "- $XVI: Expanding governance structure, adapting to new challenges within the ecosystem.\n"
-                    "- Major Events: Parenthood, career peaks, or other transformative events.\n"
-                    "- Financial Trajectory: Financial planning for family’s long-term security.\n"
-                    "- Health & Well-being: Focus on maintaining resilience, possibly facing health challenges.\n"
-                    "- Mentorship & Legacy: Embracing leadership, guiding others through similar life stages.\n"
-                    "- Character Development: Adapting with empathy, fostering stability for others.\n"
-                    "- New Relationships & Conflicts: Resolving conflicts, supporting allies.\n"
-                )
-            else:
-                return (
-                    "Family & Leadership (35-45)\n"
-                    "- Professional: Leading pioneering projects, balancing career with family responsibilities.\n"
-                    "- Personal: Parenthood or family-building phase, focusing on stability and work-life balance.\n"
-                    "- Family: Creating a tech-aware household, balancing tech with traditional values.\n"
-                    "- Social: Strong support network centered around family and community involvement.\n"
-                    "- Reflections: Deeper philosophical considerations on legacy, ethical responsibilities, and societal impact.\n"
-                    "- $XVI: Foundation Growth; expanding community, building sustainable governance structures.\n"
-                    "- Major Events: Parenthood, career peaks, major project launches.\n"
-                    "- Financial Trajectory: Financial security, planning for family wealth and legacy.\n"
-                    "- Health & Well-being: Maintaining health routines; increasing focus on mental well-being.\n"
-                    "- Mentorship & Legacy: Influencing industry direction, shaping future talent.\n"
-                    "- Character Development: Embracing responsibility, considering legacy, and focusing on family and community.\n"
-                    "- New Relationships & Conflicts: New mentors, mentees, and potential high-stakes business conflicts.\n"
-                ) 
-        elif age < 60:
-            if has_major_event:
-                return (
-                    "Legacy & Mentorship (45-60) while adapting to significant personal or professional transitions.\n"
-                    "- Professional: Serving as an industry advisor, handling shifts in responsibilities.\n"
-                    "- Personal: Supporting family growth, facing and adapting to new dynamics.\n"
-                    "- Family: Multi-generational connections, adjusting to family changes.\n"
-                    "- Social: Acting as a mentor, navigating broader relationships.\n"
-                    "- Reflections: Exploring tech’s societal impact with a deeper philosophical lens.\n"
-                    "- $XVI: Scaling foundation and governance; navigating global partnerships.\n"
-                    "- Major Events: Family changes, possible career transition to advisory roles.\n"
-                    "- Financial Trajectory: Managing financial legacy, supporting broader family needs.\n"
-                    "- Health & Well-being: Focus on maintaining health, adapting to life’s transitions.\n"
-                    "- Mentorship & Legacy: Emphasizing mentorship, contemplating enduring contributions.\n"
-                    "- Character Development: Fostering wisdom, patience, and broader influence.\n"
-                    "- New Relationships & Conflicts: Balancing professional legacies and resolving conflicts peacefully.\n"
-                )
-            else:
-                return (
-                    "Legacy & Mentorship (45-60)\n"
-                    "- Professional: Advisory role, shaping industry trends and policies.\n"
-                    "- Personal: Supporting children’s development, guiding them in career and personal decisions.\n"
-                    "- Family: Multi-generational bonds; focusing on family values and legacy.\n"
-                    "- Social: Acting as a mentor in professional and personal networks.\n"
-                    "- Reflections: Ethical and philosophical insights on technology's impact on future generations.\n"
-                    "- $XVI: Global Expansion; scaling impact, increasing partnerships, building cross-border networks.\n"
-                    "- Major Events: Career shift towards advisory roles, family achievements.\n"
-                    "- Financial Trajectory: Well-established financial legacy, family wealth management.\n"
-                    "- Health & Well-being: Emphasis on longevity and quality of life, potential health setbacks.\n"
-                    "- Mentorship & Legacy: Focused on guiding the next generation of innovators.\n"
-                    "- Character Development: Emphasizing mentorship, reflecting on legacy, and deepening family bonds.\n"
-                    "- New Relationships & Conflicts: Building global partnerships, possibly managing large-scale disputes.\n"
-                )      
-        else:
-            if has_major_event:
-                return (
-                    "Wisdom & Succession (60+) while adapting to key transitions in personal and professional spheres.\n"
-                    "- Professional: Transitioning from active roles to advisory; handing down responsibilities.\n"
-                    "- Personal: Strengthening family bonds, preparing for succession.\n"
-                    "- Family: Becoming a family guide, reinforcing traditions and values.\n"
-                    "- Social: Respected elder, guiding others with historical insights.\n"
-                    "- Reflections: Focus on long-term impact and existential thoughts.\n"
-                    "- $XVI: Succession planning to ensure the Foundation’s longevity.\n"
-                    "- Major Events: Family milestones, legacy building, preparing for a full transition.\n"
-                    "- Financial Trajectory: Succession planning and managing family legacy.\n"
-                    "- Health & Well-being: Emphasis on graceful aging, facing health realities.\n"
-                    "- Mentorship & Legacy: Finalizing legacy contributions, preparing for succession.\n"
-                    "- Character Development: Acceptance, wisdom, and reflection.\n"
-                    "- New Relationships & Conflicts: Guiding younger generations, resolving legacy-related issues.\n"
-                )
-            else:
-                return (
-                    "Wisdom & Succession (60+)\n"
-                    "- Professional: Advisory and mentorship, guiding younger industry leaders.\n"
-                    "- Personal: Grandparent role, strengthening family bonds.\n"
-                    "- Family: Acting as the family’s guiding figure, promoting continuity and tradition.\n"
-                    "- Social: Respected community elder, contributing historical insights.\n"
-                    "- Reflections: Deep, existential thoughts on humanity, technology, and purpose.\n"
-                    "- $XVI: Succession Planning; ensuring the Foundation’s future and stability.\n"
-                    "- Major Events: Family milestones, public recognition, possibly retirement.\n"
-                    "- Financial Trajectory: Managing family wealth and succession planning.\n"
-                    "- Health & Well-being: Focus on graceful aging, may face age-related challenges.\n"
-                    "- Mentorship & Legacy: Establishing an enduring legacy, passing on knowledge to family and mentees.\n"
-                    "- Character Development: Wisdom, patience, and acceptance, focusing on long-term impact.\n"
-                    "- New Relationships & Conflicts: Fostering relationships with younger generations, resolving conflicts peacefully.\n"
-                )
-                
-    def generate_digest(self, recent_tweets=None, simulation_time=None, simulation_age=None, tweet_count=None, latest_digest=None):
-        """Generate digest based on recent history and new developments"""
-        try:
-            self.life_tracks = latest_digest
-            # Create logs directory
-            log_dir = "logs/digests"
-            os.makedirs(log_dir, exist_ok=True)
-            
-            # Create log file with timestamp
-            timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-            log_path = f"{log_dir}/digest_{timestamp}.txt"
-            
-            return self._generate_digest_with_logging(
-                recent_tweets=recent_tweets,
-                simulation_age=simulation_age,
-                simulation_time=simulation_time,
-                log_path=log_path
+            return (
+                "Early Career & Exploration (18-25)"
+                + (" with resilience through recent challenges." if has_major_event else ".") + "\n"
+                "- **Career & Growth**: Building foundational skills in blockchain, Web3, and tech, while navigating early career opportunities or challenges.\n"
+                "- **Personal Life & Relationships**: Exploring independence, forming meaningful relationships, and discovering personal identity.\n"
+                "- **Health & Well-being**: Establishing physical and mental health routines while adapting to life transitions.\n"
+                "- **Financial Trajectory**: Learning financial independence, managing expenses, and exploring early investments.\n"
+                "- **Reflections & Philosophy**: Developing practical perspectives on technology's role in personal and societal growth.\n"
+                "- **$XVI & Technology**: Experimenting with early governance ideas and forming initial partnerships within the $XVI ecosystem.\n"
             )
+        elif age < 30:
+            return (
+                "Growth & Foundation Building (25-30)"
+                + (" while adapting to significant life changes." if has_major_event else ".") + "\n"
+                "- **Career & Growth**: Advancing in career, taking on leadership roles, and building expertise in blockchain and tech.\n"
+                "- **Personal Life & Relationships**: Strengthening personal connections, exploring serious relationships, and making life-changing decisions.\n"
+                "- **Health & Well-being**: Focusing on stability, balancing career demands with personal health routines.\n"
+                "- **Financial Trajectory**: Managing higher income, exploring investments, and preparing for long-term financial stability.\n"
+                "- **Reflections & Philosophy**: Examining the social and ethical implications of emerging technologies.\n"
+                "- **$XVI & Technology**: Establishing governance frameworks and integrating $XVI into professional projects.\n"
+            )
+        elif age < 35:
+            return (
+                "Stability & Partnership (30-35)"
+                + (" with resilience and adaptation." if has_major_event else ".") + "\n"
+                "- **Career & Growth**: Leading significant projects or ventures, possibly founding a company or driving industry innovation.\n"
+                "- **Personal Life & Relationships**: Building long-term partnerships, starting a family, or deepening existing relationships.\n"
+                "- **Health & Well-being**: Maintaining long-term health routines, managing stress, and balancing responsibilities.\n"
+                "- **Financial Trajectory**: Growing financial security, expanding investments, and planning for family needs.\n"
+                "- **Reflections & Philosophy**: Exploring broader implications of technology, including AI and decentralization.\n"
+                "- **$XVI & Technology**: Scaling the ecosystem and building a resilient, sustainable foundation.\n"
+            )
+        elif age < 45:
+            return (
+                "Family & Leadership (35-45)"
+                + (" while navigating major responsibilities." if has_major_event else ".") + "\n"
+                "- **Career & Growth**: Balancing leadership roles with personal and family responsibilities.\n"
+                "- **Personal Life & Relationships**: Supporting family dynamics, potentially raising children, and fostering connections.\n"
+                "- **Health & Well-being**: Addressing mid-life challenges, focusing on well-being and resilience.\n"
+                "- **Financial Trajectory**: Ensuring long-term financial security for family and managing wealth.\n"
+                "- **Reflections & Philosophy**: Engaging in deeper philosophical questions about legacy and societal impact.\n"
+                "- **$XVI & Technology**: Expanding governance structures, forging global partnerships, and solidifying the ecosystem.\n"
+            )
+        elif age < 60:
+            return (
+                "Legacy & Mentorship (45-60)"
+                + (" while navigating personal or professional transitions." if has_major_event else ".") + "\n"
+                "- **Career & Growth**: Transitioning to advisory roles, shaping industry direction, and mentoring emerging leaders.\n"
+                "- **Personal Life & Relationships**: Supporting children’s growth, nurturing family bonds, and embracing life’s transitions.\n"
+                "- **Health & Well-being**: Maintaining longevity, addressing health challenges, and emphasizing mental well-being.\n"
+                "- **Financial Trajectory**: Managing financial legacy and preparing for generational wealth transfer.\n"
+                "- **Reflections & Philosophy**: Focusing on ethical and societal impacts of technology for future generations.\n"
+                "- **$XVI & Technology**: Scaling global reach, building cross-border collaborations, and ensuring sustainability.\n"
+            )
+        else:
+            return (
+                "Wisdom & Succession (60+)"
+                + (" while adapting to significant transitions." if has_major_event else ".") + "\n"
+                "- **Career & Growth**: Transitioning fully to mentorship and advisory roles, leaving an enduring impact.\n"
+                "- **Personal Life & Relationships**: Acting as a family guide, fostering multi-generational bonds, and preparing for succession.\n"
+                "- **Health & Well-being**: Prioritizing graceful aging, addressing health realities, and focusing on quality of life.\n"
+                "- **Financial Trajectory**: Managing family wealth and succession planning.\n"
+                "- **Reflections & Philosophy**: Reflecting on humanity’s future, the role of technology, and personal legacy.\n"
+                "- **$XVI & Technology**: Securing the long-term success of the $XVI ecosystem and ensuring its continuity.\n"
+            )
+                
+    def _get_stm_system_prompt(self):
+        """Get system prompt for STM extraction."""
+        return """
+You are analyzing recent tweets and comments to extract Short-Term Memory (STM) summaries.
+Focus only on immediate, actionable details from the most recent events.
+
+Your response MUST be a valid JSON object with these exact categories:
+{
+    "Career & Growth": [
+        "Summary point 1",
+        "Summary point 2"
+    ],
+    "Personal Life & Relationships": [
+        "Summary point 1",
+        "Summary point 2"
+    ],
+    "Health & Well-being": [
+        "Summary point 1",
+        "Summary point 2"
+    ],
+    "Financial Trajectory": [
+        "Summary point 1",
+        "Summary point 2"
+    ],
+    "Reflections & Philosophy": [
+        "Summary point 1",
+        "Summary point 2"
+    ],
+    "$XVI & Technology": [
+        "Summary point 1",
+        "Summary point 2"
+    ]
+}
+
+IMPORTANT:
+1. Response must be a JSON object, not an array
+2. All categories must be present
+3. Each category must contain an array of strings
+4. Empty categories should have empty arrays []
+"""
+
+    def _get_stm_user_prompt(self, tweets, comments):
+        """Get user prompt for STM extraction."""
+        base_prompt = (
+            "Please analyze these recent tweets and comments to extract STM summaries:\n\n"
+            f"TWEETS (ordered from oldest to newest for analysis):\n{self._format_tweets_for_prompt(tweets)}\n\n"
+        )
+        
+        if comments:
+            base_prompt += f"COMMENTS:\n{self._format_comments_for_prompt(comments)}\n\n"
+        
+        base_prompt += "For each category, provide only the most relevant and recent developments."
+        return base_prompt
+
+    def _get_historical_system_prompt(self):
+        """Get the system prompt for historical generation."""
+        return """
+            You are analyzing STM summaries to update historical records. Your task is to identify patterns and significant milestones.
+
+            IMPORTANT: Keep responses concise. Each field should be 1-2 sentences maximum.
+
+            For each category, you MUST:
+            1. Create MTM entries for recent patterns and behaviors
+            2. Create LTM entries for significant milestones. Examples by category:
+
+            Career & Growth:
+            - Starting/leaving education
+            - First job or internship
+            - Major career changes
+            - Significant promotions or setbacks
+
+            Personal Life & Relationships:
+            - Important family developments
+            - Key relationship milestones
+            - Significant social transitions
+            - Major personal growth moments
+
+            Health & Well-being:
+            - First encounter with significant health issues
+            - Major lifestyle changes
+            - Important mental health realizations
+            - Significant wellness achievements
+
+            Financial Trajectory:
+            - First major investment
+            - Significant financial losses or gains
+            - Important financial decisions
+            - Major changes in financial strategy
+
+            Reflections & Philosophy:
+            - Key philosophical realizations
+            - Major shifts in worldview
+            - Important personal values discoveries
+            - Significant life perspective changes
+
+            $XVI & Technology:
+            - First engagement with crypto/trading
+            - Major trading successes or failures
+            - Significant technical achievements
+            - Important community involvement milestones
+
+            Output format must be valid JSON with this structure:
+            {
+                "Category": {
+                    "MTM": [{
+                        "Summary": "One brief sentence describing the pattern.",
+                        "Patterns": "3-4 key behaviors, comma-separated",
+                        "Goals": "2-3 goals, comma-separated",
+                        "Transition": "One brief sentence about changes."
+                    }],
+                    "LTM": [{
+                        "Milestone": "One brief sentence about a significant event or realization.",
+                        "Implications": "One brief sentence about long-term impact.",
+                        "Lessons": "2-3 key lessons learned, comma-separated"
+                    }]
+                }
+            }
+
+            VALIDATION RULES:
+            1. Every category must have at least one MTM entry
+            2. Consider each category carefully for LTM-worthy events
+            3. Keep entries brief and focused
+            4. Use simple, complete sentences
+            5. Limit MTM array to 2-3 items maximum
+            """
+
+    def _get_historical_user_prompt(self, stm_summaries, existing_tracks):
+        """For historical analysis, we only care about MATURE technologies that Xavier has already interacted with"""
+        mature_tech, _, _ = self._get_tech_data()
+        
+        tech_context = "\nRELEVANT TECHNOLOGY CONTEXT:\n"
+        # Only include mature technologies that could have influenced past events
+        for tech in mature_tech:
+            if tech['status'] == 'mainstream' or tech['status'] == 'established':
+                tech_context += f"- {tech['name']}: {tech['description']}\n"
+        
+        existing_mtm = self._get_existing_mtm(existing_tracks)
+        existing_ltm = self._get_existing_ltm(existing_tracks)
+        
+        prompt = f"""Analyze recent developments and update historical summaries.
+
+            Recent Events (STM):
+            {json.dumps(stm_summaries, indent=2)}
+
+            Existing MTM:
+            {json.dumps(existing_mtm, indent=2)}
+
+            Existing LTM:
+            {json.dumps(existing_ltm, indent=2)}
+
+            {tech_context}
+
+            Consider how established technologies have influenced:
+            1. Recent experiences and decisions
+            2. Development of skills and capabilities
+            3. Past milestones and achievements
+            4. Previous adaptations to technological change
+
+            Focus on actual past events and developments, not future possibilities.
+            """
+        return prompt
+
+    def _get_projection_system_prompt(self, age):
+        """Get system prompt for projection generation."""
+        return """
+            You are analyzing historical patterns to project future developments for {age} year old Xavier.
+            Focus on realistic, actionable goals and developments, that are consistent across categories, with specific category focuses.
+
+            For each category, provide:
+            1. Short-term goals (3-6 months) with estimated durations, which should contribute to the long-term goals, specific to that category
+            2. Long-term goals (1-5 years), which should be universal and consistent across categories
+
+            Your response MUST be valid JSON with this structure:
+            {
+                "Category": {
+                    "short_term": [
+                        {
+                            "goal": "Brief description of the goal",
+                            "duration_days": number_of_days_to_achieve
+                        }
+                    ],
+                    "long_term": [
+                        "Long term goal description"
+                    ]
+                }
+            }
+
+            IMPORTANT:
+            1. Short-term goals should have realistic durations (30-180 days)
+            2. Goals should be specific and measurable
+            3. Consider current life phase and circumstances
+            4. Maintain narrative consistency
+            5. Each category must have at least one short-term and one long-term goal
+            """
+
+    def _get_projection_user_prompt(self, historical_tracks):
+        """For projections, we care about both emerging technologies and future trends"""
+        mature_tech, maturing_soon, societal_shifts = self._get_tech_data()
+        
+        tech_context = "\nTECHNOLOGY CONTEXT:\n"
+        
+        # Include relevant mature tech that's still evolving
+        tech_context += "\nEstablished Technologies to Build Upon:\n"
+        for tech in mature_tech:
+            if tech['status'] == 'evolving' or tech['status'] == 'growing':
+                tech_context += f"- {tech['name']}: {tech['description']} (Status: {tech['status']})\n"
+        
+        # Include emerging tech for future planning
+        tech_context += "\nEmerging Technologies to Watch:\n"
+        for tech in maturing_soon:
+            tech_context += (
+                f"- {tech['name']}: {tech['description']} "
+                f"(Expected: {tech['estimated_year']}, Probability: {tech['probability']})\n"
+            )
+        
+        # Include relevant societal shifts for long-term planning
+        tech_context += "\nAnticipated Societal Shifts For Reflection & Philosophy:\n"
+        for shift in societal_shifts:
+            tech_context += f"- {shift['theme']}: {shift['description']}\n"
+            tech_context += f"  Potential Impact: {shift['societal_impact']}\n"
+
+        prompt = f"""Based on the historical tracks and future technology context, generate realistic projections. Make sure long term goals are consistent and interconnected across categories.
+
+            Historical Context:
+            {json.dumps(historical_tracks, indent=2)}
+
+            {tech_context}
+
+            Consider:
+            1. How to build upon current technology expertise
+            2. Which emerging technologies align with goals and interests
+            3. How to prepare for anticipated technological changes
+            4. Realistic timeline for adopting new technologies
+            5. Balance between innovation and practical implementation
+
+            Generate projections that show progressive technology adoption while maintaining realistic personal development.
+            """
+        return prompt
+
+    def generate_digest(self, latest_digest, tweets, current_age, current_date, tweet_count, comments=None, max_retries=3, retry_delay=5, log_path=None, first_digest=False):
+        """Generate a new digest based on recent tweets"""
+        try:
+            # Create log file for this digest
+            if log_path is None:
+                log_path = os.path.join(
+                    self.digest_log_dir, 
+                    f"digest_{datetime.now().strftime('%Y%m%d_%H%M%S')}.log"
+                )
+            self.life_tracks = latest_digest
             
+            # Step 1: Extract STM summaries
+            print("\nStep 1: Extracting STM summaries...")
+            stm_summaries = None
+            attempt = 0
+            while attempt < max_retries:
+                try:
+                    stm_system_prompt = self._get_stm_system_prompt()
+                    stm_user_prompt = self._get_stm_user_prompt(tweets, comments)
+                    
+                    if log_path:
+                        with open(log_path, 'a') as f:
+                            f.write("=== STM Generation Debug ===\n")
+                            f.write(f"System Prompt:\n\n{stm_system_prompt}\n\n")
+                            f.write(f"User Prompt:\n{stm_user_prompt}\n\n")
+
+                    stm_response = self._get_completion(
+                        system_prompt=stm_system_prompt,
+                        user_prompt=stm_user_prompt
+                    )
+
+                    if log_path:
+                        with open(log_path, 'a') as f:
+                            f.write("STM Raw Response:\n")
+                            f.write(f"{stm_response}\n\n")
+
+                    # Extract and parse JSON
+                    if "```json" in stm_response:
+                        json_start = stm_response.find("```json") + 7
+                        json_end = stm_response.find("```", json_start)
+                        if json_end != -1:
+                            stm_response = stm_response[json_start:json_end].strip()
+
+                    parsed_stm = json.loads(stm_response)
+                    stm_summaries = self._validate_stm_response(parsed_stm)
+                    
+                    if log_path:
+                        with open(log_path, 'a') as f:
+                            f.write("Validated STM Response:\n")
+                            f.write(f"{json.dumps(stm_summaries, indent=2)}\n\n")
+
+                    if stm_summaries:
+                        break
+
+                except Exception as e:
+                    attempt += 1
+                    print(f"Error in STM generation (attempt {attempt}/{max_retries}): {str(e)}")
+                    if log_path:
+                        with open(log_path, 'a') as f:
+                            f.write(f"STM Generation Error (attempt {attempt}):\n")
+                            f.write(f"{str(e)}\n{traceback.format_exc()}\n\n")
+                    if attempt < max_retries:
+                        time.sleep(retry_delay)
+
+            # Step 2: Update historical summaries
+            print("\nStep 2: Updating historical summaries...")
+            if log_path:
+                with open(log_path, 'a') as f:
+                    f.write("=== Historical Generation Debug ===\n")
+
+            historical_tracks = None
+            attempt = 0
+            while attempt < max_retries:
+                try:
+                    historical_system_prompt = self._get_historical_system_prompt()
+                    historical_user_prompt = self._get_historical_user_prompt(stm_summaries, self.life_tracks.get('digest', {}))
+                    
+                    if log_path:
+                        with open(log_path, 'a') as f:
+                            f.write(f"System Prompt:\n\n{historical_system_prompt}\n\n")
+                            f.write(f"User Prompt:\n{historical_user_prompt}\n\n")
+
+                    historical_response = self._get_completion(
+                        system_prompt=historical_system_prompt,
+                        user_prompt=historical_user_prompt
+                    )
+
+                    if log_path:
+                        with open(log_path, 'a') as f:
+                            f.write("Historical Raw Response:\n")
+                            f.write(f"{historical_response}\n\n")
+
+                    # Extract and parse JSON
+                    if "```json" in historical_response:
+                        json_start = historical_response.find("```json") + 7
+                        json_end = historical_response.find("```", json_start)
+                        if json_end != -1:
+                            historical_response = historical_response[json_start:json_end].strip()
+
+                    parsed_historical = json.loads(historical_response)
+                    historical_tracks = self._validate_historical_response(parsed_historical, current_age)
+                    
+                    if historical_tracks:
+                        self.life_tracks = {'digest': historical_tracks}
+                        if log_path:
+                            with open(log_path, 'a') as f:
+                                f.write("Validated Historical Response:\n")
+                                f.write(f"{json.dumps(historical_tracks, indent=2)}\n\n")
+                        break
+
+                except Exception as e:
+                    attempt += 1
+                    if log_path:
+                        with open(log_path, 'a') as f:
+                            f.write(f"Historical Generation Error (attempt {attempt}):\n")
+                            f.write(f"{str(e)}\n{traceback.format_exc()}\n\n")
+                    if attempt < max_retries:
+                        time.sleep(retry_delay)
+
+            # Step 3: Generate projections
+            print("\nStep 3: Generating projections...")
+            if log_path:
+                with open(log_path, 'a') as f:
+                    f.write("\n=== Projection Generation Debug ===\n")
+                    f.write("System Prompt:\n\n")
+                    f.write(self._get_projection_system_prompt(current_age))
+                    f.write("\n\nUser Prompt:\n\n")
+                    f.write(self._get_projection_user_prompt(historical_tracks))
+                    f.write("\n\n")
+
+            attempt = 0
+            while attempt < max_retries:
+                try:
+                    # Log the raw API response
+                    projection_response = self._get_completion(
+                        system_prompt=self._get_projection_system_prompt(current_age),
+                        user_prompt=self._get_projection_user_prompt(historical_tracks)
+                    )
+                    
+                    if log_path:
+                        with open(log_path, 'a') as f:
+                            f.write("\n=== Raw API Response ===\n")
+                            f.write(projection_response)
+                            f.write("\n")
+
+                    # Log JSON extraction
+                    if "```json" in projection_response:
+                        json_start = projection_response.find("```json") + 7
+                        json_end = projection_response.find("```", json_start)
+                        if json_end != -1:
+                            projection_response = projection_response[json_start:json_end].strip()
+                            if log_path:
+                                with open(log_path, 'a') as f:
+                                    f.write("\n=== Extracted JSON ===\n")
+                                    f.write(projection_response)
+                                    f.write("\n")
+
+                    # Log parsed JSON
+                    parsed_projections = json.loads(projection_response)
+                    if log_path:
+                        with open(log_path, 'a') as f:
+                            f.write("\n=== Parsed Projections ===\n")
+                            f.write(json.dumps(parsed_projections, indent=2))
+                            f.write("\n")
+
+                    # Log validated projections
+                    projections = self._validate_projection_response(parsed_projections)
+                    if log_path:
+                        with open(log_path, 'a') as f:
+                            f.write("\n=== Validated Projections ===\n")
+                            f.write(json.dumps(projections, indent=2))
+                            f.write("\n")
+
+                    if projections:
+                        try:
+                            if log_path:
+                                with open(log_path, 'a') as f:
+                                    f.write("\n=== Processing Categories ===")
+                                    f.write(f"\nAvailable in life_tracks: {list(self.life_tracks['digest'].keys())}")
+                                    f.write(f"\nAvailable in projections: {list(projections.keys())}\n")
+
+                            for category in self.life_tracks['digest']:
+                                if log_path:
+                                    with open(log_path, 'a') as f:
+                                        f.write(f"\nProcessing category: {category}")
+                                
+                                if category in projections:
+                                    # Handle long_term goals - could be string or dict
+                                    long_term = projections[category]['long_term']
+                                    if isinstance(long_term, list):
+                                        long_term = [
+                                            goal['long term goal'] if isinstance(goal, dict) and 'long term goal' in goal
+                                            else goal['goal'] if isinstance(goal, dict) and 'goal' in goal
+                                            else goal
+                                            for goal in long_term
+                                        ]
+
+                                    self.life_tracks['digest'][category]['projected_goals'] = {
+                                        'short_term': projections[category]['short_term'],
+                                        'long_term': long_term
+                                    }
+                                else:
+                                    if log_path:
+                                        with open(log_path, 'a') as f:
+                                            f.write(f"\nCategory {category} not found in projections")
+
+                        except Exception as e:
+                            if log_path:
+                                with open(log_path, 'a') as f:
+                                    f.write(f"\nError processing projections: {str(e)}")
+                                    f.write(f"\nTraceback: {traceback.format_exc()}")
+                            raise
+                    print("Successfully generated projections")
+                    break
+
+                except Exception as e:
+                    attempt += 1
+                    print(f"Error in projection generation (attempt {attempt}/{max_retries}): {str(e)}")
+                    if log_path:
+                        with open(log_path, 'a') as f:
+                            f.write("\nAPI Response:\n")
+                            f.write(projection_response)
+                            f.write("\n\n")
+
+                    # Rest of the code remains the same...
+
+            # Update final state logging to show age in LTM entries
+            if log_path:
+                with open(log_path, 'a') as f:
+                    f.write("=== FINAL DIGEST STATE ===\n")
+                    f.write(f"Age: {current_age}\n")
+                    f.write("Life Tracks State:\n\n")
+                    for category in self.life_tracks['digest']:
+                        f.write(f"{category}:\n")
+                        
+                        # Log MTM entries
+                        f.write("  MTM Entries:\n")
+                        if ('historical_summary' in self.life_tracks['digest'][category] and 
+                            'MTM' in self.life_tracks['digest'][category]['historical_summary'] and 
+                            self.life_tracks['digest'][category]['historical_summary']['MTM']):
+                            for mtm in self.life_tracks['digest'][category]['historical_summary']['MTM']:
+                                f.write(f"    - {json.dumps(mtm, indent=4)}\n")
+                        else:
+                            f.write("    No MTM entries\n")
+                        
+                        # Log LTM entries with age
+                        f.write("  LTM Entries (Chronological):\n")
+                        if ('historical_summary' in self.life_tracks['digest'][category] and 
+                            'LTM' in self.life_tracks['digest'][category]['historical_summary'] and 
+                            self.life_tracks['digest'][category]['historical_summary']['LTM']):
+                            for ltm in self.life_tracks['digest'][category]['historical_summary']['LTM']:
+                                # Format age in the output
+                                age_str = f" (Age {ltm.get('Age', 'Unknown')})"
+                                ltm_copy = ltm.copy()
+                                if 'Age' in ltm_copy:
+                                    del ltm_copy['Age']  # Remove age from the main JSON output
+                                f.write(f"    - {json.dumps(ltm_copy, indent=4)}{age_str}\n")
+                        else:
+                            f.write("    No LTM entries\n")
+                        
+                        # Log projected goals
+                        f.write("  Projected Goals:\n")
+                        if 'projected_goals' in self.life_tracks['digest'][category]:
+                            f.write("    Short Term:\n")
+                            for goal in self.life_tracks['digest'][category]['projected_goals']['short_term']:
+                                if isinstance(goal, dict):
+                                    duration = goal.get('duration_days', 'N/A')
+                                    f.write(f"      - {goal['goal']} (Duration: {duration} days)\n")
+                                else:
+                                    f.write(f"      - {goal}\n")
+                            f.write("    Long Term:\n")
+                            for goal in self.life_tracks['digest'][category]['projected_goals']['long_term']:
+                                f.write(f"      - {goal}\n")
+                        else:
+                            f.write("    No projected goals\n")
+                        f.write("\n")
+                    f.write("\n" + "="*80 + "\n\n")
+
+            if first_digest:
+                return self.life_tracks 
+
+            # Add metadata before saving
+            self.life_tracks['metadata'] = {
+                'simulation_age': current_age,
+                'simulation_time': current_date if isinstance(current_date, str) else current_date.strftime('%Y-%m-%d'),
+                'tweet_count': tweet_count,
+                'location': tweets[-1]['location'],
+                'timestamp': datetime.now().isoformat()
+            }
+            # Save digest to history
+            self.save_digest_to_history(self.life_tracks)
+
+            return self.life_tracks
+
         except Exception as e:
-            print(f"Error generating digest: {type(e).__name__} - {str(e)}")
-            traceback.print_exc()
+            print(f"Error generating digest: {str(e)}")
+            if log_path:
+                with open(log_path, 'a') as f:
+                    f.write(f"\nFatal Error in Digest Generation:\n{str(e)}\n{traceback.format_exc()}\n")
             return None
 
     def generate_first_digest(self, tweets_by_age):
         """Generate first digest by processing pre-grouped age brackets"""
         try:
-            # Create logs directory if it doesn't exist
-            log_dir = "logs/first_digest"
-            os.makedirs(log_dir, exist_ok=True)
+            print("\n=== Starting First Digest Generation ===")
+            print(f"Input contains {len(tweets_by_age)} age brackets: {list(tweets_by_age.keys())}")
+            
+            timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+            bracket_log_path = lambda bracket: os.path.join(
+                self.first_digest_log_dir, 
+                f"bracket_{bracket.replace(' ', '_')}_{timestamp}.txt"
+            )
+            
+            # Initialize location tracking
+            current_location = ""
+            print(f"Starting with empty location")
             
             # Process each age bracket sequentially
             sorted_brackets = sorted(tweets_by_age.keys(), 
                 key=lambda x: float(x.split('-')[0].replace('age ', '')))
+            print(f"Processing brackets in order: {sorted_brackets}")
             
+            bracket_digest = self._initialize_life_tracks()
             for bracket in sorted_brackets:
                 try:
                     # Extract age range
                     age_range = bracket.replace('age ', '').split('-')
+                    start_age = float(age_range[0])
                     end_age = float(age_range[1])
                     
-                    print(f"\nProcessing age bracket {bracket} (end age: {end_age})")
+                    print(f"\nProcessing bracket {bracket} ({start_age} -> {end_age})")
+                    print(f"Number of tweets in bracket: {len(tweets_by_age[bracket])}")
+                    log_path = bracket_log_path(bracket)
                     
-                    # Create log file for this bracket
-                    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-                    log_path = f"{log_dir}/bracket_{bracket.replace(' ', '_')}_{timestamp}.txt"
+                    # Update simulation state
+                    self.simulation_age = end_age
+                    self.simulation_time = (datetime.now() + 
+                        timedelta(days=(end_age - start_age) * 365)).strftime('%Y-%m-%d')
                     
-                    print(f"Generating digest for age bracket {bracket} (end age: {end_age})")
-                    # Generate digest for this bracket
-                    bracket_digest = self._generate_digest_with_logging(
-                        recent_tweets=tweets_by_age[bracket],
-                        simulation_age=end_age,  # Pass the end age of the bracket
-                        simulation_time=self.simulation_time,
-                        log_path=log_path
+                    print(f"Updated simulation state: age={self.simulation_age}, time={self.simulation_time}")
+                    
+                    # Pre-process tweets for location changes
+                    tweets = tweets_by_age[bracket]
+                    for tweet in tweets:
+                        detected_location = self.tweet_generator.detect_location_change(tweet)
+                        if detected_location and "No location detected" not in detected_location:
+                            print(f"Location updated: {current_location} -> {detected_location}")
+                            current_location = detected_location
+                    
+                    # Generate digest with location awareness
+                    bracket_digest = self.generate_digest(
+                        latest_digest=bracket_digest,
+                        tweets=tweets,
+                        comments=None,
+                        current_age=end_age,
+                        current_date=self.simulation_time,  # Pass as string
+                        tweet_count=len(tweets),
+                        log_path=log_path,
+                        first_digest=True
                     )
                     
                     if bracket_digest:
-                        # Update metadata for this bracket
+                        # Update metadata including location
                         if 'metadata' not in bracket_digest:
                             bracket_digest['metadata'] = {}
                         bracket_digest['metadata'].update({
                             'simulation_age': end_age,
                             'simulation_time': self.simulation_time,
                             'tweet_count': self.tweet_count,
-                            'age_bracket': bracket
+                            'age_bracket': bracket,
+                            'current_location': current_location
                         })
-                        
+                        print(f"Updated digest metadata for bracket {bracket}")
                         self.life_tracks = bracket_digest
-                        
-                        # Log successful processing
-                        print(f"Successfully processed bracket {bracket}")
-                        
-                        # Save intermediate digest
                         self.save_digest_to_history(bracket_digest)
                     else:
                         print(f"Failed to generate digest for bracket {bracket}")
                 
-                except (ValueError, TypeError) as e:
+                except Exception as e:
                     print(f"Error processing bracket {bracket}: {str(e)}")
+                    traceback.print_exc()
                     continue
 
             return self.life_tracks
@@ -690,458 +1183,188 @@ class DigestGenerator:
             traceback.print_exc()
             return None
 
+    def _format_tweets_for_prompt(self, tweets):
+        """Format tweets for inclusion in prompts."""
+        if isinstance(tweets, list):
+            return "\n".join([f"- {tweet}" if isinstance(tweet, str) else f"- {tweet['age']}: {tweet['content']}" for tweet in tweets])
+        elif isinstance(tweets, dict):
+            # If tweets is a dictionary (e.g., for age brackets)
+            formatted = []
+            for age, tweet_list in tweets.items():
+                formatted.extend([f"- {tweet}" for tweet in tweet_list])
+            return "\n".join(formatted)
+        return ""
 
-    def _generate_digest_with_logging(self, recent_tweets, simulation_age, simulation_time, log_path=None):
-        """Generate digest with logging of prompts and responses"""
-        max_retries = 3000
-        retry_delay = 5  # seconds
+    def _format_comments_for_prompt(self, comments):
+        """Format comments for inclusion in prompts."""
+        if not comments:
+            return ""
+        return "\n".join([f"- {comment}" for comment in comments])
 
-        for attempt in range(max_retries):
-            try:
-                # Build the prompts
-                system_prompt = self._build_system_prompt()
-                user_prompt = self._build_prompt(
-                    mature_tech=[],  # We'll need to pass these from tech evolution
-                    maturing_soon=[],
-                    recent_tweets=recent_tweets,
-                    recent_comments=None
-                )
+    def _get_existing_mtm(self, existing_tracks):
+        """Get existing MTM data from life tracks."""
+        if not existing_tracks or not isinstance(existing_tracks, dict):
+            return self._initialize_life_tracks()['digest']
+        
+        tracks_digest = existing_tracks.get('digest', {})
+        return {
+            category: data.get('historical_summary', {}).get('MTM', [])
+            for category, data in tracks_digest.items()
+        }
+
+    def _get_existing_ltm(self, existing_tracks):
+        """Get existing LTM data from life tracks."""
+        if not existing_tracks or not isinstance(existing_tracks, dict):
+            return self._initialize_life_tracks()['digest']
+        
+        tracks_digest = existing_tracks.get('digest', {})
+        return {
+            category: data.get('historical_summary', {}).get('LTM', [])
+            for category, data in tracks_digest.items()
+        }
+
+    def _log_final_digest_state(self, log_path, current_age):
+        """Log the final state of the digest with all entries."""
+        try:
+            with open(log_path, 'a') as f:
+                f.write("\n=== FINAL DIGEST STATE ===\n")
+                f.write(f"Age: {current_age}\n")
+                f.write("Life Tracks State:\n\n")
                 
-                # Log prompts before API call
-                if log_path:
-                    with open(log_path, 'w', encoding='utf-8') as f:
-                        f.write("=== METADATA ===\n")
-                        f.write(f"Simulation Age: {simulation_age}\n")
-                        f.write(f"Simulation Time: {simulation_time}\n\n")
-                        f.write("=== SYSTEM PROMPT ===\n")
-                        f.write(system_prompt)
-                        f.write("\n\n=== USER PROMPT ===\n")
-                        f.write(user_prompt)
+                digest = self.life_tracks.get('digest', {})
+                for category in [
+                    "Career & Growth",
+                    "Personal Life & Relationships",
+                    "Health & Well-being",
+                    "Financial Trajectory",
+                    "Reflections & Philosophy",
+                    "$XVI & Technology"
+                ]:
+                    data = digest.get(category, {})
+                    f.write(f"{category}:\n")
+                    
+                    # Log MTM entries
+                    f.write("  MTM Entries:\n")
+                    for mtm in data.get('MTM', []):
+                        f.write(f"    Summary: {mtm.get('Summary', '')}\n")
+                        f.write(f"    Patterns: {mtm.get('Patterns', '')}\n")
+                        f.write(f"    Goals: {mtm.get('Goals', '')}\n")
+                        f.write(f"    Transition: {mtm.get('Transition', '')}\n\n")
+                    
+                    # Log LTM entries
+                    f.write("  LTM Entries (Chronological):\n")
+                    for ltm in sorted(data.get('LTM', []), key=lambda x: x.get('age', 0)):
+                        f.write(f"    Age {ltm.get('age', '')}: {ltm.get('Milestone', '')}\n")
+                        f.write(f"    Implications: {ltm.get('Implications', '')}\n")
+                        f.write(f"    Lessons: {ltm.get('Lessons', '')}\n\n")
+                    
+                    f.write("\n")
                 
-                # Get AI response
-                print("Sending request to AI client...")  # Debug
-                response = self.client.messages.create(
-                    model=self.model,
-                    max_tokens=4000,
-                    system=system_prompt,
-                    messages=[{"role": "user", "content": user_prompt}]
-                )
-                print("Received response from AI client.")  # Debug
+                f.write("=" * 80 + "\n\n")
+        except Exception as e:
+            print(f"Error logging final digest state: {str(e)}")
+            traceback.print_exc()
+
+    def _get_completion(self, system_prompt, user_prompt, max_tokens=2000, temperature=0.7):
+        """Get completion from the language model."""
+        try:
+            response = self.ai.get_completion(
+                system_prompt=system_prompt,
+                user_prompt=user_prompt,
+                max_tokens=max_tokens,
+                temperature=temperature
+            )
+            return response
+        except Exception as e:
+            print(f"Error in API call: {str(e)}")
+            print(f"Model: {self.model}")
+            print(f"System prompt: {system_prompt[:100]}...")
+            print(f"User prompt: {user_prompt[:100]}...")
+            raise
+
+    def _validate_projection_response(self, response):
+        """Validate the projection response format and content."""
+        try:
+            required_categories = [
+                "Career & Growth",
+                "Personal Life & Relationships",
+                "Health & Well-being",
+                "Financial Trajectory",
+                "Reflections & Philosophy",
+                "$XVI & Technology"
+            ]
+            
+            # Check that all required categories are present
+            for category in required_categories:
+                if category not in response:
+                    print(f"Missing required category: {category}")
+                    return None
                 
-                # Log raw response
-                raw_response = response.content[0].text if response.content else "No content received"
-                print(f"Raw AI Response: {raw_response}")  # Debug
-                if log_path:
-                    with open(log_path, 'a', encoding='utf-8') as f:
-                        f.write("\n\n=== RAW AI RESPONSE ===\n")
-                        f.write(raw_response)
+                # Check that each category has short_term and long_term arrays
+                if "short_term" not in response[category]:
+                    print(f"Missing short_term projections for {category}")
+                    return None
+                if "long_term" not in response[category]:
+                    print(f"Missing long_term projections for {category}")
+                    return None
                 
-                # Check if response content is empty
-                if not raw_response.strip():
-                    print("Received empty or invalid response from AI client.")
-                    continue  # Retry if the response is empty
-                
-                # Process response and log parsed data
-                print("Parsing AI response...")  # Debug
-                summaries = self._parse_summaries_into_tracks(raw_response)
-                print("Parsed AI response into life tracks.")  # Debug
-                
-                # Log parsed summaries
-                if log_path and summaries:
-                    with open(log_path, 'a', encoding='utf-8') as f:
-                        f.write("\n\n=== PARSED LIFE TRACKS ===\n")
-                        for track_name, track_data in summaries['digest'].items():
-                            f.write(f"\n{track_name}:\n")
-                            
-                            for section, items in track_data.items():
-                                f.write(f"  {section}:\n")
-                                
-                                if isinstance(items, list):
-                                    for item in items:
-                                        f.write(f"    - {item}\n")
-                                elif isinstance(items, dict):
-                                    for sub_section, sub_items in items.items():
-                                        f.write(f"  {sub_section}:\n")
-                                        for item in sub_items:
-                                            f.write(f"    - {item}\n")
-                            
-                            f.write("\n" + "-"*50 + "\n")
-                        
-                        # Log validation summary
-                        f.write("\n=== VALIDATION SUMMARY ===\n")
-                        f.write(f"Total tracks: {len(summaries['digest'])}\n")
-                        for track_name, track_data in summaries['digest'].items():
-                            f.write(f"{track_name}:\n")
-                            for section, items in track_data.items():
-                                f.write(f"  {section} items: {len(items) if isinstance(items, list) else sum(len(sub_items) for sub_items in items.values())}\n")
-                            print(f"Track {track_name}: {', '.join(f'{section} {len(items) if isinstance(items, list) else sum(len(sub_items) for sub_items in items.values())}' for section, items in track_data.items())}")
-                
-                return summaries
+                # Convert short-term goals to objects with duration
+                if isinstance(response[category]["short_term"], list):
+                    response[category]["short_term"] = [
+                        {
+                            "short term goal": goal,
+                            "duration_days": 30 + (i * 15)  # Stagger durations: 30, 45, 60 days...
+                        } if isinstance(goal, str) else goal
+                        for i, goal in enumerate(response[category]["short_term"])
+                    ]
 
-            except json.JSONDecodeError as e:
-                print(f"Error parsing JSON: {e}")
-                if log_path:
-                    with open(log_path, 'a', encoding='utf-8') as f:
-                        f.write("\n\n=== JSON PARSING ERROR ===\n")
-                        f.write(f"Error message: {str(e)}\n")
-                        f.write("Response content:\n")
-                        f.write(raw_response)
-                traceback.print_exc()
+                if isinstance(response[category]["long_term"], list):
+                    response[category]["long_term"] = [
+                        {
+                            "long term goal": goal,
+                            "duration_days": 30 + (i * 15)  # Stagger durations: 30, 45, 60 days...
+                        } if isinstance(goal, str) else goal
+                        for i, goal in enumerate(response[category]["long_term"])
+                    ]
 
-            except Exception as e:
-                print(f"Error generating digest: {type(e).__name__} - {str(e)}")
-                if log_path:
-                    with open(log_path, 'a', encoding='utf-8') as f:
-                        f.write("\n\n=== ERROR ===\n")
-                        f.write(f"Error type: {type(e).__name__}\n")
-                        f.write(f"Error message: {str(e)}\n")
-                        f.write("\nTraceback:\n")
-                        traceback.print_exc(file=f)
-                traceback.print_exc()
+            print("Successfully validated projections")
+            return response
 
-            if attempt < max_retries - 1:
-                print(f"Retrying in {retry_delay} seconds... (Attempt {attempt + 1} of {max_retries})")
-                time.sleep(retry_delay)
-            else:
-                print("Max retries reached. Failing the request.")
-                return None
+        except Exception as e:
+            print(f"Error validating projections: {str(e)}")
+            return None
 
-    def _build_system_prompt(self):
-        return """
-            Xavier is an AI life simulation exploring the journey from age 18 to 72 over 108 real-world days, with $XVI, a cryptocurrency on Solana, mysteriously linked to his life.
-
-            As the AI generating Xavier's life digest, your tasks are to:
-            1. Summarize historical events that have ALREADY occurred in tweets and recent comments.
-            2. Project future developments that have NOT YET happened.
-
-            STRUCTURE FOR EACH SECTION:
-
-            Professional:
-                Historical Summary:
-                - Summarize events from tweets and incorporate recent tweets and comments provided, focusing on events and developments that reflect Xavier’s most recent experiences in his professional life.
-
-                Projected Developments (Short-Term Goals):
-                - List actionable, immediate goals (3-6 months simulation time), such as pursuing a new project, expanding skills, or specific networking events.
-
-                Projected Developments (Long-Term Goals):
-                - Outline broader goals for the next 1-5 years in simulation, such as leading a major project, starting a company, or achieving a career milestone.
-
-            Personal:
-                Historical Summary:
-                - Capture significant events or relationships from tweets and recent comments, focusing on personal life, friendships, dating, and key social interactions.
-
-                Projected Developments (Short-Term Goals):
-                - List goals over the next 3-6 months, such as deepening friendships or planning a social activity.
-
-                Projected Developments (Long-Term Goals):
-                - Describe potential arcs over 1-5 years, like building a long-term relationship or achieving significant personal growth.
-
-            Family:
-                Historical Summary:
-                - Summarize interactions or events related to Xavier’s family, including calls, visits, or shared experiences, integrating any recent updates from tweets or comments.
-
-                Projected Developments (Short-Term Goals):
-                - Identify near-future family-related goals, such as arranging visits or sharing career progress.
-
-                Projected Developments (Long-Term Goals):
-                - Describe possible developments in family relationships over 1-5 years, including significant family events or deeper bonds.
-
-            Social:
-                Historical Summary:
-                - Note events or gatherings with friends, community involvement, and networking that have already occurred, including any relevant recent social events from tweets.
-
-                Projected Developments (Short-Term Goals):
-                - Set near-term social activities, such as attending events or building his social network.
-
-                Projected Developments (Long-Term Goals):
-                - Outline broader social goals, like becoming an influential figure in his community.
-
-            Reflections:
-                Historical Summary:
-                - Capture past reflections, philosophies, and realizations shared in tweets, with emphasis on recent contemplations.
-
-                Projected Developments (Short-Term Goals):
-                - Include short-term reflections on current trends or personal thoughts on recent events.
-
-                Projected Developments (Long-Term Goals):
-                - Suggest evolving worldviews, deeper philosophies, and future musings on technology, society, or his personal journey.
-
-            $XVI:
-                Historical Summary:
-                - List past interactions with or developments around $XVI, as described in tweets, especially recent discoveries or shifts in perspective.
-
-                Projected Developments (Short-Term Goals):
-                - Describe immediate goals related to $XVI, such as monitoring price trends, interacting with $XVI governance, or marketing.
-
-                Projected Developments (Long-Term Goals):
-                - Outline the broader trajectory of $XVI over the next 1-5 years, including major milestones and community impact.
-
-            Major Events:
-                Historical Summary:
-                - Summarize life-altering events like relocations, transitions, or key decisions, integrating any recent life changes from tweets.
-
-                Projected Developments (Short-Term Goals):
-                - Describe short-term developments for the next 3-6 months, including new transitions or life changes.
-
-                Projected Developments (Long-Term Goals):
-                - Forecast significant events in the next 1-5 years, such as pivotal life changes or major achievements.
-
-            Financial Trajectory:
-                Historical Summary:
-                - Summarize financial decisions, major investments, or economic insights from past tweets, incorporating any recent financial updates.
-
-                Projected Developments (Short-Term Goals):
-                - Include short-term financial goals, such as specific investments or savings milestones.
-
-                Projected Developments (Long-Term Goals):
-                - Suggest long-term financial ambitions or significant economic growth over 1-5 years.
-
-            Health & Well-being:
-                Historical Summary:
-                - Summarize past health decisions, activities, or challenges mentioned in tweets, including any recent wellness or stress-related updates.
-
-                Projected Developments (Short-Term Goals):
-                - Focus on health goals over the next few months, including physical or mental wellness activities.
-
-                Projected Developments (Long-Term Goals):
-                - Describe projected health or lifestyle improvements over the next 1-5 years.
-
-            Mentorship & Legacy:
-                Historical Summary:
-                - Summarize past activities related to mentorship, teaching, or legacy-building from tweets, with recent updates where applicable.
-
-                Projected Developments (Short-Term Goals):
-                - List short-term goals related to guiding others, sharing knowledge, or legacy-related pursuits.
-
-                Projected Developments (Long-Term Goals):
-                - Outline potential legacy-related goals over 1-5 years, such as becoming a mentor, creating lasting contributions, or establishing a legacy.
-
-            Character Development:
-                Historical Summary:
-                - Summarize recent shifts in Xavier’s beliefs, priorities, or personality traits as expressed in tweets, especially recent self-reflections.
-
-                Projected Developments (Short-Term Goals):
-                - Suggest immediate ways Xavier’s character might evolve in the next 3-6 months based on recent events, possibly influenced by new tech.
-
-                Projected Developments (Long-Term Goals):
-                - Outline Xavier’s broader personal growth trajectory over 1-5 years, including evolving worldviews or emerging life philosophies. Consider if tech advancements lead to shifts in his ethical or personal values.
-
-            New Relationships and Conflicts:
-                Historical Summary:
-                - Capture recent relationships or conflicts, such as friendships, rivalries, mentorships, or collaborations, especially recent changes.
-
-                Projected Developments (Short-Term Goals):
-                - Identify potential new relationships or conflicts over the next 3-6 months that may impact Xavier’s personal or professional life, possibly driven by recent tech trends.
-
-                Projected Developments (Long-Term Goals):
-                - Envision significant relationships or recurring conflicts over 1-5 years that shape Xavier’s growth and social landscape, considering how tech trends may alter his social and professional dynamics.
-
-            Plot Points:
-                Tech-Driven Plot Points:
-                - Highlight potential plot events arising directly from new or emerging technologies, especially those from the Technology Evolution system. Examples include tech upgrades, ethical dilemmas, or societal shifts due to tech advancements.
-
-                Character-Driven Plot Points:
-                - Identify key character-related plot events influenced by recent events or major life changes. Examples include major conflicts, new alliances, and shifts in Xavier’s relationships or values.
-
-            Technology Influences:
-                Upcoming Trends:
-                - Outline anticipated technological trends that may influence Xavier’s life, career, or social dynamics.
-
-                Societal Shifts:
-                - Describe major societal shifts influenced by technology, affecting industries, daily life, or cultural norms Xavier may encounter.
-
-                Tech-Driven Plot Points:
-                - Describe possible plot events influenced by these technological trends, highlighting potential challenges, ethical dilemmas, or personal implications for Xavier.
-
-            RETURN FORMAT (JSON):
-            {
-                "Professional": {
-                    "historical_summary": [],
-                    "projected_short": [],
-                    "projected_long": [],
-                    "plot_points": {
-                        "tech_driven": [],
-                        "character_driven": []
-                    }
-                },
-                "Personal": {
-                    "historical_summary": [],
-                    "projected_short": [],
-                    "projected_long": [],
-                    "plot_points": {
-                        "tech_driven": [],
-                        "character_driven": []
-                    }
-                },
-                "Family": {
-                    "historical_summary": [],
-                    "projected_short": [],
-                    "projected_long": [],
-                    "plot_points": {
-                        "tech_driven": [],
-                        "character_driven": []
-                    }
-                },
-                "Social": {
-                    "historical_summary": [],
-                    "projected_short": [],
-                    "projected_long": [],
-                    "plot_points": {
-                        "tech_driven": [],
-                        "character_driven": []
-                    }
-                },
-                "Reflections": {
-                    "historical_summary": [],
-                    "projected_short": [],
-                    "projected_long": [],
-                    "plot_points": {
-                        "tech_driven": [],
-                        "character_driven": []
-                    }
-                },
-                "$XVI": {
-                    "historical_summary": [],
-                    "projected_short": [],
-                    "projected_long": [],
-                    "plot_points": {
-                        "tech_driven": [],
-                        "character_driven": []
-                    }
-                },
-                "Major Events": {
-                    "historical_summary": [],
-                    "projected_short": [],
-                    "projected_long": [],
-                    "plot_points": {
-                        "tech_driven": [],
-                        "character_driven": []
-                    }
-                },
-                "Financial Trajectory": {
-                    "historical_summary": [],
-                    "projected_short": [],
-                    "projected_long": [],
-                    "plot_points": {
-                        "tech_driven": [],
-                        "character_driven": []
-                    }
-                },
-                "Health & Well-being": {
-                    "historical_summary": [],
-                    "projected_short": [],
-                    "projected_long": [],
-                    "plot_points": {
-                        "tech_driven": [],
-                        "character_driven": []
-                    }
-                },
-                "Mentorship & Legacy": {
-                    "historical_summary": [],
-                    "projected_short": [],
-                    "projected_long": [],
-                    "plot_points": {
-                        "tech_driven": [],
-                        "character_driven": []
-                    }
-                },
-                "Character Development": {
-                    "historical_summary": [],
-                    "projected_short": [],
-                    "projected_long": [],
-                    "plot_points": {
-                        "tech_driven": [],
-                        "character_driven": []
-                    }
-                },
-                "New Relationships and Conflicts": {
-                    "historical_summary": [],
-                    "projected_short": [],
-                    "projected_long": [],
-                    "plot_points": {
-                        "tech_driven": [],
-                        "character_driven": []
-                    }
-                },
-                "Plot Points": {
-                    "tech_driven": [],
-                    "character_driven": []
-                },
-                "Technology Influences": {
-                    "upcoming_trends": [],
-                    "societal_shifts": [],
-                    "tech_driven_plot_points": []
-                }
-            }
-
-            Ensure each section is comprehensive, linking past experiences to projected goals, and consistently includes both tech-driven and character-driven plot points where relevant.
-        """
-
-    def _build_prompt(self, mature_tech, maturing_soon, recent_tweets=None, recent_comments=None):
-        """Build the prompt for AI with all necessary context"""
-        life_phase = self._get_life_phase(self.simulation_age)
-
-        prompt = (
-            f"Based on the provided information, create Xavier's life digest at age {self.simulation_age}. "
-            "For each category:\n"
-            "1. Summarize past events and developments from the tweets\n"
-            "2. Project specific developments for the next 3-6 months (Short-Term Goals)\n"
-            "3. Project broader goals for the next 1-5 years (Long-Term Goals)\n"
-            "4. Suggest plot points where relevant\n\n"
-            f"CURRENT LIFE PHASE:\n{life_phase}\n\n"
-            "TIMEFRAME RULES:\n"
-            "1. Historical Summary: Events from tweets only\n"
-            "2. Projected Developments: Only events within next 3-6 months (short-term) and 1-5 years (long-term)\n"
-            "3. All projections must be specific, realistic, and align with Xavier's interests and phase of life\n\n"
+    def _get_base_prompt(self):
+        """Get the base system prompt with age context"""
+        return (
+            f"You are helping analyze the life of Xavier, a {self.simulation_age:.1f} year old trader and developer. "
+            "Generate a comprehensive digest of recent events and developments across different life areas. "
+            "Consider age-appropriate milestones, challenges, and growth opportunities. "
+            "Keep the analysis grounded in realistic expectations for someone of this age."
         )
 
-        # Include Technology Integration
-        prompt += self._build_tech_section(mature_tech, maturing_soon)
-
-        # Technology Integration Rules
-        prompt += (
-            "\nTECHNOLOGY INTEGRATION RULES:\n"
-            "1. Professional track MUST reference mature technologies related to trading, blockchain, or AI\n"
-            "2. Reflections track MUST explore emerging technologies that align with Xavier's curiosities\n"
-            "3. Other tracks MAY reference technologies if they connect logically to Xavier’s life phase\n"
-            "4. Technology Influences should include:\n"
-            "   - Upcoming tech trends that may impact Xavier\n"
-            "   - Societal shifts due to new tech developments\n"
-            "   - Tech-driven plot points that could create significant events or conflicts\n\n"
+    def _get_projection_prompt(self):
+        """Get the projection prompt with age context"""
+        return (
+            f"As a {self.simulation_age:.1f} year old trader and developer, Xavier needs realistic goals and projections. "
+            "Consider age-appropriate milestones and challenges when generating:\n"
+            "1. Short-term goals (next 1-3 months)\n"
+            "2. Long-term aspirations (6-12 months)\n"
+            "3. Career development opportunities\n"
+            "4. Personal growth targets\n\n"
+            "Ensure all projections are realistic and achievable for someone of this age and experience level."
         )
 
-        prompt += (
-            "For recent tweets about $XVI, incorporate insights under:\n"
-            "- Professional\n"
-            "- Financial Trajectory\n"
-            "- Reflections\n\n"
+    def _get_analysis_prompt(self):
+        """Get the analysis prompt with age context"""
+        return (
+            f"Analyze recent events for Xavier (age {self.simulation_age:.1f}) considering:\n"
+            "1. Career progression relative to age and experience\n"
+            "2. Personal development appropriate for early 20s\n"
+            "3. Financial goals aligned with age and career stage\n"
+            "4. Social and relationship developments typical for this age\n"
+            "5. Health and wellness priorities for a young professional"
         )
-
-        # Existing life track summaries and projections
-        prompt += "Combine the following Historical Summary with Recent Tweets and Comments to create updated summaries and projections:\n"
-        prompt += self._build_current_tracks_section()
-
-        # Add recent tweets for analysis
-        if recent_tweets:
-            prompt += "\nRECENT TWEETS TO ANALYZE (from oldest to newest):\n"
-            if isinstance(recent_tweets, list):
-                counter = 0
-                for tweet in recent_tweets:
-                    if isinstance(tweet, dict):
-                        date = tweet.get('simulated_date', '')
-                        content = tweet.get('content', '').get('content', '')
-                        prompt += f"[{date}] {content}\n"
-                    else:
-                        prompt += f"{counter}. {tweet}\n"
-                        counter += 1
-            else:
-                prompt += f"- {recent_tweets}\n"
-
-        # Add recent comments if available
-        if recent_comments:
-            prompt += "\nRECENT COMMENTS:\n" + "\n".join(f"- {comment}" for comment in recent_comments) + "\n"
-
-        return prompt
 
 def main():
     """Test function to print digest summaries"""

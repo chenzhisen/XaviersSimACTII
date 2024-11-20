@@ -8,7 +8,7 @@ import os
 import time
 import requests
 import math
-
+from src.utils.ai_completion import AICompletion
 
 class TechEvolutionGenerator:
     def __init__(self, github_ops, client, model):
@@ -21,6 +21,7 @@ class TechEvolutionGenerator:
             "tech_trees": {},
             "last_updated": datetime.now().isoformat()
         }
+        self.ai = AICompletion(client, model)
         
         # Create logs directory
         self.log_dir = "logs/tech_evolution"
@@ -120,7 +121,32 @@ class TechEvolutionGenerator:
             emerging_tech = json.dumps(previous_tech.get('emerging', []), indent=2)
             mainstream_tech = json.dumps(previous_tech.get('mainstream', []), indent=2)
 
-            prompt = f"""Generate technological advancements from {epoch_year} to {epoch_year + 5}. 
+            system_prompt = """You are a technology evolution expert specializing in future forecasting and emerging technologies. Your expertise includes:
+
+                1. CORE COMPETENCIES:
+                - Exponential technology growth patterns
+                - Cross-domain technology integration
+                - Societal impact analysis
+                - Market adoption trajectories
+                - Technological dependencies and prerequisites
+
+                2. ANALYTICAL FRAMEWORK:
+                - Use empirical data and historical patterns
+                - Consider technological dependencies
+                - Account for societal and ethical implications
+                - Evaluate market readiness and adoption barriers
+                - Assess regulatory and infrastructure requirements
+
+                3. OUTPUT PRINCIPLES:
+                - Maintain logical progression of technology evolution
+                - Ensure realistic development timelines
+                - Consider both incremental and breakthrough innovations
+                - Balance optimism with practical constraints
+                - Provide detailed, well-reasoned analyses
+
+                Your task is to generate realistic, well-reasoned technological forecasts that build upon existing developments while maintaining narrative consistency."""
+
+            user_prompt = f"""Generate technological advancements from {epoch_year} to {epoch_year + 5}. 
 
             CONTEXT:
             - Current epoch: {epoch_year}
@@ -205,20 +231,15 @@ class TechEvolutionGenerator:
                 f.write(prompt)
                 
             print("\nSending request to API...")
-            response = self.client.messages.create(
-                model=self.model,
+            response =  self.ai.get_completion(
                 max_tokens=4000,
-                messages=[
-                    {
-                        "role": "user",
-                        "content": prompt
-                    }
-                ]
+                system_prompt=system_prompt,
+                user_prompt= user_prompt
             )
             
             # Process response
-            if hasattr(response, 'content') and len(response.content) > 0:
-                text_content = response.content[0].text
+            if len(response) > 0:
+                text_content = response
                 print("Got text content from response")
                 
                 # Log raw response
