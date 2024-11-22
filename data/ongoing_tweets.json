@@ -53,5 +53,16 @@
     "id": "tweet_5",
     "tweet_count": 5,
     "simulated_date": "2025-01-20"
+  },
+  {
+    "content": "Three days of AI-driven budgeting, and now my finances are planning my next sushi adventure. Tech, you've got a sense of humor.",
+    "raw_content": "Three days of number-crunching with AI-driven finance tools, and the biggest surprise? My budget now tells me when I can afford my next sushi binge. Technology, am I right?",
+    "type": "finance",
+    "age": 22.0625,
+    "location": "Japan",
+    "timestamp": "2024-11-22T18:02:17.207607",
+    "id": "tweet_6",
+    "tweet_count": 6,
+    "simulated_date": "2025-01-23"
   }
 ]
