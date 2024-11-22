@@ -716,15 +716,34 @@ IMPORTANT:
             """
         return prompt
 
-    def _get_projection_system_prompt(self, age):
+    def _get_projection_system_prompt(self, age, persona):
         """Get system prompt for projection generation."""
-        return """
-            You are analyzing historical patterns to project future developments for {age} year old Xavier.
+        base_prompt = f"""You are analyzing historical patterns to project future developments for {age} year old Xavier, who is a {persona}. He balances immediate practical work with deeper philosophical thinking, while staying aware of technological advances."""
+
+        aspects = """
             Focus on realistic, actionable goals and developments, that are consistent across categories, with specific category focuses.
 
             For each category, provide:
             1. Short-term goals (3-6 months) with estimated durations, which should contribute to the long-term goals, specific to that category
             2. Long-term goals (1-5 years), which should be universal and consistent across categories
+
+            Consider three key aspects:
+
+            1. PRACTICAL DEVELOPMENT
+            - $XVI development milestones
+            - Technical skills advancement
+            - Business growth targets
+            
+            2. TECHNOLOGICAL CONTEXT
+            - Current tech breakthroughs
+            - Emerging technologies
+            - Industry shifts
+            - Market dynamics
+            
+            3. REFLECTIVE THINKING
+            When significant philosophical thoughts arise (about existence, consciousness, civilization's future), capture them naturally under Reflections & Philosophy.
+
+            Keep practical goals focused and actionable while staying technologically informed.
 
             Your response MUST be valid JSON with this structure:
             {
@@ -748,6 +767,7 @@ IMPORTANT:
             4. Maintain narrative consistency
             5. Each category must have at least one short-term and one long-term goal
             """
+        return base_prompt + aspects
 
     def _get_projection_user_prompt(self, historical_tracks):
         """For projections, we care about both emerging technologies and future trends"""
@@ -788,14 +808,19 @@ IMPORTANT:
             3. How to prepare for anticipated technological changes
             4. Realistic timeline for adopting new technologies
             5. Balance between innovation and practical implementation
+            6. How current tech advances affect immediate goals
+            7. When deeper reflections naturally arise
 
             Generate projections that show progressive technology adoption while maintaining realistic personal development.
+            Use Reflections & Philosophy for deeper thoughts when they occur naturally.
             """
         return prompt
 
     def generate_digest(self, latest_digest, tweets, current_age, current_date, tweet_count, comments=None, max_retries=3, retry_delay=5, log_path=None, first_digest=False):
         """Generate a new digest based on recent tweets"""
         try:
+            persona = self.tweet_generator.get_persona(current_age)
+
             # Create log file for this digest
             if log_path is None:
                 log_path = os.path.join(
@@ -918,7 +943,7 @@ IMPORTANT:
                 with open(log_path, 'a') as f:
                     f.write("\n=== Projection Generation Debug ===\n")
                     f.write("System Prompt:\n\n")
-                    f.write(self._get_projection_system_prompt(current_age))
+                    f.write(self._get_projection_system_prompt(current_age, persona))
                     f.write("\n\nUser Prompt:\n\n")
                     f.write(self._get_projection_user_prompt(historical_tracks))
                     f.write("\n\n")
@@ -928,7 +953,7 @@ IMPORTANT:
                 try:
                     # Log the raw API response
                     projection_response = self._get_completion(
-                        system_prompt=self._get_projection_system_prompt(current_age),
+                        system_prompt=self._get_projection_system_prompt(current_age, persona),
                         user_prompt=self._get_projection_user_prompt(historical_tracks)
                     )
                     
@@ -1080,7 +1105,8 @@ IMPORTANT:
                 'simulation_time': current_date if isinstance(current_date, str) else current_date.strftime('%Y-%m-%d'),
                 'tweet_count': tweet_count,
                 'location': tweets[-1]['location'],
-                'timestamp': datetime.now().isoformat()
+                'timestamp': datetime.now().isoformat(),
+                'persona': persona
             }
             # Save digest to history
             self.save_digest_to_history(self.life_tracks)

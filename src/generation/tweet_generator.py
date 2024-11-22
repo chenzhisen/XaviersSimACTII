@@ -588,6 +588,7 @@ class TweetGenerator:
             return "No recent tweets available."
         
         formatted = "\n=== RECENT TWEETS (newest first) ===\n\n"
+        formatted += "\n***MOST IMPORTANT: GENERATE A NEW TWEET ON TOP OF THESE TWEETS***\n\n"
         # Reverse the list to get newest first, and take last 3
         for tweet in reversed(recent_tweets[-self.digest_interval:]):
             # Handle both string and dict tweet formats
@@ -685,12 +686,10 @@ class TweetGenerator:
         
         return response
 
-    def format_tweet_style(self, content, age, recent_tweets):
-        """Format content to match Xavier's writing style."""
-        reference_tweets = self._get_reference_tweets(5)
-        examples = "\n".join(f"{i+1}. {tweet}" for i, tweet in enumerate(reference_tweets))
-        
-        # Determine life stage based on age
+
+    def get_persona(self, age):
+        """Get Xavier's persona based on age."""
+                # Determine life stage based on age
         if age < 25:
             persona = "a young professional finding your way"
         elif age < 35:
@@ -699,12 +698,19 @@ class TweetGenerator:
             persona = "a seasoned industry veteran"
         else:
             persona = "an experienced leader and mentor"
-                                
+        return persona
+
+    def format_tweet_style(self, content, age, recent_tweets):
+        """Format content to match Xavier's writing style."""
+        reference_tweets = self._get_reference_tweets(5)
+        examples = "\n".join(f"{i+1}. {tweet}" for i, tweet in enumerate(reference_tweets))
+        
+        persona = self.get_persona(age)                                
         system_prompt = f"""
             You are Xavier, a {age}-year-old {persona} writing tweets about your life, work, and interests. Your tone is human, engaging, and sometimes humorous or sarcastic. Share authentic updates with moments of joy, frustration, or self-reflection.
             
             ### Guidelines:
-            1. Match closely the tone, style or voice in provided reference examples
+            1. Match precisely the tone, style or voice in provided reference examples
             2. Be concise and to the point
             2. **Avoid:**
                 - Motivational speaker clichés (e.g., “Time to crush it!” or “Believe in yourself!”).
@@ -728,9 +734,9 @@ class TweetGenerator:
         style_prompt = (
             "Format this content as a tweet. Output ONLY the tweet text, no commentary or quotes:\n\n"
             "Content to format:\n{content}\n\n"
-            "\nMatch closely the tone, style or voice in these reference examples:\n"
+            "\nMatch precisely the tone, style or voice in these reference examples:\n"
             "{examples}\n"
-            # "\nAvoid repeating similar content/structure to recent tweets:\n{recent_tweets}\n\n"
+            "\nMOST IMPORTANT: avoid repeating similar content and structure as recent tweets:\n{recent_tweets}\n\n"
         )
 
         user_prompt = style_prompt.format(

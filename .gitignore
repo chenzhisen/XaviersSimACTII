@@ -1,8 +1,6 @@
 # Environment variables
 .env
-
-# Local story generation script
-storyteller.py
+logs/
 
 # Python-specific ignores
 __pycache__/
