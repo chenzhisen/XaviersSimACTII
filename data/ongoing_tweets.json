@@ -53,5 +53,16 @@
     "id": "tweet_5",
     "tweet_count": 5,
     "simulated_date": "2025-01-20"
+  },
+  {
+    "content": "Organized a tech meetup in NYC - a vibrant mix of ideas and innovation. Next, a monthly tech & philosophy group to dive deeper into the human-tech connection.",
+    "raw_content": "\"Organized a tech meetup in NYC - a vibrant mix of ideas and innovation. It's clear, technology thrives on human connection. Next, a monthly tech & philosophy group to dive deeper.\"",
+    "type": "personal",
+    "age": 22.0625,
+    "location": "NYC",
+    "timestamp": "2024-11-22T20:14:47.471089",
+    "id": "tweet_6",
+    "tweet_count": 6,
+    "simulated_date": "2025-01-23"
   }
 ]
