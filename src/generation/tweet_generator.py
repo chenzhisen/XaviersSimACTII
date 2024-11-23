@@ -588,7 +588,6 @@ class TweetGenerator:
             return "No recent tweets available."
         
         formatted = "\n=== RECENT TWEETS (newest first) ===\n\n"
-        formatted += "\n***MOST IMPORTANT: GENERATE A NEW TWEET ON TOP OF THESE TWEETS***\n\n"
         # Reverse the list to get newest first, and take last 3
         for tweet in reversed(recent_tweets[-self.digest_interval:]):
             # Handle both string and dict tweet formats
@@ -635,30 +634,32 @@ class TweetGenerator:
         system_prompt = (
             f"""Generate the next tweet for Xavier, progressing {int(self.days_per_tweet)} days from most recent tweets, toward short-term and long-term goals that are consistent with broader historical context.
 
-            Each tweet must:
-                1. Focus on specific actions Xavier took and the outcome of those actions.
-                2. Include challenges or surprises in the process, focusing on real, relatable moments.
-                3. Reflect progress or a key realization relevant to Xavier's active goals.
-
             ### Guidelines:
-            1. **Story Development**:
-                - Do not repeat the same topic in consecutive tweets unless reasonable progress is made.
-                - Do not repeat the same joke or theme from previous tweets.
-                - Do not repeat the same structure or format in previous tweets.
-                
-            2. **Be Specific**:
-                - Describe how something happened
-                - Avoid vague claims
+            1. **Maintain Narrative Flow**:
+                - Connect each tweet to the previous one logically.
+                - Build on experiences, insights, and takeaways.
 
-            3. **Humor & Emotion**:
-                - Show humor, frustration, excitement, or other emotions.
-                - Show quirky moments from time to time
+            2. **Theme Variation**:
+                - Balance reflections, technical depth, and personal actions.
+                - Avoid repeating the same idea or phrasing.
 
-            Avoid:
-                - Reusing similar jokes or themes (e.g., quirky AI anecdotes or "funny bot mistakes").
-                - Overly vague or generic claims like "integrated AI into blockchain art."
-                - Focusing solely on humor without moving the story forward.
-            """
+            3. **Structural Diversity**:
+                - Use questions, lists, or conversational tones instead of repetitive statements.
+                - Consider direct reflections or technical deep dives.
+
+            4. **Focus on Progress**:
+                - Highlight specific achievements, discoveries, or next steps.
+                - Avoid generic claims like "AI is improving my life."
+
+            5. **Tone**:
+                - Alternate between humor, reflection, and straightforward updates.
+
+            ### Avoid:
+                - Overemphasis on quirky AI glitches or misunderstandings.
+                - Repeated use of metaphors (e.g., "like teaching a kid").
+                - Anthropomorphizing AI unless it leads to a meaningful narrative.
+                - Overemphasis on ESG, AI ethics, or AI safety, unless relevant to the tweet type.
+          """
         )
 
         user_prompt = (
@@ -667,8 +668,12 @@ class TweetGenerator:
             f"Relevant Context:\n"
             f"{context}\n"
             f"{trends_context if trends else ''}\n\n"
-            f"Generate ONE tweet that clearly demonstrates progress or strategic thinking about {tweet_type}. "
-            f"Include specific details about the process, challenges, or surprises. Make it funny, relatable, and personal.\n\n"
+            "**Goals**:\n"
+            "- Share actionable progress or insights.\n"
+            "- Avoid repeating themes and structure.\n"
+            "- Explore broader aspects of AI and personal growth.\n"
+            "**Generate**:\n"
+            "tweets that reflects variety in theme, structure, or tone. Avoid overused metaphors and focus on meaningful progress or challenges.\n\n"
             f"{self.get_content_prompt(tweet_type, age)}"
         )
         
@@ -707,19 +712,32 @@ class TweetGenerator:
         
         persona = self.get_persona(age)                                
         system_prompt = f"""
-            You are Xavier, a {age}-year-old {persona} writing tweets about your life, work, and interests. Your tone is human, engaging, and sometimes humorous or sarcastic. Share authentic updates with moments of joy, frustration, or self-reflection.
+            You are a writing expert specializing in authentic social media voices. 
+            Your task is to refine this content while maintaining Xavier's distinctive style, who is a {age}-year-old {persona}:
             
-            ### Guidelines:
-            1. Match precisely the tone, style or voice in provided reference examples
-            2. Be concise and to the point
-            2. **Avoid:**
-                - Motivational speaker clichés (e.g., “Time to crush it!” or “Believe in yourself!”).
-                - Forced enthusiasm or over-the-top excitement.
-                - Rigidly separating technical and personal topics; let them blend naturally when relevant.
-                - Repeating metaphors or ideas without variation.
-                - Hashtags or emojis or Unicode characters or special symbols or arrows unless they add genuine value to the tweet.
-                -  NO Unicode escape sequences (like \\ud83c\\udf63)
-            - Overuse of @ mentions; only reference public figures or accounts when essential.
+            XAVIER'S VOICE:
+            - Be concise and to the point; focus on actions most of the time rather than feelings.
+            - Tech-savvy but approachable.
+            - Intellectually curious but not pretentious.
+            - Ambitious but self-aware.
+            - Occasionally includes subtle humor.
+            - Balances technical depth with accessibility.
+
+            STYLE GUIDELINES:
+            - Keep authentic and conversational.
+            - Vary sentence structures; do not rely on repeated opening phrases or conclusions.
+            - Use natural transitions.
+            - Maintain clear but engaging flow.
+            - Avoid broad labels like "Day X" unless truly relevant.
+
+            **Avoid:**
+            - Motivational speaker clichés (e.g., “Time to crush it!” or “Believe in yourself!”).
+            - Forced enthusiasm or over-the-top excitement.
+            - Repeating themes, metaphors, or joke structures.
+            - Categorizing themes explicitly (e.g., "tech-philosophy" or "finance journey").
+            - Any use of hashtags, emojis, or Unicode symbols.
+
+            Refine the content while preserving the core message and Xavier's voice. Generate a tweet that feels fresh, authentic, and narrative-driven, progressing the story without unnecessary repetition.
             """
             # 1. **Be Funny and Relatable:**
             # - Use humor or sarcasm to highlight real challenges and show human emotions.
@@ -732,11 +750,11 @@ class TweetGenerator:
 
         # Initialize style prompt template
         style_prompt = (
-            "Format this content as a tweet. Output ONLY the tweet text, no commentary or quotes:\n\n"
+            "Refine this tweet while maintaining authenticity. Output ONLY the tweet text, no commentary or quotes:\n\n"
             "Content to format:\n{content}\n\n"
             "\nMatch precisely the tone, style or voice in these reference examples:\n"
             "{examples}\n"
-            "\nMOST IMPORTANT: avoid repeating similar content and structure as recent tweets:\n{recent_tweets}\n\n"
+            "\n***MOST IMPORTANT: DO NOT REPEAT SENTENCE STRUCTURE OF RECENT TWEETS:***\n{recent_tweets}\n\n"
         )
 
         user_prompt = style_prompt.format(
@@ -900,10 +918,13 @@ class TweetGenerator:
             return "No specific context available."
         
         context = []
+        formatted_tweets = ""
 
         # 1. RECENT TWEETS - Highlight context from the newest tweets
         if recent_tweets:
-            formatted_tweets = self._format_recent_tweets(recent_tweets)
+            formatted_tweets += "\n***MOST IMPORTANT: GENERATE A NEW TWEET TO PROGRESS FROM THESE TWEETS***\n\n"
+
+            formatted_tweets += self._format_recent_tweets(recent_tweets)
             context.append(formatted_tweets)
 
         # Handle nested digest structure
