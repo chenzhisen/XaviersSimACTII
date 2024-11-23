@@ -20,5 +20,16 @@
     "id": "tweet_2",
     "tweet_count": 2,
     "simulated_date": "2025-01-08"
+  },
+  {
+    "content": "Just started an AI dev course. It's like teaching a robot to cook - tricky, but the payoff could be huge. Here's to smarter coding.",
+    "raw_content": "Today, I started a course on AI-driven development tools. It's like teaching a robot to cook - challenging, but the potential for delicious results is worth it. Here's to coding smarter, not harder.",
+    "type": "career",
+    "age": 22.03125,
+    "location": "NYC",
+    "timestamp": "2024-11-22T19:38:14.548287",
+    "id": "tweet_3",
+    "tweet_count": 3,
+    "simulated_date": "2025-01-12"
   }
 ]
