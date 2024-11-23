@@ -9,5 +9,16 @@
     "id": "tweet_1",
     "tweet_count": 1,
     "simulated_date": "2025-01-04"
+  },
+  {
+    "content": "Just turned 22. Enrolled in an AI course to sharpen my skills. Tokyo's fusion of old and new sparked an idea: let's blend AI with blockchain. Here's to crafting a future where tech meets creativity.",
+    "raw_content": "Turning 22 and reflecting on my career path. Just enrolled in an AI-driven development course to expand my toolkit. Tokyo's blend of tradition and tech inspired me to merge my interests in AI and blockchain. Here's to building a future where creativity and technology intersect.",
+    "type": "career",
+    "age": 22.020833333333332,
+    "location": "NYC",
+    "timestamp": "2024-11-22T19:43:30.411192",
+    "id": "tweet_2",
+    "tweet_count": 2,
+    "simulated_date": "2025-01-08"
   }
 ]
