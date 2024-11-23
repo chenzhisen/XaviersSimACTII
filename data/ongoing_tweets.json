@@ -20,5 +20,16 @@
     "id": "tweet_2",
     "tweet_count": 2,
     "simulated_date": "2025-01-08"
+  },
+  {
+    "content": "Enrolled in an AI course. First up: machine learning. Let's see what this brain can absorb.",
+    "raw_content": "Just enrolled in an AI development course. First module: machine learning basics. Time to dive in!",
+    "type": "career",
+    "age": 22.03125,
+    "location": "NYC",
+    "timestamp": "2024-11-22T20:46:52.612642",
+    "id": "tweet_3",
+    "tweet_count": 3,
+    "simulated_date": "2025-01-12"
   }
 ]
