@@ -9,5 +9,16 @@
     "id": "tweet_1",
     "tweet_count": 1,
     "simulated_date": "2025-01-04"
+  },
+  {
+    "content": "Turned 22 and dove into AI-driven dev tools. Now, blending this with blockchain for my next project.",
+    "raw_content": "**Just turned 22 and celebrated with a deep dive into AI-driven dev tools. Excited to blend this knowledge with blockchain for my next project!**",
+    "type": "tech",
+    "age": 22.020833333333332,
+    "location": "NYC",
+    "timestamp": "2024-11-22T20:24:03.176839",
+    "id": "tweet_2",
+    "tweet_count": 2,
+    "simulated_date": "2025-01-08"
   }
 ]
