@@ -20,5 +20,16 @@
     "id": "tweet_2",
     "tweet_count": 2,
     "simulated_date": "2025-01-08"
+  },
+  {
+    "content": "Local tech meetup was a goldmine of AI insights. Coffee shop discovery? It's all about the company, not the caffeine.",
+    "raw_content": "Met some brilliant minds at the local tech meetup. Their insights on AI's future? Mind-blowing. And yes, I finally found the perfect coffee shop in NYC - turns out, it's not about the coffee but the company you keep.",
+    "type": "personal",
+    "age": 22.03125,
+    "location": "NYC",
+    "timestamp": "2024-11-22T19:22:47.979599",
+    "id": "tweet_3",
+    "tweet_count": 3,
+    "simulated_date": "2025-01-12"
   }
 ]
