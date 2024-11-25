@@ -2,9 +2,15 @@ from dataclasses import dataclass
 from enum import Enum
 import os
 from typing import Optional
-from dotenv import load_dotenv
+from dotenv import load_dotenv, find_dotenv, dotenv_values
 
+dotenv_path = find_dotenv()
 load_dotenv()
+
+env_file_values = dotenv_values()
+
+# Force reload of .env file
+load_dotenv(override=True)
 
 class AIProvider(Enum):
     XAI = "XAI"
@@ -36,6 +42,7 @@ class Config:
     TWITTER_BEARER_TOKEN: str = os.getenv("TWITTER_BEARER_TOKEN")
 
     # AI Providers Configuration
+    print(os.getenv('XAI_API_KEY'))
     PROVIDERS = {
         AIProvider.XAI: AIConfig(
             api_key=os.getenv('XAI_API_KEY'),
