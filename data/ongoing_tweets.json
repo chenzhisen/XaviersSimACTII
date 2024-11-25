@@ -53,5 +53,16 @@
     "id": "tweet_5",
     "tweet_count": 5,
     "simulated_date": "2025-01-20"
+  },
+  {
+    "content": "Meeting with a blockchain startup's AI team today. Their market trend predictions are eerily accurate. Makes me wonder, how much of our future is already coded?",
+    "raw_content": "Just had a meeting with a blockchain startup's AI team. They're using AI to predict market trends with surprising accuracy. Makes me think, how much of our future is already written in code?",
+    "type": "finance",
+    "age": 22.0625,
+    "location": "NYC",
+    "timestamp": "2024-11-25T10:36:32.848118",
+    "id": "tweet_6",
+    "tweet_count": 6,
+    "simulated_date": "2025-01-23"
   }
 ]
