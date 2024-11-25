@@ -1,8 +1,16 @@
 #!/bin/bash
 
-LOG_FILE="logs/cron_xavier_$(date +\%Y\%m\%d).log"
-mkdir -p logs
+# Set full environment
+export PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin
+
+# Use $HOME for user directory
+SCRIPT_DIR="$HOME/Desktop/ef/XaviersSimACTII"
+cd "$SCRIPT_DIR"
+
+# Log file with date
+LOG_FILE="$SCRIPT_DIR/logs/cron_xavier_$(date +\%Y\%m\%d).log"
+mkdir -p "$SCRIPT_DIR/logs"
 
 echo "=== Run started at $(date) ===" >> "$LOG_FILE"
-PYTHONPATH=. python3 src/main.py --provider XAI --post-to-twitter >> "$LOG_FILE" 2>&1
+PYTHONPATH="$SCRIPT_DIR" python3 "$SCRIPT_DIR/src/main.py" --provider XAI --post-to-twitter >> "$LOG_FILE" 2>&1
 echo "=== Run completed at $(date) ===" >> "$LOG_FILE"
