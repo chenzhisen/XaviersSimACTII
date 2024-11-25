@@ -292,108 +292,164 @@ class TweetGenerator:
             self.log_dir,
             f"tweet_generator_{datetime.now().strftime('%Y%m%d_%H%M%S')}.log"
         )
-        try:
-            # Update active goals from latest digest if available
-            if latest_digest and 'projections' in latest_digest:
-                self.active_goals = {
-                    f"goal_{i}": goal 
-                    for i, goal in enumerate(latest_digest['projections'].get('goals', []))
+        
+        max_attempts = 3  # Maximum number of attempts to generate unique tweet
+        
+        for attempt in range(max_attempts):
+            try:
+                # Update active goals from latest digest if available
+                if latest_digest and 'projections' in latest_digest:
+                    self.active_goals = {
+                        f"goal_{i}": goal 
+                        for i, goal in enumerate(latest_digest['projections'].get('goals', []))
+                    }
+                
+                # Add debug logging for digest
+                self.log_step(
+                    "Debug Digest",
+                    digest=json.dumps(latest_digest, indent=2) if latest_digest else "None"
+                )
+
+                # Get tweet count from the last ongoing tweet if not provided
+                if tweet_count is None and recent_tweets:
+                    last_tweet = recent_tweets[-1]
+                    if isinstance(last_tweet, dict):
+                        tweet_count = last_tweet.get('tweet_count', 0)
+                    else:
+                        tweet_count = 0
+
+                # Load goals first
+                if latest_digest:
+                    self.load_goals_from_digest(latest_digest)
+                
+                # Then update their progress
+                self.update_goals_progress(tweet_count)
+
+                self.log_step(
+                    "Starting Tweet Generation",
+                    age=f"{age:.1f}",
+                    tweet_count=str(tweet_count),
+                    location=current_location,
+                    trends=json.dumps(trends) if trends else "None"
+                )
+
+                # Select tweet type based on both age-weighted probabilities and recent context
+                weights = self.get_age_weighted_types(age)
+                
+                # Analyze recent tweets to influence next topic selection
+                if recent_tweets and len(recent_tweets) > 0:
+                    last_tweet = recent_tweets[-1]
+                    last_type = self._detect_tweet_type(last_tweet)  # New helper method
+                    
+                    # Boost weight of related topics for natural transitions
+                    boosted_weights = weights.copy()
+                    for topic, weight in weights.items():
+                        if self._are_topics_related(last_type, topic):  # New helper method
+                            boosted_weights[topic] = weight * 1.5  # Boost related topics
+                    
+                    # Normalize weights
+                    total = sum(boosted_weights.values())
+                    weights = {k: v/total for k, v in boosted_weights.items()}
+                
+                tweet_type = random.choices(
+                    list(weights.keys()), 
+                    weights=list(weights.values())
+                )[0]
+
+                self.log_step(
+                    "Tweet Type Selection",
+                    weights=json.dumps(weights, indent=2),
+                    selected_type=tweet_type
+                )
+
+                # Generate raw content
+                raw_content = self.generate_tweet_content(
+                    latest_digest, age, recent_tweets, tweet_type, 
+                    current_location, trends, tweet_count
+                )
+
+                # Format the content
+                formatted_content = self.format_tweet_style(raw_content, age, recent_tweets)
+                
+                # Check for duplicates
+                if recent_tweets and self._is_duplicate_tweet(formatted_content, recent_tweets):
+                    self.log_step(
+                        "Duplicate Detection",
+                        attempt=str(attempt + 1),
+                        content=formatted_content,
+                        message="Found duplicate, trying again..."
+                    )
+                    continue
+                
+                # Detect any location changes
+                new_location = self.detect_location_change(formatted_content)
+                self.log_step(
+                    "Detecting location Change",
+                    new_location=new_location,
+                    current_location=current_location
+                )
+                tweet_location = new_location if new_location is not None else current_location
+
+                # Validate the formatted tweet
+                if not self.validate_tweet(formatted_content):
+                    continue
+
+                # Return tweet with all metadata
+                return {
+                    'content': formatted_content,
+                    'raw_content': raw_content,
+                    'type': tweet_type,
+                    'age': age,
+                    'location': tweet_location,
+                    'timestamp': datetime.now().isoformat(),
                 }
-            
-            # Add debug logging for digest
-            self.log_step(
-                "Debug Digest",
-                digest=json.dumps(latest_digest, indent=2) if latest_digest else "None"
-            )
 
-            # Get tweet count from the last ongoing tweet if not provided
-            if tweet_count is None and recent_tweets:
-                last_tweet = recent_tweets[-1]
-                if isinstance(last_tweet, dict):
-                    tweet_count = last_tweet.get('tweet_count', 0)
+            except Exception as e:
+                print(f"Error generating tweet: {e}")
+                traceback.print_exc()
+                
+                if attempt == max_attempts - 1:
+                    return None
+                
+        print(f"Failed to generate unique tweet after {max_attempts} attempts")
+        return None
+
+    def _is_duplicate_tweet(self, new_content: str, recent_tweets: List[Union[str, Dict]]) -> bool:
+        """
+        Check if a tweet is too similar to recent tweets.
+        
+        Args:
+            new_content: The content of the new tweet
+            recent_tweets: List of recent tweets (can be strings or dicts)
+            
+        Returns:
+            bool: True if tweet is too similar to a recent tweet
+        """
+        try:
+            # Get the most recent tweets for comparison
+            recent_contents = []
+            for tweet in recent_tweets[-self.digest_interval:]:
+                if isinstance(tweet, dict):
+                    content = tweet.get('content', '')
                 else:
-                    tweet_count = 0
-
-            # Load goals first
-            if latest_digest:
-                self.load_goals_from_digest(latest_digest)
-            
-            # Then update their progress
-            self.update_goals_progress(tweet_count)
-
-            self.log_step(
-                "Starting Tweet Generation",
-                age=f"{age:.1f}",
-                tweet_count=str(tweet_count),
-                location=current_location,
-                trends=json.dumps(trends) if trends else "None"
-            )
-
-            # Select tweet type based on both age-weighted probabilities and recent context
-            weights = self.get_age_weighted_types(age)
-            
-            # Analyze recent tweets to influence next topic selection
-            if recent_tweets and len(recent_tweets) > 0:
-                last_tweet = recent_tweets[-1]
-                last_type = self._detect_tweet_type(last_tweet)  # New helper method
+                    content = str(tweet)
+                recent_contents.append(content)
                 
-                # Boost weight of related topics for natural transitions
-                boosted_weights = weights.copy()
-                for topic, weight in weights.items():
-                    if self._are_topics_related(last_type, topic):  # New helper method
-                        boosted_weights[topic] = weight * 1.5  # Boost related topics
+            # Check for exact duplicates first
+            if new_content in recent_contents:
+                return True
                 
-                # Normalize weights
-                total = sum(boosted_weights.values())
-                weights = {k: v/total for k, v in boosted_weights.items()}
-            
-            tweet_type = random.choices(
-                list(weights.keys()), 
-                weights=list(weights.values())
-            )[0]
-
-            self.log_step(
-                "Tweet Type Selection",
-                weights=json.dumps(weights, indent=2),
-                selected_type=tweet_type
-            )
-
-            # Generate raw content
-            raw_content = self.generate_tweet_content(
-                latest_digest, age, recent_tweets, tweet_type, 
-                current_location, trends, tweet_count
-            )
-
-            # Format the content
-            formatted_content = self.format_tweet_style(raw_content, age, recent_tweets)
-
-            # Detect any location changes
-            new_location = self.detect_location_change(formatted_content)
-            self.log_step(
-                "Detecting location Change",
-                new_location=new_location,
-                current_location=current_location
-            )
-            tweet_location = new_location if new_location is not None else current_location
-
-            # Validate the formatted tweet
-            if not self.validate_tweet(formatted_content):
-                return None
-
-            # Return tweet with all metadata
-            return {
-                'content': formatted_content,
-                'raw_content': raw_content,
-                'type': tweet_type,
-                'age': age,
-                'location': tweet_location,
-                'timestamp': datetime.now().isoformat(),
-            }
-
+            # Check for similar content using SequenceMatcher
+            for recent_content in recent_contents:
+                similarity = SequenceMatcher(None, new_content, recent_content).ratio()
+                if similarity > 0.8:  # Threshold for similarity (80%)
+                    return True
+                
+            return False
+                
         except Exception as e:
-            print(f"Error generating tweet: {e}")
-            traceback.print_exc()
-            return None
+            print(f"Error checking for duplicate tweet: {e}")
+            return False  # On error, assume not duplicate to allow generation to continue
 
     def get_time_context(self, age, days_elapsed, location="Unknown"):
         """Generate temporal context for prompts.
@@ -662,18 +718,23 @@ class TweetGenerator:
           """
         )
 
+        reference_tweets = self._get_reference_tweets(5)
+        examples = "\n".join(f"{i+1}. {tweet}" for i, tweet in enumerate(reference_tweets))
+
         user_prompt = (
             f"{time_context}\n"
             f"{special_context}\n"
             f"Relevant Context:\n"
             f"{context}\n"
             f"{trends_context if trends else ''}\n\n"
+            "\nMatch precisely the tone, style or voice in these reference examples:\n"
+            f"{examples}\n\n"
             "**Goals**:\n"
             "- Share actionable progress or insights.\n"
             "- Avoid repeating themes and structure.\n"
-            "- Explore broader aspects of AI and personal growth.\n"
+            "- Explore broader aspects of AI and personal growth.\n\n"
             "**Generate**:\n"
-            "tweets that reflects variety in theme, structure, or tone. Avoid overused metaphors and focus on meaningful progress or challenges.\n\n"
+            "A tweet that reflects variety in theme, structure, or tone. Avoid overused metaphors and focus on meaningful progress or challenges.\n\n"
             f"{self.get_content_prompt(tweet_type, age)}"
         )
         
@@ -753,7 +814,7 @@ class TweetGenerator:
             "Refine this tweet while maintaining authenticity. Output ONLY the tweet text, no commentary or quotes:\n\n"
             "Content to format:\n{content}\n\n"
             "\nMatch precisely the tone, style or voice in these reference examples:\n"
-            "{examples}\n"
+            f"{examples}\n"
             "\n***MOST IMPORTANT: DO NOT REPEAT SENTENCE STRUCTURE OF RECENT TWEETS:***\n{recent_tweets}\n\n"
         )
 

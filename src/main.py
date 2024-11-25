@@ -15,7 +15,7 @@ import os
 import argparse
 
 class SimulationWorkflow:
-    def __init__(self, tweets_per_year=96, digest_interval=8, provider: AIProvider = AIProvider.XAI):
+    def __init__(self, tweets_per_year=96, digest_interval=8, provider: AIProvider = AIProvider.XAI, post_to_twitter=True):
         ai_config = Config.get_ai_config(provider)
         
         if provider == AIProvider.ANTHROPIC:
@@ -50,6 +50,9 @@ class SimulationWorkflow:
         self.start_date = datetime(2025, 1, 1)
         self.days_per_tweet = 365 / tweets_per_year
         self.start_age = 22.0
+        
+        # Add post_to_twitter flag
+        self.post_to_twitter = post_to_twitter
         
     def get_current_date(self, tweet_count):
         """Calculate current simulation date based on tweet count"""
@@ -191,13 +194,50 @@ class SimulationWorkflow:
                 trends=trends
             )
             if new_tweet:
-                self.tweet_gen.github_ops.add_tweet(
-                    new_tweet,
-                    id=f"tweet_{tweet_count + 1}",
-                    tweet_count=tweet_count + 1,
-                    simulated_date=current_date.strftime('%Y-%m-%d'),
-                    age=current_age
-                )
+                # Post to Twitter if flag is True
+                if self.post_to_twitter:
+                    from src.twitter.twitter_client import TwitterClientV2
+                    twitter_client = TwitterClientV2()
+                    
+                    # Add TEST prefix and ensure total length is under 280
+                    test_prefix = "TEST: "
+                    max_content_length = 280 - len(test_prefix)
+                    tweet_content = test_prefix + new_tweet['content'][:max_content_length]
+                    
+                    tweet_id = twitter_client.post_tweet(tweet_content)
+                    
+                    if tweet_id:
+                        print(f"Successfully posted to Twitter with ID: {tweet_id}")
+                        print(f"Tweet content: {tweet_content}")
+                        # Store the tweet using Twitter ID
+                        self.tweet_gen.github_ops.add_tweet(
+                            new_tweet,
+                            id=tweet_id,  # Use actual Twitter ID
+                            tweet_count=tweet_count + 1,
+                            simulated_date=current_date.strftime('%Y-%m-%d'),
+                            age=current_age
+                        )
+                    else:
+                        print("Failed to post tweet to Twitter")
+                        # Fallback to sequential ID if Twitter post fails
+                        self.tweet_gen.github_ops.add_tweet(
+                            new_tweet,
+                            id=f"tweet_{tweet_count + 1}",
+                            tweet_count=tweet_count + 1,
+                            simulated_date=current_date.strftime('%Y-%m-%d'),
+                            age=current_age
+                        )
+                else:
+                    # Use sequential ID when not posting to Twitter
+                    self.tweet_gen.github_ops.add_tweet(
+                        new_tweet,
+                        id=f"tweet_{tweet_count + 1}",
+                        tweet_count=tweet_count + 1,
+                        simulated_date=current_date.strftime('%Y-%m-%d'),
+                        age=current_age
+                    )
+                    print("Tweet generated but not posted to Twitter (post_to_twitter=False)")
+                
                 print(f"Generated tweet for {current_date.strftime('%Y-%m-%d')} (age {current_age:.2f}): {new_tweet}")
             
         except Exception as e:
@@ -226,6 +266,12 @@ def main():
         default=8,
         help='Number of tweets between digest generations'
     )
+    parser.add_argument(
+        '--post-to-twitter',
+        action='store_true',
+        default=False,
+        help='Whether to post tweets to Twitter'
+    )
     
     args = parser.parse_args()
     
@@ -233,14 +279,17 @@ def main():
     provider = AIProvider[args.provider]
     
     print(f"Starting simulation with {provider.value} provider")
+    print(f"Post to Twitter: {args.post_to_twitter}")
+    
     workflow = SimulationWorkflow(
         tweets_per_year=args.tweets_per_year,
         digest_interval=args.digest_interval,
-        provider=provider
+        provider=provider,
+        post_to_twitter=args.post_to_twitter
     )
     
-    while True:
-        workflow.run()
+    # while True:
+    workflow.run()
 
 if __name__ == "__main__":
     main() 
