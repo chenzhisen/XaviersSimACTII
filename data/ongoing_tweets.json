@@ -31,5 +31,16 @@
     "id": "tweet_3",
     "tweet_count": 3,
     "simulated_date": "2025-01-12"
+  },
+  {
+    "content": "Had an interview today. They loved my sketches but questioned my lack of recent tech experience. Feeling like I need to brush up on my coding. Tweet 4: Tech",
+    "raw_content": "Had an interview today. They loved my sketches but questioned my lack of recent tech experience. Feeling like I need to brush up on my coding.\n\nTweet 4: Tech",
+    "type": "tech",
+    "age": 22.041666666666668,
+    "location": "Japan",
+    "timestamp": "2024-11-26T10:25:40.211448",
+    "id": "tweet_4",
+    "tweet_count": 4,
+    "simulated_date": "2025-01-16"
   }
 ]
