@@ -31,5 +31,16 @@
     "id": "tweet_2",
     "tweet_count": 2,
     "simulated_date": "2025-01-08"
+  },
+  {
+    "content": "**\nSacrificed a night out for some deep work. Realized the issue with the startup model was user interaction data. Fixed it, and now it's running smoothly. #CareerWin #LearningCurve",
+    "raw_content": "**\nSacrificed a night out for some deep work. Realized the issue with the startup model was user interaction data. Fixed it, and now it's running smoothly. #CareerWin #LearningCurve",
+    "type": "career",
+    "age": 22.03125,
+    "location": "NYC",
+    "timestamp": "2024-11-25T23:17:03.280141",
+    "id": "tweet_3",
+    "tweet_count": 3,
+    "simulated_date": "2025-01-12"
   }
 ]
