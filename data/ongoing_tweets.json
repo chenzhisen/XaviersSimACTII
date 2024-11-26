@@ -20,5 +20,16 @@
     "id": "tweet_2",
     "tweet_count": 2,
     "simulated_date": "2025-01-08"
+  },
+  {
+    "content": "Just got hit with a reality check. My startup's app isn't scaling well, and it's showing in our finances. Need a tech fix, fast. #StartupLife",
+    "raw_content": "Just got hit with a reality check. My startup's app isn't scaling well, and it's showing in our finances. Need a tech fix, fast. #StartupLife",
+    "type": "finance",
+    "age": 22.03125,
+    "location": "NYC",
+    "timestamp": "2024-11-26T00:00:55.597581",
+    "id": "tweet_3",
+    "tweet_count": 3,
+    "simulated_date": "2025-01-12"
   }
 ]
