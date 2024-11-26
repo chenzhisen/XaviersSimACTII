@@ -9,5 +9,16 @@
     "id": "tweet_1",
     "tweet_count": 1,
     "simulated_date": "2025-01-04"
+  },
+  {
+    "content": "Back in NYC, the concrete jungle feels different after Japan. Time to find a job that lets me blend my newfound creativity with my tech background. Tweet 2: Finance",
+    "raw_content": "Back in NYC, the concrete jungle feels different after Japan. Time to find a job that lets me blend my newfound creativity with my tech background.\n\nTweet 2: Finance",
+    "type": "finance",
+    "age": 22.020833333333332,
+    "location": "NYC",
+    "timestamp": "2024-11-26T10:25:39.572259",
+    "id": "tweet_2",
+    "tweet_count": 2,
+    "simulated_date": "2025-01-08"
   }
 ]
