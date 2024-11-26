@@ -20,5 +20,16 @@
     "id": "tweet_2",
     "tweet_count": 2,
     "simulated_date": "2025-01-08"
+  },
+  {
+    "content": "Tried to set up a tech-themed meetup, but the venue fell through. Back to the drawing board, this isn't as easy as coding.",
+    "raw_content": "Tried to set up a tech-themed meetup, but the venue fell through. Back to the drawing board, this isn't as easy as coding.",
+    "type": "health",
+    "age": 22.03125,
+    "location": "NYC",
+    "timestamp": "2024-11-26T12:24:49.395887",
+    "id": "tweet_3",
+    "tweet_count": 3,
+    "simulated_date": "2025-01-12"
   }
 ]
