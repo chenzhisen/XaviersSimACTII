@@ -20,5 +20,16 @@
     "id": "tweet_2",
     "tweet_count": 2,
     "simulated_date": "2025-01-08"
+  },
+  {
+    "content": "NYC's energy is back, but so is the grind. Time to focus on health\u2014gym membership reactivated. Let's see if I can keep this up.",
+    "raw_content": "NYC's energy is back, but so is the grind. Time to focus on health\u2014gym membership reactivated. Let's see if I can keep this up.",
+    "type": "health",
+    "age": 22.03125,
+    "location": "NYC",
+    "timestamp": "2024-11-26T09:00:57.564058",
+    "id": "tweet_3",
+    "tweet_count": 3,
+    "simulated_date": "2025-01-12"
   }
 ]
