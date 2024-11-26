@@ -42,5 +42,16 @@
     "id": "tweet_4",
     "tweet_count": 4,
     "simulated_date": "2025-01-16"
+  },
+  {
+    "content": "Spent the day learning Python. It's like riding a bike, but the streets of NYC are making it a bumpy ride. #TechJourney Tweet 5: Career",
+    "raw_content": "Spent the day learning Python. It's like riding a bike, but the streets of NYC are making it a bumpy ride. #TechJourney\n\nTweet 5: Career",
+    "type": "career",
+    "age": 22.052083333333332,
+    "location": "Japan",
+    "timestamp": "2024-11-26T10:25:40.630440",
+    "id": "tweet_5",
+    "tweet_count": 5,
+    "simulated_date": "2025-01-20"
   }
 ]
