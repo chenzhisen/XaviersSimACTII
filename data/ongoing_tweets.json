@@ -75,5 +75,16 @@
     "id": "tweet_7",
     "tweet_count": 7,
     "simulated_date": "2025-01-27"
+  },
+  {
+    "content": "Landed the job! It's a hybrid role - part software development, part creative design. The best of both worlds, but now comes the real challenge. Tweet 8: Finance",
+    "raw_content": "Landed the job! It's a hybrid role - part software development, part creative design. The best of both worlds, but now comes the real challenge.\n\nTweet 8: Finance",
+    "type": "finance",
+    "age": 22.083333333333332,
+    "location": "Japan",
+    "timestamp": "2024-11-26T10:25:41.674035",
+    "id": "tweet_8",
+    "tweet_count": 8,
+    "simulated_date": "2025-01-31"
   }
 ]
