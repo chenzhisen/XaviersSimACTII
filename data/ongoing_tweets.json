@@ -86,5 +86,16 @@
     "id": "tweet_8",
     "tweet_count": 8,
     "simulated_date": "2025-01-31"
+  },
+  {
+    "content": "Tweet 1:",
+    "raw_content": "Tweet 1:",
+    "type": "finance",
+    "age": 22.09375,
+    "location": "Japan",
+    "timestamp": "2024-11-26T10:29:05.623199",
+    "id": "tweet_9",
+    "tweet_count": 9,
+    "simulated_date": "2025-02-04"
   }
 ]
