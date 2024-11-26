@@ -20,5 +20,16 @@
     "id": "tweet_10",
     "tweet_count": 10,
     "simulated_date": "2025-02-08"
+  },
+  {
+    "content": "Just turned 22 and got a job offer from a fintech startup. The excitement of new beginnings mixed with the fear of the unknown. #Career #Birthday",
+    "raw_content": "Just turned 22 and got a job offer from a fintech startup. The excitement of new beginnings mixed with the fear of the unknown. #Career #Birthday",
+    "type": "finance",
+    "age": 22.020833333333332,
+    "location": "NYC",
+    "timestamp": "2024-11-25T23:38:15.169263",
+    "id": "tweet_2",
+    "tweet_count": 2,
+    "simulated_date": "2025-01-08"
   }
 ]
