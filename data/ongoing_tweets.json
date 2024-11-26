@@ -64,5 +64,16 @@
     "id": "tweet_6",
     "tweet_count": 6,
     "simulated_date": "2025-01-23"
+  },
+  {
+    "content": "Feeling a bit overwhelmed. NYC's energy is invigorating but also draining. Took a walk in Central Park to clear my mind. Tweet 7: Career",
+    "raw_content": "Feeling a bit overwhelmed. NYC's energy is invigorating but also draining. Took a walk in Central Park to clear my mind.\n\nTweet 7: Career",
+    "type": "career",
+    "age": 22.072916666666668,
+    "location": "Japan",
+    "timestamp": "2024-11-26T10:25:41.365796",
+    "id": "tweet_7",
+    "tweet_count": 7,
+    "simulated_date": "2025-01-27"
   }
 ]
