@@ -20,5 +20,16 @@
     "id": "tweet_2",
     "tweet_count": 2,
     "simulated_date": "2025-01-08"
+  },
+  {
+    "content": "Got the offer! They want me to start next week. The job is in fintech, something I've never done before. Exciting, but also, what if I fail?",
+    "raw_content": "Got the offer! They want me to start next week. The job is in fintech, something I've never done before. Exciting, but also, what if I fail?",
+    "type": "finance",
+    "age": 22.03125,
+    "location": "NYC",
+    "timestamp": "2024-11-26T08:07:19.480291",
+    "id": "tweet_3",
+    "tweet_count": 3,
+    "simulated_date": "2025-01-12"
   }
 ]
