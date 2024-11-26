@@ -20,5 +20,16 @@
     "id": "tweet_2",
     "tweet_count": 2,
     "simulated_date": "2025-01-08"
+  },
+  {
+    "content": "Found an internship at a fintech startup. Diving into the world of blockchain and crypto. It's like learning a new language.",
+    "raw_content": "Found an internship at a fintech startup. Diving into the world of blockchain and crypto. It's like learning a new language.",
+    "type": "career",
+    "age": 22.03125,
+    "location": "NYC",
+    "timestamp": "2024-11-26T08:15:34.933520",
+    "id": "tweet_3",
+    "tweet_count": 3,
+    "simulated_date": "2025-01-12"
   }
 ]
