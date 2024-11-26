@@ -53,5 +53,16 @@
     "id": "tweet_5",
     "tweet_count": 5,
     "simulated_date": "2025-01-20"
+  },
+  {
+    "content": "Just got a call from my boss. They want me to lead a new project. Exciting but daunting. Feeling like I'm about to jump off a cliff into the unknown. #Career",
+    "raw_content": "Just got a call from my boss. They want me to lead a new project. Exciting but daunting. Feeling like I'm about to jump off a cliff into the unknown. #Career",
+    "type": "career",
+    "age": 22.0625,
+    "location": "NYC",
+    "timestamp": "2024-11-26T07:29:42.435354",
+    "id": "tweet_6",
+    "tweet_count": 6,
+    "simulated_date": "2025-01-23"
   }
 ]
