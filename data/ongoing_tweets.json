@@ -42,5 +42,16 @@
     "id": "tweet_3",
     "tweet_count": 3,
     "simulated_date": "2025-01-12"
+  },
+  {
+    "content": "**\nJust got a message from my mentor about an upcoming project. It's a chance to apply my new focus, but the deadline is tight. Can I do it? #Career\n\n**",
+    "raw_content": "**\nJust got a message from my mentor about an upcoming project. It's a chance to apply my new focus, but the deadline is tight. Can I do it? #Career\n\n**",
+    "type": "career",
+    "age": 22.208333333333332,
+    "location": "NYC",
+    "timestamp": "2024-11-25T23:01:46.174119",
+    "id": "tweet_20",
+    "tweet_count": 20,
+    "simulated_date": "2025-03-18"
   }
 ]
