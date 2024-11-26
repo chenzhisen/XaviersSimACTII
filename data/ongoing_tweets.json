@@ -9,5 +9,16 @@
     "id": "tweet_1",
     "tweet_count": 1,
     "simulated_date": "2025-01-04"
+  },
+  {
+    "content": "Spent the day job hunting in NYC. The tech scene here is buzzing, but the competition feels intense.",
+    "raw_content": "Spent the day job hunting in NYC. The tech scene here is buzzing, but the competition feels intense.",
+    "type": "tech",
+    "age": 22.020833333333332,
+    "location": "Japan",
+    "timestamp": "2024-11-26T10:27:57.278096",
+    "id": "tweet_2",
+    "tweet_count": 2,
+    "simulated_date": "2025-01-08"
   }
 ]
