@@ -75,5 +75,16 @@
     "id": "tweet_7",
     "tweet_count": 7,
     "simulated_date": "2025-01-27"
+  },
+  {
+    "content": "Found a bug in our transaction protocol. It's not just a minor glitch; it could lead to significant losses. Time to shine or time to crumble?",
+    "raw_content": "Found a bug in our transaction protocol. It's not just a minor glitch; it could lead to significant losses. Time to shine or time to crumble?",
+    "type": "tech",
+    "age": 22.083333333333332,
+    "location": "NYC",
+    "timestamp": "2024-11-26T08:08:23.973294",
+    "id": "tweet_8",
+    "tweet_count": 8,
+    "simulated_date": "2025-01-31"
   }
 ]
