@@ -31,5 +31,16 @@
     "id": "tweet_2",
     "tweet_count": 2,
     "simulated_date": "2025-01-08"
+  },
+  {
+    "content": "**\nFound a job opening in finance. It's high stakes but could be a game-changer. Time to dust off my resume. #CareerMove #Finance\n\n---\n\n**",
+    "raw_content": "**\nFound a job opening in finance. It's high stakes but could be a game-changer. Time to dust off my resume. #CareerMove #Finance\n\n---\n\n**",
+    "type": "finance",
+    "age": 22.03125,
+    "location": "Japan",
+    "timestamp": "2024-11-25T23:34:35.543108",
+    "id": "tweet_3",
+    "tweet_count": 3,
+    "simulated_date": "2025-01-12"
   }
 ]
