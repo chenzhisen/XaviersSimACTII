@@ -53,5 +53,16 @@
     "id": "tweet_5",
     "tweet_count": 5,
     "simulated_date": "2025-01-20"
+  },
+  {
+    "content": "Had to cancel the tech event. Venue issues. Sometimes the city's energy feels more like chaos.",
+    "raw_content": "Had to cancel the tech event. Venue issues. Sometimes the city's energy feels more like chaos.",
+    "type": "tech",
+    "age": 22.0625,
+    "location": "Japan",
+    "timestamp": "2024-11-26T11:53:11.627843",
+    "id": "tweet_6",
+    "tweet_count": 6,
+    "simulated_date": "2025-01-23"
   }
 ]
