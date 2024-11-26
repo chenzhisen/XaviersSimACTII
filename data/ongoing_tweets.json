@@ -9,5 +9,16 @@
     "id": "tweet_1",
     "tweet_count": 1,
     "simulated_date": "2025-01-04"
+  },
+  {
+    "content": "The hustle of NYC is back in my veins. But now, I see it through a new lens.",
+    "raw_content": "The hustle of NYC is back in my veins. But now, I see it through a new lens.",
+    "type": "finance",
+    "age": 22.020833333333332,
+    "location": "NYC",
+    "timestamp": "2024-11-26T15:49:27.935604",
+    "id": "tweet_2",
+    "tweet_count": 2,
+    "simulated_date": "2025-01-08"
   }
 ]
