@@ -53,5 +53,16 @@
     "id": "tweet_5",
     "tweet_count": 5,
     "simulated_date": "2025-01-20"
+  },
+  {
+    "content": "AI course hit a snag with a complex algorithm. Spent all night debugging. Feels like I'm learning but at what cost to my sleep?",
+    "raw_content": "AI course hit a snag with a complex algorithm. Spent all night debugging. Feels like I'm learning but at what cost to my sleep?",
+    "type": "career",
+    "age": 22.0625,
+    "location": "NYC",
+    "timestamp": "2024-11-26T12:24:50.389296",
+    "id": "tweet_6",
+    "tweet_count": 6,
+    "simulated_date": "2025-01-23"
   }
 ]
