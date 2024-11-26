@@ -31,5 +31,16 @@
     "id": "tweet_3",
     "tweet_count": 3,
     "simulated_date": "2025-01-12"
+  },
+  {
+    "content": "Just started my internship. The blockchain tech is fascinating but complex. Feeling overwhelmed.",
+    "raw_content": "Just started my internship. The blockchain tech is fascinating but complex. Feeling overwhelmed.",
+    "type": "finance",
+    "age": 22.041666666666668,
+    "location": "NYC",
+    "timestamp": "2024-11-26T08:15:45.539223",
+    "id": "tweet_4",
+    "tweet_count": 4,
+    "simulated_date": "2025-01-16"
   }
 ]
