@@ -31,5 +31,16 @@
     "id": "tweet_2",
     "tweet_count": 2,
     "simulated_date": "2025-01-08"
+  },
+  {
+    "content": "Just got off a call with the API provider. They're not fixing the bug for weeks! Time to find a workaround. Maybe I can pivot this project to something else. #AdaptOrDie",
+    "raw_content": "Just got off a call with the API provider. They're not fixing the bug for weeks! Time to find a workaround. Maybe I can pivot this project to something else. #AdaptOrDie",
+    "type": "personal",
+    "age": 22.114583333333332,
+    "location": "Japan",
+    "timestamp": "2024-11-25T23:36:23.094856",
+    "id": "tweet_11",
+    "tweet_count": 11,
+    "simulated_date": "2025-02-11"
   }
 ]
