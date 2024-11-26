@@ -9,5 +9,16 @@
     "id": "tweet_1",
     "tweet_count": 1,
     "simulated_date": "2025-01-04"
+  },
+  {
+    "content": "The skyline of NYC never gets old. Started my AI course today. It's like learning Japanese all over again, but with tech.",
+    "raw_content": "The skyline of NYC never gets old. Started my AI course today. It's like learning Japanese all over again, but with tech.",
+    "type": "personal",
+    "age": 22.020833333333332,
+    "location": "Japan",
+    "timestamp": "2024-11-26T12:08:38.858740",
+    "id": "tweet_2",
+    "tweet_count": 2,
+    "simulated_date": "2025-01-08"
   }
 ]
