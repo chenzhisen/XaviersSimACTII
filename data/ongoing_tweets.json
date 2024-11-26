@@ -9,5 +9,16 @@
     "id": "tweet_1",
     "tweet_count": 1,
     "simulated_date": "2025-01-04"
+  },
+  {
+    "content": "Just turned 22 and landed in NYC. Feeling both excited and oddly reflective. What's next?",
+    "raw_content": "Just turned 22 and landed in NYC. Feeling both excited and oddly reflective. What's next?",
+    "type": "finance",
+    "age": 22.020833333333332,
+    "location": "NYC",
+    "timestamp": "2024-11-26T08:15:21.858126",
+    "id": "tweet_2",
+    "tweet_count": 2,
+    "simulated_date": "2025-01-08"
   }
 ]
