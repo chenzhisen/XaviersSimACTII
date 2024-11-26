@@ -31,5 +31,16 @@
     "id": "tweet_3",
     "tweet_count": 3,
     "simulated_date": "2025-01-12"
+  },
+  {
+    "content": "Picked up some new art supplies. Gonna give this sketching thing another shot. Can't be worse than last time, right?",
+    "raw_content": "Picked up some new art supplies. Gonna give this sketching thing another shot. Can't be worse than last time, right?",
+    "type": "finance",
+    "age": 22.041666666666668,
+    "location": "Japan",
+    "timestamp": "2024-11-26T11:13:53.315550",
+    "id": "tweet_4",
+    "tweet_count": 4,
+    "simulated_date": "2025-01-16"
   }
 ]
