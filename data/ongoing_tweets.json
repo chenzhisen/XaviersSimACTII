@@ -20,5 +20,16 @@
     "id": "tweet_1",
     "tweet_count": 1,
     "simulated_date": "2025-01-04"
+  },
+  {
+    "content": "**\nThe demo didn't go as planned. There was a bug that made the AI go off-script. Back to debugging. #TechTroubles\n\n**",
+    "raw_content": "**\nThe demo didn't go as planned. There was a bug that made the AI go off-script. Back to debugging. #TechTroubles\n\n**",
+    "type": "reflection",
+    "age": 22.020833333333332,
+    "location": "NYC",
+    "timestamp": "2024-11-25T23:30:33.596408",
+    "id": "tweet_2",
+    "tweet_count": 2,
+    "simulated_date": "2025-01-08"
   }
 ]
