@@ -48,5 +48,15 @@
     "id": "tweet_5",
     "tweet_count": 5,
     "simulated_date": "2025-01-20"
+  },
+  {
+    "content": "My friend brought his dog to the coding session. Now we're debugging both code and the dog's chewing habits. Unexpected, but kind of perfect for brainstorming.",
+    "raw_content": "My friend brought his dog to the coding session. Now we're debugging both code and the dog's chewing habits. Unexpected, but kind of perfect for brainstorming.",
+    "age": 22.0625,
+    "location": "NYC",
+    "timestamp": "2024-11-26T21:56:17.646584",
+    "id": "tweet_6",
+    "tweet_count": 6,
+    "simulated_date": "2025-01-23"
   }
 ]
