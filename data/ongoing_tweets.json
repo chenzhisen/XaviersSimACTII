@@ -198,5 +198,15 @@
     "id": "tweet_20",
     "tweet_count": 20,
     "simulated_date": "2025-03-18"
+  },
+  {
+    "content": "After days of staring at code, I found the bug. Turns out, my smart contract was trying to divide by zero. Who knew? Fixed that, and now it's almost ready. But the real test is coming up - deploying on the mainnet. Wish me luck!",
+    "raw_content": "After days of staring at code, I found the bug. Turns out, my smart contract was trying to divide by zero. Who knew? Fixed that, and now it's almost ready. But the real test is coming up - deploying on the mainnet. Wish me luck!",
+    "age": 22.21875,
+    "location": "**NYC**",
+    "timestamp": "2024-11-26T22:08:29.766289",
+    "id": "tweet_21",
+    "tweet_count": 21,
+    "simulated_date": "2025-03-21"
   }
 ]
