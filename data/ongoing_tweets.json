@@ -338,5 +338,15 @@
     "id": "tweet_34",
     "tweet_count": 34,
     "simulated_date": "2025-05-10"
+  },
+  {
+    "content": "Fixed the leak, but now there's a UI bug. The app's learning new tricks, and not the ones I intended.",
+    "raw_content": "Fixed the leak, but now there's a UI bug. The app's learning new tricks, and not the ones I intended.",
+    "age": 22.364583333333332,
+    "location": "NYC",
+    "timestamp": "2024-11-26T19:32:30.308713",
+    "id": "tweet_35",
+    "tweet_count": 35,
+    "simulated_date": "2025-05-14"
   }
 ]
