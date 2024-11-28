@@ -1,4 +1,132 @@
 {
-  "tech_trees": {},
-  "last_updated": "2024-11-27T19:37:37.254217"
+  "tech_trees": {
+    "2025": {
+      "emerging_technologies": [
+        {
+          "name": "Autonomous Urban Transport System (AUTS)",
+          "probability": "0.75",
+          "estimated_year": "2026",
+          "expected_maturity_year": "2035",
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Autonomous Vehicle Tech",
+            "Smart Infrastructure"
+          ],
+          "impact_areas": [
+            "Urban Transport",
+            "Sustainability"
+          ],
+          "description": "A network of self-operating, interconnected transportation units designed to revolutionize urban mobility with minimal human intervention.",
+          "societal_implications": "Reduced congestion, lower emissions, increased accessibility, but potential job displacement in transport-related sectors.",
+          "adoption_factors": "Infrastructure readiness, regulatory acceptance, public trust in AI and autonomous systems, and urban planning support."
+        },
+        {
+          "name": "In-Situ Resource Utilization (ISRU) for Space",
+          "probability": "0.8",
+          "estimated_year": "2028",
+          "expected_maturity_year": "2035",
+          "innovation_type": "incremental",
+          "dependencies": [
+            "Advanced Robotics",
+            "Material Science"
+          ],
+          "impact_areas": [
+            "Space Exploration",
+            "Sustainability"
+          ],
+          "description": "Technologies to utilize lunar and Martian resources for construction, life support, and fuel production.",
+          "societal_implications": "Enables sustainable space colonization, reduces reliance on Earth, but raises questions about extraterrestrial property rights.",
+          "adoption_factors": "Success of space missions, technological breakthroughs in robotics and material processing, international space law."
+        },
+        {
+          "name": "Neural Link for Cognitive Augmentation",
+          "probability": "0.65",
+          "estimated_year": "2027",
+          "expected_maturity_year": "2035",
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Brain-Computer Interfaces",
+            "AI"
+          ],
+          "impact_areas": [
+            "Healthcare",
+            "Education"
+          ],
+          "description": "A device that interfaces directly with the brain to enhance cognitive functions or restore lost abilities.",
+          "societal_implications": "Potential for cognitive enhancement, but ethical concerns about privacy, consent, and creating a cognitive divide.",
+          "adoption_factors": "Technological safety, regulatory approval, public acceptance of brain-computer interfaces, and ethical considerations."
+        },
+        {
+          "name": "AI-Driven Sustainable Energy Management",
+          "probability": "0.9",
+          "estimated_year": "2026",
+          "expected_maturity_year": "2032",
+          "innovation_type": "incremental",
+          "dependencies": [
+            "AI",
+            "IoT",
+            "Smart Grids"
+          ],
+          "impact_areas": [
+            "Energy",
+            "Sustainability"
+          ],
+          "description": "AI systems that optimize energy distribution, predict demand, and integrate renewable sources seamlessly.",
+          "societal_implications": "Reduced energy waste, increased efficiency, but potential for centralized control of energy systems.",
+          "adoption_factors": "Energy infrastructure readiness, regulatory support, technological integration, and data security concerns."
+        }
+      ],
+      "mainstream_technologies": [
+        {
+          "name": "AI Personal Assistants",
+          "from_emerging": true,
+          "original_emergence_year": "2014",
+          "maturity_year": "2026",
+          "impact_level": "6",
+          "description": "Advanced AI assistants capable of complex task management, personalized learning, and emotional intelligence.",
+          "adoption_status": "Widely adopted in personal devices, smart homes, and workplaces, enhancing productivity and user experience."
+        },
+        {
+          "name": "Blockchain for Secure Digital Infrastructure",
+          "from_emerging": true,
+          "original_emergence_year": "2009",
+          "maturity_year": "2028",
+          "impact_level": "8",
+          "description": "Integration of blockchain for secure, transparent, and decentralized digital transactions and data management.",
+          "adoption_status": "Mainstream in finance, supply chain, and identity management, with growing applications in other sectors."
+        }
+      ],
+      "epoch_themes": [
+        {
+          "theme": "Sustainable Urban Development",
+          "description": "Advancements in urban planning and technology to create resilient, eco-friendly cities.",
+          "related_technologies": [
+            "Autonomous Urban Transport System",
+            "AI-Driven Sustainable Energy Management"
+          ],
+          "societal_impact": "Improvement in quality of life, environmental conservation, but potential social stratification due to technology access.",
+          "global_trends": "Increasing urbanization, climate change mitigation efforts, and the push for smart cities."
+        },
+        {
+          "theme": "Human Augmentation",
+          "description": "Technologies enhancing human capabilities, from cognitive to physical enhancements.",
+          "related_technologies": [
+            "Neural Link for Cognitive Augmentation"
+          ],
+          "societal_impact": "Raises ethical questions about the nature of human identity, privacy, and potential for inequality.",
+          "global_trends": "Advancements in neuroscience, healthcare, and the quest for human enhancement."
+        },
+        {
+          "theme": "Interplanetary Exploration",
+          "description": "Expanding humanity's reach into space, focusing on sustainable colonization and resource utilization.",
+          "related_technologies": [
+            "In-Situ Resource Utilization"
+          ],
+          "societal_impact": "New frontiers for economic growth, but also potential geopolitical tensions over space resources.",
+          "global_trends": "Increased investment in space exploration, international collaboration, and private sector involvement."
+        }
+      ]
+    }
+  },
+  "last_updated": "2024-11-27T19:49:08.515132"
 }
