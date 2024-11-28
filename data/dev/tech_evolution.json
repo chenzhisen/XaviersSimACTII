@@ -3,128 +3,104 @@
     "2025": {
       "emerging_technologies": [
         {
-          "name": "AI-Driven Software Development",
-          "probability": "0.7",
+          "name": "Automated Software Development (ASD)",
+          "probability": "0.75",
+          "estimated_year": "2026",
+          "expected_maturity_year": "2030",
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "AI Assistants",
+            "Machine Learning"
+          ],
+          "impact_areas": [
+            "Software Development",
+            "Productivity"
+          ],
+          "description": "AI systems that can autonomously develop software from high-level requirements, reducing human effort in coding.",
+          "societal_implications": "Significant reduction in coding jobs; potential increase in software productivity; ethical considerations around AI-generated code.",
+          "adoption_factors": "High demand for faster software development, resistance from traditional developers, regulatory concerns about AI authorship."
+        },
+        {
+          "name": "Neuro-Implantable Interfaces",
+          "probability": "0.6",
           "estimated_year": "2027",
           "expected_maturity_year": "2032",
           "innovation_type": "breakthrough",
           "dependencies": [
-            "Advanced AI",
-            "Neural Interfaces",
-            "Blockchain"
-          ],
-          "impact_areas": [
-            "Software Development",
-            "IT Infrastructure",
-            "Education"
-          ],
-          "description": "AI systems capable of autonomously developing and optimizing software, integrating with blockchain for secure, transparent development processes.",
-          "societal_implications": "Reduces human error in software development, accelerates innovation, and changes the job market for programmers. Ethical concerns around AI-generated code and intellectual property rights.",
-          "adoption_factors": "High initial investment in AI infrastructure, need for new regulatory frameworks, and acceptance by the developer community."
-        },
-        {
-          "name": "Self-Sustaining Lunar Base",
-          "probability": "0.4",
-          "estimated_year": "2028",
-          "expected_maturity_year": "2035",
-          "innovation_type": "breakthrough",
-          "dependencies": [
-            "SpaceX's Starship",
-            "Sustainable Technology",
-            "Autonomous Systems"
-          ],
-          "impact_areas": [
-            "Space Exploration",
-            "Resource Management",
-            "Urban Planning"
-          ],
-          "description": "A lunar base that utilizes in-situ resource utilization (ISRU) to produce essentials like oxygen, water, and building materials autonomously.",
-          "societal_implications": "Paves the way for long-term human habitation off Earth, stimulates space economy, and raises questions about lunar resource rights and international space law.",
-          "adoption_factors": "Technological breakthroughs in ISRU, international cooperation, funding, and overcoming the harsh lunar environment."
-        },
-        {
-          "name": "Neural Augmentation for Memory Storage",
-          "probability": "0.6",
-          "estimated_year": "2029",
-          "expected_maturity_year": "2033",
-          "innovation_type": "breakthrough",
-          "dependencies": [
-            "Neural Interfaces",
-            "AI"
+            "Neuralink",
+            "AI Assistants"
           ],
           "impact_areas": [
             "Healthcare",
-            "Education",
-            "Entertainment"
+            "Cognitive Enhancement",
+            "Human-Computer Interaction"
           ],
-          "description": "Implantable devices allowing individuals to record, store, and retrieve memories digitally, enhancing cognitive capabilities.",
-          "societal_implications": "Potential to revolutionize education and entertainment, but raises ethical questions about privacy, identity, and memory manipulation.",
-          "adoption_factors": "Technological advancements in brain-computer interfaces, public acceptance, and regulatory frameworks for human augmentation."
+          "description": "Implantable devices for direct brain-computer interfaces, allowing thought control of machines and cognitive enhancement.",
+          "societal_implications": "Ethical concerns about privacy, identity, and cognitive equity; potential to revolutionize treatment for neurological disorders.",
+          "adoption_factors": "Need for extensive testing for safety and efficacy, regulatory hurdles, societal acceptance of invasive procedures."
         },
         {
-          "name": "Decentralized Energy Grids",
+          "name": "Space Habitat Automation",
           "probability": "0.8",
-          "estimated_year": "2026",
-          "expected_maturity_year": "2030",
+          "estimated_year": "2027",
+          "expected_maturity_year": "2031",
           "innovation_type": "incremental",
           "dependencies": [
-            "Blockchain",
-            "Sustainable Technology"
+            "Autonomous Systems",
+            "SpaceX's Starship"
           ],
           "impact_areas": [
-            "Energy",
-            "Infrastructure",
-            "Economy"
+            "Space Exploration",
+            "Colonization"
           ],
-          "description": "Blockchain-based systems for managing and trading energy locally, enabling peer-to-peer energy transactions.",
-          "societal_implications": "Promotes energy independence, reduces reliance on centralized power systems, and can democratize energy access but requires regulatory adjustments.",
-          "adoption_factors": "Advancements in renewable energy technologies, consumer trust in blockchain, and regulatory support for decentralized energy systems."
+          "description": "Automated systems for constructing, maintaining, and managing habitats on other planets or space stations.",
+          "societal_implications": "Facilitates long-term human habitation in space; reduces need for human presence in early stages of colonization.",
+          "adoption_factors": "Reliance on successful Mars missions, advancements in autonomous technology, and the need for sustainable space living."
         }
       ],
       "mainstream_technologies": [
         {
-          "name": "Electric Autonomous Vehicles",
+          "name": "Level 5 Autonomous Vehicles",
           "from_emerging": true,
-          "original_emergence_year": "2025",
+          "original_emergence_year": "2022",
           "maturity_year": "2028",
-          "impact_level": "7",
-          "description": "Fully autonomous electric vehicles for both personal and public transport.",
-          "adoption_status": "Widespread adoption due to government incentives, improved battery technology, and public demand for sustainable transport solutions."
+          "impact_level": "9",
+          "description": "Fully autonomous vehicles capable of handling all driving scenarios without human intervention.",
+          "adoption_status": "Widespread adoption in urban environments, regulatory frameworks in place, public trust increasing."
         },
         {
-          "name": "AI-Personalized Learning",
+          "name": "Blockchain-based Digital Identity",
           "from_emerging": true,
-          "original_emergence_year": "2026",
+          "original_emergence_year": "2024",
           "maturity_year": "2029",
-          "impact_level": "6",
-          "description": "AI systems tailored to individual learning styles and needs, enhancing education outcomes.",
-          "adoption_status": "Growing adoption in schools and educational institutions, driven by the need for personalized education and data-driven teaching methods."
+          "impact_level": "8",
+          "description": "Secure, decentralized digital identity systems using blockchain for identity verification and data privacy.",
+          "adoption_status": "Integrated into government and private sector services, providing secure identity management."
         }
       ],
       "epoch_themes": [
         {
-          "theme": "Sustainable Urbanization",
-          "description": "Focus on making cities more sustainable through technology integration in infrastructure and resource management.",
+          "theme": "The Age of Automation",
+          "description": "An era where automation permeates every aspect of human life, from software development to space colonization.",
           "related_technologies": [
-            "Decentralized Energy Grids",
-            "Self-Sustaining Lunar Base",
-            "Electric Autonomous Vehicles"
+            "Automated Software Development",
+            "Space Habitat Automation",
+            "Level 5 Autonomous Vehicles"
           ],
-          "societal_impact": "Improves quality of life, reduces environmental impact, and fosters economic growth through innovation in urban living.",
-          "global_trends": "Cities globally are adopting smart technologies to manage resources more efficiently, with a strong emphasis on reducing carbon footprints."
+          "societal_impact": "Shift in job markets towards oversight and management of automated systems; increased efficiency and productivity; ethical considerations regarding AI and automation.",
+          "global_trends": "Increased focus on education for automation management, regulatory frameworks for AI and autonomous systems, international cooperation in space exploration."
         },
         {
-          "theme": "Human Augmentation",
-          "description": "Advancements in technologies that enhance human capabilities, both physically and cognitively.",
+          "theme": "Human Enhancement and Cognitive Augmentation",
+          "description": "Advancements in technology that directly enhance human cognitive and physical capabilities.",
           "related_technologies": [
-            "Neural Augmentation for Memory Storage",
-            "AI-Driven Software Development"
+            "Neuro-Implantable Interfaces"
           ],
-          "societal_impact": "Changes the human experience, raises ethical debates, and requires new laws and regulations around human enhancement.",
-          "global_trends": "Increasing interest in personal enhancement, with a growing market for neurotechnology and AI assistance in daily life."
+          "societal_impact": "Potential for societal stratification based on access to enhancement technologies; ethical debates on the nature of humanity and equality.",
+          "global_trends": "Ethical guidelines for human enhancement, research into the long-term effects, and international policies on cognitive rights."
         }
       ]
     }
   },
-  "last_updated": "2024-11-27T19:53:23.314703"
+  "last_updated": "2024-11-27T19:54:29.489233"
 }
