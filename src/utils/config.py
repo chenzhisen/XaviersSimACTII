@@ -42,7 +42,6 @@ class Config:
     TWITTER_BEARER_TOKEN: str = os.getenv("TWITTER_BEARER_TOKEN")
 
     # AI Providers Configuration
-    print(os.getenv('XAI_API_KEY'))
     PROVIDERS = {
         AIProvider.XAI: AIConfig(
             api_key=os.getenv('XAI_API_KEY'),

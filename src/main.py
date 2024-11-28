@@ -15,7 +15,7 @@ import os
 import argparse
 
 class SimulationWorkflow:
-    def __init__(self, tweets_per_year=96, digest_interval=8, provider: AIProvider = AIProvider.XAI, post_to_twitter=True):
+    def __init__(self, tweets_per_year=96, digest_interval=16, provider: AIProvider = AIProvider.XAI, is_production=False):
         ai_config = Config.get_ai_config(provider)
         
         if provider == AIProvider.ANTHROPIC:
@@ -31,28 +31,28 @@ class SimulationWorkflow:
             )
         self.model = ai_config.model
         self.digest_interval = digest_interval
+        self.is_production = is_production
+        
+        # Set post_to_twitter based on is_production
+        self.post_to_twitter = is_production
 
-        # Initialize GitHub operations
-        self.github_ops = GithubOperations()
+        # Initialize GitHub operations with production flag
+        self.github_ops = GithubOperations(is_production=is_production)
 
-        # Initialize tweet generator first
+        # Initialize tweet generator with production flag
         self.tweet_gen = TweetGenerator(
             client=self.client, 
             model=self.model,
             tweets_per_year=tweets_per_year,
-            digest_interval=self.digest_interval
+            digest_interval=self.digest_interval,
+            is_production=is_production
         )
         
         self.tweets_per_year = tweets_per_year
-        self.digest_interval = tweets_per_year // 12
         self.tech_preview_months = 6
-        
         self.start_date = datetime(2025, 1, 1)
         self.days_per_tweet = 365 / tweets_per_year
         self.start_age = 22.0
-        
-        # Add post_to_twitter flag
-        self.post_to_twitter = post_to_twitter
         
     def get_current_date(self, tweet_count):
         """Calculate current simulation date based on tweet count"""
@@ -73,20 +73,16 @@ class SimulationWorkflow:
             ongoing_comments = None
             trends = None
 
-            # Initialize counters and location
+            # Initialize counters
             tweet_count = 0
             current_age = 22.0
-            current_location = "Japan"  # Default starting location
             
             # Extract latest state from ongoing tweets
             if ongoing_tweets:
                 last_tweet = ongoing_tweets[-1]
                 if isinstance(last_tweet, dict):
                     tweet_count = last_tweet.get('tweet_count', 0)
-                    # Get location from last tweet, fallback to Japan if not found
-                    current_location = last_tweet.get('location', current_location)
                     current_age = last_tweet.get('age', 22.0)
-            print(f"tweet_count: {tweet_count}")
 
             current_date = self.get_current_date(tweet_count + 1)
             current_age = self.get_current_age(tweet_count + 1)
@@ -94,46 +90,46 @@ class SimulationWorkflow:
             print(f"Current simulation date: {current_date.strftime('%Y-%m-%d')}")
             print(f"Current age: {current_age:.2f}")
             
-            # 1. Initialize components with current state
-            tech_gen = TechEvolutionGenerator(self.github_ops, self.client, self.model)
-            digest_gen = DigestGenerator(
-                github_ops=self.github_ops,
-                client=self.client,
+            # 1. Initialize components with current state and post_to_twitter flag
+            tech_gen = TechEvolutionGenerator(
+                client=self.client, 
                 model=self.model,
-                simulation_time=current_date.strftime('%Y-%m-%d'),
-                simulation_age=current_age,
-                tweet_count=tweet_count,
-                tweet_generator=self.tweet_gen
+                is_production=self.is_production
             )
             
-            # 2. Check/Generate tech evolution
-            if not tech_gen.get_tech_evolution():
-                print("Generating initial tech evolution...")
-                tech_gen.generate_epoch_tech_tree(tech_gen.base_year)
-                tech_gen.save_evolution_data()
+            digest_gen = DigestGenerator(
+                client=self.client,
+                model=self.model,
+                tweet_generator=self.tweet_gen,
+                is_production=self.is_production
+            )
             
-            # 3. Check if new tech evolution needed
-            current_year = current_date.year
-            next_epoch = current_year + (5 - (current_year % 5))
-            
-            # Check if we're within 6 months of the next 5-year epoch
-            months_to_next_epoch = ((next_epoch - current_year) * 12) - current_date.month
-            if months_to_next_epoch <= self.tech_preview_months:
-                print(f"Generating tech evolution for epoch {next_epoch}...")
-                tech_gen.generate_epoch_tech_tree(next_epoch)
-                tech_gen.save_evolution_data()
+            # Check and get latest tech evolution
+            latest_tech = tech_gen.check_and_generate_tech_evolution(current_date)
+            if not latest_tech:
+                print("Failed to get tech evolution data")
+                return
+
+            print(f"Using tech evolution for epoch: {latest_tech.get('epoch_year')}")
             
             # 4. Check/Generate digest
             latest_digest = digest_gen.get_latest_digest()
             
             def is_digest_empty(digest):
-                if not digest or 'digest' not in digest:
+                """Check if digest is empty or invalid."""
+                if not digest:
                     return True
                     
-                for track in digest['digest'].values():
-                    if track.get('historical_summary') or track.get('projected'):
-                        return False
-                return True
+                # Check if we have the main digest content
+                if not digest.get('digest'):
+                    return True
+                    
+                # Check if we have the core narrative elements
+                narrative = digest.get('digest', {})
+                if not narrative.get('Story'):
+                    return True
+                    
+                return False
             
             if is_digest_empty(latest_digest):
                 # Fetch the digest history from GitHub
@@ -146,11 +142,21 @@ class SimulationWorkflow:
                     print("Generating initial digest from historical tweets...")
                     if xavier_sim_content and isinstance(xavier_sim_content, dict):
                         print("Processing historical tweets by age brackets...")
-                        latest_digest = digest_gen.generate_first_digest(xavier_sim_content)
-                        if latest_digest:
-                            print("Successfully generated first digest")
-                        else:
-                            print("Failed to generate first digest")
+                        latest_digest = digest_gen.generate_digest(
+                            tweets=xavier_sim_content,
+                            current_age=current_age,
+                            current_date=current_date,
+                            tweet_count=tweet_count
+                        )
+                    else:
+                        # Generate first digest with no tweets
+                        print("Generating very first digest...")
+                        latest_digest = digest_gen.generate_digest(
+                            tweets=[],
+                            current_age=current_age,
+                            current_date=current_date,
+                            tweet_count=tweet_count
+                        )
             
             # 5. Check if new digest needed
             if latest_digest:
@@ -190,9 +196,10 @@ class SimulationWorkflow:
                 recent_comments=ongoing_comments[-self.digest_interval:] if ongoing_comments else None,
                 age=current_age,
                 tweet_count=tweet_count,
-                current_location=current_location,
-                trends=trends
+                trends=trends,
+                sequence_length=self.digest_interval
             )
+            # print(f"New tweet: {new_tweet}")
             if new_tweet:
                 # Post to Twitter if flag is True
                 if self.post_to_twitter:
@@ -238,7 +245,7 @@ class SimulationWorkflow:
                     )
                     print("Tweet generated but not posted to Twitter (post_to_twitter=False)")
                 
-                print(f"Generated tweet for {current_date.strftime('%Y-%m-%d')} (age {current_age:.2f}): {new_tweet}")
+                # print(f"Generated tweet for {current_date.strftime('%Y-%m-%d')} (age {current_age:.2f}): {new_tweet}")
             
         except Exception as e:
             print(f"Error in simulation workflow: {str(e)}")
@@ -246,50 +253,33 @@ class SimulationWorkflow:
 
 def main():
     # Add command line argument parsing
-    parser = argparse.ArgumentParser(description='Run Xavier Simulation')
-    parser.add_argument(
-        '--provider', 
-        type=str, 
-        choices=['XAI', 'ANTHROPIC', 'OPENAI'],
-        default='XAI',
-        help='AI provider to use (XAI, ANTHROPIC, or OPENAI)'
-    )
-    parser.add_argument(
-        '--tweets-per-year',
-        type=int,
-        default=96,
-        help='Number of tweets to generate per year'
-    )
-    parser.add_argument(
-        '--digest-interval',
-        type=int,
-        default=8,
-        help='Number of tweets between digest generations'
-    )
-    parser.add_argument(
-        '--post-to-twitter',
-        action='store_true',
-        default=False,
-        help='Whether to post tweets to Twitter'
-    )
+    parser = argparse.ArgumentParser(description='Run Xavier simulation')
+    parser.add_argument('--tweets-per-year', type=int, default=96,
+                      help='Number of tweets to generate per year')
+    parser.add_argument('--digest-interval', type=int, default=16,
+                      help='Number of tweets between digests')
+    parser.add_argument('--provider', type=str, choices=['anthropic', 'openai', 'xai'],
+                      default='xai', help='AI provider to use')
+    parser.add_argument('--is-production', action='store_true',
+                      help='Run in production mode (default: False)')
     
     args = parser.parse_args()
     
-    # Convert string to enum
-    provider = AIProvider[args.provider]
-    
-    print(f"Starting simulation with {provider.value} provider")
-    print(f"Post to Twitter: {args.post_to_twitter}")
+    provider_map = {
+        'anthropic': AIProvider.ANTHROPIC,
+        'openai': AIProvider.OPENAI,
+        'xai': AIProvider.XAI
+    }
     
     workflow = SimulationWorkflow(
         tweets_per_year=args.tweets_per_year,
         digest_interval=args.digest_interval,
-        provider=provider,
-        post_to_twitter=args.post_to_twitter
+        provider=provider_map[args.provider],
+        is_production=args.is_production
     )
     
-    # while True:
-    workflow.run()
+    while True:
+        workflow.run()
 
 if __name__ == "__main__":
     main() 

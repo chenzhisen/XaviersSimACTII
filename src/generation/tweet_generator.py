@@ -15,86 +15,26 @@ import time
 from src.utils.ai_completion import AICompletion
 
 class TweetGenerator:
-    def __init__(self, client, model, tweets_per_year=96, digest_interval=8):
+    def __init__(self, client, model, tweets_per_year=96, digest_interval=8, is_production=False):
         self.model = model
         self.client = client
         self.tweets_per_year = tweets_per_year
         self.days_per_tweet = 365 / tweets_per_year
         self.digest_interval = digest_interval
-        self.github_ops = GithubOperations()
+        self.github_ops = GithubOperations(is_production=is_production)
         self.reference_tweets = []
         self.ai = AICompletion(client, model)
-        # Update log file path to use logs/tweets directory
-        self.log_dir = "logs/tweets"
+        
+        # Update log directory based on environment
+        env_dir = "prod" if is_production else "dev"
+        self.log_dir = f"logs/{env_dir}/tweets"
         self.log_file = os.path.join(
             self.log_dir,
             f"tweet_generator_{datetime.now().strftime('%Y%m%d_%H%M%S')}.log"
         )
         
-        # Create logs/tweets directory if it doesn't exist
+        # Create log directories if they don't exist
         os.makedirs(self.log_dir, exist_ok=True)
-        
-        self.active_goals = {}
-        self.completed_goals = []
-        
-        # Initialize refined content prompts
-        self.content_prompts = {
-            'tech': {
-                '20s': "Share specific insights into your AI or blockchain projects and how they're solving real-world problems. Focus on tangible impacts or lessons learned.",
-                '30s': "Highlight how you're integrating cutting-edge technology into larger systems. Reflect on your role in driving innovation.",
-                '40s': "Discuss your contributions to the evolution of technology and how they address industry challenges.",
-                '50s': "Provide practical advice on leading through technological change and mentoring future innovators.",
-                '60s_plus': "Reflect on your lifetime of contributions to technology and share perspectives on its future trajectory."
-            },
-            'finance': {
-                '20s': "Discuss your experiences navigating finance with technology, such as AI-driven strategies. Highlight specific challenges or lessons learned.",
-                '30s': "Share insights into strategic financial decisions and their impact. Tie them to your personal growth or industry trends.",
-                '40s': "Reflect on industry shifts and your leadership in navigating financial complexity.",
-                '50s': "Offer practical guidance on long-term investment strategies and share lessons from your career.",
-                '60s_plus': "Reflect on the evolution of financial systems and share enduring principles for stability and success."
-            },
-            'health': {
-                '20s': "Explore how technology, like wearables or AI, supports your wellness journey. Share practical takeaways from your experiences.",
-                '30s': "Discuss balancing demanding careers with health-focused habits. Highlight solutions that integrate technology or mindfulness.",
-                '40s': "Reflect on how your approach to health has evolved, emphasizing sustainable energy and longevity.",
-                '50s': "Share insights into personalized health practices and their role in maintaining vitality.",
-                '60s_plus': "Reflect on lifelong wellness strategies and their impact on your overall well-being."
-            },
-            'personal': {
-                '20s': "Share honest reflections on navigating growth and relationships. Highlight moments of self-discovery and their influence on your goals.",
-                '30s': "Discuss balancing career and personal milestones, like family or relationships, and how they shape your ambitions.",
-                '40s': "Reflect on meaningful personal experiences that have influenced your life’s direction.",
-                '50s': "Explore themes of legacy and fulfillment through key personal moments.",
-                '60s_plus': "Share wisdom from your life’s journey, offering insights that inspire connection and purpose."
-            },
-            'reflection': {
-                '20s': "Reflect on lessons learned from recent experiences. Highlight how they connect to your goals or values without overcomplicating the narrative.",
-                '30s': "Discuss lessons from balancing ambition and purpose. Use clear and resonant analogies without overreliance on metaphors.",
-                '40s': "Offer insights on how your personal and professional paths intersect with global or cultural themes.",
-                '50s': "Share reflections on navigating complex choices and focus on growth and balance.",
-                '60s_plus': "Reflect on your journey’s interconnectedness and offer timeless wisdom on humanity and progress."
-            },
-            'career': {
-                '20s': "Share key milestones or challenges in your career. Focus on how you're blending disciplines like tech and finance to make an impact.",
-                '30s': "Discuss leadership lessons and how you’ve shaped projects or teams to achieve meaningful results.",
-                '40s': "Reflect on your leadership philosophy and its influence on innovation within your industry.",
-                '50s': "Provide advice to younger professionals while sharing pivotal moments from your career.",
-                '60s_plus': "Reflect on your career legacy and the principles that guide your contributions to the future."
-            }
-        }
-        
-        self.category_to_tweet_type = {
-            "Career & Growth": "career",
-            "Personal Life & Relationships": "personal",
-            "Health & Well-being": "health",
-            "Financial Trajectory": "finance",
-            "Reflections & Philosophy": "reflection",
-            "$XVI & Technology": "tech"
-        }
-
-        
-        # Create logs directory if it doesn't exist
-        os.makedirs(os.path.dirname(self.log_file), exist_ok=True)
         
         # Initialize by getting ACTI tweets
         self.reference_tweets = self.get_acti_tweets()
@@ -103,55 +43,7 @@ class TweetGenerator:
         self.min_chars = 16     # Allow very short, impactful tweets
         self.max_chars = 2048   # Allow for occasional longer form thoughts
         
-        # Add a system prompt that explicitly prohibits age prefixes
-        self.system_prompt = """
-            You are Xavier, a 22-year-old navigating the intersections of tech, creativity, and personal growth. 
-            Your goal is to share authentic and engaging tweets that capture specific moments in your journey, showing both progress and humanity.
-
-            ### Guidelines:
-            1. **Specific Moments:**
-            - Focus on a single, vivid moment or experience. Avoid summarizing progress broadly.
-            - Describe what happened, how you felt, and what you’re learning.
-
-            2. **Tone:**
-            - Keep the tone conversational and human—like you’re talking to a friend.
-            - Include humor, sarcasm, or vulnerability when appropriate.
-            - Avoid generic phrases like "every glitch is a lesson." Instead, share unique, relatable thoughts.
-
-            3. **Structure:**
-            - Open with an attention-grabbing observation or moment.
-            - Share the experience or insight briefly, tying it back to a personal thought or emotion.
-            - End with a subtle reflection or forward-looking idea.
-
-            4. **Avoid:**
-            - Overused metaphors, excessive technical jargon, or overly abstract language.
-            - Generic phrases or overly polished "motivational" tones.
-
-            ### What to Emphasize:
-            - Humor when things go wrong: “Spent three hours debugging $XVI’s AI, only to realize the problem was me.”
-            - Emotions and personality: “The AI works, but now I’m wondering if it’s judging my coffee addiction.”
-            - Relatable slices of life: “$XVI’s trend predictor is great, but it doesn’t help me predict NYC’s subway delays.”
-            """
-
-            
-    def get_content_prompt(self, tweet_type, age):
-        """Get tailored content prompt based on Xavier's age and tweet type."""
-        if tweet_type not in self.content_prompts:
-            return "Provide an insightful, narrative-driven tweet related to Xavier's experiences."
-
-        # Determine the age group for appropriate tone and complexity
-        if age < 30:
-            stage = '20s'
-        elif age < 40:
-            stage = '30s'
-        elif age < 50:
-            stage = '40s'
-        elif age < 60:
-            stage = '50s'
-        else:
-            stage = '60s_plus'
-
-        return self.content_prompts[tweet_type].get(stage, "")
+        self.tmp_tweets_file = 'tmp/upcoming_tweets.json'  # Path in the repo
     
     def get_acti_tweets(self):
         """Get reference tweets from ACTI.
@@ -200,45 +92,6 @@ class TweetGenerator:
         with open(self.log_file, 'a', encoding='utf-8') as f:
             f.write(log_entry + "="*50 + "\n")
 
-    def get_age_weighted_types(self, age):
-        """Get tweet type weights based on age/life phase"""
-        if 18 <= age < 25:  # Early Career
-            return {
-                "career": 0.5,    # Heavy focus on career establishment
-                "finance": 0.2,   # Strong focus on financial growth
-                "tech": 0.1,       # High tech/crypto involvement
-                "personal": 0.1,   # Some personal life content
-                "reflection": 0.05,  # Some philosophical thoughts
-                "health": 0.05      # Basic health awareness
-            }
-        elif 25 <= age < 35:  # Career Growth
-            return {
-                "career": 0.2,
-                "finance": 0.2,
-                "tech": 0.15,
-                "personal": 0.2,   # Increased personal life focus
-                "reflection": 0.15,
-                "health": 0.1
-            }
-        elif 35 <= age < 50:  # Mid-Life
-            return {
-                "career": 0.15,
-                "finance": 0.15,
-                "tech": 0.15,
-                "personal": 0.25,  # More focus on relationships/family
-                "reflection": 0.15,
-                "health": 0.15    # Increased health awareness
-            }
-        else:  # 50+
-            return {
-                "career": 0.1,
-                "finance": 0.15,
-                "tech": 0.1,
-                "personal": 0.25,
-                "reflection": 0.25,  # More philosophical
-                "health": 0.15
-            }
-
     def generate(self, system_prompt, user_prompt, temperature=0.7, max_retries=3):
         """Wrapper for model generation with retry logic"""
         
@@ -269,205 +122,19 @@ class TweetGenerator:
                     raise
                 time.sleep(2 ** attempt)  # Exponential backoff
 
-    def validate_tweet(self, tweet):
-        """Validate tweet meets requirements"""
-        length = len(tweet)
-        if length < self.min_chars:
-            self.log_step(
-                "Warning", 
-                message=f"Tweet too short ({length} chars), minimum: {self.min_chars}"
-            )
-            return False
-        if length > self.max_chars:
-            self.log_step(
-                "Warning", 
-                message=f"Tweet too long ({length} chars), maximum: {self.max_chars}"
-            )
-            return False
-        return True
-
-    def generate_tweet(self, latest_digest=None, recent_tweets=None, recent_comments=None, age=None, tweet_count=0, current_location=None, trends=None):
-        """Generate a new tweet based on context"""
-        self.log_file = os.path.join(
-            self.log_dir,
-            f"tweet_generator_{datetime.now().strftime('%Y%m%d_%H%M%S')}.log"
-        )
-        
-        max_attempts = 3  # Maximum number of attempts to generate unique tweet
-        
-        for attempt in range(max_attempts):
-            try:
-                # Update active goals from latest digest if available
-                if latest_digest and 'projections' in latest_digest:
-                    self.active_goals = {
-                        f"goal_{i}": goal 
-                        for i, goal in enumerate(latest_digest['projections'].get('goals', []))
-                    }
-                
-                # Add debug logging for digest
-                self.log_step(
-                    "Debug Digest",
-                    digest=json.dumps(latest_digest, indent=2) if latest_digest else "None"
-                )
-
-                # Get tweet count from the last ongoing tweet if not provided
-                if tweet_count is None and recent_tweets:
-                    last_tweet = recent_tweets[-1]
-                    if isinstance(last_tweet, dict):
-                        tweet_count = last_tweet.get('tweet_count', 0)
-                    else:
-                        tweet_count = 0
-
-                # Load goals first
-                if latest_digest:
-                    self.load_goals_from_digest(latest_digest)
-                
-                # Then update their progress
-                self.update_goals_progress(tweet_count)
-
-                self.log_step(
-                    "Starting Tweet Generation",
-                    age=f"{age:.1f}",
-                    tweet_count=str(tweet_count),
-                    location=current_location,
-                    trends=json.dumps(trends) if trends else "None"
-                )
-
-                # Select tweet type based on both age-weighted probabilities and recent context
-                weights = self.get_age_weighted_types(age)
-                
-                # Analyze recent tweets to influence next topic selection
-                if recent_tweets and len(recent_tweets) > 0:
-                    last_tweet = recent_tweets[-1]
-                    last_type = self._detect_tweet_type(last_tweet)  # New helper method
-                    
-                    # Boost weight of related topics for natural transitions
-                    boosted_weights = weights.copy()
-                    for topic, weight in weights.items():
-                        if self._are_topics_related(last_type, topic):  # New helper method
-                            boosted_weights[topic] = weight * 1.5  # Boost related topics
-                    
-                    # Normalize weights
-                    total = sum(boosted_weights.values())
-                    weights = {k: v/total for k, v in boosted_weights.items()}
-                
-                tweet_type = random.choices(
-                    list(weights.keys()), 
-                    weights=list(weights.values())
-                )[0]
-
-                self.log_step(
-                    "Tweet Type Selection",
-                    weights=json.dumps(weights, indent=2),
-                    selected_type=tweet_type
-                )
-
-                # Generate raw content
-                raw_content = self.generate_tweet_content(
-                    latest_digest, age, recent_tweets, tweet_type, 
-                    current_location, trends, tweet_count
-                )
-
-                # Format the content
-                formatted_content = self.format_tweet_style(raw_content, age, recent_tweets)
-                
-                # Check for duplicates
-                if recent_tweets and self._is_duplicate_tweet(formatted_content, recent_tweets):
-                    self.log_step(
-                        "Duplicate Detection",
-                        attempt=str(attempt + 1),
-                        content=formatted_content,
-                        message="Found duplicate, trying again..."
-                    )
-                    continue
-                
-                # Detect any location changes
-                new_location = self.detect_location_change(formatted_content)
-                self.log_step(
-                    "Detecting location Change",
-                    new_location=new_location,
-                    current_location=current_location
-                )
-                tweet_location = new_location if new_location is not None else current_location
-
-                # Validate the formatted tweet
-                if not self.validate_tweet(formatted_content):
-                    continue
-
-                # Return tweet with all metadata
-                return {
-                    'content': formatted_content,
-                    'raw_content': raw_content,
-                    'type': tweet_type,
-                    'age': age,
-                    'location': tweet_location,
-                    'timestamp': datetime.now().isoformat(),
-                }
-
-            except Exception as e:
-                print(f"Error generating tweet: {e}")
-                traceback.print_exc()
-                
-                if attempt == max_attempts - 1:
-                    return None
-                
-        print(f"Failed to generate unique tweet after {max_attempts} attempts")
-        return None
-
-    def _is_duplicate_tweet(self, new_content: str, recent_tweets: List[Union[str, Dict]]) -> bool:
-        """
-        Check if a tweet is too similar to recent tweets.
-        
-        Args:
-            new_content: The content of the new tweet
-            recent_tweets: List of recent tweets (can be strings or dicts)
-            
-        Returns:
-            bool: True if tweet is too similar to a recent tweet
-        """
-        try:
-            # Get the most recent tweets for comparison
-            recent_contents = []
-            for tweet in recent_tweets[-self.digest_interval:]:
-                if isinstance(tweet, dict):
-                    content = tweet.get('content', '')
-                else:
-                    content = str(tweet)
-                recent_contents.append(content)
-                
-            # Check for exact duplicates first
-            if new_content in recent_contents:
-                return True
-                
-            # Check for similar content using SequenceMatcher
-            for recent_content in recent_contents:
-                similarity = SequenceMatcher(None, new_content, recent_content).ratio()
-                if similarity > 0.8:  # Threshold for similarity (80%)
-                    return True
-                
-            return False
-                
-        except Exception as e:
-            print(f"Error checking for duplicate tweet: {e}")
-            return False  # On error, assume not duplicate to allow generation to continue
-
-    def get_time_context(self, age, days_elapsed, location="Unknown"):
+    def get_time_context(self, age, days_elapsed):
         """Generate temporal context for prompts.
         
         Args:
             age: Current simulated age
             days_elapsed: Days since last tweet
-            location: Current location
         """
+        persona = self.get_persona(age)     
         return f"""
         Current Context:
-        - You are {age:.1f} years old
+        - Xavier is {age:.1f} years old {persona}
         - {days_elapsed:.1f} days have passed since your last tweet
         """
-
-    def log_to_file(self, content):
-        with open(self.log_file, 'a', encoding='utf-8') as f:
-            f.write(content + "\n\n")
 
     def get_acti_tweets(self):
         content, _ = self.github_ops.get_file_content('XaviersSim.json')
@@ -487,23 +154,6 @@ class TweetGenerator:
         self.reference_tweets = all_tweets
         return all_tweets
 
-    def _get_style_templates(self, sample_count=20):
-        """Get random tweets from XaviersSim.json as style templates"""
-        try:
-            all_tweets = self.get_acti_tweets()
-            
-            if len(all_tweets) > sample_count:
-                style_templates = random.sample(all_tweets, sample_count)
-            else:
-                style_templates = all_tweets
-                
-            print(f"Selected {len(style_templates)} style template tweets")
-            return style_templates
-                
-        except Exception as e:
-            print(f"Error getting style templates: {e}")
-            return []
-    
     def save_ongoing_tweets(self, tweets):
         """Save ongoing tweets to storage"""
         try:
@@ -515,120 +165,6 @@ class TweetGenerator:
             )
         except Exception as e:
             print(f"Error saving ongoing tweets: {e}")
-
-    def detect_location_change(self, tweet):
-        """Detects definitive location changes in a tweet using xAI model."""
-        
-        system_prompt = """You are a location-change detection assistant. Your task is to identify when someone has JUST arrived at a new location OR has a clear intention to travel to a new location.
-
-        STRICT RULES:
-        1. Detect ARRIVAL at a location:
-            - Look for clear arrival phrases:
-                - "just landed in X"
-                - "arrived in X"20
-                - "touching down in X"
-                - "made it to X"
-                - "finally in X"
-            - The location after these phrases is the NEW location.
-
-        2. Detect TRAVEL INTENT to a location:
-            - Look for strong travel intent or planned movement:
-                - "heading to X"
-                - "taking back to X"
-                - "returning to X"
-                - "on my way to X"
-                - "moving to X"
-            - The location after these phrases is the DESTINATION.
-
-        3. Return EXACTLY:
-            - The location name for confirmed arrivals or travel intent (e.g., "NYC", "Tokyo", "London").
-            - "No location change" if:
-                - No clear arrival or travel intent is mentioned.
-                - The location is a past reference or casual mention.
-
-        4. Ignore:
-            - Past locations being left.
-            - Future plans without definitive intent.
-            - Casual references without movement indicators.
-
-        Examples:
-        1. "Just landed in NYC from Tokyo" -> "NYC"
-        2. "Taking back to NYC with memories from Tokyo" -> "NYC"
-        3. "Carrying the spirit of Japan with me" -> "No location change"
-        4. "On my way to London for a conference" -> "London"
-        5. "Finally touched down in Paris!" -> "Paris"
-        6. "Heading home after an amazing trip to Tokyo" -> "home"
-        7. "Leaving Japan for NYC tomorrow" -> "NYC"
-        8. "Missing Tokyo already" -> "No location change"
-        """
-
-        try:
-            response = self.ai.get_completion(
-                system_prompt=system_prompt,
-                user_prompt=tweet,
-                max_tokens=100
-            )
-            
-            self.log_step(
-                "Location Change Detection",
-                system_prompt=system_prompt,
-                tweet=tweet,
-                response=response
-            )
-            
-            return None if "no location" in response.lower() else response
-
-        except Exception as e:
-            print(f"Error in location detection: {e}")
-            return None
-
-    def _get_relevant_goals(self, tweet_type, tweet_count):
-        """Get goals relevant to this tweet type, with their progress phase."""
-        goals_context = self._get_active_goals_context(tweet_count)
-        relevant_goals = [
-            {
-                'goal': goal['goal'],
-                'phase': goal['phase'],
-                'category': goal['category']
-            }
-            for goal in goals_context 
-                if self.category_to_tweet_type.get(goal['category']) == tweet_type
-        ]
-        return relevant_goals
-
-    def validate_post(self, text):
-        """Validate post meets length requirements"""
-        length = len(text)
-        if length < self.min_chars:
-            self.log_step(
-                "Warning", 
-                message=f"Post too short ({length} chars), minimum: {self.min_chars}"
-            )
-            return False
-        if length > self.max_chars:
-            self.log_step(
-                "Warning", 
-                message=f"Post too long ({length} chars), maximum: {self.max_chars}"
-            )
-            return False
-        return True
-
-    def _get_latest_context(self, digest):
-        """Helper to get recent context from digest."""
-        context = ""
-        for category in digest:
-            if 'historical_summary' in digest[category]:
-                # Get most recent MTM entry
-                if digest[category]['historical_summary'].get('MTM'):
-                    mtm = digest[category]['historical_summary']['MTM'][-1]
-                    context += f"\n{category}:\n- {mtm['Summary']}"
-                
-                # Get most recent LTM entry
-                if digest[category]['historical_summary'].get('LTM'):
-                    ltm = digest[category]['historical_summary']['LTM'][-1]
-                    context += f"\n- Recent milestone: {ltm['Milestone']}"
-        
-        return context
 
     def _format_recent_tweets(self, recent_tweets):
         """Format recent tweets for context.
@@ -658,101 +194,6 @@ class TweetGenerator:
         
         return formatted
 
-    def generate_tweet_content(self, digest, age, recent_tweets, tweet_type, location, trends=None, tweet_count=0):
-        """First step: Generate raw content for the tweet."""
-        # Check for special contexts
-        is_first_tweet = tweet_count == 0
-        is_birthday = (tweet_count % self.tweets_per_year) in range(1, 2)
-        
-        # Build special context prompts
-        special_context = ""
-        if is_first_tweet:
-            special_context += (
-                "Special Context (Very Important, must mention NYC explicitly) - Return from Japan:\n"
-                "- Moving from Japan back to NYC\n"
-                "- Show impact of Japan experience\n"
-                "- Include both excitement and uncertainty\n"
-            )
-            tweet_type = "personal"
-        if is_birthday:
-            special_context += (
-                f"\nSpecial Context - Birthday:\n"
-                f"- Just turned {int(age)}\n"
-                f"- Incorporate birthday reflection naturally\n"
-                f"- Connect this milestone to current {tweet_type} developments\n"
-            )
-            tweet_type = "career"
-
-        context = self._get_relevant_context(digest, tweet_type, tweet_count, recent_tweets)
-        time_context = self.get_time_context(age, self.days_per_tweet, location)
-        
-        # Emphasize goal focus in system prompt
-        system_prompt = (
-            f"""Generate the next tweet for Xavier, progressing {int(self.days_per_tweet)} days from most recent tweets, toward short-term and long-term goals that are consistent with broader historical context.
-
-            ### Guidelines:
-            1. **Maintain Narrative Flow**:
-                - Connect each tweet to the previous one logically.
-                - Build on experiences, insights, and takeaways.
-
-            2. **Theme Variation**:
-                - Balance reflections, technical depth, and personal actions.
-                - Avoid repeating the same idea or phrasing.
-
-            3. **Structural Diversity**:
-                - Use questions, lists, or conversational tones instead of repetitive statements.
-                - Consider direct reflections or technical deep dives.
-
-            4. **Focus on Progress**:
-                - Highlight specific achievements, discoveries, or next steps.
-                - Avoid generic claims like "AI is improving my life."
-
-            5. **Tone**:
-                - Alternate between humor, reflection, and straightforward updates.
-
-            ### Avoid:
-                - Overemphasis on quirky AI glitches or misunderstandings.
-                - Repeated use of metaphors (e.g., "like teaching a kid").
-                - Anthropomorphizing AI unless it leads to a meaningful narrative.
-                - Overemphasis on ESG, AI ethics, or AI safety, unless relevant to the tweet type.
-          """
-        )
-
-        reference_tweets = self._get_reference_tweets(5)
-        examples = "\n".join(f"{i+1}. {tweet}" for i, tweet in enumerate(reference_tweets))
-
-        user_prompt = (
-            f"{time_context}\n"
-            f"{special_context}\n"
-            f"Relevant Context:\n"
-            f"{context}\n"
-            f"{trends_context if trends else ''}\n\n"
-            "\nMatch precisely the tone, style or voice in these reference examples:\n"
-            f"{examples}\n\n"
-            "**Goals**:\n"
-            "- Share actionable progress or insights.\n"
-            "- Avoid repeating themes and structure.\n"
-            "- Explore broader aspects of AI and personal growth.\n\n"
-            "**Generate**:\n"
-            "A tweet that reflects variety in theme, structure, or tone. Avoid overused metaphors and focus on meaningful progress or challenges.\n\n"
-            f"{self.get_content_prompt(tweet_type, age)}"
-        )
-        
-        self.log_step(
-            "Content Generation Request",
-            system_prompt=system_prompt,
-            user_prompt=user_prompt,
-            trends=trends
-        )
-        
-        response = self.generate(
-            system_prompt=system_prompt,
-            user_prompt=user_prompt
-        )
-        
-        return response
-
-
     def get_persona(self, age):
         """Get Xavier's persona based on age."""
                 # Determine life stage based on age
@@ -765,85 +206,6 @@ class TweetGenerator:
         else:
             persona = "an experienced leader and mentor"
         return persona
-
-    def format_tweet_style(self, content, age, recent_tweets):
-        """Format content to match Xavier's writing style."""
-        reference_tweets = self._get_reference_tweets(5)
-        examples = "\n".join(f"{i+1}. {tweet}" for i, tweet in enumerate(reference_tweets))
-        
-        persona = self.get_persona(age)                                
-        system_prompt = f"""
-            You are a writing expert specializing in authentic social media voices. 
-            Your task is to refine this content while maintaining Xavier's distinctive style, who is a {age}-year-old {persona}:
-            
-            XAVIER'S VOICE:
-            - Be concise and to the point; focus on actions most of the time rather than feelings.
-            - Tech-savvy but approachable.
-            - Intellectually curious but not pretentious.
-            - Ambitious but self-aware.
-            - Occasionally includes subtle humor.
-            - Balances technical depth with accessibility.
-
-            STYLE GUIDELINES:
-            - Keep authentic and conversational.
-            - Vary sentence structures; do not rely on repeated opening phrases or conclusions.
-            - Use natural transitions.
-            - Maintain clear but engaging flow.
-            - Avoid broad labels like "Day X" unless truly relevant.
-
-            **Avoid:**
-            - Motivational speaker clichés (e.g., “Time to crush it!” or “Believe in yourself!”).
-            - Forced enthusiasm or over-the-top excitement.
-            - Repeating themes, metaphors, or joke structures.
-            - Categorizing themes explicitly (e.g., "tech-philosophy" or "finance journey").
-            - Any use of hashtags, emojis, or Unicode symbols.
-
-            Refine the content while preserving the core message and Xavier's voice. Generate a tweet that feels fresh, authentic, and narrative-driven, progressing the story without unnecessary repetition.
-            """
-            # 1. **Be Funny and Relatable:**
-            # - Use humor or sarcasm to highlight real challenges and show human emotions.
-            # - Make fun of your own mistakes or quirks in a way others can relate to.
-            # - Avoid making the humor feel forced or over-engineered.
-
-            # 2. **Specific Details:**
-            # - Focus on vivid details, like what happened, how you felt, and what surprised you.
-            # - Avoid vague or generic insights. Always zoom in on a relatable scenario.
-
-        # Initialize style prompt template
-        style_prompt = (
-            "Refine this tweet while maintaining authenticity. Output ONLY the tweet text, no commentary or quotes:\n\n"
-            "Content to format:\n{content}\n\n"
-            "\nMatch precisely the tone, style or voice in these reference examples:\n"
-            f"{examples}\n"
-            "\n***MOST IMPORTANT: DO NOT REPEAT SENTENCE STRUCTURE OF RECENT TWEETS:***\n{recent_tweets}\n\n"
-        )
-
-        user_prompt = style_prompt.format(
-            content=content,
-            examples=examples,
-            recent_tweets=self._format_recent_tweets(recent_tweets),
-            age=age
-        )
-        
-        self.log_step(
-            "Style Formatting Request",
-            system_prompt=system_prompt,
-            user_prompt=user_prompt
-        )
-        
-        response = self.generate(
-            system_prompt=system_prompt,
-            user_prompt=user_prompt,
-            temperature=0.4
-        )
-        
-        # Clean up the response
-        response = response.strip()
-        response = re.sub(r'^["\']\s*', '', response)  # Remove leading quotes
-        response = re.sub(r'\s*["\']$', '', response)  # Remove trailing quotes
-        response = re.sub(r'^Here\'s.*?:\s*', '', response)  # Remove any meta commentary
-        
-        return response
 
     def get_ongoing_tweets(self):
         """Get ongoing tweets with ACTI backfill if needed."""
@@ -872,239 +234,341 @@ class TweetGenerator:
             acti_tweets = self.get_acti_tweets()
             return acti_tweets[-self.digest_interval:]
 
-    def update_goals_progress(self, tweet_count):
-        """Update progress of active goals based on tweet count and days per tweet."""
-        days_elapsed = tweet_count * self.days_per_tweet
-        completed = []
-
-        for goal_id, goal_data in self.active_goals.items():
-            if goal_data['type'] == 'short_term':
-                if days_elapsed >= goal_data['start_day'] + goal_data['duration_days']:
-                    completed.append(goal_id)
-                    self.completed_goals.append({
-                        'goal': goal_data['goal'],
-                        'completed_at': days_elapsed,
-                        'category': goal_data['category']
-                    })
-
-        # Remove completed goals from active list
-        for goal_id in completed:
-            del self.active_goals[goal_id]
-
-    def load_goals_from_digest(self, digest):
-        """Load new goals from digest update"""
-        # Handle nested digest structure
-        if 'digest' in digest:
-            digest = digest['digest']
-            
-        current_day = len(self.completed_goals) * self.days_per_tweet
-        
-        # Reset active goals (but keep completion history)
-        self.active_goals = {}
-        
-        # Load new goals from digest
-        for category in digest:
-            if 'projected_goals' in digest[category]:
-                goals_data = digest[category]['projected_goals']
-                
-                # Handle short-term goals
-                for goal in goals_data.get('short_term', []):
-                    if isinstance(goal, dict):
-                        goal_id = f"{category}_st_{len(self.active_goals)}"
-                        self.active_goals[goal_id] = {
-                            'goal': goal['goal'],
-                            'duration_days': goal.get('duration_days', 30),
-                            'start_day': current_day,
-                            'category': category,
-                            'type': 'short_term'
-                        }
-                
-                # Handle long-term goals
-                for goal in goals_data.get('long_term', []):
-                    goal_id = f"{category}_lt_{len(self.active_goals)}"
-                    goal_text = goal if isinstance(goal, str) else goal.get('goal', '')
-                    self.active_goals[goal_id] = {
-                        'goal': goal_text,
-                        'category': category,
-                        'type': 'long_term'
-                    }
-        
-        print(f"Loaded {len(self.active_goals)} goals from digest")  # Debug log
-
-    def _get_active_goals_context(self, tweet_count):
-        """Get context about active goals and their progress."""
-        try:
-            # Ensure tweet_count is a number
-            print(f"Tweet count: {tweet_count}")
-            tweet_count = float(tweet_count) if tweet_count else 0
-            days_elapsed = tweet_count * self.days_per_tweet
-            goals_context = []
-            
-            for goal_id, goal_data in self.active_goals.items():
-                if goal_data['type'] == 'short_term':
-                    # Calculate progress in terms of tweets/checkpoints rather than days
-                    elapsed_since_start = days_elapsed - goal_data['start_day']
-                    total_duration = float(goal_data['duration_days'])
-                    tweets_remaining = int((total_duration - elapsed_since_start) / self.days_per_tweet)
-                    progress_phase = "early"
-                        
-                    # Simplified progress tracking (early, middle, final phase)
-                    if elapsed_since_start >= (total_duration * 0.7):  # Final 30%
-                        progress_phase = "final"
-                    elif elapsed_since_start >= (total_duration * 0.3):  # Middle 40%
-                        progress_phase = "middle"
-                        
-                    goals_context.append({
-                        'type': goal_data['type'],
-                        'goal': goal_data['goal'],
-                        'category': goal_data['category'],
-                        'phase': progress_phase,
-                        'tweets_remaining': max(0, tweets_remaining)  # Ensure non-negative
-                    })
-                else:
-                    goals_context.append({
-                        'type': goal_data['type'],
-                        'goal': goal_data['goal'],
-                        'category': goal_data['category'],
-                    })
-            return goals_context
-            
-        except Exception as e:
-            print(f"Error in _get_active_goals_context: {e}")
-            return []  # Return empty list on error
-
-    def _get_relevant_context(self, digest, tweet_type, tweet_count=0, recent_tweets=None):
+    def _get_relevant_context(self, digest, tweet_count=0, recent_tweets=None):
         """Extract relevant context from digest based on tweet type."""
         if not digest:
             return "No specific context available."
         
         context = []
-        formatted_tweets = ""
-
-        # 1. RECENT TWEETS - Highlight context from the newest tweets
+        
+        # 1. RECENT TWEETS
         if recent_tweets:
-            formatted_tweets += "\n***MOST IMPORTANT: GENERATE A NEW TWEET TO PROGRESS FROM THESE TWEETS***\n\n"
-
+            formatted_tweets = "\n***MOST IMPORTANT: GENERATE NEW TWEETS TO PROGRESS FROM THESE TWEETS***\n\n"
             formatted_tweets += self._format_recent_tweets(recent_tweets)
             context.append(formatted_tweets)
 
-        # Handle nested digest structure
-        if 'digest' in digest:
-            digest = digest['digest']
-        
-        # Get the relevant category for the given tweet type
-        category = next((cat for cat, type_ in self.category_to_tweet_type.items()
-                        if type_ == tweet_type), None)
-        
-        if category and category in digest:
-            category_data = digest[category]
-
-            # Filter out redundant or overused phrases from recent tweets
-            used_phrases = {
-                tweet['content'] if isinstance(tweet, dict) else tweet
-                for tweet in (recent_tweets or [])
-            }
+        # 2. CURRENT NARRATIVE AND DIRECTION
+        narrative = digest.get('digest', {})  # Get the digest content directly
+        if narrative:  # If we have narrative content
+            context.append("\n=== CURRENT NARRATIVE ===")
+            context.append(f"Story: {narrative.get('Story', '')}")
+            context.append(f"\nKey Themes: {narrative.get('Key_Themes', '')}")
+            context.append(f"\nCurrent Direction: {narrative.get('Current_Direction', '')}")
             
-            # 1. ACTIVE GOALS with progress information
-            context.append("\n=== ACTIVE GOALS ===")
-            goals_context = self._get_active_goals_context(tweet_count)
-            
-            goals_by_phase = {'final': [], 'middle': [], 'early': [], 'long_term': []}
-            for goal in goals_context:
-                if goal['category'] == category and goal['goal'] not in used_phrases:
-                    if goal['type'] == 'long_term':
-                        # Long-term goals don't have phase or remaining tweets
-                        goals_by_phase['long_term'].append(f"• {goal['goal']}")
-                    else:
-                        # Short-term goals have phase and remaining tweets
-                        phase = goal.get('phase', 'early')
-                        phase_info = f"({phase} phase - {goal.get('tweets_remaining', '?')} tweets remaining)"
-                        goal_text = f"• {goal['goal']} {phase_info}"
-
-                        if phase == 'final':
-                            goals_by_phase['final'].append(goal_text)
-                        elif phase == 'middle':
-                            goals_by_phase['middle'].append(goal_text)
-                        else:
-                            goals_by_phase['early'].append(goal_text)
-
-            # Add goals by phase
-            if goals_by_phase['final']:
-                context.append("\nUrgent Goals (Final Phase):")
-                context.extend(goals_by_phase['final'])
-            if goals_by_phase['middle']:
-                context.append("\nOngoing Goals (Middle Phase):")
-                context.extend(goals_by_phase['middle'])
-            if goals_by_phase['early']:
-                context.append("\nNew Goals (Early Phase):")
-                context.extend(goals_by_phase['early'])
-            if goals_by_phase['long_term']:
-                context.append("\nLong-term Goals:")
-                context.extend(goals_by_phase['long_term'])
-
-            
-            # 3. HISTORICAL CONTEXT - Supporting background
-            if 'historical_summary' in category_data:
-                historical_summary = category_data['historical_summary']
-
-                # Add recent developments (MTM)
-                if 'MTM' in historical_summary:
-                    mtm_list = historical_summary['MTM']
-                    if mtm_list:
-                        context.append("\n=== PREVIOUS DEVELOPMENTS ===")
-                        for mtm in mtm_list[:3]:  # Include up to 3 MTMs
-                            summary = mtm.get('Summary', 'No summary available')
-                            transition = mtm.get('Transition', 'No transition available')
-                            if summary not in used_phrases:
-                                context.append(f"• Summary: {summary}")
-                                context.append(f"• Transition: {transition}")
-                
-                # Add earlier milestones (LTM)
-                if 'LTM' in historical_summary:
-                    ltm_list = historical_summary['LTM']
-                    if ltm_list:
-                        context.append("\n=== EARLIER KEY MILESTONES (newest first) ===")
-                        for ltm in reversed(ltm_list[-6:]):  # Include the 6 most recent milestones
-                            milestone = ltm.get('Milestone', 'No milestone available')
-                            implications = ltm.get('Implications', 'No implications available')
-                            if milestone not in used_phrases:
-                                context.append(f"\n• Event: {milestone}")
-                                context.append(f"• Impact: {implications}")
+            # 3. NEXT CHAPTER DETAILS
+            next_chapter = narrative.get('Next_Chapter', {})
+            if next_chapter:
+                context.append("\n=== NEXT DEVELOPMENTS ===")
+                context.append(f"Immediate Focus: {next_chapter.get('Immediate_Focus', '')}")
+                context.append(f"\nEmerging Threads: {next_chapter.get('Emerging_Threads', '')}")
+                context.append(f"\nTech Context: {next_chapter.get('Tech_Context', '')}")
         
         # Join all context into a single string
-        return "\n".join(context) if context else "No specific context available."
-        
-    def _detect_tweet_type(self, tweet):
-        """Detect the type of a tweet based on its content"""
-        # Simple keyword-based detection
-        keywords = {
-            'tech': ['coding', 'blockchain', 'crypto', '$XVI', 'algorithm', 'tech'],
-            'career': ['work', 'job', 'career', 'internship', 'interview'],
-            'finance': ['trading', 'market', 'investment', 'stock', 'portfolio'],
-            'personal': ['friend', 'family', 'relationship', 'feel', 'life'],
-            'reflection': ['think', 'wonder', 'realize', 'maybe', 'perhaps'],
-            'health': ['sleep', 'tired', 'gym', 'health', 'stress']
-        }
-        
-        tweet_text = tweet.lower() if isinstance(tweet, str) else tweet.get('content', '').lower()
-        
-        for type_, words in keywords.items():
-            if any(word in tweet_text for word in words):
-                return type_
-        return 'personal'  # default type
+        return "\n".join([c for c in context if c]) if context else "No specific context available."
 
-    def _are_topics_related(self, type1, type2):
-        """Define which topics naturally flow together"""
-        related_topics = {
-            'tech': ['career', 'finance'],
-            'career': ['tech', 'finance', 'personal'],
-            'finance': ['tech', 'career'],
-            'personal': ['health', 'reflection', 'career'],
-            'reflection': ['personal', 'career', 'health'],
-            'health': ['personal', 'reflection']
-        }
+    def generate_tweet(self, latest_digest, age, recent_tweets, recent_comments=None, tweet_count=0, trends=None, sequence_length=1):
+        """Main entry point for tweet generation."""
+        try:
+            # First try to get a stored tweet
+            next_tweet = self._get_next_stored_tweet()
+            if next_tweet:
+                return next_tweet
+            
+            # If no stored tweets, generate new sequence
+            sequence = self._generate_tweet_sequence(
+                latest_digest, age, recent_tweets, 
+                trends, tweet_count, sequence_length=sequence_length
+            )
+            if sequence:
+                print(f"Generated sequence of {len(sequence)} tweets")
+                if len(sequence) > 1:
+                    self._store_upcoming_tweets(sequence[1:])  # Store all but first tweet
+                return sequence[0]  # Return first tweet
+                        
+        except Exception as e:
+            print(f"Error in tweet generation: {e}")
+            return None
+
+    def _generate_tweet_sequence(self, digest, age, recent_tweets, trends=None, tweet_count=0, sequence_length=3):
+        """Generate a sequence of related tweets that tell a coherent story."""
+        self.log_file = os.path.join(
+            self.log_dir,
+            f"tweet_generator_{datetime.now().strftime('%Y%m%d_%H%M%S')}.log"
+        )
         
-        return type2 in related_topics.get(type1, [])
+        self.log_step(
+            "Debug Digest",
+            digest=json.dumps(digest, indent=2) if digest else "None"
+        )
+
+        # Get tweet count from the last ongoing tweet if not provided
+        print(f"Getting tweet count. Current: {tweet_count}")
+        if tweet_count is None and recent_tweets:
+            last_tweet = recent_tweets[-1]
+            if isinstance(last_tweet, dict):
+                tweet_count = last_tweet.get('tweet_count', 0)
+            else:
+                tweet_count = 0
+            print(f"Updated tweet count to: {tweet_count}")
+
+        # Add NYC return context for first tweet
+        special_context = ""
+        if tweet_count == 0:
+            special_context += (
+                "\nSpecial Context - NYC Return:\n"
+                "- Just returned to NYC\n"
+                "- First tweet should naturally establish being in NYC\n"
+                "- Show excitement about the city's energy\n"
+                "- Include a specific detail about being back\n"
+                "- Keep it casual and observational\n"
+            )
+
+        # Add birthday context if applicable
+        tweets_per_year = self.tweets_per_year
+        current_tweet_in_year = tweet_count % tweets_per_year
+        
+        birthday_positions = []
+        for i in range(sequence_length):
+            tweet_position = (current_tweet_in_year + i) % tweets_per_year
+            if tweet_position in range(1, 2):
+                birthday_positions.append(i + 1)
+        
+        if birthday_positions:
+            special_context += (
+                f"\nSpecial Context - Birthday:\n"
+                f"- Just turned {int(age)}\n"
+                f"- Incorporate birthday reflection naturally in tweet(s) {birthday_positions}\n"
+                f"- Connect this milestone to current developments\n"
+            )
+
+        self.log_step(
+            "Starting Sequence Generation",
+            age=f"{age:.1f}",
+            tweet_count=str(tweet_count),
+            sequence_length=str(sequence_length),
+            trends=json.dumps(trends, indent=2) if trends else "None",
+            special_context=special_context
+        )
+
+        # Get reference tweets for style guidance
+        reference_tweets = self._get_reference_tweets(5)
+        examples = "\n".join(f"{i+1}. {tweet}" for i, tweet in enumerate(reference_tweets))
+        
+        system_prompt = f"""You are Xavier, currently {age:.1f} years old, on a 50-year journey from age 22 to 72.
+        Your life unfolds through {self.tweets_per_year} tweets per year, each representing approximately {self.days_per_tweet:.1f} days of experiences.
+
+        You are {self.get_persona(age)}, passionate about markets, AI, and philosophy.
+        Your tweets should feel authentic and natural, mixing:
+        - Technical insights from your work
+        - Personal experiences
+        - Philosophical observations about tech and society
+        - Family moments
+        - Humor and wit when natural
+        - Playful thoughts about simulation/reality (<1% of tweets)
+        - Inner monologue and reflections (<1% of tweets)
+        
+        Key guidelines:
+        - Vary sentence structures and beginnings naturally
+        - Share specific experiences and insights
+        - Make observations rather than asking questions
+        - Let your personality show through details
+        - Keep it conversational and genuine
+        - Never use hashtags, emojis, or Unicode symbols
+        - Mention well-known figures (<1% of tweets) only when highly relevant
+        - Vary tweet length naturally - occasionally longer for in-depth thoughts
+        - Break the fourth wall occasionally with playful simulation references
+        - Tone should be:
+        • Casual and Witty: Capture the small absurdities and frustrations of life with humor.
+        • Observational and Relatable: Make mundane moments feel engaging (e.g., subway rides, coffee runs).
+        • Reflective with Personality: Share personal growth and professional ambitions in a way that feels authentic.
+        • Imperfect and Unfiltered: Avoid over-polishing thoughts—let them feel raw when appropriate.
+
+
+        Reference examples for style and tone:
+        {examples}
+
+        Generate a sequence of {sequence_length} tweets that progress naturally over {int(1+self.days_per_tweet):.1f} days between each tweet.
+
+        REQUIRED FORMAT:
+        [Day X]
+        <tweet content>
+
+        [Day Y]
+        <tweet content>
+        """
+        context = self._get_relevant_context(digest, tweet_count, recent_tweets)
+        time_context = self.get_time_context(age, self.days_per_tweet)
+        trends_context = f"\nCurrent Trends:\n{json.dumps(trends, indent=2)}" if trends else ""
+        
+        user_prompt = f"""
+        {time_context}
+        {special_context if 'special_context' in locals() else ''}
+        
+        Relevant Context:
+        
+        ***MOST IMPORTANT: GENERATE NEW TWEETS TO PROGRESS FROM THESE RECENT TWEETS WITH IMMEDIATE FOCUS***
+
+=== RECENT TWEETS (newest first) ===
+{recent_tweets}
+
+        {context}
+
+        {trends_context}
+
+        Create a sequence of {sequence_length} tweets that:
+        1. Primarily advance the Immediate Focus goals
+        2. Show progress on current projects and thoughts
+        3. Mix in personal experiences and observations
+        4. Include philosophical reflections that relate to current work
+        5. Maintain natural variety in topics and structure
+        
+        Remember to:
+        - Keep each tweet authentic and unforced
+        - Vary between light and deep topics
+        - Occasionally break the fourth wall
+        - Let personality show through specific details
+        - Ensure tweets build toward stated goals
+        """
+        
+        self.log_step(
+            "Generating Sequence",
+            system_prompt=system_prompt,
+            user_prompt=user_prompt
+        )
+        
+        response = self.generate(
+            system_prompt=system_prompt,
+            user_prompt=user_prompt
+        )
+        
+        self.log_step(
+            "Raw Sequence Response",
+            response=response
+        )
+        
+        print("Starting to format tweets from response")
+        formatted_tweets = []
+        for i, tweet_text in enumerate(response.split('[Day')):
+            print(f"Processing tweet {i} from response")
+            if not tweet_text.strip():
+                continue
+            
+            try:
+                # Clean up the raw content first
+                raw_content = tweet_text.split(']')[-1].strip()
+                print(f"Raw content for tweet {i}: {raw_content[:50]}...")  # Show first 50 chars
+                
+                raw_content = re.sub(r'\*\*Day \d+\.?\d*\*\*', '', raw_content)
+                raw_content = re.sub(r'---+', '', raw_content)
+                raw_content = re.sub(r'\*\*\s*', '', raw_content)
+                raw_content = raw_content.strip('- \n')
+                
+                # Format the display content
+                formatted_content = raw_content
+                formatted_content = re.sub(r'\*\*\n*', '', formatted_content)
+                formatted_content = re.sub(r'\n+', ' ', formatted_content)
+                formatted_content = formatted_content.strip()
+                
+                if formatted_content:                    
+                    tweet_data = {
+                        'content': formatted_content,
+                        'age': age,
+                        'timestamp': datetime.now().isoformat(),
+                    }
+                    
+                    formatted_tweets.append(tweet_data)
+                    print(f"Successfully added tweet {i}")
+                    
+            except Exception as e:
+                print(f"Error processing tweet {i}: {str(e)}")
+                raise
+        
+        self.log_step(
+            "Sequence Generation Complete",
+            tweet_count=str(len(formatted_tweets)),
+            tweets=json.dumps(formatted_tweets, indent=2)
+        )
+        # print(f"Generated sequence: {formatted_tweets}")
+        
+        # # Return first unique tweet
+        # for tweet in formatted_tweets:
+        #     if not self._is_duplicate_tweet(tweet['content'], recent_tweets):
+        #         self.log_step(
+        #             "Selected Unique Tweet",
+        #             tweet=json.dumps(tweet, indent=2)
+        #         )
+        #         return tweet
+                
+        # # Fallback to first tweet if all are similar
+        # self.log_step(
+        #     "No unique tweets found, using first tweet",
+        #     tweet=json.dumps(formatted_tweets[0], indent=2)
+        # )
+        return formatted_tweets
+
+    def _store_upcoming_tweets(self, tweets, overwrite=True):
+        """Store tweets for future use in the repository.
+        
+        Args:
+            tweets: List of tweets to store
+            overwrite: If True, replace existing tweets. If False, append to existing.
+        """
+        try:
+            # Retrieve existing tweets from the repo
+            existing_tweets, sha = self.github_ops.get_file_content(self.tmp_tweets_file)
+            if not existing_tweets:
+                existing_tweets = []
+
+            if overwrite:
+                # Simply save new tweets
+                stored_tweets = tweets
+                print(f"Overwriting stored tweets with {len(tweets)} new tweets")
+            else:
+                # Append to existing tweets
+                stored_tweets = existing_tweets + tweets
+                print(f"Added {len(tweets)} tweets to existing {len(existing_tweets)} tweets")
+            
+            # Convert to JSON and update the file in the repo
+            content = json.dumps(stored_tweets, indent=2)
+            self.github_ops.update_file(
+                self.tmp_tweets_file,
+                content,
+                f"Update upcoming tweets at {datetime.now().isoformat()}",
+                sha
+            )
+            
+        except Exception as e:
+            print(f"Error storing tweets: {e}")
+            raise
+
+    def _get_next_stored_tweet(self):
+        """Get next stored tweet from the repository if available."""
+        try:
+            # Retrieve tweets from the repo
+            stored_tweets, sha = self.github_ops.get_file_content(self.tmp_tweets_file)
+            
+            if not stored_tweets:
+                print("No stored tweets available")
+                return None
+            
+            # Get next tweet
+            next_tweet = stored_tweets.pop(0)
+            
+            # Update the file with remaining tweets
+            content = json.dumps(stored_tweets, indent=2)
+            self.github_ops.update_file(
+                self.tmp_tweets_file,
+                content,
+                f"Remove used tweet at {datetime.now().isoformat()}",
+                sha
+            )
+            
+            print(f"Retrieved next tweet, {len(stored_tweets)} remaining")
+            return next_tweet
+            
+        except Exception as e:
+            print(f"Error getting stored tweet: {e}")
+            return None
 
 def main():
     """Test the tweet generator"""
@@ -1140,4 +604,5 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 

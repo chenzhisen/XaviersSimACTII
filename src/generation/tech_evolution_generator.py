@@ -11,33 +11,44 @@ import math
 from src.utils.ai_completion import AICompletion
 
 class TechEvolutionGenerator:
-    def __init__(self, github_ops, client, model):
-        """Initialize the tech evolution generator"""
-        self.github_ops = github_ops
+    def __init__(self, client, model, is_production=False):
+        """Initialize TechEvolutionGenerator
+        
+        Args:
+            client: AI client for completions
+            model: Model name to use
+            is_production: Whether to run in production mode
+        """
         self.client = client
         self.model = model
-        self.base_year = 2025
-        self.tech_evolution = {
-            "tech_trees": {},
-            "last_updated": datetime.now().isoformat()
-        }
+        self.github_ops = GithubOperations(is_production=is_production)
         self.ai = AICompletion(client, model)
+        self.base_year = 2024
         
-        # Create logs directory
-        self.log_dir = "logs/tech_evolution"
+        # Initialize tech evolution data structure
+        self.tech_evolution = {
+            'tech_trees': {},
+            'last_updated': datetime.now().isoformat()
+        }
+        
+        # Update log directory based on environment
+        env_dir = "prod" if is_production else "dev"
+        self.log_dir = f"logs/{env_dir}/tech"
+        
+        # Create log directory if it doesn't exist
         os.makedirs(self.log_dir, exist_ok=True)
 
     def get_tech_evolution(self):
         """Get the most recently saved tech evolution file"""
         try:
-            github_ops = GithubOperations()
+            github_ops = self.github_ops
             # Get the tech evolution file directly
             content, _ = github_ops.get_file_content("tech_evolution.json")
             return content
             
         except Exception as e:
-            print(f"Error getting tech evolution file: {e}")
-            return None
+            print(f"Failed to get tech evolution data")
+            return None  # Return None instead of raising exception
 
     def get_previous_technologies(self, epoch_year):
         """Get technologies from previous epochs"""
@@ -57,7 +68,7 @@ class TechEvolutionGenerator:
                 continue
                 
             prev_data = all_tech_trees[year_str]
-            self._process_emerging_tech(previous_tech, prev_data)
+            self._process_emerging_tech(previous_tech, prev_data, epoch_year)
             self._process_mainstream_tech(previous_tech, prev_data, epoch_year)
         
         self._print_tech_summary(epoch_year, previous_tech)
@@ -70,7 +81,12 @@ class TechEvolutionGenerator:
         
         if recent_file:
             try:
-                saved_data = json.loads(recent_file)
+                # Handle both string and dict inputs
+                if isinstance(recent_file, str):
+                    saved_data = json.loads(recent_file)
+                else:
+                    saved_data = recent_file
+                
             except Exception as e:
                 print(f"Error loading tech trees: {e}")
         
@@ -79,26 +95,32 @@ class TechEvolutionGenerator:
             **self.tech_evolution.get("tech_trees", {})
         }
 
-    def _process_emerging_tech(self, previous_tech, prev_data):
-        """Process emerging technologies"""
+    def _process_emerging_tech(self, previous_tech, prev_data, epoch_year, cutoff_years=4):
+        """Process emerging technologies with a cutoff period."""
         for tech in prev_data.get("emerging_technologies", []):
-            previous_tech["emerging"].append({
-                "name": tech["name"],
-                "estimated_year": tech["estimated_year"],
-                "probability": tech.get("probability", 0.5)
-            })
+            # Convert estimated_year to int for comparison
+            estimated_year = int(tech.get("estimated_year", 9999))
+            # Only include technologies that are within the cutoff period
+            if estimated_year <= epoch_year and (epoch_year - estimated_year) <= cutoff_years:
+                previous_tech["emerging"].append({
+                    "name": tech["name"],
+                    "estimated_year": estimated_year,
+                    "probability": tech.get("probability", 0.5)
+                })
 
     def _process_mainstream_tech(self, previous_tech, prev_data, epoch_year):
         """Process mainstream technologies"""
         for tech in prev_data.get("mainstream_technologies", []):
+            # Convert maturity_year to int for comparison
+            maturity_year = int(tech.get("maturity_year", 9999))
             previous_tech["mainstream"].append({
                 "name": tech["name"],
-                "maturity_year": tech["maturity_year"]
+                "maturity_year": maturity_year
             })
-            if tech["maturity_year"] <= epoch_year:
+            if maturity_year <= epoch_year:
                 previous_tech["current_mainstream"].append({
                     "name": tech["name"],
-                    "maturity_year": tech["maturity_year"]
+                    "maturity_year": maturity_year
                 })
 
     def _print_tech_summary(self, epoch_year, previous_tech):
@@ -108,14 +130,15 @@ class TechEvolutionGenerator:
         print(f"- Mainstream: {len(previous_tech['mainstream'])}")
         print(f"- Currently Mainstream: {len(previous_tech['current_mainstream'])}")
 
-    def generate_epoch_tech_tree(self, epoch_year):
+    def generate_epoch_tech_tree(self, current_year):
+        """Generate tech tree for the given epoch year."""
         try:
             # Create log file with timestamp and epoch
             timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-            log_path = f"{self.log_dir}/epoch_{epoch_year}_{timestamp}.txt"
+            log_path = f"{self.log_dir}/epoch_{current_year}_{timestamp}.txt"
             
-            previous_tech = self.get_previous_technologies(epoch_year)
-            years_from_base = epoch_year - self.base_year
+            previous_tech = self.get_previous_technologies(current_year)
+            years_from_base = current_year - self.base_year
             
             acceleration_factor = math.exp(years_from_base / 30)
             emerging_tech = json.dumps(previous_tech.get('emerging', []), indent=2)
@@ -144,12 +167,29 @@ class TechEvolutionGenerator:
                 - Balance optimism with practical constraints
                 - Provide detailed, well-reasoned analyses
 
-                Your task is to generate realistic, well-reasoned technological forecasts that build upon existing developments while maintaining narrative consistency."""
+                For Emerging Technologies:
+                - estimated_year: When the technology first becomes viable/available for early adoption
+                - probability: Likelihood of successful development by estimated_year
+                - innovation_type: breakthrough (radical change) or incremental (gradual improvement)
+                
+                For Mainstream Technologies:
+                - maturity_year: When the technology becomes widely adopted and standardized
+                - from_emerging: Whether it evolved from a previous emerging technology
+                - impact_level: Scale of 1-10 for societal impact
+                
+                Remember:
+                - Emerging technologies start as experimental/early-stage
+                - Some emerging tech will later become mainstream
+                - estimated_year marks first appearance/viability
+                - maturity_year marks widespread adoption
 
-            user_prompt = f"""Generate technological advancements from {epoch_year} to {epoch_year + 5}. 
+                Your task is to generate realistic, well-reasoned technological forecasts that build upon existing developments while maintaining narrative consistency.                
+                """
+
+            user_prompt = f"""Generate technological advancements from {current_year} to {current_year + 5}. 
 
             CONTEXT:
-            - Current epoch: {epoch_year}
+            - Current epoch: {current_year}
             - Years since 2025: {years_from_base}
             - Tech growth rate: {acceleration_factor:0.2f}x faster than in 2025
             - Prior technologies include:
@@ -187,6 +227,8 @@ class TechEvolutionGenerator:
 
             Ensure each new technology builds on prior epochs to maintain continuity in the narrative.
 
+            IMPORTANT: Return a raw JSON object without any markdown formatting or code block markers.
+            Do not wrap the response in ```json``` tags.
 
             RETURN FORMAT (JSON):
             {{
@@ -195,6 +237,7 @@ class TechEvolutionGenerator:
                         "name": "technology name",
                         "probability": "0.0 to 1.0",
                         "estimated_year": "YYYY",
+                        "expected_maturity_year": "YYYY",
                         "innovation_type": "incremental|breakthrough",
                         "dependencies": ["tech1", "tech2"],
                         "impact_areas": ["area1", "area2"],
@@ -225,147 +268,160 @@ class TechEvolutionGenerator:
                 ]
             }}
             """
-            # Log prompt before API call
-            with open(log_path, 'w', encoding='utf-8') as f:
-                f.write(f"=== PROMPT FOR EPOCH {epoch_year} ===\n")
-                f.write(prompt)
-                
-            print("\nSending request to API...")
-            response =  self.ai.get_completion(
-                max_tokens=4000,
-                system_prompt=system_prompt,
-                user_prompt= user_prompt
-            )
             
-            # Process response
-            if len(response) > 0:
-                text_content = response
-                print("Got text content from response")
-                
-                # Log raw response
-                with open(log_path, 'a', encoding='utf-8') as f:
-                    f.write("\n\n=== RAW RESPONSE ===\n")
-                    f.write(text_content)
-                
-                try:
-                    clean_response = text_content.replace('```json\n', '').replace('```', '').strip()
-                    tree_data = json.loads(clean_response)
-                    
-                    # Log parsed JSON
-                    with open(log_path, 'a', encoding='utf-8') as f:
-                        f.write("\n\n=== PARSED JSON ===\n")
-                        f.write(json.dumps(tree_data, indent=2))
-                    
-                    # Validate the structure
-                    required_keys = ['emerging_technologies', 'mainstream_technologies', 'epoch_themes']
-                    if not all(key in tree_data for key in required_keys):
-                        error_msg = f"Missing required keys in response. Got: {list(tree_data.keys())}"
-                        print(error_msg)  # Add debug print
-                        with open(log_path, 'a', encoding='utf-8') as f:
-                            f.write("\n\n=== VALIDATION ERROR ===\n")
-                            f.write(error_msg)
-                        raise ValueError(error_msg)
-                    
-                    # Add epoch identifier and store the data
-                    tree_data["epoch_year"] = epoch_year
-                    self.tech_evolution["tech_trees"][str(epoch_year)] = tree_data
-                    
-                    print(f"\nGenerated for {epoch_year}:")
-                    print(f"- Emerging technologies: {len(tree_data['emerging_technologies'])}")
-                    print(f"- Mainstream technologies: {len(tree_data['mainstream_technologies'])}")
-                    print(f"- Epoch themes: {len(tree_data['epoch_themes'])}")
-                    
-                    # Log summary
-                    with open(log_path, 'a', encoding='utf-8') as f:
-                        f.write("\n\n=== GENERATION SUMMARY ===\n")
-                        f.write(f"Epoch: {epoch_year}\n")
-                        f.write(f"Emerging technologies: {len(tree_data['emerging_technologies'])}\n")
-                        f.write(f"Mainstream technologies: {len(tree_data['mainstream_technologies'])}\n")
-                        f.write(f"Epoch themes: {len(tree_data['epoch_themes'])}\n")
-                    
-                    return tree_data
-                    
-                except json.JSONDecodeError as e:
-                    error_msg = f"JSON parse error: {e}\nClean response: {clean_response[:500]}"
-                    # Log parsing error
-                    with open(log_path, 'a', encoding='utf-8') as f:
-                        f.write("\n\n=== PARSING ERROR ===\n")
-                        f.write(error_msg)
-                    raise ValueError("Could not parse response as JSON")
-            else:
-                error_msg = "No content received in response"
-                # Log empty response error
-                with open(log_path, 'a', encoding='utf-8') as f:
-                    f.write("\n\n=== ERROR ===\n")
-                    f.write(error_msg)
-                raise ValueError(error_msg)
-                
+            # Log complete context and prompts
+            with open(log_path, 'w', encoding='utf-8') as f:
+                f.write(f"=== CONTEXT FOR EPOCH {current_year} ===\n")
+                f.write(f"Previous Emerging Tech:\n{emerging_tech}\n\n")
+                f.write(f"Previous Mainstream Tech:\n{mainstream_tech}\n\n")
+                f.write(f"Years from base: {years_from_base}\n")
+                f.write(f"Acceleration factor: {acceleration_factor}\n\n")
+                f.write(f"=== SYSTEM PROMPT ===\n{system_prompt}\n\n")
+                f.write(f"=== USER PROMPT ===\n{user_prompt}\n\n")
+            
+            # Make API call and get response
+            response = self._get_completion(system_prompt, user_prompt)
+            if not response:
+                print("Failed to get valid response from AI")
+                return None
+            
+            tech_data = json.loads(response)
+            if not tech_data:
+                print("Empty tech data received")
+                return None
+            
+            # Update tech evolution with new data
+            self.tech_evolution['tech_trees'][str(current_year)] = tech_data
+            self.tech_evolution['last_updated'] = datetime.now().isoformat()
+            
+            return tech_data
+            
         except Exception as e:
-            print(f"Failed to generate tech tree for {epoch_year}: {e}")
+            print(f"Error generating tech tree: {e}")
             return None
 
     def save_evolution_data(self):
-        """Save the current evolution data to GitHub"""
+        """Save the current evolution data"""
         try:
-            github_ops = GithubOperations()
+            github_ops = self.github_ops
             file_path = "tech_evolution.json"
-
-            # Try to get existing file content
-            try:
-                print("Fetching existing file content...")
-                existing_content, sha = github_ops.get_file_content(file_path)
-                if existing_content:
-                    # Parse existing content if it's a string
-                    if isinstance(existing_content, str):
-                        existing_content = json.loads(existing_content)
-                    
-                    # Merge tech trees
-                    existing_trees = existing_content.get('tech_trees', {})
-                    existing_trees.update(self.tech_evolution.get('tech_trees', {}))
-                    
-                    # Create updated content
-                    updated_content = {
-                        'tech_trees': existing_trees,
-                        'last_updated': datetime.now().isoformat()
-                    }
-                else:
-                    updated_content = self.tech_evolution
-                
-                print(f"Total tech trees after merge: {len(updated_content['tech_trees'])}")
-                
-            except Exception as e:
-                print(f"No existing file found or error: {e}")
-                updated_content = self.tech_evolution
-                sha = None
-
-            # Convert to JSON string before saving
-            json_content = json.dumps(updated_content, indent=2)
             
-            # Save/update file
-            try:
-                if sha:  # Update existing file
-                    response = github_ops.update_file(
-                        file_path=file_path,
-                        content=json_content,
-                        commit_message=f"Update tech evolution data for {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}",
-                        sha=sha
-                    )
-                else:  # Create new file
-                    response = github_ops.update_file(
-                        file_path=file_path,
-                        content=json_content,
-                        commit_message=f"Create tech evolution data for {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}"
-                    )
-                
-                print(f"Saved evolution data to {file_path}")
-                
-            except requests.exceptions.HTTPError as e:
-                print(f"HTTP Error: {e.response.status_code}")
-                print(f"Error response: {e.response.text}")
-                raise
-                
+            print(f"Saving tech evolution data...")
+            github_ops.update_file(
+                file_path,
+                self.tech_evolution,
+                "Update tech evolution data"
+            )
+            return True
+            
         except Exception as e:
-            print(f"Failed to save evolution data: {e}")
+            print(f"Failed to save evolution data: {str(e)}")
+            # Continue with local data
+            return False
+
+    def check_and_generate_tech_evolution(self, current_date):
+        """Check if a new tech evolution needs to be generated based on the current date."""
+        current_year = current_date.year
+        
+        try:
+            # Try to get existing tech evolution
+            tech_evolution = self.get_tech_evolution()
+            
+            if tech_evolution is None:
+                print(f"Initializing tech evolution for base year {self.base_year}")
+                # Generate initial data
+                self.generate_epoch_tech_tree(self.base_year)
+                self.save_evolution_data()
+                return self.tech_evolution  # Return local data if save failed
+            
+            # Get latest epoch year
+            latest_epoch_year = self.get_latest_epoch_year() or self.base_year
+            next_epoch_year = latest_epoch_year + 5
+            
+            # Only generate if approaching next epoch
+            if current_year >= (next_epoch_year - 1) and next_epoch_year % 5 == 0:
+                print(f"Approaching next epoch year {next_epoch_year}")
+                if str(next_epoch_year) not in self.tech_evolution.get('tech_trees', {}):
+                    self.generate_epoch_tech_tree(next_epoch_year)
+                    self.save_evolution_data()
+            
+            return tech_evolution
+            
+        except Exception as e:
+            print(f"Error in tech evolution generation: {e}")
+            return self.tech_evolution  # Return local data in case of error
+
+    def get_latest_epoch_year(self):
+        """Retrieve the most up-to-date epoch year from the tech evolution data."""
+        tech_evolution = self.get_tech_evolution()
+        if tech_evolution:
+            # If tech_evolution is already a dict, use it directly
+            if isinstance(tech_evolution, dict):
+                tech_trees = tech_evolution.get("tech_trees", {})
+            else:
+                # Otherwise parse it as JSON
+                try:
+                    tech_trees = json.loads(tech_evolution).get("tech_trees", {})
+                except:
+                    return None
+            
+            if tech_trees:
+                # Get the latest epoch year from the keys
+                latest_epoch_year = max(map(int, tech_trees.keys()))
+                return latest_epoch_year
+        return None  # Return None if no data found
+
+    def _process_tech_response(self, response, epoch_year):
+        """Process the API response and update tech evolution data."""
+        try:
+            # Parse the response JSON
+            response_data = json.loads(response)
+            
+            # Update the tech evolution data with the new epoch data
+            self.tech_evolution['tech_trees'][str(epoch_year)] = response_data
+            
+            # Update the last updated timestamp
+            self.tech_evolution['last_updated'] = datetime.now().isoformat()
+            
+            print(f"Processed tech response for epoch {epoch_year}")
+            return response_data
+        except json.JSONDecodeError as e:
+            print(f"Failed to decode JSON response: {e}")
+            return None
+        except Exception as e:
+            print(f"Error processing tech response: {e}")
+            return None
+
+    def _get_completion(self, system_prompt, user_prompt):
+        """Get completion from AI model."""
+        try:
+            response = self.ai.get_completion(
+                system_prompt=system_prompt,
+                user_prompt=user_prompt
+            )
+            
+            if not response:
+                print("- Warning: Empty response received")
+                return None
+            
+            # Clean up response - remove markdown code block markers and any extra whitespace
+            cleaned_response = response
+            if '```json' in response:
+                cleaned_response = response.split('```json')[-1].split('```')[0].strip()
+            
+            # Validate JSON structure
+            try:
+                json.loads(cleaned_response)
+                print("- Response is valid JSON")
+                return cleaned_response
+            except json.JSONDecodeError as e:
+                print(f"- Invalid JSON response: {e}")
+                print("- Full response:", response)
+                return None
+            
+        except Exception as e:
+            print(f"Error getting completion: {e}")
+            return None
 
 def main():
     parser = argparse.ArgumentParser(description='Generate technology evolution data')
