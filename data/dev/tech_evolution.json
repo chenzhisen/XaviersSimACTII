@@ -1,0 +1,112 @@
+{
+  "tech_trees": {
+    "2024": {
+      "emerging_technologies": [
+        {
+          "name": "AI-Driven Software Development",
+          "probability": "0.85",
+          "estimated_year": "2025",
+          "expected_maturity_year": "2028",
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "AI assistants",
+            "Cursor AI"
+          ],
+          "impact_areas": [
+            "Software Development",
+            "IT Industry"
+          ],
+          "description": "AI-driven systems capable of autonomously creating software from high-level requirements, reducing human involvement in coding.",
+          "societal_implications": "Reduction in demand for traditional coding jobs, increased efficiency in software development, potential for AI-generated software bugs.",
+          "adoption_factors": "Adoption will depend on trust in AI-generated code, regulatory acceptance, and integration into existing development pipelines."
+        },
+        {
+          "name": "Martian Resource Management System",
+          "probability": "0.7",
+          "estimated_year": "2026",
+          "expected_maturity_year": "2029",
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "SpaceX",
+            "Starlink"
+          ],
+          "impact_areas": [
+            "Space Exploration",
+            "Resource Management"
+          ],
+          "description": "AI and robotics systems designed to manage and utilize Martian resources for human habitation, including water extraction, food production, and energy management.",
+          "societal_implications": "Enables long-term human presence on Mars, raises ethical questions about terraforming and resource rights.",
+          "adoption_factors": "Dependent on successful Mars colonization efforts, technological reliability, and international space law."
+        },
+        {
+          "name": "Neural Network for Cognitive Enhancement",
+          "probability": "0.6",
+          "estimated_year": "2027",
+          "expected_maturity_year": "2029",
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Neuralink"
+          ],
+          "impact_areas": [
+            "Neuroscience",
+            "Human Augmentation"
+          ],
+          "description": "Neural interfaces that enhance cognitive functions like memory, focus, and problem-solving, offering users the ability to augment their intelligence.",
+          "societal_implications": "Potential for social inequality based on access to cognitive enhancement, privacy concerns regarding thought monitoring.",
+          "adoption_factors": "Adoption will be influenced by public acceptance, regulatory approval, and the resolution of ethical dilemmas."
+        }
+      ],
+      "mainstream_technologies": [
+        {
+          "name": "AI-Assisted Autonomous Vehicles",
+          "from_emerging": true,
+          "original_emergence_year": "2020",
+          "maturity_year": "2026",
+          "impact_level": "8",
+          "description": "Autonomous vehicles that use AI to navigate, make decisions, and interact with the environment in real-time.",
+          "adoption_status": "Widespread adoption for ride-sharing services, logistics, and personal transport, with regulatory frameworks in place."
+        },
+        {
+          "name": "Global Blockchain-Powered Social Platform",
+          "from_emerging": true,
+          "original_emergence_year": "2022",
+          "maturity_year": "2027",
+          "impact_level": "7",
+          "description": "A decentralized social media platform built on blockchain technology, ensuring user privacy, free speech, and community governance.",
+          "adoption_status": "Standardized for global communication, becoming a primary means of social interaction with strong user base and regulatory acceptance."
+        }
+      ],
+      "epoch_themes": [
+        {
+          "theme": "AI and Automation",
+          "description": "The epoch sees a significant shift towards AI-driven automation in various sectors, including software development, transportation, and resource management.",
+          "related_technologies": [
+            "AI-Driven Software Development",
+            "AI-Assisted Autonomous Vehicles"
+          ],
+          "societal_impact": "Increased efficiency, job displacement in certain sectors, and potential for AI governance.",
+          "global_trends": "Global trend towards automation to address labor shortages, improve efficiency, and meet sustainability goals."
+        },
+        {
+          "theme": "Human Augmentation",
+          "description": "Advancements in neural technology enable humans to enhance their cognitive capabilities, leading to a new era of human-computer interaction.",
+          "related_technologies": [
+            "Neural Network for Cognitive Enhancement"
+          ],
+          "societal_impact": "Potential for social stratification, ethical debates around human augmentation, and privacy concerns.",
+          "global_trends": "Exploration of human augmentation technologies as a means to overcome biological limitations."
+        },
+        {
+          "theme": "Space Expansion",
+          "description": "Humanity's focus shifts towards establishing sustainable presence on other planets, with Mars as the primary target.",
+          "related_technologies": [
+            "Martian Resource Management System"
+          ],
+          "societal_impact": "Expansion of human civilization beyond Earth, potential for new geopolitical dynamics.",
+          "global_trends": "International cooperation in space exploration, increased investment in space technology."
+        }
+      ]
+    }
+  },
+  "last_updated": "2024-11-29T18:12:33.150462"
+}
