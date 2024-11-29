@@ -1,0 +1,130 @@
+{
+  "tech_trees": {
+    "2024": {
+      "emerging_technologies": [
+        {
+          "name": "AI-Driven Software Development Environments",
+          "probability": "0.8",
+          "estimated_year": "2024",
+          "expected_maturity_year": "2026",
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Machine Learning",
+            "Code Generation AI",
+            "Cloud Computing"
+          ],
+          "impact_areas": [
+            "Software Development",
+            "IT Industry",
+            "Education"
+          ],
+          "description": "A platform where AI not only assists but autonomously develops software, optimizing code for performance, security, and efficiency.",
+          "societal_implications": "Reduces the need for human coders, potentially leading to job displacement but also enabling new forms of creativity and efficiency in software development.",
+          "adoption_factors": "Requires widespread acceptance of AI-driven solutions, regulatory frameworks for AI-generated code, and overcoming cultural resistance to AI in critical roles."
+        },
+        {
+          "name": "Quantum Internet Prototypes",
+          "probability": "0.5",
+          "estimated_year": "2025",
+          "expected_maturity_year": "2029",
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Quantum Computing",
+            "Quantum Communication",
+            "Secure Communication Protocols"
+          ],
+          "impact_areas": [
+            "Communication",
+            "Cybersecurity",
+            "Research"
+          ],
+          "description": "Early-stage quantum networks that enable secure, long-distance quantum communication, potentially revolutionizing data privacy and security.",
+          "societal_implications": "Could lead to new forms of secure communication, but also raises questions about surveillance, privacy, and the potential for quantum-enabled espionage.",
+          "adoption_factors": "Dependent on advancements in quantum computing, regulatory approval, and the development of practical quantum communication devices."
+        },
+        {
+          "name": "Multi-Planetary Logistics Networks",
+          "probability": "0.6",
+          "estimated_year": "2026",
+          "expected_maturity_year": "2028",
+          "innovation_type": "incremental",
+          "dependencies": [
+            "SpaceX Starlink",
+            "Space Exploration Technologies",
+            "Autonomous Systems"
+          ],
+          "impact_areas": [
+            "Space Travel",
+            "Resource Management",
+            "Logistics"
+          ],
+          "description": "Systems for managing resources, transport, and communication between Earth, the Moon, and Mars, utilizing autonomous systems.",
+          "societal_implications": "Facilitates multi-planetary existence, potentially leading to new economic models and legal frameworks for space governance.",
+          "adoption_factors": "Requires successful space missions, international agreements on space laws, and the development of reliable autonomous systems for space."
+        },
+        {
+          "name": "Direct Brain-Cloud Interfaces",
+          "probability": "0.7",
+          "estimated_year": "2027",
+          "expected_maturity_year": "2029",
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Neural Interfaces",
+            "Cloud Computing",
+            "AI"
+          ],
+          "impact_areas": [
+            "Human Augmentation",
+            "Cognitive Enhancement",
+            "Health"
+          ],
+          "description": "Interfaces that allow direct interaction between human brains and cloud-based systems, enhancing cognitive abilities and data storage.",
+          "societal_implications": "Raises ethical questions about privacy, identity, and the nature of consciousness, potentially leading to new forms of inequality based on cognitive enhancement.",
+          "adoption_factors": "Requires advancements in neural technology, public acceptance of invasive procedures, and robust security measures to protect brain data."
+        }
+      ],
+      "mainstream_technologies": [
+        {
+          "name": "Fully Autonomous Vehicles",
+          "from_emerging": true,
+          "original_emergence_year": "2024",
+          "maturity_year": "2029",
+          "impact_level": "8",
+          "description": "Vehicles that operate without human intervention, utilizing AI for navigation, decision-making, and interaction with other autonomous systems.",
+          "adoption_status": "Widespread adoption, especially in urban settings, with regulatory frameworks in place, and infrastructure adapted for autonomous travel."
+        },
+        {
+          "name": "Blockchain-Based Governance",
+          "from_emerging": true,
+          "original_emergence_year": "2025",
+          "maturity_year": "2029",
+          "impact_level": "7",
+          "description": "Governance systems that leverage blockchain for transparency, security, and decentralized decision-making in various sectors.",
+          "adoption_status": "Implemented in several cities and organizations for voting, record-keeping, and resource allocation, becoming standard practice."
+        }
+      ],
+      "epoch_themes": [
+        {
+          "theme": "AI-Driven Automation",
+          "description": "A period where AI not only assists but leads in multiple industries, reshaping work, creativity, and human interaction with technology.",
+          "related_technologies": [
+            "AI-Driven Software Development Environments",
+            "Fully Autonomous Vehicles"
+          ],
+          "societal_impact": "Significant job displacement, new forms of creativity, and potential for AI to influence human behavior and societal structures.",
+          "global_trends": "Increased focus on AI ethics, regulation, and education for AI literacy."
+        },
+        {
+          "theme": "Space Expansion",
+          "description": "Humanity's push towards becoming a multi-planetary species, with infrastructure and logistics networks supporting life beyond Earth.",
+          "related_technologies": [
+            "Multi-Planetary Logistics Networks"
+          ],
+          "societal_impact": "New economic models, legal frameworks, and societal norms for space governance and resource allocation.",
+          "global_trends": "Increased investment in space technologies, international space collaborations, and the emergence of space tourism."
+        }
+      ]
+    }
+  },
+  "last_updated": "2024-11-29T11:23:37.330334"
+}
