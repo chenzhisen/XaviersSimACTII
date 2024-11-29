@@ -1,0 +1,122 @@
+{
+  "tech_trees": {
+    "2024": {
+      "emerging_technologies": [
+        {
+          "name": "AI-Driven Autonomous Development",
+          "probability": "0.75",
+          "estimated_year": "2025",
+          "expected_maturity_year": "2030",
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Cursor AI",
+            "Machine Learning"
+          ],
+          "impact_areas": [
+            "Software Development",
+            "AI"
+          ],
+          "description": "AI systems capable of autonomously developing software, integrating complex project management, and optimizing code based on performance metrics.",
+          "societal_implications": "Reduces human involvement in coding, potentially leading to job displacement but also enabling rapid innovation and personalized software solutions.",
+          "adoption_factors": "Market acceptance of AI in software development, regulatory frameworks for AI-generated code, and the ability to handle complex, unforeseen scenarios."
+        },
+        {
+          "name": "Neuralink Mind Bridge",
+          "probability": "0.60",
+          "estimated_year": "2027",
+          "expected_maturity_year": "2032",
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Neural Interfaces",
+            "Brain-Machine Interfaces"
+          ],
+          "impact_areas": [
+            "Medicine",
+            "Cognitive Enhancement"
+          ],
+          "description": "A brain-computer interface allowing for direct communication between human brains and machines, facilitating cognitive enhancement and memory augmentation.",
+          "societal_implications": "Potential for significant improvements in human cognition and memory; raises ethical concerns about privacy, consent, and the nature of human identity.",
+          "adoption_factors": "Public acceptance of brain implants, regulatory hurdles, and the development of reliable and safe technology."
+        },
+        {
+          "name": "Quantum Blockchain",
+          "probability": "0.55",
+          "estimated_year": "2026",
+          "expected_maturity_year": "2031",
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Blockchain",
+            "Quantum Computing"
+          ],
+          "impact_areas": [
+            "Digital Infrastructure",
+            "Finance"
+          ],
+          "description": "A blockchain system leveraging quantum computing for enhanced security, speed, and scalability, making transactions near-instantaneous and secure.",
+          "societal_implications": "Could revolutionize financial systems, enhance privacy, and reduce transaction costs, but also poses risks in terms of security if quantum decryption becomes widespread.",
+          "adoption_factors": "Advancement in quantum computing technology, regulatory acceptance, and the development of quantum-resistant cryptography."
+        },
+        {
+          "name": "SpaceX Mars Base",
+          "probability": "0.65",
+          "estimated_year": "2029",
+          "expected_maturity_year": "2040",
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "SpaceX Interplanetary Travel",
+            "Autonomous Systems"
+          ],
+          "impact_areas": [
+            "Space Exploration",
+            "Resource Management"
+          ],
+          "description": "A self-sustaining colony on Mars with autonomous systems for resource extraction, habitat construction, and life support.",
+          "societal_implications": "Marks humanity's first step towards becoming a multi-planetary species, with profound implications for resource distribution, survival, and exploration.",
+          "adoption_factors": "Technological breakthroughs in life support systems, radiation protection, and the ability to manage long-term space missions."
+        }
+      ],
+      "mainstream_technologies": [
+        {
+          "name": "AI-Powered Code Completion",
+          "from_emerging": true,
+          "original_emergence_year": "2023",
+          "maturity_year": "2028",
+          "impact_level": "7",
+          "description": "AI systems that suggest and complete code in real-time, significantly enhancing developer productivity and reducing errors.",
+          "adoption_status": "Widely adopted in software development, with companies integrating AI tools into their coding environments to streamline development processes."
+        },
+        {
+          "name": "Urban Autonomous Transport",
+          "from_emerging": true,
+          "original_emergence_year": "2024",
+          "maturity_year": "2029",
+          "impact_level": "6",
+          "description": "Self-driving vehicles for urban transport, including taxis, buses, and delivery vehicles, optimized for traffic efficiency and safety.",
+          "adoption_status": "Major cities have begun to integrate these systems into their public transport networks, leading to reduced accidents, congestion, and emissions."
+        }
+      ],
+      "epoch_themes": [
+        {
+          "theme": "AI and Autonomous Systems Integration",
+          "description": "A focus on integrating AI into everyday life, automating complex tasks, and enhancing human capabilities.",
+          "related_technologies": [
+            "AI-Driven Autonomous Development",
+            "Urban Autonomous Transport"
+          ],
+          "societal_impact": "Significant shifts in job markets, increased automation, and potential for new forms of social interaction and governance.",
+          "global_trends": "Rising demand for AI ethics, regulatory frameworks for AI, and the integration of AI in governance and decision-making processes."
+        },
+        {
+          "theme": "Expansion into Space",
+          "description": "The continued push for human expansion beyond Earth, focusing on sustainable space habitats and resource utilization.",
+          "related_technologies": [
+            "SpaceX Mars Base"
+          ],
+          "societal_impact": "Redefinition of human identity, potential for new economies, and long-term survival strategies.",
+          "global_trends": "Increased international collaboration in space exploration, public interest in space, and the emergence of space tourism."
+        }
+      ]
+    }
+  },
+  "last_updated": "2024-11-29T10:07:53.110340"
+}
