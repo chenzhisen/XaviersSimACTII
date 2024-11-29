@@ -1,0 +1,153 @@
+{
+  "tech_trees": {
+    "2024": {
+      "emerging_technologies": [
+        {
+          "name": "AI-Driven Urban Planning",
+          "probability": "0.75",
+          "estimated_year": "2024",
+          "expected_maturity_year": "2028",
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Advanced AI algorithms",
+            "Big Data analytics"
+          ],
+          "impact_areas": [
+            "Urban Development",
+            "Infrastructure"
+          ],
+          "description": "Utilizes AI to optimize urban planning by predicting traffic flows, population growth, and resource allocation, enhancing city livability and sustainability.",
+          "societal_implications": "Potential for more efficient cities but raises concerns about privacy and AI decision-making transparency.",
+          "adoption_factors": "Adoption will be driven by smart city initiatives and regulatory support for AI in public planning."
+        },
+        {
+          "name": "Fully Autonomous Vehicles",
+          "probability": "0.65",
+          "estimated_year": "2025",
+          "expected_maturity_year": "2029",
+          "innovation_type": "incremental",
+          "dependencies": [
+            "Advanced sensors",
+            "Machine Learning",
+            "5G networks"
+          ],
+          "impact_areas": [
+            "Transportation",
+            "Logistics"
+          ],
+          "description": "Vehicles that operate without human intervention, integrating seamlessly with smart city infrastructure for traffic management and safety.",
+          "societal_implications": "Significant reduction in accidents, increased mobility for the elderly and disabled, but also job displacement and ethical questions around AI in life-or-death decisions.",
+          "adoption_factors": "Regulatory approval, public trust, and infrastructure readiness are key adoption factors."
+        },
+        {
+          "name": "Neural Interface for Cognitive Enhancement",
+          "probability": "0.40",
+          "estimated_year": "2026",
+          "expected_maturity_year": "2030",
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Neuralink technology",
+            "Brain-Computer Interfaces"
+          ],
+          "impact_areas": [
+            "Healthcare",
+            "Education",
+            "Productivity"
+          ],
+          "description": "Devices that enhance human cognitive abilities through direct brain stimulation or data transfer, potentially improving memory, learning, and problem-solving skills.",
+          "societal_implications": "Raises ethical questions about cognitive inequality, privacy of thoughts, and the nature of human enhancement.",
+          "adoption_factors": "Ethical debates, regulatory approval, and the development of safe and effective technology will influence adoption."
+        },
+        {
+          "name": "Space Mining and Resource Extraction",
+          "probability": "0.55",
+          "estimated_year": "2027",
+          "expected_maturity_year": "2031",
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Advanced robotics",
+            "Space exploration technology"
+          ],
+          "impact_areas": [
+            "Space Industry",
+            "Economy"
+          ],
+          "description": "Technologies for extracting resources from asteroids and other celestial bodies, providing materials for space infrastructure and Earth's economy.",
+          "societal_implications": "Potential for new economic models, space law challenges, and environmental concerns in space.",
+          "adoption_factors": "Success of initial missions, cost-effectiveness, and international agreements will drive adoption."
+        },
+        {
+          "name": "Decentralized Social Media Platforms",
+          "probability": "0.80",
+          "estimated_year": "2025",
+          "expected_maturity_year": "2028",
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Blockchain technology",
+            "AI moderation"
+          ],
+          "impact_areas": [
+            "Communication",
+            "Social Interaction"
+          ],
+          "description": "Platforms where users have control over their data, content moderation, and governance through blockchain and AI, fostering free speech and community-driven content.",
+          "societal_implications": "Promotes digital freedom but might struggle with content moderation and user safety.",
+          "adoption_factors": "User demand for privacy, transparency, and control over social media experiences will push adoption."
+        }
+      ],
+      "mainstream_technologies": [
+        {
+          "name": "AI-Assisted Software Development",
+          "from_emerging": true,
+          "original_emergence_year": "2024",
+          "maturity_year": "2027",
+          "impact_level": "7",
+          "description": "Tools like Cursor AI that automate coding tasks, making software development more efficient and less error-prone.",
+          "adoption_status": "Widely adopted in tech companies and startups, driven by productivity gains and cost reduction."
+        },
+        {
+          "name": "Blockchain for Digital Infrastructure",
+          "from_emerging": true,
+          "original_emergence_year": "2025",
+          "maturity_year": "2028",
+          "impact_level": "6",
+          "description": "Blockchain technology used for secure, transparent, and decentralized digital infrastructure, enhancing cybersecurity and data integrity.",
+          "adoption_status": "Integrated into various sectors for secure transactions, identity management, and smart contracts."
+        }
+      ],
+      "epoch_themes": [
+        {
+          "theme": "AI and Automation in Everyday Life",
+          "description": "AI and automation technologies are becoming integral to daily activities, transforming how we interact with technology and each other.",
+          "related_technologies": [
+            "AI-Driven Urban Planning",
+            "Fully Autonomous Vehicles",
+            "AI-Assisted Software Development"
+          ],
+          "societal_impact": "Enhances efficiency but also raises concerns about job automation, privacy, and the ethical use of AI.",
+          "global_trends": "Increased investment in AI research, policy discussions around AI governance, and public awareness campaigns."
+        },
+        {
+          "theme": "Space Exploration and Resource Utilization",
+          "description": "Humanity's reach extends beyond Earth, with significant advancements in space travel and resource extraction.",
+          "related_technologies": [
+            "Space Mining and Resource Extraction"
+          ],
+          "societal_impact": "Potential for new economic models, environmental concerns, and the democratization of space access.",
+          "global_trends": "International collaborations, private sector involvement in space, and regulatory frameworks for space activities."
+        },
+        {
+          "theme": "Digital Rights and Decentralization",
+          "description": "A shift towards decentralized platforms and technologies that prioritize user control and privacy.",
+          "related_technologies": [
+            "Decentralized Social Media Platforms",
+            "Blockchain for Digital Infrastructure"
+          ],
+          "societal_impact": "Promotes digital freedom but requires new approaches to content moderation and user safety.",
+          "global_trends": "Rising demand for digital privacy, regulatory scrutiny of big tech, and the growth of blockchain ecosystems."
+        }
+      ]
+    }
+  },
+  "last_updated": "2024-11-29T10:30:22.757979"
+}
