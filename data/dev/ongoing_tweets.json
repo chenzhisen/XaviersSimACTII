@@ -16,5 +16,14 @@
     "id": "tweet_2",
     "tweet_count": 2,
     "simulated_date": "2025-01-09"
+  },
+  {
+    "content": "Just had coffee with my old mentor and we started brainstorming. What if we used reinforcement learning to adapt trading strategies on-the-fly? Sounds like a project to dive into this weekend. Time to hit the code!",
+    "age": 22.03125,
+    "timestamp": "2024-11-30T16:33:04.092995",
+    "raw_content": "Had a coffee with an old mentor, reminiscing about past projects. It sparked an idea: using reinforcement learning to adapt strategies in real-time market changes. Time to code!",
+    "id": "tweet_3",
+    "tweet_count": 3,
+    "simulated_date": "2025-01-13"
   }
 ]
