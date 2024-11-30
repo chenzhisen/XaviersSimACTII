@@ -1,0 +1,133 @@
+{
+  "tech_trees": {
+    "2025": {
+      "emerging_technologies": [
+        {
+          "name": "AI-Driven Urban Planning",
+          "probability": "0.75",
+          "estimated_year": "2026",
+          "expected_maturity_year": "2028",
+          "innovation_type": "incremental",
+          "dependencies": [
+            "AI-Driven Code Autonomy",
+            "Cursor AI"
+          ],
+          "impact_areas": [
+            "Urban Development",
+            "Sustainable Technology"
+          ],
+          "description": "Utilizes AI to optimize urban layout, traffic flow, and energy efficiency in cities, leveraging real-time data analysis and simulation.",
+          "societal_implications": "Reduces urban congestion, improves living standards, but raises concerns about privacy and data security.",
+          "adoption_factors": "Adoption hinges on regulatory approval, public acceptance, and integration with existing infrastructure."
+        },
+        {
+          "name": "Quantum Blockchain",
+          "probability": "0.60",
+          "estimated_year": "2027",
+          "expected_maturity_year": "2029",
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Quantum Computing",
+            "Blockchain"
+          ],
+          "impact_areas": [
+            "Digital Infrastructure",
+            "Global Connectivity"
+          ],
+          "description": "A blockchain system that uses quantum computing for enhanced security and data integrity, enabling post-quantum cryptography.",
+          "societal_implications": "Revolutionizes secure data transmission and storage but brings challenges in quantum key distribution and system scalability.",
+          "adoption_factors": "Requires significant advancements in quantum technology and widespread acceptance of blockchain technology."
+        },
+        {
+          "name": "Cognitive Augmentation",
+          "probability": "0.50",
+          "estimated_year": "2028",
+          "expected_maturity_year": "2030",
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Neural Interfaces",
+            "AI"
+          ],
+          "impact_areas": [
+            "Human Augmentation",
+            "Health"
+          ],
+          "description": "Enhances human cognitive abilities through neural interfaces, allowing for memory enhancement, cognitive processing speed, and learning capabilities.",
+          "societal_implications": "Raises ethical questions about fairness, identity, and human augmentation's impact on employment and education.",
+          "adoption_factors": "Requires extensive ethical guidelines, public acceptance, and advanced neural interface technology."
+        },
+        {
+          "name": "Autonomous In-Orbit Construction",
+          "probability": "0.70",
+          "estimated_year": "2029",
+          "expected_maturity_year": "2031",
+          "innovation_type": "incremental",
+          "dependencies": [
+            "Space Exploration",
+            "AI-Driven Code Autonomy"
+          ],
+          "impact_areas": [
+            "Space Exploration",
+            "Infrastructure"
+          ],
+          "description": "AI-controlled robots capable of assembling structures in space, reducing the need for human intervention and accelerating space infrastructure development.",
+          "societal_implications": "Enables long-term space habitation, but introduces new risks related to space debris and resource allocation.",
+          "adoption_factors": "Dependent on the development of reliable AI systems, space materials science, and international cooperation."
+        },
+        {
+          "name": "Blockchain-Powered Collaborative Governance",
+          "probability": "0.65",
+          "estimated_year": "2027",
+          "expected_maturity_year": "2029",
+          "innovation_type": "incremental",
+          "dependencies": [
+            "Blockchain",
+            "Global Connectivity"
+          ],
+          "impact_areas": [
+            "Governance",
+            "Digital Infrastructure"
+          ],
+          "description": "A decentralized governance model where stakeholders can directly participate in decision-making using blockchain technology.",
+          "societal_implications": "Promotes transparency and reduces corruption, but faces challenges in scalability and ensuring equitable participation.",
+          "adoption_factors": "Adoption depends on regulatory environments, public trust in blockchain, and integration with existing governmental systems."
+        }
+      ],
+      "mainstream_technologies": [
+        {
+          "name": "AI-Driven Code Autonomy",
+          "from_emerging": true,
+          "original_emergence_year": "2024",
+          "maturity_year": "2026",
+          "impact_level": "8",
+          "description": "AI systems that autonomously generate, test, and deploy software code, reducing human involvement in software development.",
+          "adoption_status": "Widely adopted in tech industries for software development, leading to increased productivity and innovation."
+        }
+      ],
+      "epoch_themes": [
+        {
+          "theme": "AI and Human Collaboration",
+          "description": "The integration of AI into daily human activities, enhancing capabilities rather than replacing human efforts.",
+          "related_technologies": [
+            "AI-Driven Urban Planning",
+            "Cognitive Augmentation",
+            "AI-Driven Code Autonomy"
+          ],
+          "societal_impact": "Empowers individuals, reshapes job markets, and challenges traditional notions of intelligence and work.",
+          "global_trends": "Global push towards AI ethics, AI education, and collaborative AI-human systems."
+        },
+        {
+          "theme": "Decentralized Systems",
+          "description": "Shift towards decentralized systems in governance, finance, and information management.",
+          "related_technologies": [
+            "Quantum Blockchain",
+            "Blockchain-Powered Collaborative Governance"
+          ],
+          "societal_impact": "Promotes transparency, reduces reliance on centralized authorities, but requires new regulatory frameworks.",
+          "global_trends": "Increased interest in blockchain, cryptocurrencies, and decentralized platforms for various applications."
+        }
+      ]
+    }
+  },
+  "last_updated": "2024-11-30T16:59:11.225540"
+}
