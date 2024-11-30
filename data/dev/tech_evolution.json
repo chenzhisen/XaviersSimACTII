@@ -1,0 +1,106 @@
+{
+  "tech_trees": {
+    "2025": {
+      "emerging_technologies": [
+        {
+          "name": "AI-Driven Software Development",
+          "probability": "0.9",
+          "estimated_year": "2025",
+          "expected_maturity_year": "2028",
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "AI assistants",
+            "Cursor AI"
+          ],
+          "impact_areas": [
+            "Software Development",
+            "Automation"
+          ],
+          "description": "AI systems that autonomously generate, test, and deploy software, reducing human intervention to oversight and high-level design.",
+          "societal_implications": "Potential job displacement in software development, increased efficiency in software creation, and faster innovation cycles.",
+          "adoption_factors": "Initial skepticism, regulatory concerns about AI accountability, but driven by the promise of significantly reduced development time and cost."
+        },
+        {
+          "name": "Neural-Connected Smart Cities",
+          "probability": "0.6",
+          "estimated_year": "2027",
+          "expected_maturity_year": "2030",
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Neural Interfaces",
+            "Autonomous Systems"
+          ],
+          "impact_areas": [
+            "Urban Planning",
+            "Public Safety",
+            "Healthcare"
+          ],
+          "description": "Integration of neural interfaces with urban infrastructure to enhance real-time decision-making, emergency response, and personalized urban experiences.",
+          "societal_implications": "Privacy concerns, potential for surveillance overreach, but also improved city services and safety.",
+          "adoption_factors": "Requires significant investment in infrastructure and public acceptance of neural technology, with benefits in efficiency and quality of life."
+        },
+        {
+          "name": "Sustainable Fusion Energy",
+          "probability": "0.7",
+          "estimated_year": "2028",
+          "expected_maturity_year": "2035",
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Clean Energy Technologies",
+            "Advanced Materials"
+          ],
+          "impact_areas": [
+            "Energy",
+            "Climate Change"
+          ],
+          "description": "Development of fusion reactors that provide clean, nearly limitless energy, reducing reliance on fossil fuels.",
+          "societal_implications": "Transformative impact on energy markets, potential geopolitical shifts due to energy independence, environmental benefits.",
+          "adoption_factors": "Technological breakthroughs, regulatory approval, and overcoming public skepticism regarding safety and feasibility."
+        }
+      ],
+      "mainstream_technologies": [
+        {
+          "name": "Automated Urban Transportation",
+          "from_emerging": true,
+          "original_emergence_year": "2022",
+          "maturity_year": "2026",
+          "impact_level": "8",
+          "description": "Autonomous vehicles integrated into urban transport systems, providing point-to-point travel without human drivers.",
+          "adoption_status": "Widespread adoption in select cities, driven by infrastructure development and regulatory support, with ongoing public acceptance and safety concerns being addressed."
+        },
+        {
+          "name": "Global Real-Time Communication Platforms",
+          "from_emerging": true,
+          "original_emergence_year": "2023",
+          "maturity_year": "2027",
+          "impact_level": "7",
+          "description": "Platforms like X.com (Twitter) that integrate blockchain for decentralized governance, real-time translation, and AI moderation for global communication.",
+          "adoption_status": "High adoption rates due to demand for free speech, global connectivity, and the need for secure, transparent communication channels."
+        }
+      ],
+      "epoch_themes": [
+        {
+          "theme": "Human-Technology Symbiosis",
+          "description": "An era where technology not only serves human needs but also integrates with human cognition and daily life.",
+          "related_technologies": [
+            "AI-Driven Software Development",
+            "Neural-Connected Smart Cities"
+          ],
+          "societal_impact": "Shifts in employment, privacy, and autonomy, with potential for enhanced human capabilities and new forms of social interaction.",
+          "global_trends": "Increased focus on ethical AI development, regulatory frameworks for neural technology, and a push towards inclusive technology access."
+        },
+        {
+          "theme": "Sustainable Living",
+          "description": "Technological advancements aimed at mitigating climate change and promoting sustainability.",
+          "related_technologies": [
+            "Sustainable Fusion Energy",
+            "Automated Urban Transportation"
+          ],
+          "societal_impact": "Reduction in carbon footprint, transformation of energy markets, and new economic models based on environmental sustainability.",
+          "global_trends": "Global push for renewable energy, regulatory incentives for green technologies, and public demand for sustainable living solutions."
+        }
+      ]
+    }
+  },
+  "last_updated": "2024-11-30T02:24:57.187205"
+}
