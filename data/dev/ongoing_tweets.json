@@ -232,5 +232,14 @@
     "id": "tweet_26",
     "tweet_count": 26,
     "simulated_date": "2026-09-17"
+  },
+  {
+    "content": "ugh, my trading algo just crashed in real-world testing  turns out there was a bug in the risk assessment part. fixed it, but yeah, gotta remember to stress test before going live",
+    "age": 23.6875,
+    "timestamp": "2024-11-30T02:26:50.895894",
+    "raw_content": "Just had a setback\u2014my trading algorithm tanked in real-world testing due to a bug in the risk assessment module. Fixed it, but it's a reminder to always stress test.",
+    "id": "tweet_27",
+    "tweet_count": 27,
+    "simulated_date": "2026-10-11"
   }
 ]
