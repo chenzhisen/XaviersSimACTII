@@ -1,0 +1,154 @@
+{
+  "tech_trees": {
+    "2025": {
+      "emerging_technologies": [
+        {
+          "name": "Quantum-Enhanced AI",
+          "probability": "0.7",
+          "estimated_year": "2027",
+          "expected_maturity_year": "2035",
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "AI-Driven Code Autonomy",
+            "Quantum Computing"
+          ],
+          "impact_areas": [
+            "AI Research",
+            "Computational Science",
+            "Defense"
+          ],
+          "description": "AI systems that leverage quantum computing to solve complex optimization problems at unprecedented speeds.",
+          "societal_implications": "Potential for significant advancements in drug discovery, climate modeling, and cybersecurity. Ethical concerns about AI's decision-making capabilities and potential misuse.",
+          "adoption_factors": "Requires quantum computing hardware to become more accessible, advancements in quantum algorithms, and sufficient funding for R&D."
+        },
+        {
+          "name": "Space-Based Solar Power",
+          "probability": "0.6",
+          "estimated_year": "2028",
+          "expected_maturity_year": "2033",
+          "innovation_type": "incremental",
+          "dependencies": [
+            "Sustainable Energy",
+            "Space Exploration"
+          ],
+          "impact_areas": [
+            "Energy",
+            "Space Industry"
+          ],
+          "description": "Utilization of solar panels in Earth's orbit to collect solar energy and beam it back to Earth for power generation.",
+          "societal_implications": "Could provide clean, inexhaustible energy, reducing reliance on fossil fuels. Potential geopolitical implications and space debris concerns.",
+          "adoption_factors": "Technological maturity of space launch systems, international cooperation, and overcoming the technical challenges of energy transmission from space."
+        },
+        {
+          "name": "Urban Air Mobility",
+          "probability": "0.8",
+          "estimated_year": "2026",
+          "expected_maturity_year": "2032",
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Autonomous Systems",
+            "Electric Vehicles"
+          ],
+          "impact_areas": [
+            "Transportation",
+            "Urban Planning"
+          ],
+          "description": "Autonomous electric vertical take-off and landing (eVTOL) vehicles for urban transport, reducing ground congestion.",
+          "societal_implications": "Change in urban mobility, potential for new job sectors, and noise pollution concerns. Requires new regulatory frameworks.",
+          "adoption_factors": "Infrastructure development, public acceptance, regulatory approval, and advancements in battery technology."
+        },
+        {
+          "name": "Neural Memory Augmentation",
+          "probability": "0.4",
+          "estimated_year": "2029",
+          "expected_maturity_year": "2040",
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Neural Interfaces",
+            "AI-Driven Code Autonomy"
+          ],
+          "impact_areas": [
+            "Healthcare",
+            "Education",
+            "Entertainment"
+          ],
+          "description": "Technology that allows for the enhancement or modification of human memory through neural interfaces.",
+          "societal_implications": "Potential to revolutionize learning, treatment for memory-related disorders, but raises profound ethical questions about identity and privacy.",
+          "adoption_factors": "Significant advancements in neuroscience, ethical considerations, public perception, and regulatory hurdles."
+        },
+        {
+          "name": "Global Decentralized Network",
+          "probability": "0.75",
+          "estimated_year": "2027",
+          "expected_maturity_year": "2035",
+          "innovation_type": "incremental",
+          "dependencies": [
+            "Digital Infrastructure",
+            "Global Connectivity"
+          ],
+          "impact_areas": [
+            "Communication",
+            "Finance",
+            "Governance"
+          ],
+          "description": "A global network leveraging blockchain technology for secure, decentralized communication and data storage.",
+          "societal_implications": "Enhancement of privacy, potential for more democratic data governance, but also potential for misuse in anonymity.",
+          "adoption_factors": "Scalability issues of blockchain, regulatory acceptance, and the need for a critical mass of users."
+        }
+      ],
+      "mainstream_technologies": [
+        {
+          "name": "AI-Driven Code Autonomy",
+          "from_emerging": true,
+          "original_emergence_year": "2024",
+          "maturity_year": "2030",
+          "impact_level": "7",
+          "description": "AI systems that generate, test, and maintain code, significantly enhancing developer productivity.",
+          "adoption_status": "Widespread adoption in software development, with AI tools like Cursor AI becoming standard in the industry."
+        },
+        {
+          "name": "Autonomous Driving Systems",
+          "from_emerging": false,
+          "original_emergence_year": "2020",
+          "maturity_year": "2028",
+          "impact_level": "8",
+          "description": "Fully autonomous vehicles capable of navigating complex urban environments without human intervention.",
+          "adoption_status": "Becoming standard in urban transport, with regulatory frameworks and infrastructure adapting to support autonomous travel."
+        },
+        {
+          "name": "High-Altitude Platform Systems (HAPS)",
+          "from_emerging": true,
+          "original_emergence_year": "2025",
+          "maturity_year": "2030",
+          "impact_level": "6",
+          "description": "Aircraft or balloons operating at high altitudes to provide broadband internet and surveillance capabilities.",
+          "adoption_status": "Increasingly used for rural connectivity and emergency services, with companies like Starlink expanding their services."
+        }
+      ],
+      "epoch_themes": [
+        {
+          "theme": "AI as a Co-Creator",
+          "description": "AI systems are not just tools but active participants in the creative process, from software development to content creation.",
+          "related_technologies": [
+            "AI-Driven Code Autonomy",
+            "Quantum-Enhanced AI"
+          ],
+          "societal_impact": "Redefining the role of human creativity, potentially leading to job displacement in some sectors but also new opportunities in AI-human collaboration.",
+          "global_trends": "Shift towards AI-driven innovation, increased focus on AI ethics, and the need for new educational paradigms."
+        },
+        {
+          "theme": "Sustainable Expansion",
+          "description": "A focus on technologies that support sustainable growth and environmental resilience while expanding human capabilities and infrastructure.",
+          "related_technologies": [
+            "Space-Based Solar Power",
+            "Urban Air Mobility",
+            "Autonomous Driving Systems"
+          ],
+          "societal_impact": "Potential for significant improvements in quality of life, but also challenges in managing the transition to new systems.",
+          "global_trends": "Growing emphasis on green technology, urban redesign, and the integration of autonomous systems into daily life."
+        }
+      ]
+    }
+  },
+  "last_updated": "2024-11-30T11:37:53.479832"
+}
