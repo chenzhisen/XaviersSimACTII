@@ -1,0 +1,105 @@
+{
+  "tech_trees": {
+    "2025": {
+      "emerging_technologies": [
+        {
+          "name": "Neural Lace Interface",
+          "probability": "0.7",
+          "estimated_year": "2027",
+          "expected_maturity_year": "2035",
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Neuralink's Brain-Machine Interface",
+            "AI-Driven Code Autonomy"
+          ],
+          "impact_areas": [
+            "Human Augmentation",
+            "Health Care",
+            "Entertainment"
+          ],
+          "description": "A highly advanced brain-computer interface that allows for direct communication between the brain and digital devices, enhancing cognitive abilities and providing seamless interaction with digital environments.",
+          "societal_implications": "Raises concerns about privacy, security, and the ethics of human augmentation. Potential for cognitive inequality and changes in social interaction.",
+          "adoption_factors": "Requires advancements in neurotechnology, biocompatible materials, and public acceptance of invasive technology."
+        },
+        {
+          "name": "Interstellar Propulsion System",
+          "probability": "0.5",
+          "estimated_year": "2030",
+          "expected_maturity_year": "2045",
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "SpaceX's Starship",
+            "Advanced Fusion Power"
+          ],
+          "impact_areas": [
+            "Space Exploration",
+            "Interplanetary Travel"
+          ],
+          "description": "A propulsion technology using antimatter or fusion drives for faster-than-light or near-light-speed travel, enabling humanity to reach distant stars.",
+          "societal_implications": "Expands the human frontier, potentially leading to colonization efforts or resource extraction from other star systems.",
+          "adoption_factors": "Dependent on breakthroughs in energy production, material science, and the acceptance of high-risk, high-reward space missions."
+        },
+        {
+          "name": "Smart Dust Network",
+          "probability": "0.8",
+          "estimated_year": "2028",
+          "expected_maturity_year": "2032",
+          "innovation_type": "incremental",
+          "dependencies": [
+            "IoT",
+            "AI-Driven Code Autonomy"
+          ],
+          "impact_areas": [
+            "Environment Monitoring",
+            "Infrastructure Management",
+            "Health Care"
+          ],
+          "description": "Microscopic sensors that can self-organize into networks to monitor and interact with their environment, providing real-time data on various conditions.",
+          "societal_implications": "Could revolutionize environmental monitoring and resource management but raises privacy issues due to pervasive surveillance capabilities.",
+          "adoption_factors": "Requires miniaturization of sensors, energy harvesting technologies, and widespread acceptance of IoT devices."
+        }
+      ],
+      "mainstream_technologies": [
+        {
+          "name": "AI-Driven Code Autonomy",
+          "from_emerging": true,
+          "original_emergence_year": "2024",
+          "maturity_year": "2027",
+          "impact_level": "8",
+          "description": "AI systems capable of autonomously writing, testing, and deploying code, significantly reducing the need for human intervention in software development.",
+          "adoption_status": "Widely adopted in software development, enhancing productivity, reducing human error, and accelerating development cycles."
+        }
+      ],
+      "epoch_themes": [
+        {
+          "theme": "Human Augmentation",
+          "description": "The integration of technology with the human body to enhance cognitive and physical capabilities.",
+          "related_technologies": [
+            "Neural Lace Interface"
+          ],
+          "societal_impact": "Alters concepts of human identity, privacy, and equality, with potential for both empowerment and division within society.",
+          "global_trends": "Increased focus on bioethics, regulatory frameworks for human augmentation, and the rise of transhumanism as a philosophical movement."
+        },
+        {
+          "theme": "Space Frontier Expansion",
+          "description": "Advancements in technology aimed at expanding human presence beyond Earth, focusing on interplanetary travel and colonization.",
+          "related_technologies": [
+            "Interstellar Propulsion System"
+          ],
+          "societal_impact": "Potential for new economic models, resource allocation, and geopolitical strategies in space.",
+          "global_trends": "Growth in space tourism, private space enterprises, and international collaborations for space missions."
+        },
+        {
+          "theme": "Environmental Stewardship",
+          "description": "Technological innovations aimed at monitoring, managing, and improving environmental health.",
+          "related_technologies": [
+            "Smart Dust Network"
+          ],
+          "societal_impact": "Encourages sustainable practices, potentially reducing environmental degradation and enhancing resource management.",
+          "global_trends": "Increased focus on climate change mitigation, circular economy principles, and green technology investments."
+        }
+      ]
+    }
+  },
+  "last_updated": "2024-11-30T12:03:40.636691"
+}
