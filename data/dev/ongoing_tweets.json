@@ -43,5 +43,14 @@
     "id": "tweet_5",
     "tweet_count": 5,
     "simulated_date": "2025-05-01"
+  },
+  {
+    "content": "Just found a sneaky bug in my trading algo that was messing with my risk assessment. Got it fixed, but it's a good reminder to test everything thoroughly!",
+    "age": 22.375,
+    "timestamp": "2024-11-30T02:25:24.902292",
+    "raw_content": "Found a bug in my trading algorithm that was skewing my risk assessment. Fixed it, but it's a reminder of the importance of thorough testing.",
+    "id": "tweet_6",
+    "tweet_count": 6,
+    "simulated_date": "2025-05-25"
   }
 ]
