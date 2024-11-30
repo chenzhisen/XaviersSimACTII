@@ -187,5 +187,14 @@
     "id": "tweet_21",
     "tweet_count": 21,
     "simulated_date": "2026-05-20"
+  },
+  {
+    "content": "just added sentiment analysis to my trading algo  early results look good for predicting market moves, but gotta work on the risk management side of things still.",
+    "age": 23.375,
+    "timestamp": "2024-11-30T02:26:50.895488",
+    "raw_content": "Implemented sentiment analysis into the trading algorithm. Early tests show promising results in predicting market movements. Still, need to refine the risk management protocols.",
+    "id": "tweet_22",
+    "tweet_count": 22,
+    "simulated_date": "2026-06-13"
   }
 ]
