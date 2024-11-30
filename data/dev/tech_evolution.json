@@ -1,0 +1,96 @@
+{
+  "tech_trees": {
+    "2025": {
+      "emerging_technologies": [
+        {
+          "name": "AI-Driven Code Autonomy",
+          "probability": "0.95",
+          "estimated_year": "2024",
+          "expected_maturity_year": "2027",
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Cursor AI",
+            "AI Assistants"
+          ],
+          "impact_areas": [
+            "Software Development",
+            "Automation"
+          ],
+          "description": "AI systems capable of autonomously developing, testing, and deploying software applications, reducing human intervention.",
+          "societal_implications": "This technology could lead to significant job displacement in software development, prompting discussions on re-skilling and job automation ethics.",
+          "adoption_factors": "High demand for automation in software development, regulatory approval for AI in critical systems, and ethical considerations regarding AI autonomy."
+        },
+        {
+          "name": "Mind-to-Machine Interfaces",
+          "probability": "0.75",
+          "estimated_year": "2025",
+          "expected_maturity_year": "2029",
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Neural Interfaces",
+            "AI"
+          ],
+          "impact_areas": [
+            "Healthcare",
+            "Entertainment",
+            "Accessibility"
+          ],
+          "description": "Interfaces allowing direct communication between human brains and digital systems for control and data exchange.",
+          "societal_implications": "Enhancements in cognitive abilities, ethical concerns about privacy and consent, potential for social stratification based on access to technology.",
+          "adoption_factors": "Progress in neuroscience, public acceptance, regulatory frameworks for human augmentation, and privacy laws."
+        },
+        {
+          "name": "Lunar Resource Utilization",
+          "probability": "0.8",
+          "estimated_year": "2026",
+          "expected_maturity_year": "2030",
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Space Exploration",
+            "Autonomous Systems"
+          ],
+          "impact_areas": [
+            "Space Industry",
+            "Energy"
+          ],
+          "description": "Technologies for mining and processing resources on the Moon for use in space missions and potentially for Earth.",
+          "societal_implications": "Reduction in space mission costs, new geopolitical dynamics regarding space resources, and potential environmental impacts on the Moon.",
+          "adoption_factors": "Technological feasibility, international agreements on lunar resource rights, and investment in space infrastructure."
+        }
+      ],
+      "mainstream_technologies": [
+        {
+          "name": "AI-Driven Code Autonomy",
+          "from_emerging": true,
+          "original_emergence_year": "2024",
+          "maturity_year": "2027",
+          "impact_level": "8",
+          "description": "AI systems that can autonomously develop, test, and deploy software applications.",
+          "adoption_status": "Widespread adoption in software development sectors, particularly in enterprises looking to reduce development cycles and costs."
+        }
+      ],
+      "epoch_themes": [
+        {
+          "theme": "Autonomy and Human Augmentation",
+          "description": "Advancements in AI and neural technologies are pushing boundaries in automation and cognitive enhancement.",
+          "related_technologies": [
+            "AI-Driven Code Autonomy",
+            "Mind-to-Machine Interfaces"
+          ],
+          "societal_impact": "Potential for significant job automation, enhanced human capabilities, and ethical debates on AI governance and human rights in an augmented world.",
+          "global_trends": "Increased focus on AI ethics, regulatory frameworks for human augmentation, and global collaboration in technology governance."
+        },
+        {
+          "theme": "Space Industrialization",
+          "description": "The shift towards using extraterrestrial resources for space missions and potentially Earth's needs.",
+          "related_technologies": [
+            "Lunar Resource Utilization"
+          ],
+          "societal_impact": "New economic opportunities, shifts in global power dynamics, and environmental considerations for extraterrestrial bodies.",
+          "global_trends": "Development of space laws, international cooperation in space exploration, and public-private partnerships for space resource management."
+        }
+      ]
+    }
+  },
+  "last_updated": "2024-11-30T13:11:41.311736"
+}
