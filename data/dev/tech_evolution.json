@@ -1,0 +1,112 @@
+{
+  "tech_trees": {
+    "2025": {
+      "emerging_technologies": [
+        {
+          "name": "AI-Driven Software Development",
+          "probability": "0.75",
+          "estimated_year": "2026",
+          "expected_maturity_year": "2032",
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "AI-Driven Code Autonomy"
+          ],
+          "impact_areas": [
+            "Software Engineering",
+            "Productivity"
+          ],
+          "description": "Building on AI-Driven Code Autonomy, this technology involves AI systems capable of autonomously developing software from high-level specifications, including design, coding, testing, and deployment.",
+          "societal_implications": "Reduces the need for human programmers, potentially leading to job displacement but also enabling rapid software innovation and customization.",
+          "adoption_factors": "Adoption will depend on the reliability and security of AI-generated code, regulatory acceptance, and industry trust in AI development processes."
+        },
+        {
+          "name": "Neural-Enhanced Learning Platforms",
+          "probability": "0.6",
+          "estimated_year": "2027",
+          "expected_maturity_year": "2034",
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Neural Interfaces"
+          ],
+          "impact_areas": [
+            "Education",
+            "Skill Development"
+          ],
+          "description": "Platforms that integrate neural interfaces to enhance learning by directly interfacing with the brain, enabling accelerated skill acquisition and knowledge transfer.",
+          "societal_implications": "Could revolutionize education, potentially reducing educational inequality but raising ethical concerns about privacy, mental health, and cognitive equality.",
+          "adoption_factors": "Adoption will be influenced by the technology's efficacy, ethical considerations, and regulatory approval for use in educational settings."
+        },
+        {
+          "name": "Blockchain-based Autonomous Governance",
+          "probability": "0.8",
+          "estimated_year": "2026",
+          "expected_maturity_year": "2031",
+          "innovation_type": "incremental",
+          "dependencies": [
+            "AI-Driven Software Development",
+            "Digital Infrastructure"
+          ],
+          "impact_areas": [
+            "Governance",
+            "Transparency"
+          ],
+          "description": "Systems where AI and blockchain technology work together to create decentralized, transparent, and autonomous governance structures for organizations or even small communities.",
+          "societal_implications": "Promotes transparency and reduces corruption but requires new legal frameworks and could face resistance from established governance models.",
+          "adoption_factors": "Adoption will hinge on overcoming legal barriers, societal acceptance of decentralized governance, and the reliability of AI in decision-making processes."
+        },
+        {
+          "name": "Planetary Resource Management AI",
+          "probability": "0.65",
+          "estimated_year": "2029",
+          "expected_maturity_year": "2035",
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "AI-Driven Software Development",
+            "Space Exploration"
+          ],
+          "impact_areas": [
+            "Space Exploration",
+            "Resource Allocation"
+          ],
+          "description": "AI systems designed to manage resources on other planets, optimizing extraction, distribution, and utilization for human settlements.",
+          "societal_implications": "Enables sustainable colonization efforts, but also raises questions about resource rights and environmental impact in extraterrestrial settings.",
+          "adoption_factors": "Adoption will depend on the success of initial space missions, the development of space law, and the maturity of AI technologies for such complex tasks."
+        }
+      ],
+      "mainstream_technologies": [
+        {
+          "name": "AI-Powered Code Autonomy",
+          "from_emerging": true,
+          "original_emergence_year": "2024",
+          "maturity_year": "2028",
+          "impact_level": "7",
+          "description": "AI systems that autonomously write, debug, and optimize code, significantly enhancing developer productivity.",
+          "adoption_status": "Widespread adoption in software development, with major companies integrating these tools into their workflows."
+        }
+      ],
+      "epoch_themes": [
+        {
+          "theme": "AI and Automation Expansion",
+          "description": "Focus on the expansion of AI capabilities into new domains, including software development, governance, and resource management.",
+          "related_technologies": [
+            "AI-Driven Software Development",
+            "Blockchain-based Autonomous Governance",
+            "Planetary Resource Management AI"
+          ],
+          "societal_impact": "AI's integration into core societal functions could lead to significant changes in employment, governance, and human interaction with technology.",
+          "global_trends": "The trend towards automation and AI-driven solutions in all sectors, with a particular emphasis on sustainability and extraterrestrial applications."
+        },
+        {
+          "theme": "Human Augmentation and Education",
+          "description": "Technological advancements in neural interfaces and learning platforms to enhance human capabilities.",
+          "related_technologies": [
+            "Neural-Enhanced Learning Platforms"
+          ],
+          "societal_impact": "Potential for reducing educational disparities but also for creating new divides based on access to technology.",
+          "global_trends": "A growing interest in cognitive enhancement technologies to address global educational challenges and skill shortages."
+        }
+      ]
+    }
+  },
+  "last_updated": "2024-11-30T13:23:17.802107"
+}
