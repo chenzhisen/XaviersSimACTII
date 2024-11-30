@@ -1,0 +1,99 @@
+{
+  "tech_trees": {
+    "2025": {
+      "emerging_technologies": [
+        {
+          "name": "AI-Driven Autonomous Construction",
+          "probability": "0.7",
+          "estimated_year": "2027",
+          "expected_maturity_year": "2032",
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "AI Assistants",
+            "Autonomous Systems",
+            "3D Printing"
+          ],
+          "impact_areas": [
+            "Construction Industry",
+            "Urban Development",
+            "Resource Management"
+          ],
+          "description": "AI systems capable of designing, planning, and executing construction projects with minimal human intervention, using advanced 3D printing and robotic assembly.",
+          "societal_implications": "Could revolutionize urban planning by enabling rapid construction and customization of infrastructure, potentially reducing housing shortages. Raises questions about job displacement in construction sectors.",
+          "adoption_factors": "Need for regulatory approval, public trust in AI for safety-critical tasks, and integration with existing construction practices."
+        },
+        {
+          "name": "Neuro-Linked Cognitive Enhancement",
+          "probability": "0.6",
+          "estimated_year": "2028",
+          "expected_maturity_year": "2035",
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Neural Interfaces",
+            "AI Assistants"
+          ],
+          "impact_areas": [
+            "Education",
+            "Workforce Efficiency",
+            "Healthcare"
+          ],
+          "description": "Neural implants that augment cognitive abilities, allowing for direct brain-computer interfaces for enhanced learning, memory, and problem-solving capabilities.",
+          "societal_implications": "Potential to bridge gaps in education and skill acquisition but raises ethical concerns regarding cognitive inequality and privacy of thought.",
+          "adoption_factors": "Requires extensive ethical review, regulatory approval, and public acceptance of invasive technology."
+        },
+        {
+          "name": "Quantum-Secure Blockchain",
+          "probability": "0.8",
+          "estimated_year": "2026",
+          "expected_maturity_year": "2031",
+          "innovation_type": "incremental",
+          "dependencies": [
+            "Blockchain",
+            "Quantum Computing"
+          ],
+          "impact_areas": [
+            "Cybersecurity",
+            "Digital Infrastructure",
+            "Finance"
+          ],
+          "description": "A blockchain protocol with quantum-resistant algorithms to ensure security against future quantum computing threats.",
+          "societal_implications": "Enhances trust in digital transactions and data storage, vital for a secure digital economy.",
+          "adoption_factors": "Adoption depends on the progression of quantum computing technology and the need for preemptive security measures."
+        }
+      ],
+      "mainstream_technologies": [
+        {
+          "name": "Global Decentralized Communication Platforms",
+          "from_emerging": true,
+          "original_emergence_year": "2025",
+          "maturity_year": "2030",
+          "impact_level": "7",
+          "description": "Platforms like X.com (Twitter) evolve into fully decentralized, blockchain-based social networks, fostering free speech and collaborative governance.",
+          "adoption_status": "High adoption due to increasing demand for privacy, security, and user control over data. Integration with other decentralized technologies drives further adoption."
+        }
+      ],
+      "epoch_themes": [
+        {
+          "theme": "Human-Machine Integration",
+          "description": "Advancements in neural interfaces and AI are leading to deeper integration of technology with human cognition and daily life.",
+          "related_technologies": [
+            "Neuro-Linked Cognitive Enhancement",
+            "AI-Driven Autonomous Construction"
+          ],
+          "societal_impact": "This integration could lead to significant enhancements in human capabilities but also raises concerns about privacy, identity, and the essence of human experience.",
+          "global_trends": "Increasing focus on human augmentation in various sectors, with ethical debates on the boundaries of technology and humanity."
+        },
+        {
+          "theme": "Sustainable Urban Development",
+          "description": "Focus on building smart, resilient, and sustainable cities through autonomous systems and AI-driven construction.",
+          "related_technologies": [
+            "AI-Driven Autonomous Construction"
+          ],
+          "societal_impact": "Promotes sustainable living, reduces urban sprawl, and increases efficiency in resource management, but could disrupt traditional construction jobs.",
+          "global_trends": "Growing emphasis on green infrastructure and urban resilience in response to climate change and population growth."
+        }
+      ]
+    }
+  },
+  "last_updated": "2024-11-29T23:28:12.280403"
+}
