@@ -1,0 +1,119 @@
+{
+  "tech_trees": {
+    "2025": {
+      "emerging_technologies": [
+        {
+          "name": "AI-Powered Autonomous Drone Swarms",
+          "probability": "0.85",
+          "estimated_year": "2026",
+          "expected_maturity_year": "2030",
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Advanced AI",
+            "Drone Technology",
+            "5G Networks"
+          ],
+          "impact_areas": [
+            "Urban Infrastructure",
+            "Emergency Response",
+            "Environmental Monitoring"
+          ],
+          "description": "Swarm of drones coordinated by AI for tasks like urban maintenance, disaster response, and environmental surveillance.",
+          "societal_implications": "Enhances efficiency in urban planning and emergency services but raises privacy and security concerns.",
+          "adoption_factors": "Regulatory approval, public trust, and technological reliability are crucial for adoption."
+        },
+        {
+          "name": "Neuralink's MindMesh",
+          "probability": "0.70",
+          "estimated_year": "2027",
+          "expected_maturity_year": "2032",
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Brain-Machine Interface",
+            "AI",
+            "Quantum Computing"
+          ],
+          "impact_areas": [
+            "Health",
+            "Human Augmentation",
+            "Education"
+          ],
+          "description": "A neural interface that allows direct communication between human minds, enhancing cognitive collaboration and learning.",
+          "societal_implications": "Potential for revolutionizing communication, education, and therapy, but ethical concerns about privacy and identity are paramount.",
+          "adoption_factors": "Requires significant breakthroughs in neuroscience, ethical approval, and public acceptance."
+        },
+        {
+          "name": "Blockchain-based Digital Identity",
+          "probability": "0.90",
+          "estimated_year": "2026",
+          "expected_maturity_year": "2029",
+          "innovation_type": "incremental",
+          "dependencies": [
+            "Blockchain",
+            "AI for Verification"
+          ],
+          "impact_areas": [
+            "Privacy",
+            "Security",
+            "Global Connectivity"
+          ],
+          "description": "A secure, decentralized system for managing digital identities, ensuring privacy and control over personal data.",
+          "societal_implications": "Empowers individuals with data sovereignty, but challenges include regulatory alignment and interoperability.",
+          "adoption_factors": "Global standards, user education, and integration with existing systems are key for widespread adoption."
+        }
+      ],
+      "mainstream_technologies": [
+        {
+          "name": "Electric Vertical Takeoff and Landing (eVTOL) Vehicles",
+          "from_emerging": true,
+          "original_emergence_year": "2025",
+          "maturity_year": "2028",
+          "impact_level": "7",
+          "description": "Urban air mobility vehicles for short-range transportation, reducing congestion and emissions.",
+          "adoption_status": "Widespread adoption in urban areas with regulatory frameworks in place."
+        },
+        {
+          "name": "Global High-Speed Internet via Starlink",
+          "from_emerging": true,
+          "original_emergence_year": "2025",
+          "maturity_year": "2029",
+          "impact_level": "8",
+          "description": "A satellite-based internet service providing global coverage, bridging the digital divide.",
+          "adoption_status": "Massive adoption in remote and underserved areas, transforming education, telemedicine, and connectivity."
+        }
+      ],
+      "epoch_themes": [
+        {
+          "theme": "AI-Driven Autonomy",
+          "description": "The era where AI not only assists but autonomously manages complex systems, from urban infrastructure to personal health.",
+          "related_technologies": [
+            "AI-Powered Autonomous Drone Swarms",
+            "Neuralink's MindMesh"
+          ],
+          "societal_impact": "Increased efficiency and safety, but also raises questions about job displacement, privacy, and control over autonomous systems.",
+          "global_trends": "Growing investment in AI, regulatory frameworks for autonomous technologies, and public debate on AI ethics."
+        },
+        {
+          "theme": "Sustainable Urbanization",
+          "description": "Advances in technology to make cities more livable, sustainable, and efficient.",
+          "related_technologies": [
+            "eVTOL Vehicles",
+            "AI-Powered Autonomous Drone Swarms"
+          ],
+          "societal_impact": "Reduces urban congestion, improves air quality, and supports sustainable development goals.",
+          "global_trends": "Urbanization, climate change mitigation, and smart city initiatives."
+        },
+        {
+          "theme": "Digital Sovereignty",
+          "description": "A focus on individual control over personal data and digital identity through blockchain and AI.",
+          "related_technologies": [
+            "Blockchain-based Digital Identity"
+          ],
+          "societal_impact": "Promotes privacy, security, and personal autonomy, but challenges include regulatory alignment and cybersecurity.",
+          "global_trends": "Increasing emphasis on data protection laws, decentralized governance, and digital rights advocacy."
+        }
+      ]
+    }
+  },
+  "last_updated": "2024-11-30T02:07:37.586057"
+}
