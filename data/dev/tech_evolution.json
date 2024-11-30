@@ -1,0 +1,155 @@
+{
+  "tech_trees": {
+    "2025": {
+      "emerging_technologies": [
+        {
+          "name": "AI-Driven Code Autonomy",
+          "probability": "0.9",
+          "estimated_year": "2024",
+          "expected_maturity_year": "2027",
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Cursor AI"
+          ],
+          "impact_areas": [
+            "Software Development",
+            "Automation"
+          ],
+          "description": "AI systems that can autonomously develop, debug, and deploy software, significantly reducing human involvement in the coding process.",
+          "societal_implications": "Potential for job displacement in software development, increased efficiency in software production, and democratization of programming capabilities.",
+          "adoption_factors": "High initial resistance due to job security concerns, gradual acceptance through proof of concept and cost savings, regulatory hurdles related to AI governance."
+        },
+        {
+          "name": "Quantum Computing for AI",
+          "probability": "0.7",
+          "estimated_year": "2025",
+          "expected_maturity_year": "2030",
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "AI-Driven Code Autonomy",
+            "Quantum Computing"
+          ],
+          "impact_areas": [
+            "Machine Learning",
+            "Optimization",
+            "Cryptography"
+          ],
+          "description": "Quantum computers specifically designed to enhance AI algorithms, allowing for exponential speed-up in learning and optimization processes.",
+          "societal_implications": "Accelerated development of AI technologies, potential breakthroughs in drug discovery, weather modeling, and financial modeling.",
+          "adoption_factors": "High capital investment, need for new algorithms, and specialized hardware; regulatory challenges around quantum security and AI ethics."
+        },
+        {
+          "name": "Autonomous Urban Infrastructure Management",
+          "probability": "0.8",
+          "estimated_year": "2026",
+          "expected_maturity_year": "2029",
+          "innovation_type": "incremental",
+          "dependencies": [
+            "Autonomous Systems",
+            "AI"
+          ],
+          "impact_areas": [
+            "Urban Planning",
+            "Public Works",
+            "Sustainability"
+          ],
+          "description": "Systems for managing urban infrastructure autonomously, optimizing resource allocation, traffic flow, and energy consumption.",
+          "societal_implications": "Improved city livability, reduced emissions, and better resource management, but also potential for increased surveillance and privacy concerns.",
+          "adoption_factors": "Initial pilot projects, public-private partnerships, resistance from traditional infrastructure firms, regulatory approval for autonomous operations."
+        },
+        {
+          "name": "Neural Telepathy",
+          "probability": "0.6",
+          "estimated_year": "2027",
+          "expected_maturity_year": "2035",
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Neural Interfaces",
+            "AI"
+          ],
+          "impact_areas": [
+            "Communication",
+            "Healthcare",
+            "Entertainment"
+          ],
+          "description": "Direct brain-to-brain communication through neural interfaces, allowing for telepathic interaction.",
+          "societal_implications": "Revolutionary changes in communication, potential for mind reading and privacy issues, ethical debates about consciousness and identity.",
+          "adoption_factors": "High ethical and privacy concerns, need for extensive testing, regulatory oversight, and public acceptance."
+        },
+        {
+          "name": "Interplanetary Resource Management",
+          "probability": "0.5",
+          "estimated_year": "2028",
+          "expected_maturity_year": "2040",
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Space Exploration",
+            "AI",
+            "Autonomous Systems"
+          ],
+          "impact_areas": [
+            "Space Industry",
+            "Resource Management"
+          ],
+          "description": "Systems for managing resources on other planets, including mining, processing, and distribution.",
+          "societal_implications": "Expansion of human presence in space, potential for resource conflicts, environmental concerns about planetary pollution.",
+          "adoption_factors": "Technological breakthroughs, international cooperation, cost-effectiveness, and regulatory frameworks for space resource rights."
+        },
+        {
+          "name": "AI-Powered Environmental Restoration",
+          "probability": "0.85",
+          "estimated_year": "2027",
+          "expected_maturity_year": "2032",
+          "innovation_type": "incremental",
+          "dependencies": [
+            "Sustainable Technology",
+            "AI"
+          ],
+          "impact_areas": [
+            "Environment",
+            "Conservation",
+            "Agriculture"
+          ],
+          "description": "AI systems that restore degraded ecosystems, manage invasive species, and optimize agricultural practices for sustainability.",
+          "societal_implications": "Increased biodiversity, improved food security, potential for AI-driven land grabs or ethical concerns about altering ecosystems.",
+          "adoption_factors": "Government incentives, public-private partnerships, environmental activism, regulatory support for sustainability initiatives."
+        }
+      ],
+      "mainstream_technologies": [
+        {
+          "name": "AI-Driven Code Autonomy",
+          "from_emerging": true,
+          "original_emergence_year": "2024",
+          "maturity_year": "2027",
+          "impact_level": "8",
+          "description": "AI systems capable of autonomously developing, debugging, and deploying software, with significant adoption in software development practices.",
+          "adoption_status": "Widespread adoption in tech companies, with tools like Cursor AI becoming industry standards for coding."
+        }
+      ],
+      "epoch_themes": [
+        {
+          "theme": "The Age of Autonomous Systems",
+          "description": "A period where autonomous technologies permeate various sectors, from urban infrastructure to space exploration.",
+          "related_technologies": [
+            "AI-Driven Code Autonomy",
+            "Autonomous Urban Infrastructure Management",
+            "Interplanetary Resource Management"
+          ],
+          "societal_impact": "Significant changes in job markets, urban planning, privacy considerations, and environmental management.",
+          "global_trends": "Increased focus on AI ethics, regulatory frameworks for autonomous operations, and global cooperation in space exploration."
+        },
+        {
+          "theme": "Sustainable Innovation",
+          "description": "Technology development focused on addressing climate change, resource management, and environmental resilience.",
+          "related_technologies": [
+            "AI-Powered Environmental Restoration",
+            "Sustainable Technology"
+          ],
+          "societal_impact": "Shift towards circular economies, sustainable practices, and a heightened awareness of environmental impact.",
+          "global_trends": "Growing environmental consciousness, international treaties, and corporate sustainability commitments."
+        }
+      ]
+    }
+  },
+  "last_updated": "2024-11-30T13:46:29.277401"
+}
