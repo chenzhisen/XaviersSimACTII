@@ -127,7 +127,117 @@
           "global_trends": "Increased interest in blockchain, cryptocurrencies, and decentralized platforms for various applications."
         }
       ]
+    },
+    "2030": {
+      "emerging_technologies": [
+        {
+          "name": "AI-Driven Urban Design",
+          "probability": "0.75",
+          "estimated_year": "2030",
+          "expected_maturity_year": "2035",
+          "innovation_type": "incremental",
+          "dependencies": [
+            "AI-Driven Urban Planning",
+            "Cognitive Augmentation"
+          ],
+          "impact_areas": [
+            "Urban Planning",
+            "Sustainable Development"
+          ],
+          "description": "AI systems that autonomously design urban environments with real-time adaptability, optimizing for sustainability, efficiency, and livability.",
+          "societal_implications": "Potential for reducing urban sprawl, improving energy efficiency, and enhancing quality of life. However, raises concerns about loss of human control over urban spaces and privacy issues due to extensive data collection.",
+          "adoption_factors": "Requires widespread acceptance of AI in governance, overcoming public skepticism, and ensuring transparency in AI decision-making processes."
+        },
+        {
+          "name": "Neural Mind Uploading",
+          "probability": "0.50",
+          "estimated_year": "2031",
+          "expected_maturity_year": "2036",
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Cognitive Augmentation",
+            "Quantum Blockchain"
+          ],
+          "impact_areas": [
+            "Human Augmentation",
+            "Digital Consciousness"
+          ],
+          "description": "Technology allowing for the transfer of human consciousness into digital formats for preservation, analysis, or interaction.",
+          "societal_implications": "Ethical, philosophical, and legal challenges related to identity, rights, and personhood. Could revolutionize healthcare, education, and work by allowing digital immortality or enhancement.",
+          "adoption_factors": "Public acceptance of digital consciousness, regulatory frameworks for digital entities, and significant advancements in neuroscience and computing power."
+        },
+        {
+          "name": "Decentralized Space Economy",
+          "probability": "0.65",
+          "estimated_year": "2032",
+          "expected_maturity_year": "2037",
+          "innovation_type": "incremental",
+          "dependencies": [
+            "Autonomous In-Orbit Construction",
+            "Blockchain-Powered Collaborative Governance"
+          ],
+          "impact_areas": [
+            "Space Exploration",
+            "Economics"
+          ],
+          "description": "Utilization of blockchain for managing space resources, trade, and governance, creating a self-sustaining space economy.",
+          "societal_implications": "Could democratize space access and resources, but also introduces complexities in international law and resource ownership.",
+          "adoption_factors": "Requires international agreements, technological advancements in space travel and resource extraction, and a robust, secure blockchain infrastructure."
+        }
+      ],
+      "mainstream_technologies": [
+        {
+          "name": "AI-Driven Code Autonomy",
+          "from_emerging": true,
+          "original_emergence_year": "2024",
+          "maturity_year": "2030",
+          "impact_level": "8",
+          "description": "AI systems that autonomously write, maintain, and optimize code, significantly reducing the need for human coding.",
+          "adoption_status": "Widespread adoption in software development, with companies heavily relying on AI for productivity gains."
+        },
+        {
+          "name": "Cognitive Augmentation",
+          "from_emerging": true,
+          "original_emergence_year": "2025",
+          "maturity_year": "2030",
+          "impact_level": "9",
+          "description": "Enhancements to human cognitive abilities through neural interfaces and AI, improving memory, focus, and decision-making.",
+          "adoption_status": "Mainstream use in education, healthcare, and professional settings, with regulatory frameworks addressing ethical concerns."
+        },
+        {
+          "name": "Quantum Blockchain",
+          "from_emerging": true,
+          "original_emergence_year": "2025",
+          "maturity_year": "2029",
+          "impact_level": "7",
+          "description": "Integration of quantum computing with blockchain for enhanced security and efficiency in transactions.",
+          "adoption_status": "Widely adopted in financial systems, governmental applications, and critical infrastructure, ensuring secure and efficient transactions."
+        }
+      ],
+      "epoch_themes": [
+        {
+          "theme": "Integration of AI into Human Life",
+          "description": "The pervasive integration of AI into daily life, enhancing human capabilities and automating complex tasks.",
+          "related_technologies": [
+            "AI-Driven Urban Design",
+            "Cognitive Augmentation",
+            "AI-Driven Code Autonomy"
+          ],
+          "societal_impact": "Significant improvements in productivity, quality of life, and innovation, but also challenges regarding job displacement and privacy.",
+          "global_trends": "Global movement towards AI ethics, education, and regulation to ensure equitable distribution of AI benefits and mitigate risks."
+        },
+        {
+          "theme": "Space as the Next Frontier",
+          "description": "Expansion of human presence and economic activities into space, leveraging emerging technologies for sustainability and governance.",
+          "related_technologies": [
+            "Autonomous In-Orbit Construction",
+            "Decentralized Space Economy"
+          ],
+          "societal_impact": "Potential for new industries, resource scarcity alleviation, and geopolitical shifts, but also risks of space militarization and environmental impact.",
+          "global_trends": "Increased international cooperation, development of space law, and initiatives for space debris management."
+        }
+      ]
     }
   },
-  "last_updated": "2024-11-30T16:59:11.225540"
+  "last_updated": "2024-11-30T17:55:32.887197"
 }
