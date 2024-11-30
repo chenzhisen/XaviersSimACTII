@@ -16,5 +16,14 @@
     "id": "tweet_2",
     "tweet_count": 2,
     "simulated_date": "2025-01-25"
+  },
+  {
+    "content": "just started a python course for algo trading, gonna dive deep into pandas and numpy. this is the base for my new trading strategy",
+    "age": 22.09375,
+    "timestamp": "2024-11-30T13:23:58.271634",
+    "raw_content": "Just started a Python course on algorithmic trading. I'm diving deep into libraries like Pandas and NumPy. This will be the foundation for my new trading strategy.",
+    "id": "tweet_3",
+    "tweet_count": 3,
+    "simulated_date": "2025-02-06"
   }
 ]
