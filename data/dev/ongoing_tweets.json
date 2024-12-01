@@ -448,5 +448,14 @@
     "id": "tweet_50",
     "tweet_count": 50,
     "simulated_date": "2025-07-20"
+  },
+  {
+    "content": "i had a wild night debugging my pandas pipeline. finally got it working & my sentiment analysis is looking sharp rn. ready to level up",
+    "age": 22.53125,
+    "timestamp": "2024-11-30T21:15:07.263187",
+    "raw_content": "Ran into some issues with my data pipeline in Pandas. After a debugging marathon, I finally got it flowing smoothly. Now, my sentiment analysis is ready to take on the next level.",
+    "id": "tweet_51",
+    "tweet_count": 51,
+    "simulated_date": "2025-07-24"
   }
 ]
