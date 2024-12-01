@@ -88,5 +88,14 @@
     "id": "tweet_10",
     "tweet_count": 10,
     "simulated_date": "2025-02-10"
+  },
+  {
+    "content": "fixed that overfitting issue and ran new sims, things are looking up! recovery plan's working",
+    "age": 22.114583333333332,
+    "timestamp": "2024-12-01T18:29:12.455628",
+    "raw_content": "Adjusted the model after the overfitting issue. Ran new simulations, and the results are promising. Recovery strategy is paying off.",
+    "id": "tweet_11",
+    "tweet_count": 11,
+    "simulated_date": "2025-02-14"
   }
 ]
