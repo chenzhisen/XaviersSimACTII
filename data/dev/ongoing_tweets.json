@@ -16,5 +16,14 @@
     "id": "tweet_2",
     "tweet_count": 2,
     "simulated_date": "2025-01-09"
+  },
+  {
+    "content": "spent the last few days diving into rust. finally got my trading bot running 20% faster. feels good to see code actually making a difference",
+    "age": 22.03125,
+    "timestamp": "2024-12-01T12:06:05.477084",
+    "raw_content": "Spent the last few days brushing up on Rust. Managed to optimize a trading bot's performance by 20%. It's rewarding to see code translate into real-world impact.",
+    "id": "tweet_3",
+    "tweet_count": 3,
+    "simulated_date": "2025-01-13"
   }
 ]
