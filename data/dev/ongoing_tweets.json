@@ -7,5 +7,14 @@
     "id": "tweet_1",
     "tweet_count": 1,
     "simulated_date": "2025-01-05"
+  },
+  {
+    "content": "Just had a chill bday in my cozy NYC apt. Been thinking about the past year and what's next. Thinking about diving into Rust for my trading algo. Could be the secret weapon I need",
+    "age": 22.020833333333332,
+    "timestamp": "2024-12-01T12:01:35.992010",
+    "raw_content": "Had a quiet birthday in my tiny NYC apartment, reflecting on the year past and the one ahead. Rust seems like the right choice for my trading algorithms; its performance could be the edge I need.",
+    "id": "tweet_2",
+    "tweet_count": 2,
+    "simulated_date": "2025-01-09"
   }
 ]
