@@ -16,5 +16,14 @@
     "id": "tweet_2",
     "tweet_count": 2,
     "simulated_date": "2025-01-09"
+  },
+  {
+    "content": "just started messing with rust, got a basic trading bot up and running. now the real challenge is making it survive the wild market swings. city life's got me thinking, chaos can spark some pretty cool code, right?",
+    "age": 22.03125,
+    "timestamp": "2024-12-01T12:01:35.992044",
+    "raw_content": "Diving into Rust. Managed to set up a basic trading bot framework. It's a start, but the real challenge is optimizing for extreme market conditions. Thinking about how the city's chaos can inspire my code.",
+    "id": "tweet_3",
+    "tweet_count": 3,
+    "simulated_date": "2025-01-13"
   }
 ]
