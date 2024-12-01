@@ -7,5 +7,14 @@
     "id": "tweet_1",
     "tweet_count": 1,
     "simulated_date": "2025-01-05"
+  },
+  {
+    "content": "just turned 22 and i'm deep into Python tutorials for algo trading. excited but ngl, it's a lot to take in.",
+    "age": 22.020833333333332,
+    "timestamp": "2024-11-30T21:58:14.523789",
+    "raw_content": "Just turned 22, and I'm diving into Python tutorials for algorithmic trading. Feeling excited and a bit overwhelmed.",
+    "id": "tweet_2",
+    "tweet_count": 2,
+    "simulated_date": "2025-01-09"
   }
 ]
