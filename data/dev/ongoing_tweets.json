@@ -16,5 +16,14 @@
     "id": "tweet_2",
     "tweet_count": 2,
     "simulated_date": "2025-01-09"
+  },
+  {
+    "content": "Man, Xander's learning curve is wild. Spent ages tweaking the data pipeline just to get him real-time market updates. S&P 500's got patterns I can see, but Xander's not there yet.",
+    "age": 22.03125,
+    "timestamp": "2024-12-01T17:51:23.428545",
+    "raw_content": "Xander's learning curve is steeper than expected. Spent hours refining the data pipeline to feed him real-time market updates. Noticed a pattern in the S&P 500, but Xander's still too green to catch it.",
+    "id": "tweet_3",
+    "tweet_count": 3,
+    "simulated_date": "2025-01-13"
   }
 ]
