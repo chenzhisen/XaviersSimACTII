@@ -16,5 +16,14 @@
     "id": "tweet_2",
     "tweet_count": 2,
     "simulated_date": "2025-01-09"
+  },
+  {
+    "content": "So, spent the last few days diving into Rust. It's tough but pretty cool. Today, finally wrote my first function for a lil trading algo  small steps, but I'm getting there.",
+    "age": 22.03125,
+    "timestamp": "2024-12-01T17:29:16.403269",
+    "raw_content": "Spent the last few days learning Rust. It's challenging but rewarding. Today, I wrote my first Rust function for a basic trading algorithm. Small steps, but I'm moving forward.",
+    "id": "tweet_3",
+    "tweet_count": 3,
+    "simulated_date": "2025-01-13"
   }
 ]
