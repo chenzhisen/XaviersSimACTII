@@ -34,5 +34,14 @@
     "id": "tweet_4",
     "tweet_count": 4,
     "simulated_date": "2025-01-17"
+  },
+  {
+    "content": "Just spent the last few days coding a high-frequency trading thingy in Rust. Got the basics up and running, but latency's still too high. Need to figure out how to optimize this.",
+    "age": 22.052083333333332,
+    "timestamp": "2024-12-01T18:26:19.514398",
+    "raw_content": "Spent the last few days coding a high-frequency trading module in Rust. Got a basic setup running, but the latency is still too high. Need to optimize.",
+    "id": "tweet_5",
+    "tweet_count": 5,
+    "simulated_date": "2025-01-21"
   }
 ]
