@@ -1,0 +1,105 @@
+{
+  "tech_trees": {
+    "2025": {
+      "emerging_technologies": [
+        {
+          "name": "Self-Regulating AI Agents",
+          "probability": "0.8",
+          "estimated_year": "2026",
+          "expected_maturity_year": "2030",
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Advanced Machine Learning",
+            "Edge Computing"
+          ],
+          "impact_areas": [
+            "AI Ethics",
+            "Autonomous Systems"
+          ],
+          "description": "AI agents capable of self-regulation, adapting their behavior based on ethical guidelines and real-time environmental feedback.",
+          "societal_implications": "Reduces need for human oversight in AI operations, raises questions about AI rights and responsibilities.",
+          "adoption_factors": "Need for ethical AI, legal frameworks for AI autonomy, technological breakthroughs in machine learning."
+        },
+        {
+          "name": "Haptic AI Interfaces",
+          "probability": "0.7",
+          "estimated_year": "2027",
+          "expected_maturity_year": "2031",
+          "innovation_type": "incremental",
+          "dependencies": [
+            "Neural Interfaces",
+            "Sensors Technology"
+          ],
+          "impact_areas": [
+            "Human-Machine Interaction",
+            "Virtual Reality"
+          ],
+          "description": "Advanced interfaces allowing AI agents to communicate through touch, enhancing user interaction in VR and daily life.",
+          "societal_implications": "Improves accessibility for visually impaired, potential for over-reliance on technology.",
+          "adoption_factors": "Advancements in sensor tech, VR market growth, consumer demand for immersive experiences."
+        },
+        {
+          "name": "Decentralized Agent Networks",
+          "probability": "0.6",
+          "estimated_year": "2028",
+          "expected_maturity_year": "2033",
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Blockchain",
+            "AI Agents"
+          ],
+          "impact_areas": [
+            "AI Governance",
+            "Cybersecurity"
+          ],
+          "description": "A network of AI agents operating on decentralized systems, ensuring autonomy and security through blockchain.",
+          "societal_implications": "Promotes data sovereignty, challenges traditional centralized control structures.",
+          "adoption_factors": "Regulatory changes, growth in blockchain technology, need for secure and transparent AI systems."
+        }
+      ],
+      "mainstream_technologies": [
+        {
+          "name": "AI-Assisted Decision Making",
+          "from_emerging": true,
+          "original_emergence_year": "2023",
+          "maturity_year": "2028",
+          "impact_level": "7",
+          "description": "AI systems that provide real-time decision support to humans, enhancing efficiency and reducing cognitive load.",
+          "adoption_status": "Widespread in business, healthcare, and personal life. Legal frameworks are adapting to AI's role in decision-making."
+        },
+        {
+          "name": "Autonomous Vehicles",
+          "from_emerging": true,
+          "original_emergence_year": "2016",
+          "maturity_year": "2027",
+          "impact_level": "9",
+          "description": "Fully autonomous vehicles for personal and public transport, reducing accidents, and optimizing traffic flow.",
+          "adoption_status": "Integrated into urban infrastructure, with ongoing development in rural areas and specialized environments."
+        }
+      ],
+      "epoch_themes": [
+        {
+          "theme": "Autonomy and Agency",
+          "description": "A shift towards systems where AI agents have significant autonomy, reshaping human-machine interactions.",
+          "related_technologies": [
+            "Self-Regulating AI Agents",
+            "Decentralized Agent Networks"
+          ],
+          "societal_impact": "Redefines job roles, raises ethical questions about AI rights, impacts governance structures.",
+          "global_trends": "Increased focus on AI ethics, development of new legal frameworks for AI, and integration of AI into daily life."
+        },
+        {
+          "theme": "Integration and Immersion",
+          "description": "Technologies designed to enhance human experience through seamless integration with digital environments.",
+          "related_technologies": [
+            "Haptic AI Interfaces",
+            "Neural Interfaces"
+          ],
+          "societal_impact": "Enhances accessibility, changes how we perceive and interact with reality, raises privacy concerns.",
+          "global_trends": "Growth in VR/AR markets, advancements in human augmentation, and a push towards more intuitive user interfaces."
+        }
+      ]
+    }
+  },
+  "last_updated": "2024-12-01T12:05:40.723814"
+}
