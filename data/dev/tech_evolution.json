@@ -1,0 +1,108 @@
+{
+  "tech_trees": {
+    "2025": {
+      "emerging_technologies": [
+        {
+          "name": "Autonomous Decision-Making Agents",
+          "probability": "0.7",
+          "estimated_year": "2026",
+          "expected_maturity_year": "2032",
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Advanced Machine Learning",
+            "Neural Interfaces"
+          ],
+          "impact_areas": [
+            "Healthcare",
+            "Finance",
+            "Transportation"
+          ],
+          "description": "AI agents capable of making complex decisions with minimal human oversight, integrating real-time data analysis and predictive modeling.",
+          "societal_implications": "Increased efficiency in decision-making processes, potential job displacement in decision-centric roles, ethical concerns over AI's moral decision-making.",
+          "adoption_factors": "Regulatory frameworks for AI governance, public trust in autonomous systems, advancements in explainable AI."
+        },
+        {
+          "name": "Ethically Aligned AI",
+          "probability": "0.8",
+          "estimated_year": "2027",
+          "expected_maturity_year": "2031",
+          "innovation_type": "incremental",
+          "dependencies": [
+            "AI Ethics Frameworks",
+            "Blockchain for Transparency"
+          ],
+          "impact_areas": [
+            "Government",
+            "Corporate Governance",
+            "Consumer Products"
+          ],
+          "description": "AI systems designed with ethical frameworks ensuring decisions align with human values and societal norms.",
+          "societal_implications": "Reduction in AI-related ethical dilemmas, increased transparency in AI decision-making, potential for biased ethical frameworks.",
+          "adoption_factors": "Global ethical standards, public demand for ethical AI, legal and regulatory support for ethical AI development."
+        },
+        {
+          "name": "Multi-Agent Collaborative Networks",
+          "probability": "0.65",
+          "estimated_year": "2028",
+          "expected_maturity_year": "2033",
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Interoperability Standards",
+            "Agent Communication Protocols"
+          ],
+          "impact_areas": [
+            "Manufacturing",
+            "Logistics",
+            "Disaster Response"
+          ],
+          "description": "Networks of AI agents that can collaborate, negotiate, and coordinate actions autonomously to achieve complex objectives.",
+          "societal_implications": "Enhanced productivity, potential for AI-driven societal coordination, privacy concerns due to increased data sharing.",
+          "adoption_factors": "Standards for agent interoperability, development of robust agent communication protocols, infrastructure for real-time agent interaction."
+        }
+      ],
+      "mainstream_technologies": [
+        {
+          "name": "AI-Powered Personal Assistants",
+          "from_emerging": true,
+          "original_emergence_year": "2023",
+          "maturity_year": "2026",
+          "impact_level": "8",
+          "description": "Personal assistants that can handle a wide array of tasks from scheduling to predictive analysis of user behavior.",
+          "adoption_status": "Widely adopted in consumer electronics, businesses, and smart homes, with continuous updates for enhanced functionality."
+        },
+        {
+          "name": "Blockchain-Enhanced Security",
+          "from_emerging": true,
+          "original_emergence_year": "2024",
+          "maturity_year": "2027",
+          "impact_level": "7",
+          "description": "Integration of blockchain technology for enhancing security protocols across various sectors.",
+          "adoption_status": "Standard in financial transactions, supply chain management, and IoT security, with ongoing improvements in scalability and interoperability."
+        }
+      ],
+      "epoch_themes": [
+        {
+          "theme": "Agent-Driven Automation",
+          "description": "The era where AI agents become central to automation in various industries, leading to significant productivity gains and shifts in labor markets.",
+          "related_technologies": [
+            "Autonomous Decision-Making Agents",
+            "Multi-Agent Collaborative Networks"
+          ],
+          "societal_impact": "Increased automation leading to job displacement, necessitating retraining programs and new economic models.",
+          "global_trends": "Global push towards AI governance, development of international standards for agent interoperability, and ethical AI frameworks."
+        },
+        {
+          "theme": "Ethical AI",
+          "description": "Focus on developing AI systems that are transparent, fair, and aligned with human values.",
+          "related_technologies": [
+            "Ethically Aligned AI",
+            "Blockchain-Enhanced Security"
+          ],
+          "societal_impact": "Shift towards more ethical business practices, consumer demand for ethically sourced AI products, potential for regulatory frameworks.",
+          "global_trends": "International collaboration on AI ethics, increased focus on explainable AI, and integration of ethical principles into AI development cycles."
+        }
+      ]
+    }
+  },
+  "last_updated": "2024-12-01T17:27:39.622742"
+}
