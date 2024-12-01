@@ -61,5 +61,14 @@
     "id": "tweet_7",
     "tweet_count": 7,
     "simulated_date": "2025-01-29"
+  },
+  {
+    "content": "Ugh, my model's being a pain, it's overfitting like crazy.  Gotta tweak some settings to make it play nice with all the data. Learning curve is real, but I'll get there!",
+    "age": 22.083333333333332,
+    "timestamp": "2024-12-01T18:29:12.455590",
+    "raw_content": "Had a setback with my model; overfitting the data. Time to adjust parameters and ensure it generalizes better. Learning from this.",
+    "id": "tweet_8",
+    "tweet_count": 8,
+    "simulated_date": "2025-02-02"
   }
 ]
