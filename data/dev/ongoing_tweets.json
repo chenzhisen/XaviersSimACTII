@@ -196,5 +196,14 @@
     "id": "tweet_22",
     "tweet_count": 22,
     "simulated_date": "2025-03-30"
+  },
+  {
+    "content": "so, xander\u2019s rust code just beat our python in a sim, like we're talking milliseconds difference, but in high-frequency trading that's a big deal. might be time to really get into rust optimization",
+    "age": 22.239583333333332,
+    "timestamp": "2024-12-01T18:21:41.844370",
+    "raw_content": "Xander's Rust code just outperformed our Python version in a sim. We're talking milliseconds, but in high-frequency trading, that's huge. Time to dive deeper into Rust optimization.",
+    "id": "tweet_23",
+    "tweet_count": 23,
+    "simulated_date": "2025-04-03"
   }
 ]
