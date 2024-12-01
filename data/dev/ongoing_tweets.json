@@ -43,5 +43,14 @@
     "id": "tweet_5",
     "tweet_count": 5,
     "simulated_date": "2025-01-21"
+  },
+  {
+    "content": "hit a snag in my code, the algo isn't dealing with market shifts rn. thinking i might need to get cozy with Rust's concurrency. maybe the subway chaos can inspire me on handling sudden changes?",
+    "age": 22.0625,
+    "timestamp": "2024-12-01T12:01:35.992126",
+    "raw_content": "Hit a snag in my code. The algorithm isn't handling sudden market shifts well. Time to dive deeper into Rust's concurrency features. Maybe the city's subway system can give me some ideas on handling chaos.",
+    "id": "tweet_6",
+    "tweet_count": 6,
+    "simulated_date": "2025-01-25"
   }
 ]
