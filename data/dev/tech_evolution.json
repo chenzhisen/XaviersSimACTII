@@ -1,0 +1,124 @@
+{
+  "tech_trees": {
+    "2025": {
+      "emerging_technologies": [
+        {
+          "name": "AI-Driven Code Autonomy",
+          "probability": "0.9",
+          "estimated_year": "2024",
+          "expected_maturity_year": "2027",
+          "innovation_type": "incremental",
+          "dependencies": [
+            "AI Assistants",
+            "Advanced Machine Learning"
+          ],
+          "impact_areas": [
+            "Software Development",
+            "AI Research"
+          ],
+          "description": "AI tools like Cursor AI evolve to autonomously generate, test, and deploy software, significantly reducing human intervention in coding processes.",
+          "societal_implications": "Potential job displacement in coding roles; increased efficiency in software development; ethical concerns over AI-generated code.",
+          "adoption_factors": "High due to efficiency gains, though concerns about reliability and security of AI-generated code may slow mainstream adoption."
+        },
+        {
+          "name": "Urban-Scale Autonomous Infrastructure",
+          "probability": "0.8",
+          "estimated_year": "2026",
+          "expected_maturity_year": "2029",
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "AI-Driven Code Autonomy",
+            "Autonomous Vehicles"
+          ],
+          "impact_areas": [
+            "Urban Planning",
+            "Transportation"
+          ],
+          "description": "Cities begin implementing AI-managed systems for traffic, waste management, energy distribution, and public transport.",
+          "societal_implications": "Reduced urban congestion, improved quality of life, but raises privacy concerns and potential job loss in traditional infrastructure management.",
+          "adoption_factors": "Regulatory approval, public trust in AI systems, and economic feasibility are key factors for widespread adoption."
+        },
+        {
+          "name": "Neural Enhancement Devices",
+          "probability": "0.6",
+          "estimated_year": "2027",
+          "expected_maturity_year": "2030",
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Neural Interfaces",
+            "Advanced AI"
+          ],
+          "impact_areas": [
+            "Healthcare",
+            "Education",
+            "Military"
+          ],
+          "description": "Devices that enhance cognitive abilities through direct brain-computer interfaces, initially for medical applications but with broader uses.",
+          "societal_implications": "Ethical debates on cognitive enhancement, potential social inequality, privacy issues, and the definition of human enhancement.",
+          "adoption_factors": "Public acceptance, regulatory approval, and ethical considerations will significantly influence adoption rates."
+        },
+        {
+          "name": "Interplanetary Resource Management",
+          "probability": "0.7",
+          "estimated_year": "2028",
+          "expected_maturity_year": "2032",
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Space Exploration",
+            "AI-Driven Code Autonomy"
+          ],
+          "impact_areas": [
+            "Space Industry",
+            "Resource Management"
+          ],
+          "description": "AI systems manage resources on extraterrestrial bodies, optimizing mining, water extraction, and habitat management for human colonization.",
+          "societal_implications": "Expansion of human presence in space, potential for new economies, but also raises questions about space law, property rights, and environmental impact.",
+          "adoption_factors": "Technological feasibility, international cooperation, and investment in space infrastructure."
+        }
+      ],
+      "mainstream_technologies": [
+        {
+          "name": "AI-Powered Communication Platforms",
+          "from_emerging": true,
+          "original_emergence_year": "2024",
+          "maturity_year": "2026",
+          "impact_level": "7",
+          "description": "Platforms like X.com integrate AI for real-time translation, moderation, and content personalization, enhancing user engagement.",
+          "adoption_status": "Widely adopted due to the need for better online communication and community management."
+        },
+        {
+          "name": "Global High-Speed Internet",
+          "from_emerging": true,
+          "original_emergence_year": "2023",
+          "maturity_year": "2028",
+          "impact_level": "8",
+          "description": "Starlink's satellite internet service becomes the norm for global connectivity, providing high-speed internet to remote and underserved areas.",
+          "adoption_status": "High adoption due to the necessity of internet access for education, work, and social interaction."
+        }
+      ],
+      "epoch_themes": [
+        {
+          "theme": "AI and Automation",
+          "description": "AI integration into daily life, enhancing productivity, and reshaping industries through automation.",
+          "related_technologies": [
+            "AI-Driven Code Autonomy",
+            "Urban-Scale Autonomous Infrastructure"
+          ],
+          "societal_impact": "Increased efficiency but potential job displacement; shift in educational focus to AI literacy.",
+          "global_trends": "AI becoming central to economic growth and governance, pushing for AI ethics and regulation."
+        },
+        {
+          "theme": "Space Exploration and Settlement",
+          "description": "Advancements towards sustainable human presence beyond Earth, including resource management and infrastructure development.",
+          "related_technologies": [
+            "Interplanetary Resource Management",
+            "SpaceX's Mars Colonization"
+          ],
+          "societal_impact": "Expansion of human potential, new economic opportunities, but also complex international legal and ethical issues.",
+          "global_trends": "Increased investment in space technology, international collaboration, and the emergence of space law."
+        }
+      ]
+    }
+  },
+  "last_updated": "2024-11-30T21:28:51.717132"
+}
