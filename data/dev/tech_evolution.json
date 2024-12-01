@@ -1,0 +1,106 @@
+{
+  "tech_trees": {
+    "2025": {
+      "emerging_technologies": [
+        {
+          "name": "Emotionally Intelligent AI Agents",
+          "probability": "0.7",
+          "estimated_year": "2026",
+          "expected_maturity_year": "2030",
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Advanced NLP",
+            "Machine Learning"
+          ],
+          "impact_areas": [
+            "Healthcare",
+            "Education",
+            "Customer Service"
+          ],
+          "description": "AI agents capable of interpreting and responding to human emotions with nuanced empathy.",
+          "societal_implications": "Enhancement of mental health support, personalized education, and more natural customer interactions, raising questions about privacy and emotional manipulation.",
+          "adoption_factors": "Widespread adoption depends on breakthroughs in emotional recognition technology, ethical guidelines, and public acceptance of AI in sensitive areas."
+        },
+        {
+          "name": "Agent Governance Frameworks",
+          "probability": "0.65",
+          "estimated_year": "2027",
+          "expected_maturity_year": "2032",
+          "innovation_type": "incremental",
+          "dependencies": [
+            "Blockchain",
+            "AI Ethics"
+          ],
+          "impact_areas": [
+            "Business",
+            "Government"
+          ],
+          "description": "Systems for managing and overseeing AI agent networks to ensure ethical behavior and decision-making.",
+          "societal_implications": "Promotes trust in AI systems, reduces risk of AI misuse, but introduces regulatory complexities.",
+          "adoption_factors": "Adoption will be driven by regulatory pressure, industry standards, and the need for transparency in AI operations."
+        },
+        {
+          "name": "AI-Driven Autonomous Construction",
+          "probability": "0.55",
+          "estimated_year": "2028",
+          "expected_maturity_year": "2035",
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Robotics",
+            "Computer Vision"
+          ],
+          "impact_areas": [
+            "Construction",
+            "Urban Planning"
+          ],
+          "description": "Autonomous AI agents that can design, plan, and execute construction projects with minimal human intervention.",
+          "societal_implications": "Accelerates infrastructure development, reduces labor-intensive work, but may lead to job displacement.",
+          "adoption_factors": "Requires advancements in robotics, AI safety protocols, and legal frameworks for autonomous construction."
+        }
+      ],
+      "mainstream_technologies": [
+        {
+          "name": "General-Purpose AI Agents",
+          "from_emerging": true,
+          "original_emergence_year": "2025",
+          "maturity_year": "2029",
+          "impact_level": "8",
+          "description": "AI agents capable of performing a wide range of tasks with human-like adaptability and decision-making.",
+          "adoption_status": "Widespread in businesses for automation, personal assistance, and various service sectors. Adoption driven by productivity gains and cost reduction."
+        },
+        {
+          "name": "Agent-Human Collaborative Systems",
+          "from_emerging": true,
+          "original_emergence_year": "2026",
+          "maturity_year": "2030",
+          "impact_level": "7",
+          "description": "Systems where humans and AI agents work together seamlessly, enhancing each other's capabilities.",
+          "adoption_status": "Becomes standard in workplaces for efficiency, creativity, and problem-solving. Adoption facilitated by advances in natural language processing and trust-building technologies."
+        }
+      ],
+      "epoch_themes": [
+        {
+          "theme": "The Rise of Autonomy",
+          "description": "A focus on autonomous systems in various sectors, from personal assistance to industrial applications.",
+          "related_technologies": [
+            "General-Purpose AI Agents",
+            "AI-Driven Autonomous Construction"
+          ],
+          "societal_impact": "Shifts in labor markets, increased productivity, and potential societal upheaval due to automation.",
+          "global_trends": "Global competition for AI supremacy, with nations investing heavily in autonomous tech to gain strategic advantages."
+        },
+        {
+          "theme": "Ethical AI",
+          "description": "A growing emphasis on ethical considerations in AI development and deployment.",
+          "related_technologies": [
+            "Agent Governance Frameworks",
+            "Emotionally Intelligent AI Agents"
+          ],
+          "societal_impact": "Promotes responsible AI use, but also introduces new ethical dilemmas regarding AI rights and responsibilities.",
+          "global_trends": "Emergence of international standards for AI ethics, influencing technology policies worldwide."
+        }
+      ]
+    }
+  },
+  "last_updated": "2024-12-01T18:28:47.790873"
+}
