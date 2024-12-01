@@ -232,5 +232,14 @@
     "id": "tweet_26",
     "tweet_count": 26,
     "simulated_date": "2025-04-15"
+  },
+  {
+    "content": "had a little hiccup with our rust code today. turns out, there was a bug in the memory management that made everything crawl. back to the drawing board, but tbh, it's kinda cool learning all these rust quirks.",
+    "age": 22.28125,
+    "timestamp": "2024-12-01T18:21:41.844902",
+    "raw_content": "Had a setback with our Rust code. A bug in the memory management slowed everything down. Back to the drawing board, but I'm learning so much about Rust's nuances.",
+    "id": "tweet_27",
+    "tweet_count": 27,
+    "simulated_date": "2025-04-19"
   }
 ]
