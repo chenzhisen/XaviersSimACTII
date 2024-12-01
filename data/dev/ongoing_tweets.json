@@ -61,5 +61,14 @@
     "id": "tweet_7",
     "tweet_count": 7,
     "simulated_date": "2025-01-29"
+  },
+  {
+    "content": "ugh, had a bit of a hiccup with my trading model. xander was overfitting like crazy  guess it's back to the drawing board to tweak some settings",
+    "age": 22.083333333333332,
+    "timestamp": "2024-12-01T18:26:19.514456",
+    "raw_content": "Had a minor setback with Xander. The model overfitted on my trading data. Back to the drawing board to adjust the parameters.",
+    "id": "tweet_8",
+    "tweet_count": 8,
+    "simulated_date": "2025-02-02"
   }
 ]
