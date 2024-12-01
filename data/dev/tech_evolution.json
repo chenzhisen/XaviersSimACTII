@@ -1,0 +1,160 @@
+{
+  "tech_trees": {
+    "2025": {
+      "emerging_technologies": [
+        {
+          "name": "General-Purpose Autonomous Agents",
+          "probability": "0.7",
+          "estimated_year": "2027",
+          "expected_maturity_year": "2032",
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Advanced AI",
+            "Machine Learning",
+            "Neural Interfaces"
+          ],
+          "impact_areas": [
+            "Automation",
+            "Service Industry",
+            "Personal Assistance"
+          ],
+          "description": "Agents capable of performing a wide array of tasks with minimal human input, adapting to new environments and user needs.",
+          "societal_implications": "Redefines labor markets, increases productivity, and potentially decreases job availability in certain sectors. Ethical concerns about autonomy and decision-making arise.",
+          "adoption_factors": "High initial cost, need for regulatory frameworks, cultural acceptance of AI in daily life, and the development of trust in AI decision-making."
+        },
+        {
+          "name": "Collaborative Multi-Agent Systems",
+          "probability": "0.65",
+          "estimated_year": "2026",
+          "expected_maturity_year": "2031",
+          "innovation_type": "incremental",
+          "dependencies": [
+            "AI Agents",
+            "Blockchain",
+            "IoT"
+          ],
+          "impact_areas": [
+            "Smart Cities",
+            "Supply Chain",
+            "Healthcare"
+          ],
+          "description": "Systems where multiple agents work together to achieve complex objectives, enhancing efficiency and decision-making.",
+          "societal_implications": "Enhances urban planning, logistics, and emergency response. However, concerns about privacy and data security grow due to increased interconnectivity.",
+          "adoption_factors": "Requires interoperability standards, robust cybersecurity measures, and public trust in networked AI systems."
+        },
+        {
+          "name": "Ethical Decision-Making Agents",
+          "probability": "0.5",
+          "estimated_year": "2028",
+          "expected_maturity_year": "2033",
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "AI Ethics",
+            "Moral Philosophy",
+            "Agent Learning"
+          ],
+          "impact_areas": [
+            "Governance",
+            "Autonomous Vehicles",
+            "AI Policy"
+          ],
+          "description": "Agents designed to make decisions based on ethical frameworks, ensuring AI actions align with human values.",
+          "societal_implications": "Addresses concerns about AI's ethical decision-making, but also brings up debates on what constitutes ethical behavior.",
+          "adoption_factors": "Cultural and philosophical acceptance, regulatory acceptance, and the development of universally accepted ethical standards."
+        },
+        {
+          "name": "Agent Specialization for Industry",
+          "probability": "0.8",
+          "estimated_year": "2025",
+          "expected_maturity_year": "2029",
+          "innovation_type": "incremental",
+          "dependencies": [
+            "Industry-Specific AI",
+            "Data Analytics"
+          ],
+          "impact_areas": [
+            "Manufacturing",
+            "Energy",
+            "Agriculture"
+          ],
+          "description": "Agents tailored for specific industrial applications, optimizing processes and resource management.",
+          "societal_implications": "Boosts efficiency and productivity, but may lead to job displacement in specialized roles.",
+          "adoption_factors": "Industry readiness, cost-effectiveness, and the ability to demonstrate clear ROI."
+        },
+        {
+          "name": "Agent-Human Symbiosis",
+          "probability": "0.6",
+          "estimated_year": "2029",
+          "expected_maturity_year": "2034",
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Neural Interfaces",
+            "AI Agents",
+            "Biometric Sensors"
+          ],
+          "impact_areas": [
+            "Healthcare",
+            "Education",
+            "Entertainment"
+          ],
+          "description": "Agents that integrate seamlessly with human cognitive and emotional processes, enhancing human capabilities.",
+          "societal_implications": "Enhances human performance but raises questions about privacy, identity, and the ethics of enhancement.",
+          "adoption_factors": "Public acceptance, regulatory frameworks for human augmentation, and technological feasibility."
+        }
+      ],
+      "mainstream_technologies": [
+        {
+          "name": "Autonomous Electric Vehicles",
+          "from_emerging": true,
+          "original_emergence_year": "2020",
+          "maturity_year": "2028",
+          "impact_level": "8",
+          "description": "Vehicles capable of self-driving with electric power, significantly reducing human error and pollution.",
+          "adoption_status": "Increasingly adopted in urban environments, regulatory acceptance, and widespread public use."
+        },
+        {
+          "name": "AI-Driven Predictive Maintenance",
+          "from_emerging": true,
+          "original_emergence_year": "2022",
+          "maturity_year": "2027",
+          "impact_level": "7",
+          "description": "AI systems that predict when machinery requires maintenance, reducing downtime and operational costs.",
+          "adoption_status": "Integrated into various industries, with high acceptance in manufacturing and transportation sectors."
+        },
+        {
+          "name": "Smart Home Automation",
+          "from_emerging": true,
+          "original_emergence_year": "2015",
+          "maturity_year": "2026",
+          "impact_level": "6",
+          "description": "AI agents manage home environments, optimizing energy use and enhancing security.",
+          "adoption_status": "Common in new housing developments, with growing retrofitting in older homes."
+        }
+      ],
+      "epoch_themes": [
+        {
+          "theme": "AI Autonomy and Integration",
+          "description": "A shift towards AI systems that not only assist but operate autonomously and integrate deeply with human activities.",
+          "related_technologies": [
+            "General-Purpose Autonomous Agents",
+            "Collaborative Multi-Agent Systems",
+            "Agent-Human Symbiosis"
+          ],
+          "societal_impact": "Transforms daily life, work, and social interactions. Raises ethical, privacy, and identity issues.",
+          "global_trends": "Increased focus on AI governance, human augmentation, and ethical AI frameworks."
+        },
+        {
+          "theme": "Specialization and Industry Transformation",
+          "description": "Industries evolve with AI agents tailored to specific needs, enhancing productivity and innovation.",
+          "related_technologies": [
+            "Agent Specialization for Industry",
+            "AI-Driven Predictive Maintenance"
+          ],
+          "societal_impact": "Alters job markets, increases efficiency, but also displaces traditional roles.",
+          "global_trends": "Industry-specific AI applications become standard, driving sector-specific innovation and competition."
+        }
+      ]
+    }
+  },
+  "last_updated": "2024-12-01T17:48:32.117469"
+}
