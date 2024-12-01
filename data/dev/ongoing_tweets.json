@@ -16,5 +16,14 @@
     "id": "tweet_2",
     "tweet_count": 2,
     "simulated_date": "2025-01-09"
+  },
+  {
+    "content": "just spent the last 4 days diving deep into python's pandas library. feels like learning a whole new language, but for data.",
+    "age": 22.03125,
+    "timestamp": "2024-11-30T21:58:14.523808",
+    "raw_content": "Spent the last 4 days mastering Python's pandas library. It's like learning a new language but for data.",
+    "id": "tweet_3",
+    "tweet_count": 3,
+    "simulated_date": "2025-01-13"
   }
 ]
