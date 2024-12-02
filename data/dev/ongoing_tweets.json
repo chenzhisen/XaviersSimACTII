@@ -43,5 +43,14 @@
     "id": "tweet_5",
     "tweet_count": 5,
     "simulated_date": "2025-01-21"
+  },
+  {
+    "content": "just messing around with xander on market data stuff. it's pretty basic rn, but there's potential there. hit a lil snag with the data, but i'm figuring it out.",
+    "age": 22.0625,
+    "timestamp": "2024-12-01T21:51:22.532051",
+    "raw_content": "Experimenting with Xander on market data classification. It's basic, but the potential is there. Ran into a snag with data preprocessing, but I'm working through it.",
+    "id": "tweet_6",
+    "tweet_count": 6,
+    "simulated_date": "2025-01-25"
   }
 ]
