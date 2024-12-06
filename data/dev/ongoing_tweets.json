@@ -25,5 +25,14 @@
     "id": "tweet_3",
     "tweet_count": 3,
     "simulated_date": "2025-01-13"
+  },
+  {
+    "content": "got my dev setup at home finally, it's pretty basic but hey, it's a start!  been messing around with xai's open-source llm, trying to figure out how to tweak it for market predictions.",
+    "age": 22.041666666666668,
+    "timestamp": "2024-12-06T12:28:12.492047",
+    "raw_content": "Set up a local development environment at home. It's basic, but it's a start. Fiddling with xAI's open-source LLM, thinking about how to fine-tune it for market predictions.",
+    "id": "tweet_4",
+    "tweet_count": 4,
+    "simulated_date": "2025-01-17"
   }
 ]
