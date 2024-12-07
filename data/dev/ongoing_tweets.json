@@ -43,5 +43,14 @@
     "id": "tweet_5",
     "tweet_count": 5,
     "simulated_date": "2025-01-21"
+  },
+  {
+    "content": "Just got back from a coding meetup. Met a cool person working on an AI agent too. We had a chat about distributed training setups and tbh, collab might just be the way to speed things up.",
+    "age": 22.0625,
+    "timestamp": "2024-12-06T19:38:46.729259",
+    "raw_content": "Went to a coding meetup. Met someone who's also working on an AI agent. Shared ideas about distributed training setups. Collaboration might be the key to faster development.",
+    "id": "tweet_6",
+    "tweet_count": 6,
+    "simulated_date": "2025-01-25"
   }
 ]
