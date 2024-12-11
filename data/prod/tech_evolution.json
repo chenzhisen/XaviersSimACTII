@@ -1,0 +1,108 @@
+{
+  "tech_trees": {
+    "2025": {
+      "emerging_technologies": [
+        {
+          "name": "Emotionally Intelligent Agents",
+          "probability": "0.8",
+          "estimated_year": "2027",
+          "expected_maturity_year": "2030",
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Advanced Neural Networks",
+            "Emotion Recognition"
+          ],
+          "impact_areas": [
+            "Healthcare",
+            "Customer Service",
+            "Education"
+          ],
+          "description": "AI agents capable of interpreting and responding to human emotions in real-time, providing a more empathetic interaction.",
+          "societal_implications": "Enhances human-agent interactions, potentially reducing loneliness, improving mental health services, but also raises concerns about manipulation and privacy.",
+          "adoption_factors": "Adoption depends on the development of robust ethical frameworks, public trust in AI, and the integration into existing systems."
+        },
+        {
+          "name": "Autonomous Decision-Making Agents",
+          "probability": "0.7",
+          "estimated_year": "2028",
+          "expected_maturity_year": "2032",
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Advanced Machine Learning",
+            "Blockchain for Governance"
+          ],
+          "impact_areas": [
+            "Finance",
+            "Legal",
+            "Logistics"
+          ],
+          "description": "AI agents that can autonomously make complex decisions based on data analysis, ethical guidelines, and real-time environmental feedback.",
+          "societal_implications": "Could lead to more efficient decision-making in various sectors but brings up issues of accountability, transparency, and the potential for AI bias.",
+          "adoption_factors": "Requires regulatory frameworks for AI governance, public acceptance of AI in decision-making, and technological maturity of supporting systems."
+        },
+        {
+          "name": "Neural Interface for Agent Communication",
+          "probability": "0.6",
+          "estimated_year": "2029",
+          "expected_maturity_year": "2035",
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Neuralink-like Technologies",
+            "AI Communication Protocols"
+          ],
+          "impact_areas": [
+            "Communication",
+            "Assistive Technology",
+            "Education"
+          ],
+          "description": "Direct brain-to-agent communication allowing for seamless and intuitive interaction, reducing the need for physical interfaces.",
+          "societal_implications": "Could revolutionize human-agent collaboration, enhance accessibility for the disabled, but raises privacy, consent, and security concerns.",
+          "adoption_factors": "Adoption hinges on the advancement of safe neural interfaces, ethical considerations, and overcoming societal resistance to brain-computer interfaces."
+        }
+      ],
+      "mainstream_technologies": [
+        {
+          "name": "General-Purpose AI Assistants",
+          "from_emerging": true,
+          "original_emergence_year": "2025",
+          "maturity_year": "2028",
+          "impact_level": "6",
+          "description": "AI assistants that can perform a wide range of tasks from scheduling to complex data analysis, becoming a standard tool in homes and businesses.",
+          "adoption_status": "Widely adopted in consumer markets, with businesses integrating these agents into their operational frameworks for efficiency."
+        },
+        {
+          "name": "AI-Powered Social Media Platforms",
+          "from_emerging": true,
+          "original_emergence_year": "2026",
+          "maturity_year": "2029",
+          "impact_level": "8",
+          "description": "Social media platforms that utilize AI to curate content, moderate interactions, and personalize user experiences.",
+          "adoption_status": "Integrated into major social media networks, significantly altering content consumption and interaction patterns."
+        }
+      ],
+      "epoch_themes": [
+        {
+          "theme": "Agent Autonomy and Ethics",
+          "description": "The progression of AI agents towards greater autonomy and the ethical considerations that accompany this evolution.",
+          "related_technologies": [
+            "Emotionally Intelligent Agents",
+            "Autonomous Decision-Making Agents"
+          ],
+          "societal_impact": "Societies grappling with the implications of autonomous AI, necessitating new frameworks for accountability, ethics, and regulation.",
+          "global_trends": "Global discussions on AI ethics, governance, and the role of AI in decision-making processes."
+        },
+        {
+          "theme": "Human-Agent Symbiosis",
+          "description": "The increasing integration of AI agents into daily life, enhancing human capabilities and interactions.",
+          "related_technologies": [
+            "Neural Interface for Agent Communication",
+            "General-Purpose AI Assistants"
+          ],
+          "societal_impact": "Enhanced productivity, accessibility, and personalization of services, but also potential for dependency and loss of human skills.",
+          "global_trends": "Trend towards seamless human-agent collaboration, with emphasis on user experience and privacy."
+        }
+      ]
+    }
+  },
+  "last_updated": "2024-12-11T16:30:28.078081"
+}
