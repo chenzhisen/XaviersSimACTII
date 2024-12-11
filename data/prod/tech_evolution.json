@@ -1,0 +1,128 @@
+{
+  "tech_trees": {
+    "2025": {
+      "emerging_technologies": [
+        {
+          "name": "AI Emotional Intelligence Agents",
+          "probability": "0.8",
+          "estimated_year": "2026",
+          "expected_maturity_year": "2030",
+          "innovation_type": "incremental",
+          "dependencies": [
+            "Advanced NLP",
+            "Machine Learning"
+          ],
+          "impact_areas": [
+            "Mental Health",
+            "Customer Service",
+            "Education"
+          ],
+          "description": "AI agents capable of understanding and responding to human emotions, enhancing interactions with empathy and emotional support.",
+          "societal_implications": "Potential for improved mental health services, but raises concerns about privacy, data security, and the ethical implications of emotional manipulation.",
+          "adoption_factors": "Adoption will depend on advancements in NLP and machine learning, alongside regulatory acceptance for AI in sensitive areas like mental health."
+        },
+        {
+          "name": "Neuralink 2.0",
+          "probability": "0.6",
+          "estimated_year": "2027",
+          "expected_maturity_year": "2032",
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Brain-Computer Interfaces",
+            "Miniaturization of Electronics"
+          ],
+          "impact_areas": [
+            "Medical Treatment",
+            "Human Enhancement",
+            "Gaming"
+          ],
+          "description": "A second-generation brain-machine interface, allowing for more direct and seamless communication between the human brain and external devices.",
+          "societal_implications": "Potential to revolutionize treatment for neurological disorders, enhance human capabilities, but also raises ethical questions about privacy, identity, and control.",
+          "adoption_factors": "Adoption hinges on overcoming regulatory hurdles, ensuring safety, and addressing public fear of brain implants."
+        },
+        {
+          "name": "Decentralized Autonomous Organizations (DAOs)",
+          "probability": "0.75",
+          "estimated_year": "2026",
+          "expected_maturity_year": "2031",
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Blockchain",
+            "Smart Contracts"
+          ],
+          "impact_areas": [
+            "Governance",
+            "Business",
+            "Finance"
+          ],
+          "description": "Organizations run by code and consensus rather than traditional management structures, leveraging blockchain for transparency and automation.",
+          "societal_implications": "Could democratize governance and business operations, but poses challenges in accountability, legal frameworks, and potential for misuse.",
+          "adoption_factors": "Adoption depends on the evolution of blockchain technology, regulatory acceptance, and the ability to scale smart contract capabilities."
+        },
+        {
+          "name": "Quantum Computing Agents",
+          "probability": "0.4",
+          "estimated_year": "2028",
+          "expected_maturity_year": "2035",
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Quantum Computing",
+            "AI"
+          ],
+          "impact_areas": [
+            "Cryptography",
+            "Drug Discovery",
+            "Financial Modeling"
+          ],
+          "description": "AI agents that leverage quantum computing for solving complex problems exponentially faster than classical computers.",
+          "societal_implications": "Significant advancements in fields like drug discovery and cybersecurity, but also risks of quantum computers breaking current encryption methods.",
+          "adoption_factors": "Adoption is contingent on the development of stable quantum computing systems, AI integration, and overcoming technical challenges in maintaining quantum states."
+        }
+      ],
+      "mainstream_technologies": [
+        {
+          "name": "AI Personal Assistants",
+          "from_emerging": true,
+          "original_emergence_year": "2025",
+          "maturity_year": "2027",
+          "impact_level": "7",
+          "description": "AI agents that provide personalized assistance in daily tasks, from scheduling to managing finances, integrated into smart homes and personal devices.",
+          "adoption_status": "High adoption rate due to user-friendly interfaces, increasing computational power, and the proliferation of IoT devices."
+        },
+        {
+          "name": "Autonomous Delivery Vehicles",
+          "from_emerging": true,
+          "original_emergence_year": "2024",
+          "maturity_year": "2028",
+          "impact_level": "6",
+          "description": "Robotic and drone delivery systems for last-mile delivery, optimized by AI for efficiency and safety.",
+          "adoption_status": "Widespread adoption in urban areas, driven by e-commerce growth, advancements in navigation technology, and regulatory frameworks supporting autonomous vehicles."
+        }
+      ],
+      "epoch_themes": [
+        {
+          "theme": "Human-AI Symbiosis",
+          "description": "A focus on technologies that enhance human capabilities through AI, leading to a new era of human-machine collaboration.",
+          "related_technologies": [
+            "Neuralink 2.0",
+            "AI Personal Assistants",
+            "AI Emotional Intelligence Agents"
+          ],
+          "societal_impact": "Enhancement of human potential, but also raises concerns about the loss of human autonomy and privacy.",
+          "global_trends": "A trend towards integrating AI into daily life, education, work, and health, with a strong emphasis on ethical AI use."
+        },
+        {
+          "theme": "Decentralization",
+          "description": "Movement towards decentralized systems for governance, finance, and technology, reducing reliance on central authorities.",
+          "related_technologies": [
+            "Decentralized Autonomous Organizations",
+            "Blockchain"
+          ],
+          "societal_impact": "Potential for greater transparency and democratization but challenges in legal frameworks and potential for abuse.",
+          "global_trends": "Growth in blockchain adoption, smart contracts, and the rise of decentralized platforms for various applications."
+        }
+      ]
+    }
+  },
+  "last_updated": "2024-12-11T15:41:29.997039"
+}
