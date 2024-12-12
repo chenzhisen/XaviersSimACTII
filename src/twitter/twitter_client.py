@@ -4,6 +4,7 @@ import json
 from src.utils.config import Config
 import requests
 from time import sleep
+import time
 
 class TwitterClientV2:
     def __init__(self):
@@ -140,6 +141,79 @@ class TwitterClientV2:
             raise Exception(f"Request returned an error: {response.status_code} {response.text}")
         
         return response.json()
+
+    def get_user_tweets(self):
+        """Get all tweets for the authenticated user."""
+        # Create an OAuth1 session
+        oauth = OAuth1Session(
+            self.consumer_key,
+            client_secret=self.consumer_secret,
+            resource_owner_key=self.access_token,
+            resource_owner_secret=self.access_token_secret,
+        )
+
+        # First get the user ID
+        response = oauth.get("https://api.twitter.com/2/users/me")
+        if response.status_code != 200:
+            print(f"Error getting user info: {response.status_code} {response.text}")
+            return None
+            
+        user_id = response.json()['data']['id']
+        
+        # Get user's tweets
+        response = oauth.get(
+            f"https://api.twitter.com/2/users/{user_id}/tweets",
+            params={"max_results": 100}  # Maximum allowed per request
+        )
+
+        if response.status_code != 200:
+            print(f"Error getting tweets: {response.status_code} {response.text}")
+            return None
+
+        return response.json().get('data', [])
+
+    def delete_tweet(self, tweet_id):
+        """Delete a tweet using Twitter API v2."""
+        oauth = OAuth1Session(
+            self.consumer_key,
+            client_secret=self.consumer_secret,
+            resource_owner_key=self.access_token,
+            resource_owner_secret=self.access_token_secret,
+        )
+
+        response = oauth.delete(f"https://api.twitter.com/2/tweets/{tweet_id}")
+
+        if response.status_code != 200:
+            print(f"Error deleting tweet {tweet_id}: {response.status_code} {response.text}")
+            return False
+
+        print(f"Successfully deleted tweet: {tweet_id}")
+        return True
+
+    def delete_all_tweets(self):
+        """Delete all tweets for the authenticated user with Basic plan rate limits."""
+        tweets = self.get_user_tweets()
+        if not tweets:
+            print("No tweets found or error getting tweets")
+            return
+
+        batch_size = 5  # Basic plan: 5 requests per 15 minutes
+        for i in range(0, len(tweets), batch_size):
+            batch = tweets[i:i + batch_size]
+            print(f"\nProcessing batch {i//batch_size + 1} of {(len(tweets) + batch_size - 1)//batch_size}")
+            
+            for tweet in batch:
+                success = self.delete_tweet(tweet['id'])
+                if success:
+                    print(f"Deleted tweet {tweet['id']}: {tweet.get('text', '')[:50]}...")
+                else:
+                    print(f"Failed to delete tweet {tweet['id']}")
+                time.sleep(2)  # Small delay between deletions in same batch
+            
+            if i + batch_size < len(tweets):
+                wait_time = 15 * 60  # 15 minutes in seconds
+                print(f"\nWaiting {wait_time} seconds for rate limit reset...")
+                time.sleep(wait_time)
 
 
 # Example usage

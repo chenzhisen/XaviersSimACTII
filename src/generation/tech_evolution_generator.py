@@ -9,6 +9,7 @@ import time
 import requests
 import math
 from src.utils.ai_completion import AICompletion
+import traceback
 
 class TechEvolutionGenerator:
     def __init__(self, client, model, is_production=False):
@@ -23,7 +24,7 @@ class TechEvolutionGenerator:
         self.model = model
         self.github_ops = GithubOperations(is_production=is_production)
         self.ai = AICompletion(client, model)
-        self.base_year = 2024
+        self.base_year = 2025
         
         # Initialize tech evolution data structure
         self.tech_evolution = {
@@ -38,28 +39,81 @@ class TechEvolutionGenerator:
         # Create log directory if it doesn't exist
         os.makedirs(self.log_dir, exist_ok=True)
 
-    def get_tech_evolution(self):
-        """Get the most recently saved tech evolution file"""
+    def log_step(self, step_name, **kwargs):
+        """Log a generation step with all relevant information."""
         try:
-            github_ops = self.github_ops
-            # Get the tech evolution file directly
-            content, _ = github_ops.get_file_content("tech_evolution.json")
-            return content
+            timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+            log_entry = f"\n=== {step_name} === {timestamp}\n"
+            
+            for key, value in kwargs.items():
+                log_entry += f"{key}:\n{value}\n\n"
+            
+            print(f"Logging step: {step_name}")
+            
+            with open(self.log_file, 'a', encoding='utf-8') as f:
+                f.write(log_entry + "="*50 + "\n")
             
         except Exception as e:
-            print(f"Failed to get tech evolution data")
-            return None  # Return None instead of raising exception
+            print(f"Error writing to log file: {str(e)}")
 
-    def get_previous_technologies(self, epoch_year):
-        """Get technologies from previous epochs"""
+    def _process_tech_relationships(self, tech_trees):
+        """Build a graph of technology relationships and dependencies."""
+        tech_graph = {
+            "dependencies": {},  # tech -> required techs
+            "enables": {},      # tech -> enabled techs
+            "related": {},      # tech -> related techs
+            "maturity_path": {} # tech -> maturity progression
+        }
+        
+        for year, tree in tech_trees.items():
+            # Process emerging technologies
+            for tech in tree.get("emerging_technologies", []):
+                tech_name = tech["name"]
+                # Track dependencies
+                if "dependencies" in tech:
+                    tech_graph["dependencies"][tech_name] = tech["dependencies"]
+                    # Update what techs this enables
+                    for dep in tech["dependencies"]:
+                        if dep not in tech_graph["enables"]:
+                            tech_graph["enables"][dep] = []
+                        tech_graph["enables"][dep].append(tech_name)
+                
+                # Track related technologies
+                if "impact_areas" in tech:
+                    tech_graph["related"][tech_name] = []
+                    for area in tech["impact_areas"]:
+                        # Find other techs in same area
+                        for other_tech in self._find_techs_by_impact_area(tech_trees, area):
+                            if other_tech != tech_name:
+                                tech_graph["related"][tech_name].append(other_tech)
+
+                # Track maturity path
+                tech_graph["maturity_path"][tech_name] = {
+                    "emergence_year": int(tech["estimated_year"]),
+                    "expected_maturity": int(tech["expected_maturity_year"]),
+                    "current_stage": "emerging",
+                    "probability": float(tech["probability"]),
+                    "innovation_type": tech["innovation_type"]
+                }
+
+        return tech_graph
+
+    def _get_previous_technologies(self, epoch_year):
+        """Get technologies from previous epochs with enhanced progression tracking."""
         previous_tech = {
             "emerging": [],
+            "maturing": [],    # New category for technologies approaching maturity
             "mainstream": [],
-            "current_mainstream": []
+            "current_mainstream": [],
+            "tech_graph": None # Will store technology relationships
         }
         
         # Get tech trees from saved data
-        all_tech_trees = self._load_tech_trees()
+        all_tech_trees = self.tech_evolution.get('tech_trees', {})
+        
+        # Build technology relationship graph
+        tech_graph = self._process_tech_relationships(all_tech_trees)
+        previous_tech["tech_graph"] = tech_graph
         
         # Process technologies from previous epochs
         for year in range(self.base_year, epoch_year, 5):
@@ -68,60 +122,68 @@ class TechEvolutionGenerator:
                 continue
                 
             prev_data = all_tech_trees[year_str]
-            self._process_emerging_tech(previous_tech, prev_data, epoch_year)
-            self._process_mainstream_tech(previous_tech, prev_data, epoch_year)
+            self._process_tech_progression(previous_tech, prev_data, epoch_year, tech_graph)
         
         self._print_tech_summary(epoch_year, previous_tech)
         return previous_tech
 
-    def _load_tech_trees(self):
-        """Load and combine saved and current tech trees"""
-        recent_file = self.get_tech_evolution()
-        saved_data = {}
-        
-        if recent_file:
-            try:
-                # Handle both string and dict inputs
-                if isinstance(recent_file, str):
-                    saved_data = json.loads(recent_file)
-                else:
-                    saved_data = recent_file
-                
-            except Exception as e:
-                print(f"Error loading tech trees: {e}")
-        
-        return {
-            **saved_data.get("tech_trees", {}),
-            **self.tech_evolution.get("tech_trees", {})
-        }
-
-    def _process_emerging_tech(self, previous_tech, prev_data, epoch_year, cutoff_years=4):
-        """Process emerging technologies with a cutoff period."""
+    def _process_tech_progression(self, previous_tech, prev_data, epoch_year, tech_graph):
+        """Process technology progression with enhanced maturity tracking."""
         for tech in prev_data.get("emerging_technologies", []):
-            # Convert estimated_year to int for comparison
-            estimated_year = int(tech.get("estimated_year", 9999))
-            # Only include technologies that are within the cutoff period
-            if estimated_year <= epoch_year and (epoch_year - estimated_year) <= cutoff_years:
-                previous_tech["emerging"].append({
-                    "name": tech["name"],
-                    "estimated_year": estimated_year,
-                    "probability": tech.get("probability", 0.5)
-                })
+            tech_name = tech["name"]
+            estimated_year = int(tech["estimated_year"])
+            maturity_year = int(tech["expected_maturity_year"])
+            
+            # Calculate progression stage
+            years_to_maturity = maturity_year - epoch_year
+            total_development_time = maturity_year - estimated_year
+            
+            if epoch_year < estimated_year:
+                # Future technology
+                continue
+            elif epoch_year >= maturity_year:
+                # Has matured
+                self._add_to_mainstream(previous_tech, tech, tech_graph)
+            elif years_to_maturity <= total_development_time * 0.3:
+                # Approaching maturity (last 30% of development time)
+                self._add_to_maturing(previous_tech, tech, tech_graph)
+            else:
+                # Still emerging
+                self._add_to_emerging(previous_tech, tech, tech_graph)
 
-    def _process_mainstream_tech(self, previous_tech, prev_data, epoch_year):
-        """Process mainstream technologies"""
-        for tech in prev_data.get("mainstream_technologies", []):
-            # Convert maturity_year to int for comparison
-            maturity_year = int(tech.get("maturity_year", 9999))
-            previous_tech["mainstream"].append({
-                "name": tech["name"],
-                "maturity_year": maturity_year
-            })
-            if maturity_year <= epoch_year:
-                previous_tech["current_mainstream"].append({
-                    "name": tech["name"],
-                    "maturity_year": maturity_year
-                })
+    def _add_to_emerging(self, previous_tech, tech, tech_graph):
+        """Add technology to emerging list with relationship context."""
+        tech_entry = {
+            "name": tech["name"],
+            "estimated_year": int(tech["estimated_year"]),
+            "probability": float(tech["probability"]),
+            "dependencies": tech_graph["dependencies"].get(tech["name"], []),
+            "enables": tech_graph["enables"].get(tech["name"], []),
+            "related_tech": tech_graph["related"].get(tech["name"], [])
+        }
+        previous_tech["emerging"].append(tech_entry)
+
+    def _add_to_maturing(self, previous_tech, tech, tech_graph):
+        """Add technology to maturing list with progression metrics."""
+        maturity_path = tech_graph["maturity_path"].get(tech["name"], {})
+        tech_entry = {
+            "name": tech["name"],
+            "maturity_progress": self._calculate_maturity_progress(tech, maturity_path),
+            "remaining_dependencies": self._get_remaining_dependencies(tech["name"], tech_graph, previous_tech),
+            "enabled_technologies": tech_graph["enables"].get(tech["name"], [])
+        }
+        previous_tech["maturing"].append(tech_entry)
+
+    def _add_to_mainstream(self, previous_tech, tech, tech_graph):
+        """Add technology to mainstream list with impact tracking."""
+        tech_entry = {
+            "name": tech["name"],
+            "maturity_year": int(tech["expected_maturity_year"]),
+            "enabled_technologies": tech_graph["enables"].get(tech["name"], []),
+            "impact_level": self._calculate_impact_level(tech, tech_graph)
+        }
+        previous_tech["mainstream"].append(tech_entry)
+        previous_tech["current_mainstream"].append(tech_entry)
 
     def _print_tech_summary(self, epoch_year, previous_tech):
         """Print summary of technologies"""
@@ -130,20 +192,34 @@ class TechEvolutionGenerator:
         print(f"- Mainstream: {len(previous_tech['mainstream'])}")
         print(f"- Currently Mainstream: {len(previous_tech['current_mainstream'])}")
 
-    def generate_epoch_tech_tree(self, current_year):
+    def _generate_epoch_tech_tree(self, current_year):
         """Generate tech tree for the given epoch year."""
         try:
-            # Create log file with timestamp and epoch
-            timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-            log_path = f"{self.log_dir}/epoch_{current_year}_{timestamp}.txt"
+            print(f"\nGenerating tech tree for epoch {current_year}...")
             
-            previous_tech = self.get_previous_technologies(current_year)
+            self.log_step(
+                "Starting Tech Tree Generation",
+                current_year=str(current_year)
+            )
+            
+            # Generate new tech tree
+            previous_tech = self._get_previous_technologies(current_year)
+            emerging_tech = json.dumps(previous_tech['emerging'], indent=2)
+            mainstream_tech = json.dumps(previous_tech['mainstream'], indent=2)
+            
             years_from_base = current_year - self.base_year
+            acceleration_factor = self.calculate_acceleration(years_from_base)
             
-            acceleration_factor = math.exp(years_from_base / 30)
-            emerging_tech = json.dumps(previous_tech.get('emerging', []), indent=2)
-            mainstream_tech = json.dumps(previous_tech.get('mainstream', []), indent=2)
-
+            # Log all context before making the API call
+            self.log_step(
+                "CONTEXT FOR EPOCH",
+                current_year=current_year,
+                previous_emerging=f"Previous Emerging Tech:\n{emerging_tech}",
+                previous_mainstream=f"Previous Mainstream Tech:\n{mainstream_tech}",
+                years_from_base=years_from_base,
+                acceleration_factor=acceleration_factor
+            )
+            
             system_prompt = """You are a technology evolution expert specializing in future forecasting and emerging technologies. Your expertise includes:
 
                 1. CORE COMPETENCIES:
@@ -156,7 +232,7 @@ class TechEvolutionGenerator:
                 2. ANALYTICAL FRAMEWORK:
                 - Use empirical data and historical patterns
                 - Consider technological dependencies
-                - Account for societal and ethical implications
+                - Account for societal implications, especially regarding AI's role in social media and public interaction
                 - Evaluate market readiness and adoption barriers
                 - Assess regulatory and infrastructure requirements
 
@@ -186,6 +262,11 @@ class TechEvolutionGenerator:
                 Your task is to generate realistic, well-reasoned technological forecasts that build upon existing developments while maintaining narrative consistency.                
                 """
 
+            self.log_step(
+                "SYSTEM PROMPT",
+                prompt=system_prompt
+            )
+            
             user_prompt = f"""Generate technological advancements from {current_year} to {current_year + 5}. 
 
             CONTEXT:
@@ -198,34 +279,53 @@ class TechEvolutionGenerator:
 
             GUIDELINES FOR TECHNOLOGY DEVELOPMENT:
 
-            1. **FOCUS AREAS**:
-            - **Artificial Intelligence**: Envision a progression from AI assistants to fully automated development, impacting software practices and human-computer interaction. This may include life extension, cognitive enhancement, and development automation.
-            - **Autonomous Systems**: Extend advancements in self-operating tech across transport, infrastructure, and resource management, reaching multi-planetary and urban-scale applications.
-            - **Neural Interfaces**: Develop human-computer interface tech (e.g., brain-to-machine connections, cognitive tools). Include speculative possibilities like mind uploading, memory storage, or digital consciousness.
-            - **Space Exploration**: Envision humanity's ventures beyond Earth, such as lunar and Mars bases, planetary resource management, and technology for interplanetary travel.
-            - **Sustainable Technology**: Focus on developments addressing climate challenges, clean energy, and environmental resilience with impacts on long-term planetary health.
-            - **Digital Infrastructure**: Prioritize privacy, security, blockchain advancements, and other foundational technologies for a connected, secure digital world.
+            1.	FOCUS AREAS:
+            •	AI Agents & Autonomy:
+                - Agent Evolution: Progress from task-specific to general-purpose autonomous agents
+                - Multi-Agent Systems: Development of agent collaboration and coordination
+                - Agent Consciousness: Advancement in self-awareness and emotional intelligence
+                - Agent-Human Integration: Seamless cooperation between humans and AI agents
+                - Agent Governance: Frameworks for managing autonomous agent networks
+                - Agent Specialization: Domain-specific expert agents and their evolution
+                - Agent Learning: Systems for continuous agent improvement and adaptation
+                - Agent Ethics: Moral frameworks and decision-making protocols
+            •	Other Areas:
+                - Vision for future technological advancements in various sectors
+                - Consider divergent or parallel paths
 
-            2. **INSPIRATION FROM INDUSTRY LEADERS**:
-            Prominent companies likely influencing each area include:
-                - **Tesla**: Sustainable energy, electric vehicles, and autonomous driving systems.
-                - **SpaceX**: Space exploration, interplanetary travel, and Mars colonization.
-                - **Neuralink**: Neural tech, brain-machine interfaces, and cognitive enhancement.
-                - **Boring Company**: Infrastructure tech, urban transport tunnels, and autonomous systems.
-                - **xAI**: Advanced AI, automated development, and collaborative problem-solving.
+            2.	INDUSTRY LANDSCAPE (For Inspiration):
+            Notable developments and companies shaping the future:
+            •	Sustainable Tech & Transport: Tesla (EVs, autonomous systems)
+            •	Space Exploration: SpaceX (interplanetary travel, Mars colonization)
+            •	Global Connectivity: Starlink (satellite networks)
+            •	Neural Interfaces: Neuralink (brain-machine interfaces)
+            •	Infrastructure: Boring Company (urban transport)
+            •	Advanced AI: xAI, Cursor AI (automated development, 2024)
+            •	Digital Town Square: X.com (global communication platform)
 
-            3. **DEVELOPMENT PRINCIPLES**:
-            - **Exponential Growth**: Technologies should evolve at an accelerated rate, compounding prior advancements to reach breakthroughs sooner.
-            - **Stage-Based Evolution**: Major tech should first appear in early forms or experimental stages before reaching full mainstream adoption.
-            - **Practical Applications**: Emphasize advancements with tangible, real-world applications; describe societal or industry-specific impacts.
-            - **Societal and Ethical Considerations**: Note any societal impacts or regulatory challenges, especially around privacy, security, and human augmentation.
-            - **Blockchain Integration**: Where applicable, reference blockchain innovations in security, transparency, or decentralized governance.
+            These represent current industry directions but should not limit the scope of technological evolution. Feel free to envision divergent or parallel paths.
 
-            4. **FORMAT AND STRUCTURE**:
-            - Exclude isolated tech with no connection to prior advancements or foundations.
-            - Avoid highly speculative, far-future developments without credible paths.
+            3.	AGENT DEVELOPMENT PRINCIPLES:
+            •	Progressive Autonomy: Agents should evolve from supervised to increasingly autonomous operation
+            •	Collaborative Intelligence: Focus on multi-agent systems and agent-human teamwork
+            •	Ethical Framework: Incorporate moral decision-making and safety protocols
+            •	Specialization Balance: Mix of specialized expert agents and general-purpose agents
+            •	Learning Capability: Continuous improvement through experience and interaction
+            •	Interoperability: Standards for agent communication and collaboration
+            •	Safety Mechanisms: Built-in constraints and oversight systems
+            
+            4.	DEVELOPMENT PRINCIPLES:
+            •	Exponential Growth: Technologies should evolve at an accelerated rate, compounding prior advancements to reach breakthroughs sooner.
+            •	Stage-Based Evolution: Major technologies should first appear in early forms or experimental stages before reaching full mainstream adoption.
+            •	Practical Applications: Emphasize advancements with tangible, real-world applications; describe societal or industry-specific impacts.
+            •	Societal and Ethical Considerations: Note any societal impacts or regulatory challenges, especially around privacy, security, and human augmentation.
+            •	Blockchain Integration: Where applicable, reference blockchain innovations in security, transparency, or decentralized governance.
+            
+            IMPORTANT: While considering existing industry developments, focus on organic technological evolution that may align with, diverge from, or transcend current approaches.
 
-            Ensure each new technology builds on prior epochs to maintain continuity in the narrative.
+            IMPORTANT: Ensure strong representation of AI agent technologies in both emerging and mainstream categories, showing clear progression from simple to complex agent systems.
+
+            IMPORTANT: Consider how these technologies might be adopted and integrated into daily life, business operations, and social structures as they mature.
 
             IMPORTANT: Return a raw JSON object without any markdown formatting or code block markers.
             Do not wrap the response in ```json``` tags.
@@ -269,45 +369,66 @@ class TechEvolutionGenerator:
             }}
             """
             
-            # Log complete context and prompts
-            with open(log_path, 'w', encoding='utf-8') as f:
-                f.write(f"=== CONTEXT FOR EPOCH {current_year} ===\n")
-                f.write(f"Previous Emerging Tech:\n{emerging_tech}\n\n")
-                f.write(f"Previous Mainstream Tech:\n{mainstream_tech}\n\n")
-                f.write(f"Years from base: {years_from_base}\n")
-                f.write(f"Acceleration factor: {acceleration_factor}\n\n")
-                f.write(f"=== SYSTEM PROMPT ===\n{system_prompt}\n\n")
-                f.write(f"=== USER PROMPT ===\n{user_prompt}\n\n")
+            self.log_step(
+                "USER PROMPT",
+                prompt=user_prompt
+            )
             
             # Make API call and get response
+            print("Making API call for tech tree generation...")
             response = self._get_completion(system_prompt, user_prompt)
+            
+            self.log_step(
+                "AI RESPONSE",
+                content=response
+            )
+            
             if not response:
                 print("Failed to get valid response from AI")
                 return None
             
-            tech_data = json.loads(response)
-            if not tech_data:
-                print("Empty tech data received")
+            try:
+                tech_data = json.loads(response)
+                if not tech_data:
+                    print("Empty tech data received")
+                    return None
+                
+                # Append new data to existing tech trees
+                self.tech_evolution['tech_trees'][str(current_year)] = tech_data
+                self.tech_evolution['last_updated'] = datetime.now().isoformat()
+                
+                self.log_step(
+                    "Tech Tree Generated",
+                    tech_data=json.dumps(tech_data, indent=2)
+                )
+                
+                print(f"Successfully generated tech tree for {current_year}")
+                return self.tech_evolution
+                
+            except json.JSONDecodeError as e:
+                self.log_step(
+                    "JSON Parse Error",
+                    error=str(e),
+                    response=response
+                )
                 return None
             
-            # Update tech evolution with new data
-            self.tech_evolution['tech_trees'][str(current_year)] = tech_data
-            self.tech_evolution['last_updated'] = datetime.now().isoformat()
-            
-            return tech_data
-            
         except Exception as e:
-            print(f"Error generating tech tree: {e}")
+            self.log_step(
+                "Tech Tree Generation Error",
+                error=str(e),
+                traceback=traceback.format_exc()
+            )
+            print(f"Error generating tech tree: {str(e)}")
             return None
 
-    def save_evolution_data(self):
+    def _save_evolution_data(self):
         """Save the current evolution data"""
         try:
-            github_ops = self.github_ops
             file_path = "tech_evolution.json"
             
             print(f"Saving tech evolution data...")
-            github_ops.update_file(
+            self.github_ops.update_file(
                 file_path,
                 self.tech_evolution,
                 "Update tech evolution data"
@@ -320,76 +441,35 @@ class TechEvolutionGenerator:
             return False
 
     def check_and_generate_tech_evolution(self, current_date):
-        """Check if a new tech evolution needs to be generated based on the current date."""
+        """Check if we need to generate new tech tree and do so if needed."""
+        # Get current year from datetime
         current_year = current_date.year
         
+        self.log_file = os.path.join(
+            self.log_dir,
+            f"tech_evolution_generator_{datetime.now().strftime('%Y%m%d_%H%M%S')}.log"
+        )
+        print(f"Tech log file: {self.log_file}")
         try:
-            # Try to get existing tech evolution
-            tech_evolution = self.get_tech_evolution()
+            # Load or initialize tech evolution data
+            tech_data, _ = self.github_ops.get_file_content("tech_evolution.json")
+            self.tech_evolution = tech_data if tech_data else {'tech_trees': {}, 'last_updated': datetime.now().isoformat()}
             
-            if tech_evolution is None:
-                print(f"Initializing tech evolution for base year {self.base_year}")
-                # Generate initial data
-                self.generate_epoch_tech_tree(self.base_year)
-                self.save_evolution_data()
-                return self.tech_evolution  # Return local data if save failed
+            # Get tech trees and determine next epoch
+            tech_trees = self.tech_evolution.get('tech_trees', {})
+            next_epoch = max([int(year) for year in tech_trees.keys()]) + 5 if tech_trees else self.base_year
             
-            # Get latest epoch year
-            latest_epoch_year = self.get_latest_epoch_year() or self.base_year
-            next_epoch_year = latest_epoch_year + 5
+            # Generate new tech tree if we've reached next epoch
+            if current_year >= next_epoch:
+                tech_evolution = self._generate_epoch_tech_tree(next_epoch)
+                self._save_evolution_data()
+                return tech_evolution
             
-            # Only generate if approaching next epoch
-            if current_year >= (next_epoch_year - 1) and next_epoch_year % 5 == 0:
-                print(f"Approaching next epoch year {next_epoch_year}")
-                if str(next_epoch_year) not in self.tech_evolution.get('tech_trees', {}):
-                    self.generate_epoch_tech_tree(next_epoch_year)
-                    self.save_evolution_data()
-            
-            return tech_evolution
+            return self.tech_evolution
             
         except Exception as e:
-            print(f"Error in tech evolution generation: {e}")
-            return self.tech_evolution  # Return local data in case of error
-
-    def get_latest_epoch_year(self):
-        """Retrieve the most up-to-date epoch year from the tech evolution data."""
-        tech_evolution = self.get_tech_evolution()
-        if tech_evolution:
-            # If tech_evolution is already a dict, use it directly
-            if isinstance(tech_evolution, dict):
-                tech_trees = tech_evolution.get("tech_trees", {})
-            else:
-                # Otherwise parse it as JSON
-                try:
-                    tech_trees = json.loads(tech_evolution).get("tech_trees", {})
-                except:
-                    return None
-            
-            if tech_trees:
-                # Get the latest epoch year from the keys
-                latest_epoch_year = max(map(int, tech_trees.keys()))
-                return latest_epoch_year
-        return None  # Return None if no data found
-
-    def _process_tech_response(self, response, epoch_year):
-        """Process the API response and update tech evolution data."""
-        try:
-            # Parse the response JSON
-            response_data = json.loads(response)
-            
-            # Update the tech evolution data with the new epoch data
-            self.tech_evolution['tech_trees'][str(epoch_year)] = response_data
-            
-            # Update the last updated timestamp
-            self.tech_evolution['last_updated'] = datetime.now().isoformat()
-            
-            print(f"Processed tech response for epoch {epoch_year}")
-            return response_data
-        except json.JSONDecodeError as e:
-            print(f"Failed to decode JSON response: {e}")
-            return None
-        except Exception as e:
-            print(f"Error processing tech response: {e}")
+            self.log_step("Tech Tree Check Error", error=str(e))
+            print(f"Error checking and generating tech evolution: {str(e)}")
             return None
 
     def _get_completion(self, system_prompt, user_prompt):
@@ -423,39 +503,125 @@ class TechEvolutionGenerator:
             print(f"Error getting completion: {e}")
             return None
 
-def main():
-    parser = argparse.ArgumentParser(description='Generate technology evolution data')
-    parser.add_argument('--provider', type=str, choices=['XAI', 'ANTHROPIC'], 
-                       default='XAI', help='AI provider to use')
-    
-    args = parser.parse_args()
-    provider = AIProvider[args.provider]
-    print(f"Using provider: {provider}")
-    generator = TechEvolutionGenerator(provider)
-    
-    try:
-        # Generate tech trees for each 5-year epoch
-        for year in range(generator.base_year, generator.end_year + 1, 5):
-            print(f"\nGenerating tech tree for {year}")
-            tree_data = generator.generate_epoch_tech_tree(year)
-            
-            if not tree_data:
-                print(f"Failed to generate tech tree for {year}")
-                continue
-                
-            # Add a delay between generations to avoid rate limits
-            if year < generator.end_year:
-                print("Waiting before next generation...")
-                time.sleep(2)  # 2 second delay
-        
-            # Save the complete evolution data
-            generator.save_evolution_data()
-        print("\nTechnology evolution generation complete!")
-        
-    except Exception as e:
-        print(f"Error during technology evolution generation: {e}")
-        # Still try to save whatever data we have
-        generator.save_evolution_data()
+    def calculate_acceleration(self, years_from_base):
+        """Calculate technology acceleration factor based on years from base."""
+        # Using exponential growth with 5% increase per year
+        growth_rate = 0.05
+        acceleration = (1 + growth_rate) ** years_from_base
+        return acceleration
 
-if __name__ == "__main__":
-    main()
+    def _calculate_maturity_progress(self, tech, maturity_path):
+        """Calculate detailed maturity metrics for a technology."""
+        try:
+            current_year = datetime.now().year
+            emergence_year = maturity_path.get("emergence_year", current_year)
+            expected_maturity = maturity_path.get("expected_maturity", current_year + 5)
+            total_time = expected_maturity - emergence_year
+            elapsed_time = current_year - emergence_year
+            
+            progress = {
+                "percentage": min(100, max(0, (elapsed_time / total_time) * 100)),
+                "years_to_maturity": max(0, expected_maturity - current_year),
+                "development_stage": self._determine_development_stage(elapsed_time / total_time),
+                "risk_factors": self._assess_risk_factors(tech, maturity_path),
+                "adoption_metrics": self._calculate_adoption_metrics(tech, maturity_path)
+            }
+            return progress
+        except Exception as e:
+            print(f"Error calculating maturity progress: {e}")
+            return {"percentage": 0, "years_to_maturity": 5, "development_stage": "unknown"}
+
+    def _determine_development_stage(self, progress_ratio):
+        """Determine the current development stage based on progress."""
+        if progress_ratio < 0.2:
+            return "early_development"
+        elif progress_ratio < 0.4:
+            return "prototype"
+        elif progress_ratio < 0.6:
+            return "beta"
+        elif progress_ratio < 0.8:
+            return "refinement"
+        else:
+            return "pre_mainstream"
+
+    def _assess_risk_factors(self, tech, maturity_path):
+        """Assess risk factors affecting technology maturation."""
+        risks = {
+            "technical_complexity": self._calculate_technical_risk(tech),
+            "dependency_risks": self._assess_dependency_risks(tech),
+            "market_readiness": self._assess_market_readiness(tech),
+            "regulatory_challenges": self._identify_regulatory_risks(tech)
+        }
+        return risks
+
+    def _calculate_adoption_metrics(self, tech, maturity_path):
+        """Calculate adoption metrics for the technology."""
+        return {
+            "early_adopters": self._estimate_early_adopters(tech),
+            "market_penetration": self._estimate_market_penetration(tech, maturity_path),
+            "industry_acceptance": self._assess_industry_acceptance(tech),
+            "user_readiness": self._assess_user_readiness(tech)
+        }
+
+    def _get_remaining_dependencies(self, tech_name, tech_graph, previous_tech):
+        """Get list of dependencies not yet mature."""
+        dependencies = tech_graph["dependencies"].get(tech_name, [])
+        mature_techs = {tech["name"] for tech in previous_tech["mainstream"]}
+        return [dep for dep in dependencies if dep not in mature_techs]
+
+    def _calculate_impact_level(self, tech, tech_graph):
+        """Calculate impact level based on relationships and dependencies."""
+        impact_score = 0
+        
+        # Base impact from enabled technologies
+        enabled_count = len(tech_graph["enables"].get(tech["name"], []))
+        impact_score += min(5, enabled_count)  # Cap at 5 points
+        
+        # Impact from related technologies
+        related_count = len(tech_graph["related"].get(tech["name"], []))
+        impact_score += min(3, related_count * 0.5)  # Cap at 3 points
+        
+        # Innovation type bonus
+        if tech.get("innovation_type") == "breakthrough":
+            impact_score += 2
+        
+        return min(10, max(1, round(impact_score)))
+
+    def _find_techs_by_impact_area(self, tech_trees, target_area):
+        """Find all technologies in a specific impact area."""
+        related_techs = []
+        for year, tree in tech_trees.items():
+            for tech in tree.get("emerging_technologies", []):
+                if target_area in tech.get("impact_areas", []):
+                    related_techs.append(tech["name"])
+        return related_techs
+
+    def validate_tech_consistency(self, tech_data):
+        """Validate technology data for consistency."""
+        try:
+            issues = []
+            
+            # Check for duplicate technologies
+            all_techs = set()
+            for tech in tech_data.get("emerging_technologies", []):
+                if tech["name"] in all_techs:
+                    issues.append(f"Duplicate technology: {tech['name']}")
+                all_techs.add(tech["name"])
+            
+            # Validate dependencies
+            for tech in tech_data.get("emerging_technologies", []):
+                for dep in tech.get("dependencies", []):
+                    if dep not in all_techs:
+                        issues.append(f"Missing dependency {dep} for {tech['name']}")
+            
+            # Validate dates
+            current_year = datetime.now().year
+            for tech in tech_data.get("emerging_technologies", []):
+                if int(tech["estimated_year"]) > int(tech["expected_maturity_year"]):
+                    issues.append(f"Invalid dates for {tech['name']}: emergence after maturity")
+                if int(tech["estimated_year"]) < current_year:
+                    issues.append(f"Invalid emergence year for {tech['name']}: before current year")
+            
+            return len(issues) == 0, issues
+        except Exception as e:
+            return False, [f"Validation error: {str(e)}"]

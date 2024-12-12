@@ -4,6 +4,7 @@ import requests
 from datetime import datetime
 from utils.config import Config
 from github import Github
+import re
 
 class GithubOperations:
     def __init__(self, is_production=False):
@@ -53,45 +54,51 @@ class GithubOperations:
             return None, None
 
     def update_file(self, file_path, content, commit_message, sha=None):
-        """Update file in GitHub repository"""
+        """Update a file in the GitHub repository."""
         try:
             # Add base directory to path if it's not already included
             full_path = f"data/{self.base_dir}/{file_path}"
-            # Get current file info (including SHA) if not provided
-            if sha is None:
-                url = f"{self.base_url}/repos/{self.repo_owner}/{self.repo_name}/contents/data/{full_path}"
-                response = requests.get(url, headers=self.headers)
-                
-                # If file exists, get its SHA
-                if response.status_code == 200:
-                    current_file = response.json()
-                    sha = current_file['sha']
             
-            # Convert content to string if it's not already
+            # First get the current file to get its SHA
+            if not sha:
+                try:
+                    current_file = self.get_file_content(file_path)
+                    if current_file and len(current_file) == 2:  # Expecting (content, sha)
+                        _, sha = current_file
+                except:
+                    # File doesn't exist yet, that's ok
+                    pass
+            
+            url = f"{self.base_url}/repos/{self.repo_owner}/{self.repo_name}/contents/{full_path}"
+            
+            # Ensure content is JSON string if it's a dict/list
             if isinstance(content, (dict, list)):
                 content = json.dumps(content, indent=2)
-            elif not isinstance(content, str):
-                content = str(content)
             
-            # Prepare the update data
+            # Encode content to base64
+            content_bytes = content.encode('utf-8')
+            content_base64 = base64.b64encode(content_bytes).decode('utf-8')
+            
             data = {
-                'message': commit_message,
-                'content': base64.b64encode(content.encode()).decode(),
+                "message": commit_message,
+                "content": content_base64
             }
             
-            # Include SHA if available
             if sha:
-                data['sha'] = sha
-                
-            # Make the update request
-            url = f"{self.base_url}/repos/{self.repo_owner}/{self.repo_name}/contents/{full_path}"
+                data["sha"] = sha
+            
+            print(f"Updating file: {url}")
+            print(f"Content length: {len(content_bytes)} bytes")
+            print(f"Using SHA: {sha}")  # Debug line
+            
             response = requests.put(url, headers=self.headers, json=data)
             response.raise_for_status()
-            
-            return True
+            return response.json()
             
         except Exception as e:
-            print(f"Error storing {file_path}: {str(e)}")
+            print(f"Error updating file {file_path}: {str(e)}")
+            if hasattr(e, 'response') and e.response:
+                print(f"Response content: {e.response.text}")
             raise
 
     def _update_file_with_retry(self, file_path, content, message, sha=None, max_retries=3):
@@ -114,6 +121,13 @@ class GithubOperations:
             tweets, sha = self.get_file_content(self.ongoing_tweets_path)
             tweets = tweets or []
             
+            # Clean up tweet content if it starts with labels
+            if isinstance(tweet, dict) and 'content' in tweet:
+                content = tweet['content']
+                # Remove labels like "Setback:", "Update:", etc.
+                content = re.sub(r'^(Setback|Update|Progress|Status):\s*', '', content)
+                tweet['content'] = content
+            
             # Add metadata to tweet
             tweet_with_metadata = {
                 **tweet,
@@ -122,6 +136,8 @@ class GithubOperations:
                 "simulated_date": simulated_date,
                 "age": age
             }
+            
+            # Add tweet if it doesn't already exist
             if not any(existing.get('id') == tweet.get('id') for existing in tweets):
                 tweets.append(tweet_with_metadata)
                 self._update_file_with_retry(

@@ -7,12 +7,13 @@ import base64
 import fnmatch
 import argparse
 import requests
+from utils.config import Config  # Import Config class
 
 def cleanup_files(patterns="*", is_production=False):
     """Clean up files matching any of the patterns in the appropriate directory."""
-    github_token = os.getenv('GITHUB_TOKEN')
+    github_token = Config.GITHUB_TOKEN  # Use Config class instead of os.getenv
     if not github_token:
-        print("Error: GITHUB_TOKEN environment variable not set")
+        print("Error: GITHUB_TOKEN not found in Config")
         return
         
     pattern_list = [p.strip() for p in patterns.split('|')]
@@ -28,8 +29,8 @@ def cleanup_files(patterns="*", is_production=False):
         'Accept': 'application/vnd.github.v3+json'
     }
     base_url = "https://api.github.com"
-    repo_owner = "0xDatapunk"
-    repo_name = "XaviersSimACTII"
+    repo_owner = Config.GITHUB_OWNER  # Use Config class
+    repo_name = Config.GITHUB_REPO    # Use Config class
     
     try:
         def get_contents(path):
