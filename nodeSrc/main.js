@@ -13,45 +13,44 @@ class XavierSimulation {
 
         // 输出 AI 配置
         const aiConfig = Config.getAIConfig();
-        // console.log('AI Config:', {
-        //     apiKey: aiConfig.apiKey ? '***' + aiConfig.apiKey.slice(-4) : 'undefined',
-        //     model: aiConfig.model,
-        //     baseUrl: aiConfig.baseUrl
-        // });
+        const client = ''
 
-        // 初始化 AI 客户端
-        const client = null
-        // console.log('AI Client:', client);
-        // console.log('AI Client messages:', client.messages);
         // 初始化生成器
         this.tweetGenerator = new TweetGenerator(client, aiConfig.model, isProduction);
         this.digestGenerator = new DigestGenerator(client, aiConfig.model, 12, isProduction);
         this.techGenerator = new TechEvolutionGenerator(client, aiConfig.model, isProduction);
 
         // 初始化状态
-        this.currentAge = 22.0;  // 起始年龄
-        this.tweetsPerYear = 96; // 每年推文数
-        this.daysPerTweet = 384 / this.tweetsPerYear; // 每条推文间隔天数
+        this.currentAge = 22.0;
+        this.tweetsPerYear = 96;
+        this.daysPerTweet = 384 / this.tweetsPerYear;
     }
 
     async run() {
         try {
             this.logger.info('Starting simulation...');
 
-            // 获取当前状态
+            // 步骤 1: 获取当前状态
+            console.log('Step 1: Getting current state...');
             const [ongoingTweets, tweetsByAge] = await this.tweetGenerator.getOngoingTweets();
             const tweetCount = ongoingTweets.length;
+            console.log(`Found ${tweetCount} existing tweets`);
 
-            // 更新模拟状态
+            // 步骤 2: 更新模拟状态
+            console.log('Step 2: Updating simulation state...');
             const { currentDate, daysSinceStart } = this._updateSimulationState(ongoingTweets);
+            console.log(`Current age: ${this.currentAge.toFixed(2)}, Days since start: ${daysSinceStart}`);
 
-            // 生成技术进化
+            // 步骤 3: 生成技术进化
+            console.log('Step 3: Generating tech evolution...');
             const techEvolution = await this.techGenerator.generateTechEvolution();
             if (!techEvolution) {
                 throw new Error('Failed to generate tech evolution');
             }
+            console.log('Tech evolution generated successfully');
 
-            // 检查并生成摘要
+            // 步骤 4: 检查并生成摘要
+            console.log('Step 4: Checking and generating digest...');
             const digest = await this.digestGenerator.checkAndGenerateDigest(
                 ongoingTweets,
                 this.currentAge,
@@ -59,8 +58,10 @@ class XavierSimulation {
                 tweetCount,
                 techEvolution
             );
+            console.log('Digest check completed');
 
-            // 生成新推文
+            // 步骤 5: 生成新推文
+            console.log('Step 5: Generating new tweet...');
             const tweet = await this.tweetGenerator.generateTweet(
                 digest,
                 this.currentAge,
@@ -71,12 +72,15 @@ class XavierSimulation {
             if (!tweet) {
                 throw new Error('Failed to generate tweet');
             }
+            console.log('New tweet generated');
 
-            // 保存推文
+            // 步骤 6: 保存推文
+            console.log('Step 6: Saving tweet...');
             const success = await this.tweetGenerator.saveTweet(tweet);
             if (!success) {
                 throw new Error('Failed to save tweet');
             }
+            console.log('Tweet saved successfully');
 
             this.logger.info('Simulation completed successfully', {
                 age: this.currentAge,
@@ -87,6 +91,11 @@ class XavierSimulation {
 
         } catch (error) {
             this.logger.error('Simulation failed', error);
+            console.error('Error details:', {
+                step: error.step,
+                message: error.message,
+                stack: error.stack
+            });
             throw error;
         }
     }

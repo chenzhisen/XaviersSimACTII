@@ -6,7 +6,9 @@ class AICompletion {
     constructor(client, model, baseUrl) {
         this.logger = new Logger('ai');
         const aiConfig = Config.getAIConfig();
-        
+        if (client) {
+            console.log('client 11', client.messages);
+        }
         if (client) {
             this.client = client;
             this.model = aiConfig.model;
@@ -18,12 +20,12 @@ class AICompletion {
                 apiKey: aiConfig.apiKey,
                 baseURL: this.baseUrl
             });
-            console.log('AI Client initialized:', {
-                model: this.model,
-                hasClient: this.client.messages.create
-            });
+            // console.log('AI Client initialized:', {
+            //     model: this.model,
+            //     hasClient: this.client.messages.create
+            // });
         }
-        return this.client
+      // return this.client
     }
 
     async getCompletion(systemPrompt, userPrompt, options = {}) {
