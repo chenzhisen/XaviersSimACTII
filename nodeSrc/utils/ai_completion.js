@@ -5,6 +5,8 @@ const { Config, AIProvider } = require('./config');
 
 class AICompletion {
     constructor(client, model, baseUrl) {
+        model='grok-beta'
+        baseUrl='https://api.openai.com/v1'
         this.logger = new Logger('ai');
         const aiConfig = Config.getAIConfig();
         
@@ -17,12 +19,9 @@ class AICompletion {
             if (aiConfig.provider === AIProvider.XAI) {
                 this.baseUrl = aiConfig.baseUrl;
                 this.apiKey = aiConfig.apiKey;
-                this.client = axios.create({
-                    baseURL: this.baseUrl,
-                    headers: {
-                        'Authorization': `Bearer ${this.apiKey}`,
-                        'Content-Type': 'application/json'
-                    }
+                this.client = new Anthropic({
+                    apiKey: aiConfig.apiKey,
+                    baseURL: aiConfig.baseUrl
                 });
             } else {
                 this.client = new Anthropic({

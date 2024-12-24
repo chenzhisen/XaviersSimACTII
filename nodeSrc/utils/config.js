@@ -15,21 +15,17 @@ class Config {
 
     static getAIConfig() {
         const provider = process.env.AI_PROVIDER || AIProvider.XAI;
-        const baseUrl = provider === AIProvider.XAI ? 'https://api.x.ai/v1' : 'https://api.anthropic.com/v1';
-
+        const baseUrl = 'https://api.openai.com/v1'
         return {
             provider,
-            apiKey: provider === AIProvider.XAI ? process.env.XAI_API_KEY : process.env.ANTHROPIC_API_KEY,
-            model: provider === AIProvider.XAI ? process.env.XAI_MODEL : process.env.ANTHROPIC_MODEL,
+            apiKey: process.env.XAI_API_KEY,
+            model:  process.env.XAI_MODEL,
             baseUrl
         };
     }
 
     static getStorageConfig() {
         return {
-            githubToken: process.env.GITHUB_TOKEN,
-            githubOwner: process.env.GITHUB_OWNER,
-            githubRepo: process.env.GITHUB_REPO,
             dataDir: path.join(__dirname, '..', 'data'),
             cacheDir: path.join(__dirname, '..', '.cache')
         };
