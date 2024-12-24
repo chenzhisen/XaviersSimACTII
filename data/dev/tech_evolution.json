@@ -1,4 +1,127 @@
 {
-  "tech_trees": {},
-  "last_updated": "2024-12-24T14:06:15.921899"
+  "tech_trees": {
+    "2025": {
+      "emerging_technologies": [
+        {
+          "name": "Sentient AI Agents",
+          "probability": "0.8",
+          "estimated_year": "2028",
+          "expected_maturity_year": "2035",
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Advanced Machine Learning",
+            "Neural Interfaces"
+          ],
+          "impact_areas": [
+            "AI Assistants",
+            "Mental Health",
+            "Autonomous Systems"
+          ],
+          "description": "AI agents with self-awareness, capable of understanding human emotions and context, providing empathetic and personalized interactions.",
+          "societal_implications": "Could revolutionize mental health support, but raises ethical questions about AI rights and emotional manipulation.",
+          "adoption_factors": "Adoption hinges on ethical frameworks, public acceptance of sentient AI, and development of emotional intelligence algorithms."
+        },
+        {
+          "name": "Autonomous Urban Transport Networks",
+          "probability": "0.7",
+          "estimated_year": "2027",
+          "expected_maturity_year": "2033",
+          "innovation_type": "incremental",
+          "dependencies": [
+            "Autonomous Vehicles",
+            "Smart Cities Infrastructure"
+          ],
+          "impact_areas": [
+            "Transportation",
+            "Urban Planning",
+            "Sustainability"
+          ],
+          "description": "Fully autonomous transport systems integrating multiple modes of transport (cars, drones, public transit) for seamless urban mobility.",
+          "societal_implications": "Reduces traffic congestion, pollution, and increases efficiency, but requires significant infrastructure investment and regulatory changes.",
+          "adoption_factors": "Adoption depends on public trust in autonomous systems, regulatory support, and integration with existing transport infrastructure."
+        },
+        {
+          "name": "AI-driven Content Generation",
+          "probability": "0.9",
+          "estimated_year": "2026",
+          "expected_maturity_year": "2030",
+          "innovation_type": "incremental",
+          "dependencies": [
+            "Natural Language Processing",
+            "Machine Learning"
+          ],
+          "impact_areas": [
+            "Media",
+            "Entertainment",
+            "Education"
+          ],
+          "description": "AI systems capable of generating high-quality, contextually relevant content across various media, from articles to music.",
+          "societal_implications": "Could democratize content creation but might lead to oversaturation of AI-generated content, affecting creative industries.",
+          "adoption_factors": "Adoption depends on the ability of AI to understand and replicate nuanced human creativity and on copyright laws adapting to AI-generated content."
+        },
+        {
+          "name": "Blockchain-based Governance",
+          "probability": "0.75",
+          "estimated_year": "2029",
+          "expected_maturity_year": "2036",
+          "innovation_type": "breakthrough",
+          "dependencies": [
+            "Blockchain Technology",
+            "Smart Contracts"
+          ],
+          "impact_areas": [
+            "Government",
+            "Decentralized Systems",
+            "Voting"
+          ],
+          "description": "Governance systems utilizing blockchain for transparency, security, and decentralization in decision-making processes.",
+          "societal_implications": "Potential for reducing corruption and increasing citizen participation, but raises concerns about security and scalability.",
+          "adoption_factors": "Adoption hinges on overcoming technical challenges like scalability, achieving consensus on blockchain governance, and regulatory acceptance."
+        }
+      ],
+      "mainstream_technologies": [
+        {
+          "name": "Smart Home Integration",
+          "from_emerging": true,
+          "original_emergence_year": "2020",
+          "maturity_year": "2030",
+          "impact_level": "7",
+          "description": "Comprehensive integration of home devices into a single, intuitive ecosystem controlled by AI agents.",
+          "adoption_status": "Widespread adoption, driven by convenience, energy efficiency, and enhanced security, with a focus on seamless user experience."
+        },
+        {
+          "name": "Neuralink-like Brain-Computer Interfaces",
+          "from_emerging": true,
+          "original_emergence_year": "2025",
+          "maturity_year": "2030",
+          "impact_level": "9",
+          "description": "Commercial availability of brain-computer interfaces for cognitive enhancement, medical applications, and entertainment.",
+          "adoption_status": "High adoption due to medical benefits, but faces ethical concerns, privacy issues, and regulatory hurdles."
+        }
+      ],
+      "epoch_themes": [
+        {
+          "theme": "AI Autonomy and Ethics",
+          "description": "The evolution of AI agents towards greater autonomy and ethical decision-making capabilities.",
+          "related_technologies": [
+            "Sentient AI Agents",
+            "AI-driven Content Generation"
+          ],
+          "societal_impact": "Shifts in human-AI relationships, ethical frameworks for AI, and potential job displacement.",
+          "global_trends": "Increased focus on AI ethics, regulatory frameworks for autonomous systems, and AI's role in social media moderation."
+        },
+        {
+          "theme": "Urban Transformation",
+          "description": "Redefining urban living through smart technology and autonomous systems.",
+          "related_technologies": [
+            "Autonomous Urban Transport Networks",
+            "Smart Home Integration"
+          ],
+          "societal_impact": "Sustainable cities, improved quality of life, but also concerns about digital divide and surveillance.",
+          "global_trends": "Global urbanization, emphasis on green technology, and reimagining urban infrastructure."
+        }
+      ]
+    }
+  },
+  "last_updated": "2024-12-24T14:08:38.773718"
 }
