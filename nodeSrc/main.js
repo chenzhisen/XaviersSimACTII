@@ -20,7 +20,7 @@ class XavierSimulation {
         // });
 
         // 初始化 AI 客户端
-        const client = new AICompletion(null, aiConfig.model, aiConfig.baseUrl);
+        const client = null
         // console.log('AI Client:', client);
         // console.log('AI Client messages:', client.messages);
         // 初始化生成器
