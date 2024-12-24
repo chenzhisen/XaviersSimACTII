@@ -25,19 +25,30 @@ class AICompletion {
             //     hasClient: this.client.messages.create
             // });
         }
-      // return this.client
+        // return this.client
     }
 
     async getCompletion(systemPrompt, userPrompt, options = {}) {
+        console.log('systemPrompt', systemPrompt);
+        console.log('userPrompt', userPrompt);
+
         try {
-            const response = await this.client.messages.create({
-                model: this.model,
-                system: systemPrompt,
-                messages: [{ role: 'user', content: userPrompt }],
-                temperature: options.temperature || 0.7,
-                max_tokens: options.max_tokens || 1000
-            });
-            return response.content[0].text;
+            // console.log('this.model', this.model);
+            // const response = await this.client.messages.create({
+            //     model: this.model,
+            //     system: systemPrompt,
+            //     messages: [{ role: "user", content: "Hello, Claude" }],
+            //     temperature: options.temperature || 0.7,
+            //     max_tokens: options.max_tokens || 1000
+            // });
+            // console.log('response', response);
+            // return response.content[0].text;
+            const msg = await this.client.messages.create({
+                model:"grok-beta",
+                max_tokens: 1024,
+                messages: [{ role: "user", content: "Hello, Claude" }],
+              });
+              console.log(msg);
         } catch (error) {
             this.logger.error('Error in AI completion', error);
             throw error;

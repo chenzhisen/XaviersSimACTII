@@ -7,95 +7,132 @@ class TechEvolutionGenerator {
         this.logger = new Logger('tech');
         this.ai = new AICompletion(client, model);
         this.githubOps = new GithubOperations(isProduction);
-        
-        // 配置
-        this.epochYears = 5;  // 每个时代的年数
-        this.updateThreshold = 48;  // 更新阈值（推文数）
     }
 
     async generateTechEvolution() {
         try {
+            console.log('TechEvolution Step 1: Getting current tech state...');
             const [currentTech, sha] = await this.githubOps.getFileContent('tech_evolution.json');
+            console.log('Current tech state:', currentTech ? 'Found' : 'Not found');
+
             if (!currentTech) {
-                return await this._generateInitialTech();
+                console.log('TechEvolution Step 2a: Generating initial tech...');
+                const initialTech = await this._generateInitialTech();
+                console.log('Initial tech generated:', initialTech);
+
+                console.log('TechEvolution Step 2b: Saving initial tech...');
+                await this.githubOps.updateFile(
+                    'tech_evolution.json',
+                    initialTech,
+                    'Initial tech evolution'
+                );
+                return initialTech;
             }
 
-            const [tweets, _] = await this.githubOps.getFileContent('ongoing_tweets.json');
-            if (!tweets || tweets.length === 0) {
-                return currentTech;
+            console.log('TechEvolution Step 3: Checking for update threshold...');
+            const [tweets] = await this.githubOps.getFileContent('ongoing_tweets.json');
+            const shouldUpdate = this._shouldUpdateTech(tweets, currentTech);
+            console.log('Update needed:', shouldUpdate);
+
+            if (shouldUpdate) {
+                console.log('TechEvolution Step 4a: Generating next tech epoch...');
+                const nextTech = await this._generateNextTech(currentTech, tweets);
+                console.log('Next tech epoch generated:', nextTech);
+
+                console.log('TechEvolution Step 4b: Saving next tech epoch...');
+                await this.githubOps.updateFile(
+                    'tech_evolution.json',
+                    nextTech,
+                    `Update tech evolution to year ${nextTech.year}`,
+                    sha
+                );
+                return nextTech;
             }
 
-            // 检查是否需要更新
-            const lastTweet = tweets[tweets.length - 1];
-            const currentYear = Math.floor(lastTweet.age);
-            const nextEpochYear = Math.ceil(currentYear / this.epochYears) * this.epochYears;
-            const tweetsUntilNextEpoch = this._calculateTweetsUntilYear(nextEpochYear);
-
-            if (tweetsUntilNextEpoch <= this.updateThreshold) {
-                return await this._generateNextEpoch(currentTech, nextEpochYear);
-            }
-
+            console.log('TechEvolution Step 5: Returning current tech (no update needed)');
             return currentTech;
 
         } catch (error) {
             this.logger.error('Error generating tech evolution', error);
+            console.error('TechEvolution Error:', {
+                message: error.message,
+                phase: error.phase || 'unknown',
+                details: error.details || {}
+            });
             throw error;
         }
     }
 
     async _generateInitialTech() {
-        const prompt = `Generate the initial technology state for the year 2025.
-Include:
-- Mainstream technologies (fully adopted)
-- Emerging technologies (in development)
-- Major societal trends
-Format as a concise JSON structure.`;
+        console.log('Generating initial tech - Preparing prompt...');
+        const prompt = `Generate a technology evolution forecast for the year 2025, including:
+1. Mainstream technologies that are widely adopted
+2. Emerging technologies that show promise
 
+Format the response as a JSON object with:
+{
+    "year": 2025,
+    "mainstream": ["tech1", "tech2", ...],
+    "emerging": ["tech1", "tech2", ...]
+}`;
+
+        console.log('Sending prompt to AI...');
         const response = await this.ai.getCompletion(
             'You are a technology forecasting system.',
             prompt
         );
+        console.log('AI response received, parsing...');
 
-        const techData = JSON.parse(response);
-        await this.githubOps.updateFile(
-            'tech_evolution.json',
-            techData,
-            'Initialize technology evolution'
-        );
-
-        return techData;
+        try {
+            return JSON.parse(response);
+        } catch (error) {
+            console.error('Failed to parse AI response:', error);
+            throw new Error('Invalid tech evolution format');
+        }
     }
 
-    async _generateNextEpoch(currentTech, targetYear) {
-        const prompt = `Based on the current technology state:
+    async _generateNextTech(currentTech, tweets) {
+        console.log('Generating next tech - Preparing context...');
+        const prompt = `Current technology state (${currentTech.year}):
 ${JSON.stringify(currentTech, null, 2)}
 
-Generate technology evolution for the year ${targetYear}.
-Consider:
-- Natural progression from current tech
-- New breakthroughs and innovations
-- Societal impact and adoption rates
-Format as a concise JSON structure.`;
+Recent developments:
+${tweets.slice(-5).map(t => t.text).join('\n')}
 
+Generate the next technology evolution state for year ${currentTech.year + 5}, following the same format.`;
+
+        console.log('Sending prompt to AI...');
         const response = await this.ai.getCompletion(
             'You are a technology forecasting system.',
             prompt
         );
+        console.log('AI response received, parsing...');
 
-        const newTech = JSON.parse(response);
-        await this.githubOps.updateFile(
-            'tech_evolution.json',
-            newTech,
-            `Update technology evolution for ${targetYear}`
-        );
-
-        return newTech;
+        try {
+            return JSON.parse(response);
+        } catch (error) {
+            console.error('Failed to parse AI response:', error);
+            throw new Error('Invalid tech evolution format');
+        }
     }
 
-    _calculateTweetsUntilYear(targetYear) {
-        const tweetsPerYear = 96;  // 每年的推文数
-        return Math.floor((targetYear - 22) * tweetsPerYear);  // 22是起始年龄
+    _shouldUpdateTech(tweets, currentTech) {
+        if (!tweets || tweets.length === 0) return false;
+        
+        // 计算最新推文的年龄
+        const latestTweet = tweets[tweets.length - 1];
+        const yearsSinceLastUpdate = latestTweet.age - 22.0;
+        const yearsSinceCurrentTech = currentTech.year - 2025;
+
+        console.log('Update check:', {
+            tweetAge: latestTweet.age,
+            yearsSinceLastUpdate,
+            yearsSinceCurrentTech
+        });
+
+        // 每5年更新一次
+        return yearsSinceLastUpdate >= yearsSinceCurrentTech + 5;
     }
 }
 
-module.exports = { TechEvolutionGenerator }; 
+module.exports = { TechEvolutionGenerator };
