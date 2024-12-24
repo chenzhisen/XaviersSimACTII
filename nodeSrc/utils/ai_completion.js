@@ -9,8 +9,8 @@ class AICompletion {
         
         if (client) {
             this.client = client;
-            this.model = model;
-            this.baseUrl = baseUrl;
+            this.model = aiConfig.model;
+            this.baseUrl = aiConfig.baseUrl;
         } else {
             this.model = aiConfig.model;
             this.baseUrl = aiConfig.baseUrl;
@@ -18,7 +18,12 @@ class AICompletion {
                 apiKey: aiConfig.apiKey,
                 baseURL: this.baseUrl
             });
+            console.log('AI Client initialized:', {
+                model: this.model,
+                hasClient: this.client.messages.create
+            });
         }
+        return this.client
     }
 
     async getCompletion(systemPrompt, userPrompt, options = {}) {

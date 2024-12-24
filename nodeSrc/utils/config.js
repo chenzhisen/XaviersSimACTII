@@ -18,11 +18,11 @@ class Config {
             model: process.env.ANTHROPIC_MODEL || 'claude-3-sonnet-20240229',
             baseUrl: process.env.AI_BASE_URL || 'https://api.anthropic.com/v1'
         };
-        console.log('AI Config:', {
-            apiKey: config.apiKey ? '***' + config.apiKey.slice(-4) : 'undefined',
-            model: config.model,
-            baseUrl: config.baseUrl
-        });
+        // console.log('AI Config:', {
+        //     apiKey: config.apiKey ? '***' + config.apiKey.slice(-4) : 'undefined',
+        //     model: config.model,
+        //     baseUrl: config.baseUrl
+        // });
         return config;
     }
 
