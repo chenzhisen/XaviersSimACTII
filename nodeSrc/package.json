@@ -1,1 +1,22 @@
- 
+{
+  "name": "xavier-simulation-node",
+  "version": "1.0.0",
+  "description": "Node.js implementation of Xavier's life simulation system",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js run",
+    "start:prod": "node index.js run -p"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.17.1",
+    "@octokit/rest": "^20.0.2",
+    "axios": "^1.6.7",
+    "commander": "^12.0.0",
+    "dotenv": "^16.4.5",
+    "ora": "^5.4.1",
+    "winston": "^3.12.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+} 
