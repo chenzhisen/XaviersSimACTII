@@ -1,3 +1,4 @@
+const { Anthropic } = require('@anthropic-ai/sdk');
 const { Config } = require('./utils/config');
 const { Logger } = require('./utils/logger');
 const { TweetGenerator } = require('./generation/tweet_generator');
@@ -10,10 +11,17 @@ class XavierSimulation {
         this.logger = new Logger('main');
         this.isProduction = isProduction;
 
-        // 初始化 AI 客户端
+        // 输出 AI 配置
         const aiConfig = Config.getAIConfig();
-        const client = new AICompletion(null, aiConfig.model);
+        // console.log('AI Config:', {
+        //     apiKey: aiConfig.apiKey ? '***' + aiConfig.apiKey.slice(-4) : 'undefined',
+        //     model: aiConfig.model,
+        //     baseUrl: aiConfig.baseUrl
+        // });
 
+        // 初始化 AI 客户端
+        const client = new AICompletion(null, aiConfig.model, aiConfig.baseUrl);
+        console.log('AI Client:', client);
         // 初始化生成器
         this.tweetGenerator = new TweetGenerator(client, aiConfig.model, isProduction);
         this.digestGenerator = new DigestGenerator(client, aiConfig.model, 12, isProduction);

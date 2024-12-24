@@ -3,18 +3,20 @@ const { Logger } = require('./logger');
 const { Config } = require('./config');
 
 class AICompletion {
-    constructor(client, model) {
+    constructor(client, model, baseUrl) {
         this.logger = new Logger('ai');
         const aiConfig = Config.getAIConfig();
         
         if (client) {
             this.client = client;
             this.model = model;
+            this.baseUrl = baseUrl;
         } else {
-            this.model = aiConfig.model || 'claude-3-sonnet-20240229';
+            this.model = aiConfig.model;
+            this.baseUrl = aiConfig.baseUrl;
             this.client = new Anthropic({
                 apiKey: aiConfig.apiKey,
-                baseURL: aiConfig.baseUrl
+                baseURL: this.baseUrl
             });
         }
     }
