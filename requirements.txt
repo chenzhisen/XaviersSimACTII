@@ -1,6 +1,9 @@
-requests
-python-dotenv
-anthropic
-openai
-tweepy
-PyGithub
+# 核心依赖
+requests==2.31.0  # HTTP 请求库
+python-dotenv==1.0.0  # 环境变量管理
+anthropic>=0.8.1  # Anthropic AI API
+openai==1.12.0  # OpenAI API
+tweepy==4.12.0  # Twitter API 客户端
+PyGithub  # GitHub API 客户端
+urllib3>=2.0.0
+certifi>=2024.2.2

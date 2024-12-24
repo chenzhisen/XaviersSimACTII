@@ -1,38 +1,61 @@
-import random
 import json
-import traceback
+import random
 from datetime import datetime, timedelta
-from src.storage.github_operations import GithubOperations
-from utils.config import Config, AIProvider
+import traceback
+import os
+from ..utils.config import Config, AIProvider  # 导入配置和 AI 提供商
+from ..storage.github_operations import GithubOperations  # GitHub 操作
+from ..utils.ai_completion import AICompletion  # AI 完成功能
 from anthropic import Anthropic
 from openai import OpenAI
 import re
-import os
 from collections import deque
 from typing import List, Dict, Any, Union, Optional
 from difflib import SequenceMatcher
 import time
-from src.utils.ai_completion import AICompletion
 
 class TweetGenerator:
+    """推文生成器
+    
+    主要职责：
+    1. 生成和管理推文
+    2. 维护推文历史
+    3. 确保内容连贯性
+    4. 处理存储和检索
+    5. 应用推文样式
+    6. 管理生命阶段数据
+    """
+    
     def __init__(self, model, client, tweets_per_year=96, digest_interval=24, is_production=False, start_date=datetime(2025, 1, 1)):
-        """Initialize the tweet generator."""
-        self.model = model
-        self.client = client
-        self.tweets_per_year = tweets_per_year
-        self.days_per_tweet = 384 / tweets_per_year # use 384 to align with tweet count
-        self.digest_interval = digest_interval
-        self.start_date = start_date
-        self.github_ops = GithubOperations(is_production=is_production)
-        self.acti_tweets = []
-        self.ai = AICompletion(client, model)
+        """初始化推文生成器
         
-        # Load life phases data with debug prints
+        参数:
+            model: 使用的 AI 模型名称
+            client: AI 客户端实例
+            tweets_per_year: 每年生成的推文数量，默认96条
+            digest_interval: 生成摘要的间隔，默认24条推文
+            is_production: 是否为生产环境
+            start_date: 模拟开始日期，默认2025年1月1日
+        """
+        # === 核心组件初始化 ===
+        self.model = model            # AI 模型标识符
+        self.client = client          # AI 服务客户端
+        self.tweets_per_year = tweets_per_year  # 年度推文目标
+        self.days_per_tweet = 384 / tweets_per_year  # 推文间隔天数
+        self.digest_interval = digest_interval  # 摘要生成间隔
+        self.start_date = start_date   # 模拟起始时间
+        
+        # === 存储和处理组件 ===
+        self.github_ops = GithubOperations(is_production=is_production)  # GitHub 操作器
+        self.acti_tweets = []         # 活跃推文缓存
+        self.ai = AICompletion(client, model)  # AI 生成器
+        
+        # === 生命阶段数据处理 ===
         try:
             life_phases_content, _ = self.github_ops.get_file_content('life_phases.json')
             
             if life_phases_content is None:
-                print("Warning: life_phases_content is None")
+                print("警告: 生命阶段数据为空")
                 self.life_phases = {}
             else:
                 if isinstance(life_phases_content, str):
@@ -40,46 +63,55 @@ class TweetGenerator:
                 else:
                     self.life_phases = life_phases_content
                 
-            print(f"Parsed life phases type: {type(self.life_phases)}")
-            print(f"Life phases keys: {self.life_phases.keys() if self.life_phases else 'No keys'}")
+            print(f"生命阶段数据类型: {type(self.life_phases)}")
+            print(f"可用阶段: {self.life_phases.keys() if self.life_phases else '无'}")
             
         except Exception as e:
-            print(f"Error loading life phases: {e}")
+            print(f"生命阶段数据加载失败: {e}")
             traceback.print_exc()
             self.life_phases = {}
         
-        # Update log directory based on environment
-        env_dir = "prod" if is_production else "dev"
-        self.log_dir = f"logs/{env_dir}/tweets"
-        self.log_file = os.path.join(
+        # === 日志系统配置 ===
+        env_dir = "prod" if is_production else "dev"  # 环境目录
+        self.log_dir = f"logs/{env_dir}/tweets"  # 日志目录
+        self.log_file = os.path.join(  # 日志文件路径
             self.log_dir,
             f"tweet_generator_{datetime.now().strftime('%Y%m%d_%H%M%S')}.log"
         )
         
-        # Create log directories if they don't exist
-        os.makedirs(self.log_dir, exist_ok=True)
+        os.makedirs(self.log_dir, exist_ok=True)  # 确保日志目录存在
                 
-        # Tweet length constraints
-        self.min_chars = 16     # Allow very short, impactful tweets
-        self.max_chars = 2048   # Allow for occasional longer form thoughts
+        # === 推文参数配置 ===
+        self.min_chars = 16     # 最短推文长度
+        self.max_chars = 2048   # 最长推文长度
         
-        self.tmp_tweets_file = 'tmp/upcoming_tweets.json'  # Path in the repo
+        # === 文件系统配置 ===
+        self.tmp_tweets_file = 'tmp/upcoming_tweets.json'  # 临时推文存储
         
-        self.tweet_history = set()  # For duplicate detection
-        self.current_day = 0  # Track days since start
+        # === 状态追踪系统 ===
+        self.tweet_history = set()  # 推文历史集合
+        self.current_day = 0        # 当前模拟天数
     
     def _get_acti_tweets_examples(self, count=5):
-        """Get reference tweets from curated examples."""
+        """获取参考推文示例
+        
+        参数:
+            count: 需要的示例数量，默认5条
+            
+        返回:
+            格式化的示例推文字符串
+        """
+        # 预设的示例推文
         curated_examples = [
-            "Can’t decide where to stay—East Side or West Side? East has the hustle, West has the charm.",
+            "Can't decide where to stay—East Side or West Side? East has the hustle, West has the charm.",
             "I ran into Barron Trump while walking around campus and tried to act casual, but all I could think about was how to ask him if his father's hair tips truly hold any merit!",
             "Trying to figure out how to make my dating life more interesting. Any suggestions? Dinner and a movie feels too cliché.",
             "Random question: if I was just a character, would I even be aware of it?",
             "Feeling tempted to jump on before it blows up. What wallet should I use?",
-            "Trying to decide if I should invite that girl I’ve been lowkey crushing on. Imagine her seeing my dance moves… or maybe not."    
+            "Trying to decide if I should invite that girl I've been lowkey crushing on. Imagine her seeing my dance moves… or maybe not."    
         ]
         
-        # Get additional real reference tweets if available
+        # 获取额外的真实参考推文（如果有）
         if self.acti_tweets:
             real_tweets = random.sample(
                 self.acti_tweets, 
@@ -91,7 +123,12 @@ class TweetGenerator:
         return formatted_examples
 
     def log_step(self, step_name, **kwargs):
-        """Log a generation step with all relevant information."""
+        """记录生成步骤的信息
+        
+        参数:
+            step_name: 步骤名称
+            **kwargs: 要记录的其他信息
+        """
         timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         log_entry = f"\n=== {step_name} === {timestamp}\n"
         
@@ -102,16 +139,19 @@ class TweetGenerator:
             f.write(log_entry + "="*50 + "\n")
 
     def generate(self, system_prompt, user_prompt, temperature=0.7, max_retries=3):
-        """Wrapper for model generation with retry logic"""
+        """生成内容的核心方法
         
-        # Add length guidance to system prompt
+        参数:
+            system_prompt: 系统提示词，定义生成行为
+            user_prompt: 用户提示词，指定生成内容
+            temperature: 生成的随机性程度
+            max_retries: 最大重试次数
+        """
         length_guide = (
-            "\nTweet Length Guidelines:\n"
-            "- Keep tweets concise and impactful\n"
-            "- Most tweets should be 1-2 short sentences\n"
-            "- Occasionally (1%) can be longer for important updates\n"
-            "- Let content determine natural length\n"
-            "- Avoid unnecessary words or padding\n"
+            "\n推文长度指南:\n"
+            "- 保持推文简洁有力\n"
+            "- 大多数推文应���1-2个短句\n"
+            "- 偶尔可以更长以表达重要更新\n"
         )
         system_prompt = system_prompt + length_guide
 
@@ -126,10 +166,10 @@ class TweetGenerator:
                 return response
 
             except Exception as e:
-                print(f"Attempt {attempt + 1} failed: {str(e)}")
+                print(f"尝试 {attempt + 1} 失败: {str(e)}")
                 if attempt == max_retries - 1:
                     raise
-                time.sleep(2 ** attempt)  # Exponential backoff
+                time.sleep(2 ** attempt)  # 指数退避
 
     def _get_acti_tweets(self):
         content, _ = self.github_ops.get_file_content('XaviersSim.json')
@@ -190,33 +230,69 @@ class TweetGenerator:
 
 
     def get_ongoing_tweets(self):
-        """Get ongoing tweets with ACTI backfill if needed."""
+        """获取正在进行的推文和历史记录"""
         try:
-            # Single call to get ongoing tweets
-            ongoing_tweets, _ = self.github_ops.get_file_content('ongoing_tweets.json')
-
-            # If we have ongoing tweets but need more history
-            if ongoing_tweets:
-                if len(ongoing_tweets) < self.digest_interval:
-                    self._get_acti_tweets()
-                    # Combine ACTI history with ongoing tweets
-                    ongoing_tweets = (
-                        self.acti_tweets[-self.digest_interval+len(ongoing_tweets):] + 
-                        ongoing_tweets
-                    )
-                return ongoing_tweets, None
+            print("\n=== [tweet_generator.py:235] 开始获取推文 ===")
             
-            # If no ongoing tweets, use ACTI tweets
-            self._get_acti_tweets()
-            ongoing_tweets = self.acti_tweets[-self.digest_interval:]
+            # 1. 尝试获取正在进行的推文
+            print("\n1. [tweet_generator.py:238] 尝试获取 ongoing_tweets.json")
+            ongoing_content, _ = self.github_ops.get_file_content('ongoing_tweets.json')
+            
+            if ongoing_content:
+                print(f"- 找到 {len(ongoing_content)} 条正在进行的推文")
+                ongoing_tweets = ongoing_content
+            else:
+                print("- ongoing_tweets.json 不存在，将创建新文件")
+                ongoing_tweets = []
+                
+            # 2. 尝试获取历史推文记录
+            print("\n2. [tweet_generator.py:248] 尝试获取 XaviersSim.json")
+            acti_content, _ = self.github_ops.get_file_content('XaviersSim.json')
+            
+            if acti_content:
+                print("- 成功获取历史推文记录")
+                print(f"- 包含 {len(acti_content.keys()) if isinstance(acti_content, dict) else 0} 个年龄段")
+                self.acti_tweets_by_age = acti_content
+                
+                # 收集所有年龄段的推文
+                acti_tweets = []
+                for age_range, tweets in acti_content.items():
+                    print(f"- 年龄段 {age_range}: {len(tweets)} 条推文")
+                    # 提取推文内容（如果是字典则获取content字段，否则直接使用字符串）
+                    for tweet in tweets:
+                        if isinstance(tweet, dict):
+                            acti_tweets.append(tweet.get('content', ''))
+                        else:
+                            acti_tweets.append(tweet)
+                self.acti_tweets = acti_tweets
+                print(f"- 总共收集到 {len(acti_tweets)} 条历史推文")
+            else:
+                print("- XaviersSim.json 不存在，将创建新文件")
+                self.acti_tweets_by_age = {}
+                self.acti_tweets = []
+                
+            # 3. 检查推文格式
+            print("\n3. [tweet_generator.py:272] 检查推文格式")
+            if ongoing_tweets:
+                print("- 检查最新推文:")
+                last_tweet = ongoing_tweets[-1]
+                if isinstance(last_tweet, dict):
+                    print(f"  * 推文ID: {last_tweet.get('id', 'unknown')}")
+                    print(f"  * 计数: {last_tweet.get('tweet_count', 0)}")
+                    print(f"  * 日期: {last_tweet.get('simulated_date', 'unknown')}")
+                else:
+                    print("  * 警告: 最新推文不是字典格式")
+                
+            print(f"\n=== [tweet_generator.py:282] 获取推文完成 ===")
             return ongoing_tweets, self.acti_tweets_by_age
-
+            
         except Exception as e:
-            print(f"Note: Error getting ongoing tweets: {e}")
-            # Fallback to ACTI tweets if not already loaded
-            if not hasattr(self, 'acti_tweets'):
-                self._get_acti_tweets()
-            return self.acti_tweets[-self.digest_interval:], None
+            print(f"\n[tweet_generator.py:286] 获取推文出错:")
+            print(f"- 错误类型: {type(e).__name__}")
+            print(f"- 错误信息: {str(e)}")
+            print("- 详细错误追踪:")
+            traceback.print_exc()
+            return [], {}
 
     def _get_relevant_context(self, digest, tweet_count=0, recent_tweets=None):
         """Extract relevant context from digest based on tweet type."""
@@ -423,30 +499,44 @@ class TweetGenerator:
 
     def generate_tweet(self, latest_digest, age, recent_tweets, recent_comments=None, tweet_count=0, trends=None, sequence_length=1):
         """Main entry point for tweet generation."""
+        # 推文生成的主入口点
+        # 参数说明:
+        # latest_digest: 最新的内容摘要，用于生成上下文
+        # age: 当前模拟年龄
+        # recent_tweets: 最近的推文列表，用于避免重复
+        # recent_comments: 最近的评论，可选
+        # tweet_count: 当前推文计数
+        # trends: 当前趋势信息，可选
+        # sequence_length: 要生成的推文序列长度
         try:
             # First try to get a stored tweet
+            # 首先尝试获取已存储的推文
             next_tweet = self._get_next_stored_tweet()
             if next_tweet:
                 next_tweet['content'] = self._clean_unicode_emojis(next_tweet['content'])
                 return self._style_tweet(next_tweet)
             
             # Generate new sequences until we get unique tweets
+            # 生成新的推文序列，直到获得唯一的推文
             max_retries = 3
             retry_count = 0
             
             while retry_count < max_retries:
                 # Generate a sequence of tweets
+                # 生成一个推文序列
                 sequence = self._generate_tweet_sequence(
                     latest_digest, age, recent_tweets, 
                     trends, tweet_count, sequence_length
                 )
                 
                 # Check all tweets in sequence for duplicates
+                # 检查序列中的所有推文是否有重复
                 has_duplicate = False
                 recent_contents = [t.get('content', t) if isinstance(t, dict) else t for t in recent_tweets]
                 tweet_content = {}
 
                 if len(sequence) != sequence_length:
+                    # 如果生成的序列长度不匹配，重试
                     retry_count += 1
                     print(f"Generated sequence length {len(sequence)} does not match expected length {sequence_length}, retrying ({retry_count}/{max_retries})...")
                     self.log_step(
@@ -456,6 +546,7 @@ class TweetGenerator:
                     )
                     continue
                 
+                # 检查每条推文是否重复
                 for tweet_data in sequence:
                     tweet_content = tweet_data.get('content') if isinstance(tweet_data, dict) else tweet_data
                     if tweet_content in recent_contents:
@@ -464,6 +555,7 @@ class TweetGenerator:
                 
                 if not has_duplicate:
                     # Store extra tweets for later if we generated a sequence
+                    # 如果生成了序列，存储额外的推文供以后使用
                     if len(sequence) > 1:
                         self._store_upcoming_tweets(sequence[1:])
                     return self._style_tweet(sequence[0])
@@ -477,6 +569,7 @@ class TweetGenerator:
                 print(f"Found duplicate tweets, retrying ({retry_count}/{max_retries})...")
             
             print("Warning: Could not generate unique tweets after max retries")
+            # 即使有重复，也返回第一条推文
             if len(sequence) > 1:
                 self._store_upcoming_tweets(sequence[1:])
             return self._style_tweet(sequence[0])  # Return first tweet even if duplicate

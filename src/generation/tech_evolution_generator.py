@@ -1,46 +1,64 @@
 import argparse
 from anthropic import Anthropic
-from utils.config import Config, AIProvider
-from storage.github_operations import GithubOperations
+from ..utils.config import Config, AIProvider
+from ..storage.github_operations import GithubOperations
 import json
 from datetime import datetime
 import os
 import time
 import requests
 import math
-from src.utils.ai_completion import AICompletion
+from ..utils.ai_completion import AICompletion
 import traceback
+from ..utils.path_utils import PathUtils
 
 class TechEvolutionGenerator:
+    """技术进化生成器
+    
+    负责生成和管理技术发展路线图，包括：
+    - 新兴技术的预测
+    - 技术成熟度追踪
+    - 技术依赖关系分析
+    - 社会影响评估
+    """
+    
     def __init__(self, client, model, is_production=False):
-        """Initialize TechEvolutionGenerator
+        """初始化技术进化生成器
         
-        Args:
-            client: AI client for completions
-            model: Model name to use
-            is_production: Whether to run in production mode
+        参数:
+            client: AI 客户端实例
+            model: 使用的模型名称
+            is_production: 是否为生产环境
         """
         self.client = client
         self.model = model
         self.github_ops = GithubOperations(is_production=is_production)
         self.ai = AICompletion(client, model)
-        self.base_year = 2025
+        self.base_year = 2025  # 基准年份
         
-        # Initialize tech evolution data structure
+        # 初始化技术进化数据结构
         self.tech_evolution = {
-            'tech_trees': {},
-            'last_updated': datetime.now().isoformat()
+            'tech_trees': {},  # 技术树
+            'last_updated': datetime.now().isoformat()  # 最后更新时间
         }
         
-        # Update log directory based on environment
+        # 使用路径工具处理日志路径
         env_dir = "prod" if is_production else "dev"
-        self.log_dir = f"logs/{env_dir}/tech"
+        self.log_dir = PathUtils.normalize_path("logs", env_dir, "tech")
+        PathUtils.ensure_dir(self.log_dir)
         
-        # Create log directory if it doesn't exist
-        os.makedirs(self.log_dir, exist_ok=True)
+        self.log_file = PathUtils.normalize_path(
+            self.log_dir,
+            f"tech_evolution_generator_{datetime.now().strftime('%Y%m%d_%H%M%S')}.log"
+        )
 
     def log_step(self, step_name, **kwargs):
-        """Log a generation step with all relevant information."""
+        """记录生成步骤的信息
+        
+        参数:
+            step_name: 步骤名称
+            **kwargs: 需要记录的其他信息
+        """
         try:
             timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
             log_entry = f"\n=== {step_name} === {timestamp}\n"
@@ -48,13 +66,26 @@ class TechEvolutionGenerator:
             for key, value in kwargs.items():
                 log_entry += f"{key}:\n{value}\n\n"
             
-            print(f"Logging step: {step_name}")
+            print(f"[tech_evolution_generator.py:60] 记录步骤: {step_name}")
+            
+            # 确保日志文件存在
+            if not hasattr(self, 'log_file'):
+                self.log_file = PathUtils.normalize_path(
+                    self.log_dir,
+                    f"tech_evolution_generator_{datetime.now().strftime('%Y%m%d_%H%M%S')}.log"
+                )
+                print(f"- 创建新日志文件: {self.log_file}")
             
             with open(self.log_file, 'a', encoding='utf-8') as f:
                 f.write(log_entry + "="*50 + "\n")
             
         except Exception as e:
-            print(f"Error writing to log file: {str(e)}")
+            print(f"[tech_evolution_generator.py:74] 写入日志文件出错:")
+            print(f"- 错误类型: {type(e).__name__}")
+            print(f"- 错误信息: {str(e)}")
+            print(f"- 日志目录: {self.log_dir}")
+            if hasattr(self, 'log_file'):
+                print(f"- 日志文件: {self.log_file}")
 
     def _process_tech_relationships(self, tech_trees):
         """Build a graph of technology relationships and dependencies."""
@@ -441,35 +472,39 @@ class TechEvolutionGenerator:
             return False
 
     def check_and_generate_tech_evolution(self, current_date):
-        """Check if we need to generate new tech tree and do so if needed."""
-        # Get current year from datetime
-        current_year = current_date.year
-        
-        self.log_file = os.path.join(
-            self.log_dir,
-            f"tech_evolution_generator_{datetime.now().strftime('%Y%m%d_%H%M%S')}.log"
-        )
-        print(f"Tech log file: {self.log_file}")
+        """检查并生成技术进化数据"""
         try:
-            # Load or initialize tech evolution data
-            tech_data, _ = self.github_ops.get_file_content("tech_evolution.json")
-            self.tech_evolution = tech_data if tech_data else {'tech_trees': {}, 'last_updated': datetime.now().isoformat()}
+            print("\n=== 开始生成技术进化数据 [tech_evolution_generator.py:289] ===")
+            print(f"当前日期: {current_date}")
             
-            # Get tech trees and determine next epoch
-            tech_trees = self.tech_evolution.get('tech_trees', {})
-            next_epoch = max([int(year) for year in tech_trees.keys()]) + 5 if tech_trees else self.base_year
+            # 获取现有数据
+            tech_evolution, sha = self.github_ops.get_file_content('tech_evolution.json')
+            if not tech_evolution:
+                print("- [tech_evolution_generator.py:295] 未找到现有技术进化数据，将创建新数据")
+                tech_evolution = {'tech_trees': {}}
             
-            # Generate new tech tree if we've reached next epoch
-            if current_year >= next_epoch:
-                tech_evolution = self._generate_epoch_tech_tree(next_epoch)
-                self._save_evolution_data()
-                return tech_evolution
-            
-            return self.tech_evolution
+            # 检查是否需要生成新的技术树
+            current_year = current_date.year
+            if str(current_year) not in tech_evolution['tech_trees']:
+                print(f"- [tech_evolution_generator.py:301] 需要为 {current_year} 年生成新的技术树")
+                new_tree = self._generate_epoch_tech_tree(current_year)
+                if new_tree:
+                    tech_evolution['tech_trees'][str(current_year)] = new_tree
+                    print("- [tech_evolution_generator.py:305] 成功生成新的技术树")
+                    # 保存更新后的数据
+                    self._save_evolution_data()
+                else:
+                    print("- [tech_evolution_generator.py:307] 错误: 生成技术树失败")
+                    return None
+                
+            return tech_evolution
             
         except Exception as e:
-            self.log_step("Tech Tree Check Error", error=str(e))
-            print(f"Error checking and generating tech evolution: {str(e)}")
+            print("\n=== 技术进化生成错误 ===")
+            print(f"错误类型: {type(e).__name__}")
+            print(f"错误信息: {str(e)}")
+            print("\n详细错误追踪:")
+            traceback.print_exc()
             return None
 
     def _get_completion(self, system_prompt, user_prompt):
