@@ -8,6 +8,7 @@ const { initializeDataStructure } = require('./utils/init_data');
 class SimulationRunner {
     constructor() {
         this.logger = new Logger('main');
+        this.simulation = null;
     }
 
     async initialize() {
@@ -30,21 +31,34 @@ class SimulationRunner {
         const spinner = ora('Starting simulation...').start();
         
         try {
-            const simulation = new XavierSimulation(options.production);
-            const result = await simulation.run();
+            this.simulation = new XavierSimulation(options.production);
             
-            spinner.succeed('Story generation completed');
-            this.logger.info('Generated content:', {
-                tweetCount: result.tweets.length,
-                currentAge: result.currentAge,
-                hasDigest: !!result.digest
-            });
-
+            if (options.continuous) {
+                // 持续运行模式
+                spinner.succeed('Starting continuous simulation');
+                await this.simulation.start();
+            } else {
+                // 单次运行模式
+                const result = await this.simulation.runOnce();
+                spinner.succeed('Simulation completed');
+                this.logger.info('Generated content:', {
+                    tweets: result.tweets.length,
+                    hasDigest: !!result.digest,
+                    currentAge: result.currentAge
+                });
+            }
+            
             return true;
         } catch (error) {
             spinner.fail('Simulation failed');
             this.logger.error('Simulation error', error);
             return false;
+        }
+    }
+
+    stop() {
+        if (this.simulation) {
+            this.simulation.stop();
         }
     }
 }
@@ -61,10 +75,24 @@ async function main() {
         .command('run')
         .description('Run the story simulation')
         .option('-p, --production', 'Run in production mode')
+        .option('-c, --continuous', 'Run continuously')
         .action(async (options) => {
             const success = await runner.run(options);
-            process.exit(success ? 0 : 1);
+            if (!options.continuous) {
+                process.exit(success ? 0 : 1);
+            }
         });
+
+    // 处理进程终止信号
+    process.on('SIGINT', () => {
+        console.log('\nReceived SIGINT. Gracefully shutting down...');
+        runner.stop();
+    });
+
+    process.on('SIGTERM', () => {
+        console.log('\nReceived SIGTERM. Gracefully shutting down...');
+        runner.stop();
+    });
 
     program.parse();
 }

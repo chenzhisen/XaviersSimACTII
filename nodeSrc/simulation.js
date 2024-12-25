@@ -15,16 +15,60 @@ class XavierSimulation {
 
         // 初始化生成器
         this.tweetGenerator = new TweetGenerator(client, aiConfig.model, isProduction);
-        this.digestGenerator = new DigestGenerator(client, aiConfig.model, 12, isProduction);
+        this.digestGenerator = new DigestGenerator(client, aiConfig.model, 4, isProduction);
+
+        // 运行配置
+        this.config = {
+            minInterval: 2  * 1000,  // 最小间隔2分钟
+            maxInterval: 5  * 1000,  // 最大间隔5分钟
+            maxTweetsPerDay: 48,         // 每天最大推文数
+            isRunning: false
+        };
     }
 
-    async run() {
+    async start() {
+        if (this.config.isRunning) {
+            this.logger.warn('Simulation is already running');
+            return;
+        }
+
+        this.config.isRunning = true;
+        this.logger.info('Starting continuous simulation');
+
+        while (this.config.isRunning) {
+            try {
+                await this.runOnce();
+                
+                // 随机等待时间
+                const waitTime = this._getRandomInterval();
+                this.logger.info(`Waiting ${Math.floor(waitTime/1000)}s for next generation`);
+                await new Promise(resolve => setTimeout(resolve, waitTime));
+            } catch (error) {
+                this.logger.error('Error in simulation loop', error);
+                await new Promise(resolve => setTimeout(resolve, 30000)); // 错误后等待30秒
+            }
+        }
+    }
+
+    stop() {
+        this.config.isRunning = false;
+        this.logger.info('Stopping simulation');
+    }
+
+    async runOnce() {
         try {
             this.logger.info('Starting story generation');
 
             // 获取当前状态
             const summary = await this.tweetGenerator.getCurrentSummary();
             
+            // 检查每日限额
+            if (!this._checkDailyLimit(summary.totalTweets)) {
+                this.logger.info('Daily tweet limit reached, waiting for next day');
+                await new Promise(resolve => setTimeout(resolve, this._getTimeToNextDay()));
+                return;
+            }
+
             // 生成新的场景
             const tweets = await this.tweetGenerator.generateTweetScene(
                 summary.lastDigest,
@@ -56,6 +100,28 @@ class XavierSimulation {
             this.logger.error('Story generation failed', error);
             throw error;
         }
+    }
+
+    _getRandomInterval() {
+        return Math.floor(
+            Math.random() * (this.config.maxInterval - this.config.minInterval) 
+            + this.config.minInterval
+        );
+    }
+
+    _checkDailyLimit(totalTweets) {
+        const today = new Date().toISOString().split('T')[0];
+        const dayStart = new Date(today).getTime();
+        const tweetsToday = totalTweets % this.config.maxTweetsPerDay;
+        return tweetsToday < this.config.maxTweetsPerDay;
+    }
+
+    _getTimeToNextDay() {
+        const now = new Date();
+        const tomorrow = new Date(now);
+        tomorrow.setDate(tomorrow.getDate() + 1);
+        tomorrow.setHours(0, 0, 0, 0);
+        return tomorrow.getTime() - now.getTime();
     }
 }
 
