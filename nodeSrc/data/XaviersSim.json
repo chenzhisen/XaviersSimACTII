@@ -4,44 +4,37 @@
     "startAge": 22,
     "currentAge": 22.08,
     "currentPhase": "early_career",
-    "lastUpdate": "2024-12-25T09:13:03.709Z",
+    "lastUpdate": "2024-12-25T09:13:20.734Z",
     "version": "1.0.0"
   },
   "story": {
     "tweets": [
       {
-        "text": "TWEET 1: Just landed my first job at a tech startup - exciting, nerve-wracking, and full of possibilities. Ready to dive into the world of innovation and challenges! #earlycareer #newbeginnings",
-        "id": "tweet_1735117983707_dk9o9k6n3",
+        "text": "TWEET 1: Excitement fills the air as I step into the bustling office, a maze of desks and murmurs. The early_morning sunlight dances on my desk, a blank canvas awaiting my ideas. #NewBeginnings #EarlyCareer",
+        "id": "tweet_1735118000732_2a5k8j74d",
         "age": 22.08,
-        "timestamp": "2024-12-25T09:13:03.709Z"
+        "timestamp": "2024-12-25T09:13:20.734Z"
       },
       {
-        "text": "TWEET 2: Met a fellow colleague, Mia, who introduced me to the world of crypto and blockchain. Learning from her expertise has been eye-opening, inspiring me to explore new horizons beyond my comfort zone. #tech #mentorship",
-        "id": "tweet_1735117983707_1j9o6qpvs",
+        "text": "TWEET 2: Engulfed in charts and emails, I find solace in the rhythm of my work. Collaborating with colleagues, the symphony of clacking keys fuels our collective momentum. Lessons in every keystroke, #Growth is tangible.",
+        "id": "tweet_1735118000732_glz830a46",
         "age": 22.08,
-        "timestamp": "2024-12-25T09:13:03.709Z"
+        "timestamp": "2024-12-25T09:13:20.734Z"
       },
       {
-        "text": "TWEET 3: Attended a networking event where I pitched a new project idea. The positive feedback boosted my confidence, yet the constructive criticism reminded me that growth comes from embracing feedback, not just praise. #growthmindset #ambition",
-        "id": "tweet_1735117983707_wxng00s1c",
+        "text": "TWEET 3: Amidst market volatility, $XVI's rise and falls mirror life's uncertainties. A colleague's advice lingers, \"In both trades and life, strategic moves win the long game.\" A revelation dawns, blending #Wisdom with ambition.",
+        "id": "tweet_1735118000732_dzs7ed5v1",
         "age": 22.08,
-        "timestamp": "2024-12-25T09:13:03.709Z"
+        "timestamp": "2024-12-25T09:13:20.734Z"
       },
       {
-        "text": "TWEET 4: As I wrap up my first month in the tech world, I'm grateful for the challenges that pushed me to grow. Excited for what lies ahead, including diving deeper into the crypto realm and maybe even launching my own project. The journey with $XVI has only just begun. #futuregoals",
-        "id": "tweet_1735117983707_692ok2rvv",
+        "text": "TWEET 4: As the day closes, I reflect on wins and losses, knowing each shapes my #Journey. With a spark of resilience, I plan for the future, a hint of a new project with the promise of growth and challenges ahead. #NextChapter",
+        "id": "tweet_1735118000732_6jzqsxhvc",
         "age": 22.08,
-        "timestamp": "2024-12-25T09:13:03.709Z"
+        "timestamp": "2024-12-25T09:13:20.734Z"
       }
     ],
-    "digests": [
-      {
-        "content": "[开头概述]\n\n主要进展：\n1. 客户基础逐步扩大\n2. 建立了重要的业务伙伴关系\n3. 技术方面取得重要突破\n4. 项目管理能力显著提高\n\n未来展望：Xavier将继续保持创新精神，带领团队迈向新的高度。",
-        "timestamp": "2024-12-25T09:13:03.726Z",
-        "age": 22.08,
-        "tweetCount": 4
-      }
-    ],
+    "digests": [],
     "keyPlotPoints": [],
     "relationships": []
   },
@@ -59,7 +52,7 @@
         "性能优化",
         "安全性"
       ],
-      "lastUpdate": "2024-12-25T09:12:59.658Z"
+      "lastUpdate": "2024-12-25T09:13:16.820Z"
     }
   },
   "career": {
@@ -93,7 +86,7 @@
   },
   "stats": {
     "totalTweets": 4,
-    "digestCount": 1,
+    "digestCount": 0,
     "techUpdateCount": 0,
     "yearProgress": "8.3"
   }
