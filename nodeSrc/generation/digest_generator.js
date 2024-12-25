@@ -2,13 +2,14 @@ const { AICompletion } = require('../utils/ai_completion');
 const { Logger } = require('../utils/logger');
 const fs = require('fs').promises;
 const path = require('path');
+const chalk = require('chalk');
 
 class DigestGenerator {
-    constructor(client, model, digestInterval = 4, isProduction = false) {
+    constructor(client, model, digestInterval = 4, options = {}) {
         this.logger = new Logger('digest');
-        this.ai = new AICompletion(client, model);
+        this.ai = new AICompletion(client, model, options);
         this.digestInterval = digestInterval;
-        this.isProduction = isProduction;
+        this.isProduction = options.isProduction || false;
 
         // 文件路径配置
         this.paths = {
@@ -16,7 +17,7 @@ class DigestGenerator {
             mainFile: path.resolve(__dirname, '..', 'data', 'XaviersSim.json')
         };
 
-        // 摘要模板
+        // 本地摘要模板
         this.digestTemplates = {
             early_career: [
                 `在这段时间里，Xavier展现出了典型的创业初期特征。他专注于技术开发，不断挑战自我。与此同时，他也在学习平衡工作与生活，建立重要的人际关系。Debug猫的出现为他的创业生活增添了一份意外的惊喜，也象征着好运的开始。
@@ -29,7 +30,7 @@ class DigestGenerator {
 
 展望未来，Xavier需要继续保持这种积极的态度，同时更多关注团队建设和产品市场适配性。他的故事正在朝着一个有趣的方向发展。`,
 
-                `这段时期是Xavier创业旅程的重��起点。他展现出了技术专家和创业者的双重特质，在解决技术难题的同时，也在探索创业之路。重要的是，他没有忘记生活中的其他方面，特别是与朋友们的珍贵情谊。
+                `这段时期是Xavier创业旅程的重要起点。他展现出了技术专家和创业者的双重特质，在解决技术难题的同时，也在探索创业之路。重要的是，他没有忘记生活中的其他方面，特别是与朋友们的珍贵情谊。
 
 主要进展：
 1. 产品开发：取得重要技术突破
@@ -42,12 +43,12 @@ class DigestGenerator {
         };
     }
 
-    async checkAndGenerateDigest(newTweets = [], currentAge, timestamp, totalTweets) {
+    async checkAndGenerateDigest(newTweets, currentAge, timestamp, totalTweets) {
         try {
-            this.logger.info('Checking digest generation', {
+            console.log(chalk.blue('Checking digest generation:', {
                 totalTweets,
                 interval: this.digestInterval
-            });
+            }));
 
             // 获取最近的推文
             const recentTweets = await this._getRecentTweets();
@@ -55,24 +56,28 @@ class DigestGenerator {
             // 确保 recentTweets 是数组
             const validTweets = Array.isArray(recentTweets) ? recentTweets : [];
             
-            // 计算当前年龄（包括新增的推文）
-            const calculatedAge = this._calculateAge(totalTweets + (newTweets?.length || 0));
-            
             // 生成摘要
-            const digest = await this._generateDigest(validTweets, calculatedAge);
-            
-            // 保存摘要和更新年龄
-            await this._saveDigest(digest, calculatedAge, timestamp);
+            let digest;
+            if (this.ai.options.useLocalSimulation) {
+                console.log(chalk.yellow('Using local digest template'));
+                digest = this._getLocalDigest(currentAge);
+            } else {
+                console.log(chalk.blue('Generating AI digest'));
+                digest = await this._generateAIDigest(validTweets, currentAge);
+            }
 
-            this.logger.info('Generated new digest', {
-                age: calculatedAge,
-                tweetCount: validTweets.length,
-                totalTweets: totalTweets + (newTweets?.length || 0)
-            });
+            // 保存摘要
+            if (digest) {
+                await this._saveDigest(digest, currentAge, timestamp);
+                console.log(chalk.green('Digest generated and saved:', {
+                    age: currentAge,
+                    tweetCount: validTweets.length
+                }));
+            }
 
             return digest;
         } catch (error) {
-            this.logger.error('Error in digest generation', error);
+            console.log(chalk.red('Error in digest generation:', error));
             throw error;
         }
     }
@@ -88,7 +93,7 @@ class DigestGenerator {
         }
     }
 
-    async _generateDigest(tweets = [], currentAge) {
+    _getLocalDigest(currentAge) {
         // 选择合适的摘要模板
         const phase = this._getPhase(currentAge);
         const templates = this.digestTemplates[phase] || this.digestTemplates.early_career;
@@ -98,8 +103,29 @@ class DigestGenerator {
             content: template,
             timestamp: new Date().toISOString(),
             age: Number(currentAge.toFixed(2)),
-            tweetCount: tweets?.length || 0
+            tweetCount: this.digestInterval
         };
+    }
+
+    async _generateAIDigest(tweets, currentAge) {
+        try {
+            const prompt = this._buildDigestPrompt(tweets, currentAge);
+            const response = await this.ai.getCompletion(
+                'You are crafting a story digest summarizing recent events.',
+                prompt
+            );
+
+            return {
+                content: response[0].text,
+                timestamp: new Date().toISOString(),
+                age: Number(currentAge.toFixed(2)),
+                tweetCount: tweets.length
+            };
+        } catch (error) {
+            console.log(chalk.red('Error generating AI digest:', error));
+            console.log(chalk.yellow('Falling back to local digest template'));
+            return this._getLocalDigest(currentAge);
+        }
     }
 
     _calculateAge(totalTweets) {
