@@ -16,10 +16,7 @@ const INITIAL_DATA = {
    
     story: {
         tweets: [],
-        digests: [{
-            content: `Xavier is at a crossroads, seriously considering leaving college to focus on quant trading and his involvement with $XVI. This marks a significant shift in his life priorities and indicates a desire to take control of his future..`,
-            timestamp: new Date().toISOString()
-        }],
+        digests: [],
         keyPlotPoints: [],
         relationships: []
     },
@@ -72,31 +69,45 @@ const INITIAL_DATA = {
 async function initializeDataStructure() {
     const dataPath = path.resolve(__dirname, '..', 'data', 'XaviersSim.json');
     const dataDir = path.dirname(dataPath);
+    const aiLogsDir = path.resolve(dataDir, 'ai_logs');
 
     try {
+        logger.info('Starting data initialization...');
+
+        // 删除旧文件和目录
+        try {
+            // 删除 XaviersSim.json
+            await fs.unlink(dataPath);
+            logger.info('Deleted old XaviersSim.json');
+        } catch (error) {
+            if (error.code !== 'ENOENT') {
+                throw error;
+            }
+        }
+
+        try {
+            // 删除 ai_logs 目录
+            await fs.rm(aiLogsDir, { recursive: true, force: true });
+            logger.info('Deleted ai_logs directory');
+        } catch (error) {
+            if (error.code !== 'ENOENT') {
+                throw error;
+            }
+        }
+
         // 确保数据目录存在
         await fs.mkdir(dataDir, { recursive: true });
+        
+        // 创建新的数据文件
+        await fs.writeFile(
+            dataPath,
+            JSON.stringify(INITIAL_DATA, null, 2),
+            'utf8'
+        );
 
-        // 检查文件是否存在且不为空
-        try {
-            const content = await fs.readFile(dataPath, 'utf8');
-            if (!content.trim()) {
-                throw new Error('File is empty');
-            }
-            JSON.parse(content); // 验证JSON格式
-            logger.info('Data file exists and is valid');
-            return true;
-        } catch (error) {
-            // 文件不存在、为空或格式错误，创建新文件
-            logger.info('Creating new data file');
-            await fs.writeFile(
-                dataPath,
-                JSON.stringify(INITIAL_DATA, null, 2),
-                'utf8'
-            );
-            logger.info('Data file initialized successfully');
-            return true;
-        }
+        logger.info('Data structure initialized successfully');
+        return true;
+
     } catch (error) {
         logger.error('Failed to initialize data structure', error);
         throw error;
