@@ -1,12 +1,27 @@
 const { Logger } = require('./logger');
-
+const OpenAI = require('openai');
+const dotenv = require('dotenv');
+const { Config } = require('./config');
+ 
 class AICompletion {
     constructor(client, model, options = {}) {
         this.logger = new Logger('ai');
-        this.client = client;
-        this.model = model;
+        const aiConfig = Config.getAIConfig();
+            
+        // 初始化 OpenAI 客户端
+        if (client) {
+            this.client = client;
+            this.model = model;
+        } else {
+            this.model = aiConfig.model;
+            this.client = new OpenAI({
+                apiKey: aiConfig.apiKey,
+                baseURL: aiConfig.baseUrl
+            });
+        }
+
         this.options = {
-            useLocalSimulation: false,  // 默认使用本地模拟
+            useLocalSimulation: !this.client, // 如果没有客户端则使用本地模拟
             ...options
         };
     }
@@ -26,6 +41,11 @@ class AICompletion {
 
     async _getAICompletion(systemPrompt, userPrompt) {
         try {
+            if (!this.client) {
+                this.logger.warn('No AI client available, using local simulation');
+                return this._getLocalSimulation();
+            }
+
             const response = await this.client.chat.completions.create({
                 model: this.model,
                 messages: [
@@ -39,7 +59,6 @@ class AICompletion {
             return tweets;
         } catch (error) {
             this.logger.error('AI API call failed', error);
-            // 如果 AI 调用失败，回退到本地模拟
             this.logger.info('Falling back to local simulation');
             return this._getLocalSimulation();
         }
@@ -82,7 +101,7 @@ class AICompletion {
                 [
                     "1: 老友聚会，他们笑称我是\"成功人士\"。其实他们不知道，最成功的是这些年友情始终如一。",
                     "2: 还记得当年挤在出租屋写代码，大家轮流给我送饭。现在我请他们吃饭，他们却说：\"能不能换回那时的盒饭？\"",
-                    "3: 朋友说我变了，变得更忙了。但有一点永远不会变，就是遇到困难时第一个想到的还是他们。",
+                    "3: 朋友说我变了，变得更忙了。但有一点永远不会变，就是遇到困难时第���个想到的还是他们。",
                     "4: 真正的财富是那些在你还一无所有时，就愿意陪你疯狂的人。#Friendship #感恩"
                 ]
             ]

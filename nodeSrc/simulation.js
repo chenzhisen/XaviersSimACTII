@@ -9,13 +9,14 @@ class XavierSimulation {
         this.logger = new Logger('simulation');
         this.isProduction = isProduction;
 
-        // 初始化 AI 客户端
-        const aiConfig = Config.getAIConfig();
-        const client =''
-
-        // 初始化生成器
-        this.tweetGenerator = new TweetGenerator(client, aiConfig.model, isProduction);
-        this.digestGenerator = new DigestGenerator(client, aiConfig.model, 4, isProduction);
+        // 初始化生成器，不传入客户端，让 AICompletion 自己初始化
+        this.tweetGenerator = new TweetGenerator(null, null, {
+            isProduction
+        });
+        
+        this.digestGenerator = new DigestGenerator(null, null, 4, {
+            isProduction
+        });
 
         // 运行配置
         this.config = {
@@ -23,7 +24,7 @@ class XavierSimulation {
             maxInterval: 2 * 1000,   // 最大间隔10秒
             maxTweetsPerDay: 4800,      // 每天最大推文数
             tweetsPerScene: 4,        // 每个场景4条推文
-            scenesPerBatch: 1,        // 每批3个场���（固定12条推文）
+            scenesPerBatch: 1,        // 每批3个场景（固定12条推文）
             isRunning: false
         };
 
