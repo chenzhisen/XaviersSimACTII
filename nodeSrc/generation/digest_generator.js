@@ -267,6 +267,7 @@ class DigestGenerator {
     _buildDigestPrompt(tweets, currentAge) {
         try {
             const phase = this._getPhase(currentAge);
+            const personalContext = this._getPersonalContext(currentAge);
             const tweetsText = tweets
                 .map(tweet => tweet.text)
                 .join('\n\n');
@@ -275,36 +276,64 @@ class DigestGenerator {
 作为一个故事摘要生成器，请为以下推文生成一个详细的中文摘要。
 这些推文描述了Xavier在${phase}阶段（${currentAge}岁）的经历。
 
+个人背景：
+${personalContext}
+
 推文内容：
 ${tweetsText}
 
 请按以下格式生成摘要：
 1. 开头概述这段时期的整体特点和主要发展（2-3句话）
-2. 列出4个具体的主要进展，包括：技术/产品、团队/人际、个人成长等方面
+2. 列出4个具体的主要进展，包括：事业发展、个人成长、感情生活、家庭关系等方面
 3. 最后加上对未来的展望（1-2句话）
 
 要求：
-- 保持积极向上的基调
-- 突出重要的转折点和成就
-- 体现人物的成长轨迹
-- 注意情感和故事性
-- 确保内容前后连贯
+- 平衡事业与个人生活的描述
+- 体现人物的情感变化
+- 突出重要的人际关系
+- 注意家庭和感情的发展
+- 保持故事的连贯性
 
 请严格按照以下模板输出：
 [开头概述，2-3句话描述这段时期的特点]
 
 主要进展：
-1. [具体进展1]
-2. [具体进展2]
-3. [具体进展3]
-4. [具体进展4]
+1. [事业相关进展]
+2. [个人成长进展]
+3. [感情/家庭相关进展]
+4. [生活方式/兴趣相关进展]
 
-未来展望：[1-2句话的展望]
+未来展望：[1-2句话的展望，包含事业和个人生活]
 `;
         } catch (error) {
             console.log(chalk.red('Error building digest prompt:', error));
             throw error;
         }
+    }
+
+    _getPersonalContext(currentAge) {
+        const data = require('../data/XaviersSim.json');
+        const personal = data.personal;
+        const romantic = personal.relationships.romantic;
+        const familyLife = personal.family_life;
+
+        // 根据年龄调整关注点
+        let context = '';
+        if (currentAge < 25) {
+            context = `正处于事业起步阶段，${romantic.status === 'single' ? '单身' : '有恋人'}。
+主要关注事业发展，但也开始思考个人生活规划。
+期待遇到${romantic.preferences.lookingFor.join('、')}的伴侣。`;
+        } else if (currentAge < 30) {
+            context = `事业逐步稳定，${familyLife.marriage.isMarried ? '已婚' : '考虑婚恋'}。
+在${familyLife.marriage.plans.timing}期间计划步入婚姻。
+重视${familyLife.values.familyPriorities.slice(0, 2).join('和')}。`;
+        } else {
+            context = `事业进入成熟期，${familyLife.children.hasChildren ? '已为人父' : '考虑组建家庭'}。
+规划在${familyLife.children.plans.timing}期间要孩子。
+注重${familyLife.values.parentingStyle.slice(0, 2).join('和')}的教育理念。`;
+        }
+
+        return context;
     }
 }
 
