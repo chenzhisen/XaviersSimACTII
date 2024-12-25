@@ -4,7 +4,7 @@
     "startAge": 22,
     "currentAge": 22,
     "currentPhase": "early_career",
-    "lastUpdate": "2024-12-25T07:40:34.281Z",
+    "lastUpdate": "2024-12-25T07:53:26.393Z",
     "version": "1.0.0"
   },
   "story": {
@@ -488,6 +488,54 @@
         "id": "tweet_1735112434280_yyfyjryxu",
         "age": 23.67,
         "timestamp": "2024-12-25T07:40:34.281Z"
+      },
+      {
+        "text": "TWEET 1: The bustling office is a symphony of keyboards and dreams. I dive deep into a new blockchain challenge, feeling the weight of responsibility. Sarah's lunchtime anecdotes remind me success isn't just code—it's found in balance. #EarlyCareerJourney",
+        "id": "tweet_1735113194049_mjw5ajw35",
+        "age": 23.75,
+        "timestamp": "2024-12-25T07:53:14.050Z"
+      },
+      {
+        "text": "TWEET 2: Sarah's words linger, shaping thoughts as I craft another encrypted line. Completing the smart contract prototype, a surge of accomplishment fills me. Late nights, collaborative wins—we grow not just in code but in shared bonds. #TeamTriumphs",
+        "id": "tweet_1735113194049_xdmjgu6z8",
+        "age": 23.75,
+        "timestamp": "2024-12-25T07:53:14.050Z"
+      },
+      {
+        "text": "TWEET 3: Reflecting on victories and defeats, a clearer path emerges. Each code line, each connection—a tapestry of learning. The $XVI conference hints at new horizons where challenges are stepping stones. Tech mastery meets personal fulfillment. #TechJourneyInProgress",
+        "id": "tweet_1735113194049_gccsns2t4",
+        "age": 23.75,
+        "timestamp": "2024-12-25T07:53:14.050Z"
+      },
+      {
+        "text": "TWEET 4: The impending $XVI conference hums with anticipation. Each day's progress paints a canvas of early career growth. Networking, learning, personal connections—the horizon glimmers with opportunities. The future merges tech mastery with fulfillment. #FutureUnfolding",
+        "id": "tweet_1735113194049_ffmar7jkl",
+        "age": 23.75,
+        "timestamp": "2024-12-25T07:53:14.050Z"
+      },
+      {
+        "text": "TWEET 1: As the sun sneaks in through the office window, casting golden hues across my desk, I dive into analyzing a complex blockchain protocol. Sarah's laughter over a midday snack breaks the intense focus, reminding me that success is not just about code—it's about finding harmony. #WorkLifeBalance",
+        "id": "tweet_1735113206392_6eaeg4bv4",
+        "age": 23.83,
+        "timestamp": "2024-12-25T07:53:26.393Z"
+      },
+      {
+        "text": "TWEET 2: With every line of code I craft, Sarah's words echo in my mind, pushing me to think beyond algorithms. As I debug the final segment of the smart contract prototype, a surge of pride washes over me, tinged with the realization that growth comes not just from achievements but from shared victories. #TeamworkWins",
+        "id": "tweet_1735113206392_m3qgy8ejc",
+        "age": 23.83,
+        "timestamp": "2024-12-25T07:53:26.393Z"
+      },
+      {
+        "text": "TWEET 3: Amidst the hum of the office air conditioner, a moment of clarity washes over me—progress is a tapestry woven from both triumphs and setbacks. The approaching $XVI conference looms on the horizon, a beacon of new beginnings where challenges are not obstacles but stepping stones in my tech journey. #FutureAwaits",
+        "id": "tweet_1735113206392_zqdtekqnf",
+        "age": 23.83,
+        "timestamp": "2024-12-25T07:53:26.393Z"
+      },
+      {
+        "text": "TWEET 4: With the excitement for the $XVI conference building up, I realize each day brings new opportunities for growth in my early career. The connections I've made, the challenges I've overcome—all of it paints a vibrant canvas of possibilities. Networking and learning intertwine as tech mastery aligns with personal fulfillment, hinting at a future where success is not just a destination but a journey. #TechJourneyContinues",
+        "id": "tweet_1735113206392_furlbjquo",
+        "age": 23.83,
+        "timestamp": "2024-12-25T07:53:26.393Z"
       }
     ],
     "digests": [
@@ -610,6 +658,18 @@
         "timestamp": "2024-12-25T07:40:34.297Z",
         "age": 22,
         "tweetCount": 4
+      },
+      {
+        "content": "[开头概述，描述这段时期的特点]\n\n主要进展：\n1. 持续学习和成长\n2. 持续学习和成长\n3. 持续学习和成长\n4. 持续学习和成长\n\n未来展望：Xavier将继续在技术和创业道路上探索，相信会有更多突破和成长。",
+        "timestamp": "2024-12-25T07:53:14.069Z",
+        "age": 22,
+        "tweetCount": 4
+      },
+      {
+        "content": "[开头概述]\n\n主要进展：\n1. 持续学习和成长\n2. 持续学习和成长\n3. 持续学习和成长\n4. 持续学习和成长\n\n未来展望：Xavier将继续在技术和创业道路上探索，相信会有更多突破和成长。",
+        "timestamp": "2024-12-25T07:53:26.410Z",
+        "age": 22,
+        "tweetCount": 4
       }
     ],
     "keyPlotPoints": [],
@@ -662,9 +722,9 @@
     ]
   },
   "stats": {
-    "totalTweets": 80,
-    "digestCount": 20,
+    "totalTweets": 88,
+    "digestCount": 22,
     "techUpdateCount": 0,
-    "yearProgress": "66.7"
+    "yearProgress": "83.3"
   }
 }
