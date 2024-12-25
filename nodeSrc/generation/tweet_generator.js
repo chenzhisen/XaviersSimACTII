@@ -98,7 +98,7 @@ class TweetGenerator {
             story: {
                 tweets: [],
                 digests: [{
-                    content: `${this.storyConfig.protagonist.name} begins their journey in tech and crypto at age ${this.storyConfig.protagonist.startAge}.`,
+                    content: `Xavier is at a crossroads, seriously considering leaving college to focus on quant trading and his involvement with $XVI. This marks a significant shift in his life priorities and indicates a desire to take control of his future..`,
                     timestamp: new Date().toISOString()
                 }]
             }
