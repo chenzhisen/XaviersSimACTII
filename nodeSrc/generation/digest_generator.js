@@ -94,13 +94,23 @@ class DigestGenerator {
     }
 
     _getLocalDigest(currentAge) {
-        // 选择合适的摘要模板
+        // 根据 Introduction.json 生成初始摘要
+        const intro = require('../data/Introduction.json');
         const phase = this._getPhase(currentAge);
-        const templates = this.digestTemplates[phase] || this.digestTemplates.early_career;
-        const template = templates[Math.floor(Math.random() * templates.length)];
+        const phaseData = intro.story.phases[phase];
+
+        const digest = `这是Xavier故事的开始。作为一位${intro.protagonist.background.education}的毕业生，他怀揣着构建${intro.story.company.vision}的梦想，开启了他的创业之旅。在${intro.story.setting.location}这片创新热土上，他正式成立了${intro.story.company.name}，致力于${intro.story.company.mission}。
+
+主要进展：
+1. 技术基础：凭借${intro.protagonist.background.expertise.join('、')}等专业知识，开始构建${intro.story.company.product.name}
+2. 创业准备：确立了"${intro.story.company.product.description}"的产品定位
+3. 核心能力：专注于${intro.story.company.product.features.join('、')}等关键特性
+4. 个人成长：展现出${intro.protagonist.personality.traits.slice(0, 3).join('、')}等特质
+
+未来展望：在${intro.story.setting.context}的大背景下，Xavier将专注于${phaseData.focus.join('、')}等方向，以实现产品的技术突破和市场验证。`;
 
         return {
-            content: template,
+            content: digest,
             timestamp: new Date().toISOString(),
             age: Number(currentAge.toFixed(2)),
             tweetCount: this.digestInterval
@@ -249,7 +259,7 @@ ${tweetsText}
 - 保持积极向上的基调
 - 突出重要的转折点和成就
 - 体现人物的成长轨迹
-- 注意情感和故事性
+- 注意情���和故事性
 - 确保内容前后连贯
 
 请严格按照以下模板输出：

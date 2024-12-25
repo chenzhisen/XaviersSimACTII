@@ -94,6 +94,13 @@ class TweetGenerator {
                 protagonist: this.storyConfig.protagonist.name,
                 startAge: this.storyConfig.protagonist.startAge,
                 currentPhase: 'early_career'
+            },
+            story: {
+                tweets: [],
+                digests: [{
+                    content: `${this.storyConfig.protagonist.name} begins their journey in tech and crypto at age ${this.storyConfig.protagonist.startAge}.`,
+                    timestamp: new Date().toISOString()
+                }]
             }
         };
 
