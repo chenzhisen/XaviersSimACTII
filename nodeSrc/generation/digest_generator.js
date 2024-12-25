@@ -50,9 +50,9 @@ class DigestGenerator {
             });
 
             // 检查是否需要生成摘要
-            if (totalTweets % this.digestInterval !== 0) {
-                return null;
-            }
+            // if (totalTweets % this.digestInterval !== 0) {
+            //     return null;
+            // }
 
             // 获取最近的推文
             const recentTweets = await this._getRecentTweets();
