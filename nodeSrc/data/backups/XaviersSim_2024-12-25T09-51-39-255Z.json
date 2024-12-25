@@ -2,9 +2,9 @@
   "metadata": {
     "protagonist": "Xavier",
     "startAge": 22,
-    "currentAge": 22.17,
+    "currentAge": 22.08,
     "currentPhase": "early_career",
-    "lastUpdate": "2024-12-25T09:51:50.012Z",
+    "lastUpdate": "2024-12-25T09:51:39.254Z",
     "version": "1.0.0"
   },
   "story": {
@@ -32,48 +32,12 @@
         "id": "tweet_1735120299252_p7dzcs4gq",
         "age": 22.08,
         "timestamp": "2024-12-25T09:51:39.254Z"
-      },
-      {
-        "text": "TWEET 1: Adjusting to the pulse of the startup rhythm—coffee-fueled mornings and endless lines of code. Yet, every line written is a step closer to mastering the art of blockchain integration. #earlycareer #techlife",
-        "id": "tweet_1735120310010_0tiby9vva",
-        "age": 22.17,
-        "timestamp": "2024-12-25T09:51:50.012Z"
-      },
-      {
-        "text": "TWEET 2: Amidst the digital chaos, found a moment of solace in a bustling cafe. A stranger struck up a conversation about blockchain potential, igniting a new perspective on the power of decentralized networks. #connection #insights",
-        "id": "tweet_1735120310010_3tzkgofid",
-        "age": 22.17,
-        "timestamp": "2024-12-25T09:51:50.012Z"
-      },
-      {
-        "text": "TWEET 3: In a serendipitous twist of fate, stumbled upon an old diary filled with childhood dreams. Amidst the blockchain buzz, rediscovering the essence of why I started this journey—curiosity and the hunger to leave a mark. #growth #reflection",
-        "id": "tweet_1735120310010_s1m9k3kh0",
-        "age": 22.17,
-        "timestamp": "2024-12-25T09:51:50.012Z"
-      },
-      {
-        "text": "TWEET 4: As days blur into nights of coding and camaraderie, planting the seeds for a brighter future. The journey's just begun, but the $XVI symbol glows brighter, a reminder of the promise ahead. Embracing the chaos and crafting order amidst the storm. #nextchapter",
-        "id": "tweet_1735120310010_o9rxplsst",
-        "age": 22.17,
-        "timestamp": "2024-12-25T09:51:50.012Z"
       }
     ],
     "digests": [
       {
         "content": "Xavier is at a crossroads, seriously considering leaving college to focus on quant trading and his involvement with $XVI. This marks a significant shift in his life priorities and indicates a desire to take control of his future..",
         "timestamp": "2024-12-25T09:51:35.613Z"
-      },
-      {
-        "content": "[开头概述] Xavier正处在early_career阶段，进入了科技行业的工作，专注于区块链技术，并努力平衡事业发展与个人成长。他期待遇到一个能相互支持成长、理解创业压力的伴侣。\n\n主要进展：\n1. 建立了重要的业务伙伴关系\n2. 项目管理能力显著提高\n3. 团队建设初见成效\n4. 客户基础逐步扩大\n\n未来展望：Xavier将继续保持创新精神，带领团队迈向新的高度。",
-        "timestamp": "2024-12-25T09:51:39.269Z",
-        "age": 22.08,
-        "tweetCount": 4
-      },
-      {
-        "content": "[Xavier处于early_career阶段（22.08岁），他在追求事业发展的道路上经历了不少波折。他既沉浸在创业的节奏中，又在思考个人生活规划的重要性。与此同时，他期待遇到能够相互支持成长的伴侣。]\n\n主要进展：\n1. 市场策略逐步完善\n2. 技术方面取得重要突破\n3. 团队建设初见成效\n4. 建立了重要的业务伙伴关系\n\n未来展望：Xavier将继续保持创新精神，带领团队迈向新的高度。",
-        "timestamp": "2024-12-25T09:51:50.035Z",
-        "age": 22.17,
-        "tweetCount": 4
       }
     ],
     "keyPlotPoints": [],
@@ -200,9 +164,9 @@
     }
   },
   "stats": {
-    "totalTweets": 8,
-    "digestCount": 3,
+    "totalTweets": 4,
+    "digestCount": 0,
     "techUpdateCount": 0,
-    "yearProgress": "16.7"
+    "yearProgress": "8.3"
   }
 }

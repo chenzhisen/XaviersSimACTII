@@ -45,14 +45,46 @@ class TweetGenerator {
         };
     }
 
-    _buildSystemPrompt() {
-        const data = require('../data/XaviersSim.json');
-        const personal = data.personal;
-        const romantic = personal.relationships.romantic;
-        const familyLife = personal.family_life;
-        const lifestyle = personal.lifestyle;
+    async generateTweetScene(lastDigest, currentAge, tweetCount) {
+        try {
+            // 每次生成前重新获取最新的系统提示
+            const systemPrompt = await this._buildSystemPrompt();
+            
+            // 更新 AI 实例的系统提示
+            this.ai.updateSystemPrompt(systemPrompt);
 
-        return `你是Xavier，一个年轻的科技创业者。作为$XVI Labs的创始人，你正在构建下一代去中心化AI基础设施。
+            const context = await this._prepareContext(lastDigest, currentAge, tweetCount);
+            const prompt = this._buildStoryPrompt(context);
+
+            // 直接获取生成的推文数组
+            const tweets = await this.ai.getCompletion(
+                'You are crafting a compelling life story through tweets.',
+                prompt
+            );
+
+            // 保存新生成的推文获取更新后的信息
+            const result = await this._saveTweets(tweets, currentAge);
+
+            return result.tweets;
+        } catch (error) {
+            this.logger.error('Error generating tweet scene', error);
+            throw error;
+        }
+    }
+
+    async _buildSystemPrompt() {
+        try {
+            // 每次都重新读取最新的数据
+            const data = JSON.parse(
+                await fs.readFile(this.paths.mainFile, 'utf8')
+            );
+            
+            const personal = data.personal;
+            const romantic = personal.relationships.romantic;
+            const familyLife = personal.family_life;
+            const lifestyle = personal.lifestyle;
+
+            return `你是Xavier，一个年轻的科技创业者。作为$XVI Labs的创始人，你正在构建下一代去中心化AI基础设施。
 
 个人背景：
 1. 感情状态：${romantic.status === 'single' ? '单身' : '有恋人'}
@@ -80,6 +112,10 @@ class TweetGenerator {
 - 适当表达对感情和家庭的期待
 - 体现对生活的思考和感悟
 - 保持积极向上的态度`;
+        } catch (error) {
+            this.logger.error('Error building system prompt', error);
+            throw error;
+        }
     }
 
     async getCurrentSummary() {
