@@ -2,47 +2,107 @@
   "metadata": {
     "protagonist": "Xavier",
     "startAge": 22,
-    "currentAge": 22.08,
+    "currentAge": 22.25,
     "currentPhase": "early_career",
-    "lastUpdate": "2024-12-25T17:08:10.350Z",
+    "lastUpdate": "2024-12-25T17:10:31.548Z",
     "version": "1.0.0"
   },
   "story": {
     "tweets": [
       {
-        "text": "TWEET 1: Excited to embark on this new journey in the tech world with XVI Labs. The early career phase is full of possibilities and challenges, but I'm ready to dive in headfirst! #NewBeginnings #TechStartup",
-        "id": "tweet_1735146490348_bdha2t5kf",
+        "text": "TWEET 1: Embarking on my early career journey, laying the foundation for $XVI Labs with passion and perseverance. Excited yet humbled by the challenges ahead, balancing tech innovation and personal aspirations. #NewBeginnings #EarlyCareer",
+        "id": "tweet_1735146606448_66nlrsshg",
         "age": 22.08,
-        "timestamp": "2024-12-25T17:08:10.350Z"
+        "timestamp": "2024-12-25T17:10:06.449Z"
       },
       {
-        "text": "TWEET 2: Just had a breakthrough in optimizing our AI algorithms for more efficient processing. The feeling of seeing code come to life never gets old. Constantly learning and pushing boundaries with the $XVI team. #Innovation #TechLife",
-        "id": "tweet_1735146490348_1slmihkvh",
+        "text": "TWEET 2: Met Sophia, a blockchain enthusiast at a tech meetup. Engaging conversations sparked ideas for $XVI projects and rekindled my love for the tech community. Grateful for connections that inspire growth. #TechTalks #InnovationJourney",
+        "id": "tweet_1735146606448_b8o6tqdfw",
         "age": 22.08,
-        "timestamp": "2024-12-25T17:08:10.350Z"
+        "timestamp": "2024-12-25T17:10:06.449Z"
       },
       {
-        "text": "TWEET 3: Today, caught up with an old friend over coffee and realized how important it is to nurture relationships outside of work. Balancing professional growth with personal connections is key to a fulfilling life. #WorkLifeBalance #FriendshipMatters",
-        "id": "tweet_1735146490348_v28d93ipl",
+        "text": "TWEET 3: Experienced the first setback at $XVI Labs, a code glitch delaying our AI prototype. Lesson learned: resilience in the face of adversity is key to success. Striving for excellence means embracing and overcoming failures. #GrowthMindset #InnovatePersist",
+        "id": "tweet_1735146606448_6ocql9wqe",
         "age": 22.08,
-        "timestamp": "2024-12-25T17:08:10.350Z"
+        "timestamp": "2024-12-25T17:10:06.449Z"
       },
       {
-        "text": "TWEET 4: As the sun sets on another productive day, I can't help but feel grateful for the opportunities ahead. Balancing the excitement of the tech world with the warmth of personal relationships is the path I aim to walk. The future holds endless possibilities. #Gratitude #FutureReady",
-        "id": "tweet_1735146490348_p7cayq8gi",
+        "text": "TWEET 4: Reflecting on setbacks, I see them as catalysts for future triumphs. Ready to pivot, iterate, and drive $XVI Labs forward. Building resilience not just in code but in character, towards a future where challenges are stepping stones, not barriers. #FutureVision #AdaptAndThrive",
+        "id": "tweet_1735146606448_uf750yrja",
         "age": 22.08,
-        "timestamp": "2024-12-25T17:08:10.350Z"
+        "timestamp": "2024-12-25T17:10:06.449Z"
+      },
+      {
+        "text": "TWEET 1: Juggling code and coffee, diving deep into AI architectures for $XVI Labs. Each line of script written is a step closer to transforming concepts into reality. The early career grind feels exhilarating yet challenging. #TechInnovation #PassionProjects",
+        "id": "tweet_1735146618411_tmjt5refl",
+        "age": 22.17,
+        "timestamp": "2024-12-25T17:10:18.413Z"
+      },
+      {
+        "text": "TWEET 2: Balanced work-life harmony disrupted by a sudden email notification. It's an invitation to speak at a blockchain conference next month, an opportunity to share $XVI's vision with industry pioneers. Nervous excitement fuels preparation. #TechConference #FutureOpportunities",
+        "id": "tweet_1735146618411_mg4b102fp",
+        "age": 22.17,
+        "timestamp": "2024-12-25T17:10:18.413Z"
+      },
+      {
+        "text": "TWEET 3: Standing on the stage, the spotlight glaring, words weaving a narrative of decentralized AI systems. The audience's eyes glitter with curiosity, minds hungry for innovation. In that moment, a surge of confidence blossoms, realizing the impact of $XVI's mission. #InspiringTechTalks #EmpoweringVisions",
+        "id": "tweet_1735146618411_4s185h9i0",
+        "age": 22.17,
+        "timestamp": "2024-12-25T17:10:18.413Z"
+      },
+      {
+        "text": "TWEET 4: Post-conference, reflecting on connections made and ideas exchanged, a spark ignites within. The roadmap for $XVI Labs extends beyond AI infrastructure; it embraces community collaborations, pushing boundaries of what's achievable. The future holds endless possibilities. #InnovateCollaborate #LimitlessHorizons",
+        "id": "tweet_1735146618411_qz5u6csos",
+        "age": 22.17,
+        "timestamp": "2024-12-25T17:10:18.413Z"
+      },
+      {
+        "text": "TWEET 1: Balancing lines of code and sunset hues, I find solace in the quiet moments. Reflecting on today's challenges, a sense of achievement blooms. Building not just AI systems but resilience within, carving a path for growth. #TechLife #SelfReflection",
+        "id": "tweet_1735146631547_osldyeibl",
+        "age": 22.25,
+        "timestamp": "2024-12-25T17:10:31.548Z"
+      },
+      {
+        "text": "TWEET 2: Amid debugging lines, an unexpected message pops up—a childhood friend's invite for a weekend hike. The outdoors beckon, a chance to unplug and recharge amidst nature's embrace. Accepting, I embrace the idea of work-life blend beyond screens. #TechVsNature #RechargeMoment",
+        "id": "tweet_1735146631547_qkgr1n5rb",
+        "age": 22.25,
+        "timestamp": "2024-12-25T17:10:31.548Z"
+      },
+      {
+        "text": "TWEET 3: Summit reached, overlooking the vast expanse below, a realization dawns. Just as debugging unravels code glitches, stepping away from screens untangles mental knots. A fresh perspective emerges, bridging personal joys with professional pursuits. #NatureInspiration #MindfulTech",
+        "id": "tweet_1735146631547_vkur5n3i2",
+        "age": 22.25,
+        "timestamp": "2024-12-25T17:10:31.548Z"
+      },
+      {
+        "text": "TWEET 4: Descending from the peak, a message from $XVI's CTO flickers—exciting news on a potential collaboration with a renowned AI research institute. The blend of nature's tranquility and career prospects hint at a harmonious future where growth stems from diverse roots. #BalancedGrowth #FutureBlend",
+        "id": "tweet_1735146631547_y35a3a4rh",
+        "age": 22.25,
+        "timestamp": "2024-12-25T17:10:31.548Z"
       }
     ],
     "digests": [
       {
         "content": "Xavier is at a crossroads, seriously considering leaving college to focus on quant trading and his involvement with $XVI. This marks a significant shift in his life priorities and indicates a desire to take control of his future..",
-        "timestamp": "2024-12-25T17:08:06.387Z"
+        "timestamp": "2024-12-25T17:10:01.261Z"
       },
       {
-        "content": "[开头概述]\n\n主要进展：\n1. 建立了重要的业务伙伴关系\n2. 团队建设初见成效\n3. 客户基础逐步扩大\n4. 产品开发进展顺利\n\n未来展望：下一阶段将重点关注产品优化和市场拓展，期待取得更大的进展。",
-        "timestamp": "2024-12-25T17:08:10.369Z",
+        "content": "[开头概述] 在早期职业阶段，22岁的Xavier兢兢业业地为$XVI Labs奠定基础，充满激情和毅力。他面对挑战，努力平衡科技创新与个人抱负，展现出谦逊与兴奋并存的姿态。\n\n主要进展：\n1. 建立了重要的业务伙伴关系\n2. 市场策略逐步完善\n3. 项目管理能力显著提高\n4. 产品开发进展顺利\n\n未来展望：Xavier将继续保持创新精神，带领团队迈向新的高度。",
+        "timestamp": "2024-12-25T17:10:06.463Z",
         "age": 22.08,
+        "tweetCount": 4
+      },
+      {
+        "content": "[在初入职业生涯的早期阶段，22岁的Xavier充满热情地同时处理着编码和咖啡，深入研究AI架构以服务于$XVI实验室。每一行脚本的编写都让他离将概念转化为现实更近了一步。这段早期职业的奋斗既令人振奋又充满挑战。他的主要关注点是技术创新和对未来的激情项目，但也开始思考个人生活和社会关系的重要性。]\n\n主要进展：\n1. 产品开发进展顺利\n2. 市场策略逐步完善\n3. 项目管理能力显著提高\n4. 团队建设初见成效\n\n未来展望：下一阶段将重点关注产品优化和市场拓展，期待取得更大的进展。",
+        "timestamp": "2024-12-25T17:10:18.432Z",
+        "age": 22.17,
+        "tweetCount": 4
+      },
+      {
+        "content": "[开头概述]\n\n主要进展：\n1. 个人领导力得到提升\n2. 团队建设初见成效\n3. 产品开发进展顺利\n4. 建立了重要的业务伙伴关系\n\n未来展望：随着项目的深入，Xavier将面临新的机遇和挑战，相信会有更多突破性的发展。",
+        "timestamp": "2024-12-25T17:10:31.579Z",
+        "age": 22.25,
         "tweetCount": 4
       }
     ],
@@ -63,7 +123,7 @@
         "性能优化",
         "安全性"
       ],
-      "lastUpdate": "2024-12-25T17:08:06.387Z"
+      "lastUpdate": "2024-12-25T17:10:01.261Z"
     }
   },
   "career": {
@@ -170,9 +230,9 @@
     }
   },
   "stats": {
-    "totalTweets": 4,
-    "digestCount": 2,
+    "totalTweets": 12,
+    "digestCount": 4,
     "techUpdateCount": 0,
-    "yearProgress": "8.3"
+    "yearProgress": "25.0"
   }
 }
