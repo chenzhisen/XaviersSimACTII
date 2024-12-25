@@ -59,4 +59,4 @@ class XavierSimulation {
     }
 }
 
-module.exports = { XavierSimulation }; 
+module.exports = XavierSimulation; 

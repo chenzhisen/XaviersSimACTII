@@ -1,6 +1,6 @@
 const { program } = require('commander');
 const ora = require('ora');
-const { XavierSimulation } = require('./simulation');
+const XavierSimulation = require('./simulation');
 const { Config } = require('./utils/config');
 const { Logger } = require('./utils/logger');
 const { initializeDataStructure } = require('./utils/init_data');
