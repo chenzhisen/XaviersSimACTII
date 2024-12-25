@@ -115,8 +115,20 @@ class DigestGenerator {
                 prompt
             );
 
+            // 检查 AI 响应内容
+            let content = response[0]?.text;
+            if (!content || content.length < 50) {
+                console.log(chalk.yellow('AI response too short or invalid, using local template'));
+                return this._getLocalDigest(currentAge);
+            }
+
+            // 确保摘要格式正确
+            if (!this._validateDigestFormat(content)) {
+                content = this._formatDigest(content);
+            }
+
             return {
-                content: response[0].text,
+                content,
                 timestamp: new Date().toISOString(),
                 age: Number(currentAge.toFixed(2)),
                 tweetCount: tweets.length
@@ -126,6 +138,44 @@ class DigestGenerator {
             console.log(chalk.yellow('Falling back to local digest template'));
             return this._getLocalDigest(currentAge);
         }
+    }
+
+    _validateDigestFormat(content) {
+        // 检查摘要是否包含必要的部分
+        return content.includes('这段时期') && 
+               content.includes('主要进展：') && 
+               content.includes('未来展望：');
+    }
+
+    _formatDigest(content) {
+        // 如果内容不符合格式要求，重新格式化
+        const lines = content.split('\n').filter(line => line.trim());
+        
+        let overview = lines[0] || '这段时期Xavier展现出了积极的成长态势。';
+        let developments = [];
+        let outlook = '';
+
+        // 提取主要进展
+        for (const line of lines) {
+            if (line.includes('进展') || line.includes('发展') || line.includes('成就')) {
+                developments.push(line.replace(/^\d+[\.\、]?\s*/, ''));
+            } else if (line.includes('未来') || line.includes('展望') || line.includes('期待')) {
+                outlook = line;
+            }
+        }
+
+        // 确保有足够的进展点
+        while (developments.length < 4) {
+            developments.push('持续学习和成长');
+        }
+
+        // 如果没有找到展望，添加默认展望
+        if (!outlook) {
+            outlook = '未来展望：Xavier将继续在技术和创业道路上探索，相信会有更多突破和成长。';
+        }
+
+        // 组装格式化的摘要
+        return `${overview}\n\n主要进展：\n1. ${developments[0]}\n2. ${developments[1]}\n3. ${developments[2]}\n4. ${developments[3]}\n\n${outlook}`;
     }
 
     _calculateAge(totalTweets) {
@@ -178,33 +228,40 @@ class DigestGenerator {
 
     _buildDigestPrompt(tweets, currentAge) {
         try {
-            // 构建提示文本
             const phase = this._getPhase(currentAge);
             const tweetsText = tweets
                 .map(tweet => tweet.text)
                 .join('\n\n');
 
             return `
-请为以下推文生成一个简短的摘要。这些推文描述了Xavier在${phase}阶段的经历。
-摘要应该包含以下内容：
-1. 这段时期的主要特点
-2. 关键发展和成就
-3. 个人成长和关系发展
-4. 未来展望
+作为一个故事摘要生成器，请为以下推文生成一个详细的中文摘要。
+这些推文描述了Xavier在${phase}阶段（${currentAge}岁）的经历。
 
 推文内容：
 ${tweetsText}
 
-请用中文撰写摘要，格式如下：
-[时期概述]
+请按以下格式生成摘要：
+1. 开头概述这段时期的整体特点和主要发展（2-3句话）
+2. 列出4个具体的主要进展，包括：技术/产品、团队/人际、个人成长等方面
+3. 最后加上对未来的展望（1-2句话）
+
+要求：
+- 保持积极向上的基调
+- 突出重要的转折点和成就
+- 体现人物的成长轨迹
+- 注意情感和故事性
+- 确保内容前后连贯
+
+请严格按照以下模板输出：
+[开头概述，2-3句话描述这段时期的特点]
 
 主要进展：
-1. [进展1]
-2. [进展2]
-3. [进展3]
-4. [进展4]
+1. [具体进展1]
+2. [具体进展2]
+3. [具体进展3]
+4. [具体进展4]
 
-未来展望：[展望内容]
+未来展望：[1-2句话的展望]
 `;
         } catch (error) {
             console.log(chalk.red('Error building digest prompt:', error));
