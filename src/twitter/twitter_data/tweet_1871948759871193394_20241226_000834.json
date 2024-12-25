@@ -1,0 +1,51 @@
+{
+  "metadata": {
+    "version": "1.0",
+    "fetch_time": "2024-12-26T00:08:34.964228",
+    "tweet_id": "1871948759871193394",
+    "reply_count": 1
+  },
+  "tweet": {
+    "id": "1871948759871193394",
+    "text": "to where [tets]",
+    "created_at": "2024-12-25T15:58:58.000Z",
+    "author_id": "1852846802019471360",
+    "raw_data": {
+      "text": "to where [tets]",
+      "author_id": "1852846802019471360",
+      "edit_history_tweet_ids": [
+        "1871948759871193394"
+      ],
+      "created_at": "2024-12-25T15:58:58.000Z",
+      "id": "1871948759871193394",
+      "public_metrics": {
+        "retweet_count": 0,
+        "reply_count": 1,
+        "like_count": 0,
+        "quote_count": 0,
+        "bookmark_count": 0,
+        "impression_count": 6
+      }
+    }
+  },
+  "replies": [
+    {
+      "id": "1871948883708063770",
+      "text": "@XaviersSimACTII to china for study",
+      "created_at": "2024-12-25T15:59:27.000Z",
+      "author_id": "1641624265643692032",
+      "in_reply_to_user_id": "1852846802019471360",
+      "raw_data": {
+        "edit_history_tweet_ids": [
+          "1871948883708063770"
+        ],
+        "in_reply_to_user_id": "1852846802019471360",
+        "conversation_id": "1871948759871193394",
+        "text": "@XaviersSimACTII to china for study",
+        "author_id": "1641624265643692032",
+        "created_at": "2024-12-25T15:59:27.000Z",
+        "id": "1871948883708063770"
+      }
+    }
+  ]
+}

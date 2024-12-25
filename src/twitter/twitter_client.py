@@ -134,7 +134,7 @@ class TwitterClientV2:
         return response.json()
 
     def get_user_tweets(self):
-        """获取当前用户的所有推文
+        """获取当前用户的最新推文（一页，最多100条）
         
         Returns:
             list: 推文列表，失败时返回None
@@ -157,15 +157,14 @@ class TwitterClientV2:
         print(f"\n=== 用户信息 ===")
         print(f"用户ID: {user_id}")
      
-        # 获取用户的推文
-        tweets_url = f"https://api.twitter.com/2/users/{user_id}/tweets"  # 使用f-string正确格式化URL
-        response = oauth.get(
-            tweets_url,
-            params={
-                "max_results": 100,  # 每次请求最大数量
-                "tweet.fields": "created_at,author_id"  # 添加更多字段
-            }
-        )
+        # 获取用户的推文（只获取一页）
+        params = {
+            "max_results": 100,  # 每次请求最大数量
+            "tweet.fields": "created_at,author_id,public_metrics"  # 添加更多字段
+        }
+                
+        tweets_url = f"https://api.twitter.com/2/users/{user_id}/tweets"
+        response = oauth.get(tweets_url, params=params)
 
         print("\n=== API请求信息 ===")
         print(f"请求URL: {response.url}")
@@ -174,22 +173,29 @@ class TwitterClientV2:
             print(f"获取推文失败: {response.status_code} {response.text}")
             return None
 
-        print("\n=== 响应数据 ===")
         response_json = response.json()
-        print(json.dumps(response_json, ensure_ascii=False, indent=2))
-     
+        
         if 'data' in response_json:
-            print(f"\n找到 {len(response_json['data'])} 条推文")
-            for i, tweet in enumerate(response_json['data'], 1):
+            tweets = response_json['data']
+            print(f"获取到 {len(tweets)} 条推文")
+            
+            # 打印推文详情
+            for i, tweet in enumerate(tweets, 1):
                 print(f"\n推文 {i}:")
                 print(f"ID: {tweet.get('id', 'N/A')}")
                 print(f"内容: {tweet.get('text', 'N/A')}")
                 print(f"创建时间: {tweet.get('created_at', 'N/A')}")
+                if 'public_metrics' in tweet:
+                    metrics = tweet['public_metrics']
+                    print(f"统计信息: 转发{metrics.get('retweet_count', 0)}, "
+                          f"回复{metrics.get('reply_count', 0)}, "
+                          f"点赞{metrics.get('like_count', 0)}")
                 print("-" * 30)
+            
+            return tweets
         else:
             print("未找到推文数据")
-
-        return response_json.get('data', [])
+            return []
 
     def delete_tweet(self, tweet_id):
         """删除推文
@@ -217,16 +223,16 @@ class TwitterClientV2:
         return True
 
     def delete_all_tweets(self):
-        """删除所有推文（考虑基本版的速率限制）"""
+        """删除所有推文（基本版速率限制：每15分钟50次请求）"""
         tweets = self.get_user_tweets()
         if not tweets:
             print("未找到推文或获取推文失败")
             return
 
-        batch_size = 5  # 基本版：每15分钟5个请求
+        batch_size = 50  # 基本版：每15分钟50个请求
         for i in range(0, len(tweets), batch_size):
             batch = tweets[i:i + batch_size]
-            print(f"\n处理第 {i//batch_size + 1} 批共 {(len(tweets) + batch_size - 1)//batch_size} 批")
+            print(f"\n处理第 {i//batch_size + 1} 批，共 {(len(tweets) + batch_size - 1)//batch_size} 批")
             
             for tweet in batch:
                 success = self.delete_tweet(tweet['id'])
@@ -234,11 +240,12 @@ class TwitterClientV2:
                     print(f"已删除推文 {tweet['id']}: {tweet.get('text', '')[:50]}...")
                 else:
                     print(f"删除推文 {tweet['id']} 失败")
-                time.sleep(2)  # 同一批次内的删除操作之间添加小延迟
+                time.sleep(1)  # 添加1秒延迟，避免请求过快
             
             if i + batch_size < len(tweets):
                 wait_time = 15 * 60  # 15分钟，单位为秒
                 print(f"\n等待 {wait_time} 秒以重置速率限制...")
+                print(f"已处理 {i + len(batch)} 条推文，剩余 {len(tweets) - (i + len(batch))} 条")
                 time.sleep(wait_time)
 
     def get_latest_tweet(self):
