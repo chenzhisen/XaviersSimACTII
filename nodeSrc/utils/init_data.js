@@ -4,6 +4,15 @@ const { Logger } = require('./logger');
 
 const logger = new Logger('init');
 
+// 清理文件配置
+const CLEANUP_CONFIG = {
+    enabled: true,              // 是否启用清理
+    targets: {
+        mainFile: true,         // 是否清理 XaviersSim.json
+        aiLogs: true           // 是否清理 ai_logs 目录
+    }
+};
+
 const INITIAL_DATA = {
     metadata: {
         protagonist: 'Xavier',
@@ -75,27 +84,35 @@ async function initializeDataStructure() {
     const aiLogsDir = path.resolve(dataDir, 'ai_logs');
 
     try {
-        logger.info('Starting data initialization...');
+        logger.info('Starting data initialization...', { cleanup: CLEANUP_CONFIG });
 
-        // 删除旧文件和目录
-        try {
-            // 删除 XaviersSim.json
-            await fs.unlink(dataPath);
-            logger.info('Deleted old XaviersSim.json');
-        } catch (error) {
-            if (error.code !== 'ENOENT') {
-                throw error;
+        // 根据配置清理文件
+        if (CLEANUP_CONFIG.enabled) {
+            // 清理主文件
+            if (CLEANUP_CONFIG.targets.mainFile) {
+                try {
+                    await fs.unlink(dataPath);
+                    logger.info('Deleted XaviersSim.json');
+                } catch (error) {
+                    if (error.code !== 'ENOENT') {
+                        throw error;
+                    }
+                }
             }
-        }
 
-        try {
-            // 删除 ai_logs 目录
-            await fs.rm(aiLogsDir, { recursive: true, force: true });
-            logger.info('Deleted ai_logs directory');
-        } catch (error) {
-            if (error.code !== 'ENOENT') {
-                throw error;
+            // 清理 AI 日志
+            if (CLEANUP_CONFIG.targets.aiLogs) {
+                try {
+                    await fs.rm(aiLogsDir, { recursive: true, force: true });
+                    logger.info('Deleted ai_logs directory');
+                } catch (error) {
+                    if (error.code !== 'ENOENT') {
+                        throw error;
+                    }
+                }
             }
+        } else {
+            logger.info('File cleanup disabled');
         }
 
         // 确保数据目录存在
@@ -119,5 +136,6 @@ async function initializeDataStructure() {
 
 module.exports = {
     initializeDataStructure,
-    INITIAL_DATA
+    INITIAL_DATA,
+    CLEANUP_CONFIG  // 导出配置以便其他模块使用
 }; 

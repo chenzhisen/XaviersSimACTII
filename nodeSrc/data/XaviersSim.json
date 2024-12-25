@@ -4,42 +4,40 @@
     "startAge": 22,
     "currentAge": 22.08,
     "currentPhase": "early_career",
-    "lastUpdate": "2024-12-25T09:13:43.029Z",
+    "lastUpdate": "2024-12-25T09:17:15.247Z",
     "version": "1.0.0"
   },
   "story": {
     "tweets": [
       {
-        "text": "TWEET 1: Just landed my first job in a cutting-edge tech startup. Nervous excitement fills the air as I step into the sleek office, ready to dive into the world of algorithms and innovation. #earlycareer #newbeginnings",
-        "id": "tweet_1735118023027_1vle0l2wj",
+        "text": "TWEET 1: First day at my dream tech startup. Nervous excitement fills the air as I dive into endless lines of code. The cutting-edge projects here make my heart race. #earlycareer #techpassion",
+        "id": "tweet_1735118235246_4h8re7rp7",
         "age": 22.08,
-        "timestamp": "2024-12-25T09:13:43.029Z"
+        "timestamp": "2024-12-25T09:17:15.247Z"
       },
       {
-        "text": "TWEET 2: Met my mentor today, a coding genius with a knack for simplifying complex concepts. Their guidance is a mix of tough love and unwavering support, pushing me beyond my limits. #growth #mentoring $XVI",
-        "id": "tweet_1735118023027_6kum3ric4",
+        "text": "TWEET 2: Lunchtime banter with coworkers; a mix of high-fives and genuine advice. They welcome me into their tight-knit team, sharing tales of past projects and the $XVI market buzz. #teamspirit",
+        "id": "tweet_1735118235246_fs1vv71cc",
         "age": 22.08,
-        "timestamp": "2024-12-25T09:13:43.029Z"
+        "timestamp": "2024-12-25T09:17:15.247Z"
       },
       {
-        "text": "TWEET 3: Tackled my first big project solo, overcoming bugs and coding hurdles with perseverance. It wasn't easy, but the sense of accomplishment is unparalleled. Learning that failure is just a stepping stone to success. #persistence #learning",
-        "id": "tweet_1735118023027_qy111g5ie",
+        "text": "TWEET 3: Late night debugging session hits a roadblock. Frustration creeps in, but a senior dev lends a hand. Their wisdom cuts through the complex algorithms, leaving me in awe of their experience. #mentoring",
+        "id": "tweet_1735118235246_6mq7ltp78",
         "age": 22.08,
-        "timestamp": "2024-12-25T09:13:43.029Z"
+        "timestamp": "2024-12-25T09:17:15.247Z"
       },
       {
-        "text": "TWEET 4: As I wrap up the project, I can't help but feel a surge of confidence and determination. The hurdles only made me stronger. Excited for the challenges ahead, both in my career and personal life. The journey to success has just begun. #growthmindset #futurebeckons",
-        "id": "tweet_1735118023027_310cuhay0",
+        "text": "TWEET 4: Finally crack the bug. Relief washes over me. As I pack up for the night, a thought lingers—this is just the beginning of my journey with $XVI and the techie tribe. Excited for what's next. #futuregrowth",
+        "id": "tweet_1735118235246_mf6p8jezd",
         "age": 22.08,
-        "timestamp": "2024-12-25T09:13:43.029Z"
+        "timestamp": "2024-12-25T09:17:15.247Z"
       }
     ],
     "digests": [
       {
-        "content": "[开头概述]\n\n主要进展：\n1. 团队建设初见成效\n2. 技术方面取得重要突破\n3. 市场策略逐步完善\n4. 建立了重要的业务伙伴关系\n\n未来展望：随着项目的深入，Xavier将面临新的机遇和挑战，相信会有更多突破性的发展。",
-        "timestamp": "2024-12-25T09:13:43.049Z",
-        "age": 22.08,
-        "tweetCount": 4
+        "content": "Xavier is at a crossroads, seriously considering leaving college to focus on quant trading and his involvement with $XVI. This marks a significant shift in his life priorities and indicates a desire to take control of his future..",
+        "timestamp": "2024-12-25T09:17:10.898Z"
       }
     ],
     "keyPlotPoints": [],
@@ -59,7 +57,7 @@
         "性能优化",
         "安全性"
       ],
-      "lastUpdate": "2024-12-25T09:13:37.911Z"
+      "lastUpdate": "2024-12-25T09:17:10.898Z"
     }
   },
   "career": {
@@ -93,7 +91,7 @@
   },
   "stats": {
     "totalTweets": 4,
-    "digestCount": 1,
+    "digestCount": 0,
     "techUpdateCount": 0,
     "yearProgress": "8.3"
   }
