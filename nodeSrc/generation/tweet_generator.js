@@ -9,43 +9,65 @@ class TweetGenerator {
         this.logger = new Logger('tweet');
         this.ai = new AICompletion(client, model);
         this.githubOps = new GithubOperations(isProduction);
+        this.isProduction = isProduction;
         
         // 故事配置
         this.storyConfig = {
             protagonist: 'Xavier',
             startAge: 22,
-            tweetsPerScene: 4,     // 每个场景4条推文
-            scenesPerDay: 3,       // 每天3个场景
-            maxTweetLength: 280    // Twitter长度限制
+            tweetsPerScene: 4,
+            scenesPerDay: 3,
+            maxTweetLength: 280
         };
 
-        // 加载背景故事
+        // 文件路径
+        this.dataPath = path.join(__dirname, '..', 'data');
+        this.simPath = path.join(this.dataPath, this.isProduction ? 'prod' : 'dev', 'XaviersSim.json');
+        
+        // 初始化背景故事
         this.loadBackgroundStory();
     }
 
     async loadBackgroundStory() {
         try {
-            const filePath = path.join(__dirname, '..', 'data', 'XaviersSim.json');
-            const data = await fs.readFile(filePath, 'utf8');
+            // 确保文件存在
+            try {
+                await fs.access(this.simPath);
+            } catch {
+                // 如果文件不存在，创建初始结构
+                await this._initializeSimFile();
+            }
+
+            const data = await fs.readFile(this.simPath, 'utf8');
             this.backgroundStory = JSON.parse(data);
             
-            // 提取关键信息
-            this.storyBackground = {
-                characters: this._extractCharacters(this.backgroundStory),
-                locations: this._extractLocations(this.backgroundStory),
-                events: this._extractEvents(this.backgroundStory),
-                relationships: this._extractRelationships(this.backgroundStory)
-            };
-
             console.log('Background story loaded:', {
-                charactersCount: Object.keys(this.storyBackground.characters).length,
-                locationsCount: this.storyBackground.locations.length,
-                eventsCount: this.storyBackground.events.length
+                tweetCount: this.backgroundStory.tweets.length,
+                lastAge: this.backgroundStory.tweets[this.backgroundStory.tweets.length - 1]?.age
             });
         } catch (error) {
             this.logger.error('Error loading background story', error);
             throw error;
         }
+    }
+
+    async _initializeSimFile() {
+        const initialData = {
+            tweets: [],
+            metadata: {
+                protagonist: 'Xavier',
+                currentAge: 22.0,
+                totalTweets: 0,
+                lastUpdate: new Date().toISOString(),
+                plotPoints: []
+            }
+        };
+
+        await fs.writeFile(
+            this.simPath,
+            JSON.stringify(initialData, null, 2),
+            'utf8'
+        );
     }
 
     async generateTweetScene(digest, currentAge, tweetCount) {
@@ -54,13 +76,14 @@ class TweetGenerator {
             const prompt = this._buildScenePrompt(context);
             
             const response = await this.ai.getCompletion(
-                'You are continuing Xavier\'s story from his previous adventures.',
+                'You are continuing Xavier\'s story.',
                 prompt
             );
 
             const tweets = this._parseTweets(response);
             
-            return tweets.map((text, index) => ({
+            // 创建推文对象
+            const tweetObjects = tweets.map((text, index) => ({
                 id: `tweet_${Date.now()}_${index}`,
                 text: text.slice(0, this.storyConfig.maxTweetLength),
                 age: currentAge,
@@ -68,15 +91,70 @@ class TweetGenerator {
                 metadata: {
                     tweet_number: tweetCount + index + 1,
                     scene_number: Math.floor((tweetCount + index) / this.storyConfig.tweetsPerScene),
-                    story_day: Math.floor((tweetCount + index) / (this.storyConfig.tweetsPerScene * this.storyConfig.scenesPerDay)),
-                    has_digest: !!digest
+                    story_day: Math.floor((tweetCount + index) / (this.storyConfig.tweetsPerScene * this.storyConfig.scenesPerDay))
                 }
             }));
 
+            // 保存到背景故事
+            await this._saveToBackgroundStory(tweetObjects);
+
+            return tweetObjects;
         } catch (error) {
             this.logger.error('Error generating tweet scene', error);
             throw error;
         }
+    }
+
+    async _saveToBackgroundStory(newTweets) {
+        try {
+            // 添加新推文
+            this.backgroundStory.tweets.push(...newTweets);
+            
+            // 更新元数据
+            this.backgroundStory.metadata.currentAge = newTweets[newTweets.length - 1].age;
+            this.backgroundStory.metadata.totalTweets = this.backgroundStory.tweets.length;
+            this.backgroundStory.metadata.lastUpdate = new Date().toISOString();
+
+            // 提取并更新关键情节点
+            const plotPoints = this._extractPlotPoints(newTweets);
+            if (plotPoints.length > 0) {
+                this.backgroundStory.metadata.plotPoints.push(...plotPoints);
+            }
+
+            // 保存到文件
+            await fs.writeFile(
+                this.simPath,
+                JSON.stringify(this.backgroundStory, null, 2),
+                'utf8'
+            );
+
+            console.log('Background story updated:', {
+                newTweets: newTweets.length,
+                totalTweets: this.backgroundStory.tweets.length,
+                currentAge: this.backgroundStory.metadata.currentAge
+            });
+        } catch (error) {
+            this.logger.error('Error saving to background story', error);
+            throw error;
+        }
+    }
+
+    _extractPlotPoints(tweets) {
+        // 从新推文中提取关键情节点
+        const plotPoints = [];
+        const keywords = ['终于', '突然', '没想到', '重要', '决定', '原来'];
+        
+        tweets.forEach(tweet => {
+            if (keywords.some(keyword => tweet.text.includes(keyword))) {
+                plotPoints.push({
+                    age: tweet.age,
+                    point: tweet.text.slice(0, 50) + '...',
+                    timestamp: tweet.timestamp
+                });
+            }
+        });
+
+        return plotPoints;
     }
 
     _buildScenePrompt(context) {
@@ -120,7 +198,7 @@ Guidelines:
         // 根据当前情境选择相关的背景信息
         const relevantChars = this._selectRelevantCharacters(context);
         const relevantEvents = this._selectRelevantEvents(context);
-        
+
         return `Key Characters:
 ${Object.entries(relevantChars).map(([name, info]) => `- ${name}: ${info}`).join('\n')}
 
@@ -187,7 +265,7 @@ ${this._formatRelationships(relevantChars)}`;
 
     _extractLocations(story) {
         const locations = new Set();
-        
+
         try {
             story.tweets.forEach(tweet => {
                 // 提取位置标签
@@ -208,17 +286,17 @@ ${this._formatRelationships(relevantChars)}`;
 
     _extractEvents(story) {
         const events = [];
-        
+
         try {
             let currentEvent = null;
             let eventTweets = [];
 
             story.tweets.forEach(tweet => {
                 // 检测重要事件的开始
-                const isNewEvent = tweet.text.includes('重要') || 
-                                 tweet.text.includes('突破') ||
-                                 tweet.text.includes('终于') ||
-                                 tweet.text.match(/#[\u4e00-\u9fa5]*事件/);
+                const isNewEvent = tweet.text.includes('重要') ||
+                    tweet.text.includes('突破') ||
+                    tweet.text.includes('终于') ||
+                    tweet.text.match(/#[\u4e00-\u9fa5]*事件/);
 
                 if (isNewEvent) {
                     // 保存前一个事件
@@ -229,7 +307,7 @@ ${this._formatRelationships(relevantChars)}`;
                             tweets: eventTweets.map(t => t.text)
                         });
                     }
-                    
+
                     // 开始新事件
                     currentEvent = tweet.text.slice(0, 50);
                     eventTweets = [tweet];
@@ -247,10 +325,10 @@ ${this._formatRelationships(relevantChars)}`;
 
     _extractRelationships(story) {
         const relationships = {};
-        
+
         try {
             const characters = Object.keys(this._extractCharacters(story));
-            
+
             characters.forEach(char => {
                 relationships[char] = {
                     friends: new Set(),
@@ -299,7 +377,7 @@ ${this._formatRelationships(relevantChars)}`;
         // 根据当前情境选择相关角色
         const relevantChars = {};
         const recentTweets = context.recent_tweets || [];
-        
+
         try {
             // 从最近的推文中提取相关人物
             recentTweets.forEach(tweet => {
@@ -336,7 +414,7 @@ ${this._formatRelationships(relevantChars)}`;
                 .map(([name, info]) => {
                     const relations = this.storyBackground.relationships[name];
                     if (!relations) return '';
-                    
+
                     const friends = relations.friends.join(', ');
                     return `${name} -> ${friends ? `朋友: ${friends}` : '暂无密切关系'}`;
                 })
@@ -380,7 +458,7 @@ ${this._formatRelationships(relevantChars)}`;
         const lastTweets = recentTweets.slice(-5);
 
         return {
-            current_age: this.storyConfig.startAge + 
+            current_age: this.storyConfig.startAge +
                 (tweetCount / (this.storyConfig.tweetsPerScene * this.storyConfig.scenesPerDay * 365)),
             story_day: Math.floor(tweetCount / (this.storyConfig.tweetsPerScene * this.storyConfig.scenesPerDay)),
             scene_number: Math.floor(tweetCount / this.storyConfig.tweetsPerScene),
