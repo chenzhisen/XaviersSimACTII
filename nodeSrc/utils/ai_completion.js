@@ -6,7 +6,7 @@ class AICompletion {
         this.client = client;
         this.model = model;
         this.options = {
-            useLocalSimulation: true,  // 默认使用本地模拟
+            useLocalSimulation: false,  // 默认使用本地模拟
             ...options
         };
     }

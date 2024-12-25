@@ -11,7 +11,7 @@ class XavierSimulation {
 
         // 初始化 AI 客户端
         const aiConfig = Config.getAIConfig();
-        const client = new AICompletion(null, aiConfig.model);
+        const client =''
 
         // 初始化生成器
         this.tweetGenerator = new TweetGenerator(client, aiConfig.model, isProduction);
