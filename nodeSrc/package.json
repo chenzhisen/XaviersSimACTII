@@ -1,49 +1,22 @@
 {
   "name": "xavier-simulation-node",
   "version": "1.0.0",
-  "description": "Xavier's Simulation Node Server",
+  "description": "Node.js implementation of Xavier's life simulation system",
   "main": "index.js",
   "scripts": {
     "start": "node index.js run",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start:prod": "node index.js run -p"
   },
   "dependencies": {
-    "commander": "^11.1.0",
-    "express": "^4.18.2",
-    "axios": "^1.6.2",
-    "body-parser": "^1.20.2",
-    "cors": "^2.8.5",
-    "ansi-styles": "^5.2.0",
+    "@octokit/rest": "^20.0.2",
+    "axios": "^1.6.7",
     "chalk": "^4.1.2",
-    "dotenv": "^16.3.1",
-    "winston": "^3.11.0",
-    "ora": "^5.4.1",
-    "colors": "^1.4.0",
-    "moment": "^2.29.4",
-    "supports-color": "^8.1.1",
-    "has-flag": "^4.0.0",
-    "cli-cursor": "^3.1.0",
-    "cli-spinners": "^2.9.2",
-    "is-unicode-supported": "^1.3.0",
-    "log-symbols": "^4.1.0",
-    "strip-ansi": "^6.0.1",
-    "wcwidth": "^1.0.1",
-    "restore-cursor": "^3.1.0",
-    "signal-exit": "^3.0.7",
-    "onetime": "^5.1.2",
-    "mimic-fn": "^2.1.0",
-    "escape-string-regexp": "^1.0.5",
-    "ansi-regex": "^5.0.1",
+    "commander": "^12.0.0",
+    "dotenv": "^16.4.5",
     "openai": "^4.28.0",
-    "gpt-3-encoder": "^1.1.4",
-    "tiktoken": "^1.0.13",
-    "p-timeout": "^4.1.0",
-    "p-retry": "^4.6.2",
-    "form-data": "^4.0.0",
-    "node-fetch": "^2.7.0",
-    "agentkeepalive": "^4.5.0"
+    "ora": "^5.4.1",
+    "winston": "^3.12.0"
   },
-  "type": "commonjs",
   "engines": {
     "node": ">=18.0.0"
   }
