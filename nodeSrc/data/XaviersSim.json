@@ -2,253 +2,67 @@
   "metadata": {
     "protagonist": "Xavier",
     "startAge": 22,
-    "currentAge": 22.42,
+    "currentAge": 22.17,
     "currentPhase": "early_career",
-    "lastUpdate": "2024-12-25T07:31:50.139Z",
+    "lastUpdate": "2024-12-25T07:34:10.391Z",
     "version": "1.0.0"
   },
   "story": {
     "tweets": [
       {
-        "text": "TWEET 1: Settling into my first job post-graduation feels like exploring uncharted territory. From navigating office dynamics to learning the ropes of $XVI investments, the early_career journey is a thrilling maze of challenges and opportunities.",
-        "id": "tweet_1735110928859_isi1qdtcf",
+        "text": "TWEET 1: Just landed my first job in a bustling tech startup. Excitement and nerves mingling as I step into this new world of innovation. #earlycareer #newbeginnings #techtribe",
+        "id": "tweet_1735112040400_q84vjn2j0",
         "age": 22.08,
-        "timestamp": "2024-12-25T07:15:28.859Z"
+        "timestamp": "2024-12-25T07:34:00.401Z"
       },
       {
-        "text": "TWEET 2: Today, a senior colleague, Alex, noticed my interest in crypto. Over coffee, Alex shared insights about the industry and offered to mentor me. His guidance feels like a door opening to a realm beyond my current knowledge. #Mentorship #Growth",
-        "id": "tweet_1735110928859_b3el6ujye",
+        "text": "TWEET 2: Meeting the team, diving into projects, and absorbing knowledge like a sponge. Trying to find my footing amidst the fast-paced tech industry. Learning the ropes with each challenge. #growth #embracetheunknown",
+        "id": "tweet_1735112040400_nicose03u",
         "age": 22.08,
-        "timestamp": "2024-12-25T07:15:28.859Z"
+        "timestamp": "2024-12-25T07:34:00.401Z"
       },
       {
-        "text": "TWEET 3: As I dive deeper into the world of tech investments, the volatile nature of the market tests my resilience. A sudden dip in $XVI prices leaves me anxious, but Alex's advice echoes in my mind: \"In every setback lies a lesson.\" It's a mantra that anchors me amidst uncertainty. #Resilience",
-        "id": "tweet_1735110928859_vpk09zls2",
+        "text": "TWEET 3: Had a heart-to-heart with a colleague today about the power of resilience in tech. It's not just about coding; it's about mindset and determination. Realizing that soft skills are as vital as hard skills in this game. #mindshift #resilienceiskey",
+        "id": "tweet_1735112040400_dxxcz959z",
         "age": 22.08,
-        "timestamp": "2024-12-25T07:15:28.859Z"
+        "timestamp": "2024-12-25T07:34:00.401Z"
       },
       {
-        "text": "TWEET 4: Reflecting on the day's ups and downs, I realize that growth stems not only from successes but also from facing challenges head-on. The early_career path is a rollercoaster, but with mentorship and a determined mindset, I'm eager to see where this journey leads. #FutureGrowth",
-        "id": "tweet_1735110928859_duqjku2zi",
+        "text": "TWEET 4: As the week wraps up, I'm feeling a sense of accomplishment despite the hurdles. Ready to tackle the upcoming tasks with renewed vigor. Bring it on, $XVI! The journey's just begun. #futuregoals #staymotivated",
+        "id": "tweet_1735112040400_lh84inuuc",
         "age": 22.08,
-        "timestamp": "2024-12-25T07:15:28.859Z"
+        "timestamp": "2024-12-25T07:34:00.401Z"
       },
       {
-        "text": "TWEET 1: A hectic Monday at the office as I tackle challenging spreadsheets and emails. The early_career buzz is palpable, with ambitions soaring amidst the hum of productivity. #MondayMotivation #WorkLifeBalance",
-        "id": "tweet_1735110934706_jv5spa0r9",
+        "text": "TWEET 1: First day at the blockchain startup, diving into the world of crypto! A whirlwind of information and excitement awaits. Can't wait to see where this journey takes me. #startuplife #blockchainbeginnings #newchallenges",
+        "id": "tweet_1735112050390_26huev0iu",
         "age": 22.17,
-        "timestamp": "2024-12-25T07:15:34.706Z"
+        "timestamp": "2024-12-25T07:34:10.391Z"
       },
       {
-        "text": "TWEET 2: During lunch, I bump into Sarah, a friendly face from another department. We chat about weekend hikes and discover a shared love for outdoor adventures. It's refreshing to connect beyond work topics. #WorkFriends #NewConnections",
-        "id": "tweet_1735110934706_wclb0p6pi",
+        "text": "TWEET 2: Today, I connected with a senior developer who shared their crypto-trading strategies. Learning not just about code, but the intricate dance of the crypto market. Grateful for the insights and eager to apply them. #knowledgeexchange #growthmindset",
+        "id": "tweet_1735112050390_hsyzy38bd",
         "age": 22.17,
-        "timestamp": "2024-12-25T07:15:34.706Z"
+        "timestamp": "2024-12-25T07:34:10.391Z"
       },
       {
-        "text": "TWEET 3: As the day ends, I join a webinar on emerging blockchain trends. The speaker's insights on the future of $XVI investments ignite a curiosity within me. The tech world's rapid evolution feels both daunting and exhilarating. #Blockchain #TechTrends",
-        "id": "tweet_1735110934706_75zk6exb3",
+        "text": "TWEET 3: Found myself navigating an intense coding challenge, feeling the pressure of deadlines. It's in these moments that resilience truly shines. Reminded that setbacks are just setups for comebacks in both code and life. #resilience #embracingchallenges",
+        "id": "tweet_1735112050390_ul5i494gk",
         "age": 22.17,
-        "timestamp": "2024-12-25T07:15:34.706Z"
+        "timestamp": "2024-12-25T07:34:10.391Z"
       },
       {
-        "text": "TWEET 4: Reflecting under the starlit sky, I ponder the blend of professional challenges and personal connections that define this early_career phase. The possibilities ahead shimmer like distant constellations, beckoning me towards a future shaped by growth and resilience. #FutureJourney",
-        "id": "tweet_1735110934706_4ggiwmmv6",
+        "text": "TWEET 4: Wrapping up the week, proud of overcoming hurdles in both crypto projects and personal growth. Excited for what's to come next. The future is bright, and $XVI holds endless opportunities for learning and success. #forwardmomentum #readyforaction",
+        "id": "tweet_1735112050390_tk5al2ts0",
         "age": 22.17,
-        "timestamp": "2024-12-25T07:15:34.706Z"
-      },
-      {
-        "text": "TWEET 1: Stepping into the office, the scent of freshly brewed coffee mingles with the eager hum of productivity. Emails await, spreadsheets beckon – another day in the thrilling early_career whirlwind begins. #CareerStart #NewBeginnings",
-        "id": "tweet_1735111068785_y2tp9rggv",
-        "age": 22.25,
-        "timestamp": "2024-12-25T07:17:48.786Z"
-      },
-      {
-        "text": "TWEET 2: Amidst the buzzing workday, a serendipitous encounter by the water cooler. Carl, a senior analyst, shares insights on navigating the tech landscape, his advice a roadmap through the digital wilderness. Grateful for mentors like him. #Mentorship #TechTalks",
-        "id": "tweet_1735111068785_f4v91oqwx",
-        "age": 22.25,
-        "timestamp": "2024-12-25T07:17:48.786Z"
-      },
-      {
-        "text": "TWEET 3: Lunch break sees Sarah inviting me to a book club session. Conversations veer from blockchain to literary musings, bridging professional interests with personal passions. The richness of connections beyond work's horizon is a gift. #BookClub #LunchChats",
-        "id": "tweet_1735111068785_i7vpxt70p",
-        "age": 22.25,
-        "timestamp": "2024-12-25T07:17:48.786Z"
-      },
-      {
-        "text": "TWEET 4: Reflecting on the day, I realize growth transcends spreadsheets and emails; it's the connections forged, the insights gained. In this fusion of professional and personal, I sense the seeds of a future where $XVI investments and heartfelt conversations blend in harmony. #FutureBlend",
-        "id": "tweet_1735111068785_duy189adk",
-        "age": 22.25,
-        "timestamp": "2024-12-25T07:17:48.786Z"
-      },
-      {
-        "text": "TWEET 5: A hectic day at the office, tech jargon swirling around me like a storm. Amidst the chaos, a Eureka moment as I cracked a complex blockchain puzzle. The triumph of solving challenges fuels my ambition, pushing me further into the crypto cosmos. #CryptoTriumph #TechWin",
-        "id": "tweet_1735111074418_y3ofgulvm",
-        "age": 22.33,
-        "timestamp": "2024-12-25T07:17:54.419Z"
-      },
-      {
-        "text": "TWEET 6: Post-work unwind at a cozy cafe, sipping on a latte as jazz melodies soothe my jumbled thoughts. Across the room, a familiar face catches my eye. It's Mia from college, now a rising crypto influencer. Sparks of curiosity ignite – a chance reunion or a cosmic design? #ChanceEncounters",
-        "id": "tweet_1735111074418_kqp4fsynj",
-        "age": 22.33,
-        "timestamp": "2024-12-25T07:17:54.419Z"
-      },
-      {
-        "text": "TWEET 7: Engaging Mia in a crypto debate, our words weaving a tapestry of ideas and possibilities. Her perspective, a fresh breeze in the stale office air, invigorating my passion for $XVI investments. Amidst the chatter, a shared dream of building a crypto empire glimmers. #CryptoDreams",
-        "id": "tweet_1735111074418_oe71n5uct",
-        "age": 22.33,
-        "timestamp": "2024-12-25T07:17:54.419Z"
-      },
-      {
-        "text": "TWEET 8: As the night deepens, Mia and I stroll under the city lights, trading visions of the future like secret treasures. The fusion of our ambitions paints a canvas of possibilities, where tech prowess meets human connection. In her eyes, I glimpse the path to a shared crypto destiny. #FutureCanvas",
-        "id": "tweet_1735111074418_ys5yhe5da",
-        "age": 22.33,
-        "timestamp": "2024-12-25T07:17:54.419Z"
-      },
-      {
-        "text": "TWEET 9: Monday morning buzz - the office hums with energy, a blend of coffee aroma and urgent emails. Tasked with presenting the $XVI investment forecast, my nerves dance like fireflies. The weight of responsibility sits heavy, yet the thrill of opportunity beckons me forth. #NewChallenges",
-        "id": "tweet_1735111893536_u3zaxbcgj",
-        "age": 22.42,
-        "timestamp": "2024-12-25T07:31:33.537Z"
-      },
-      {
-        "text": "TWEET 10: In the boardroom, eyes watch my every move as I unravel the numbers, making $XVI's future dance in spreadsheets. Amidst the scrutiny, a voice of doubt whispers, but determination steels my resolve. With each slide, I step closer to affirming my place in the financial labyrinth. #FinancialJourney",
-        "id": "tweet_1735111893536_r2t57u75m",
-        "age": 22.42,
-        "timestamp": "2024-12-25T07:31:33.537Z"
-      },
-      {
-        "text": "TWEET 11: Mid-presentation, a glitch freezes the screen, a digital hiccup threatening to dim my moment in the spotlight. Amidst the panic, a calm descends as I recall Mia's advice on blockchain problem-solving. With deft moves, I navigate the error, turning disaster to triumph. #OvercomingObstacles",
-        "id": "tweet_1735111893536_q1ir4z3bg",
-        "age": 22.42,
-        "timestamp": "2024-12-25T07:31:33.537Z"
-      },
-      {
-        "text": "TWEET 12: As the presentation concludes, applause washes over me, a tide of validation. Mia's proud smile from the crowd fuels my belief - in $XVI investments, in personal growth. In this moment, a seed of confidence blooms, hinting at the resilience and potential within. #GrowthAndOpportunity",
-        "id": "tweet_1735111893536_ww89qgj7a",
-        "age": 22.42,
-        "timestamp": "2024-12-25T07:31:33.537Z"
-      },
-      {
-        "text": "TWEET 13: Arriving early at the sleek office lobby, the cool marble floor whispers of polished ambition. The gentle hum of anticipation mingles with the soft ping of elevator doors, signaling the start of a day where both numbers and dreams intersect. #ProfessionalJourney",
-        "id": "tweet_1735111899622_ugtogwgfy",
-        "age": 22.5,
-        "timestamp": "2024-12-25T07:31:39.622Z"
-      },
-      {
-        "text": "TWEET 14: Across the room, Mia's voice rises above the office buzz, her laughter a buoy in the sea of tasks. As we meet eyes, a silent understanding passes between us—we've weathered the storm of calculations and smiles, finding solace in shared moments of growth. #FriendshipGoals",
-        "id": "tweet_1735111899622_32skned36",
-        "age": 22.5,
-        "timestamp": "2024-12-25T07:31:39.622Z"
-      },
-      {
-        "text": "TWEET 15: In the midst of a data deluge, a new project looms with $XVI's digital fingerprint. Balancing excitement and apprehension, I dive into the task, tracing the potential for growth within the lines of code. Engulfed in the binary dance, a sense of purpose solidifies. #TechExploration",
-        "id": "tweet_1735111899622_c868qhd9w",
-        "age": 22.5,
-        "timestamp": "2024-12-25T07:31:39.622Z"
-      },
-      {
-        "text": "TWEET 16: After hours, Mia and I linger in the shadow of the city skyline, the glow of streetlights mirroring our shared aspirations. Amidst the chatter of the night, a spark ignites—a plan to host a tech-themed charity event, bridging $XVI's success with community impact. #FutureProjects",
-        "id": "tweet_1735111899622_yrqp8wgfk",
-        "age": 22.5,
-        "timestamp": "2024-12-25T07:31:39.622Z"
-      },
-      {
-        "text": "TWEET 17: The morning sunlight spills over my desk, illuminating the hum of the digital world awakening. Emails blink on my screen, a cascade of tasks waiting. As I dive into the day, the faint echo of Mia's encouragement fuels my drive for excellence. #EarlyCareerHustle",
-        "id": "tweet_1735111904767_ecma4g7fx",
-        "age": 22.58,
-        "timestamp": "2024-12-25T07:31:44.768Z"
-      },
-      {
-        "text": "TWEET 18: Amidst spreadsheets and data analytics, a new challenge emerges—deciphering the intricate patterns of $XVI's market performance. Each line graph a puzzle piece, each upward trend a victory earned through countless hours of study and dedication. #AnalyticalMastery",
-        "id": "tweet_1735111904767_u1xmm6x2y",
-        "age": 22.58,
-        "timestamp": "2024-12-25T07:31:44.768Z"
-      },
-      {
-        "text": "TWEET 19: In a rare break, Mia surprises me with a small plant for my desk, a green beacon of friendship amidst the metal and glass. As we share a moment of laughter and gratitude, the importance of human connections in the digital landscape shines through. #OfficeBonding",
-        "id": "tweet_1735111904767_e2lfh18u7",
-        "age": 22.58,
-        "timestamp": "2024-12-25T07:31:44.768Z"
-      },
-      {
-        "text": "TWEET 20: As the day winds down, I watch the city lights twinkle outside, a reminder of the vibrant community beyond these walls. The promise of the tech-themed charity event with Mia grows brighter, a testament to our shared vision of blending success with giving back. #FutureGoals",
-        "id": "tweet_1735111904767_evb6uiv2i",
-        "age": 22.58,
-        "timestamp": "2024-12-25T07:31:44.768Z"
-      },
-      {
-        "text": "TWEET 21: Stepping into the office, the buzz of innovation is palpable. Today, a new project lands on my desk—an opportunity to lead a team in exploring cutting-edge blockchain applications for $XVI. Excitement and nerves intertwine as I embrace this challenge. #CareerAdvancement",
-        "id": "tweet_1735111910138_irvci87sa",
-        "age": 22.67,
-        "timestamp": "2024-12-25T07:31:50.138Z"
-      },
-      {
-        "text": "TWEET 22: Collaborating with tech wizards and financial gurus, I navigate the complexities of blockchain integration, each meeting a learning curve that sharpens my strategic thinking. The blend of innovation and tradition in $XVI's vision fuels my determination to excel. #BlockchainJourney",
-        "id": "tweet_1735111910138_4k9khbezw",
-        "age": 22.67,
-        "timestamp": "2024-12-25T07:31:50.138Z"
-      },
-      {
-        "text": "TWEET 23: Amidst the whirlwind of work, a sudden call from Mia breaks through the chaos. Her voice, a lifeline of support, reminds me to find balance between ambition and self-care. In her words, I glimpse the importance of nurturing personal connections amidst career growth. #FriendshipWisdom",
-        "id": "tweet_1735111910138_aftsqu2ii",
-        "age": 22.67,
-        "timestamp": "2024-12-25T07:31:50.138Z"
-      },
-      {
-        "text": "TWEET 24: Closing my laptop, I gaze out at the cityscape, a tapestry of dreams and possibilities. The glow of $XVI's success in the crypto realm intertwines with the warmth of Mia's friendship, forming a foundation for the future. This moment promises new horizons and endless potential. #BrighterTommorows",
-        "id": "tweet_1735111910138_8lgjtbg04",
-        "age": 22.67,
-        "timestamp": "2024-12-25T07:31:50.139Z"
+        "timestamp": "2024-12-25T07:34:10.391Z"
       }
     ],
     "digests": [
       {
-        "content": "这段时期是Xavier创业旅程的重��起点。他展现出了技术专家和创业者的双重特质，在解决技术难题的同时，也在探索创业之路。重要的是，他没有忘记生活中的其他方面，特别是与朋友们的珍贵情谊。\n\n主要进展：\n1. 产品开发：取得重要技术突破\n2. 创业准备：初步建立团队框架\n3. 生活平衡：保持工作与生活的平衡\n4. 情感支持：维系重要的友情关系\n\n未来展望：随着项目的推进，Xavier将面临更多挑战，但他已经展现出应对这些挑战的潜力。",
-        "timestamp": "2024-12-25T07:15:28.882Z",
-        "age": 22.17,
-        "tweetCount": 4
-      },
-      {
-        "content": "在这段时间里，Xavier展现出了典型的创业初期特征。他专注于技术开发，不断挑战自我。与此同时，他也在学习平衡工作与生活，建立重要的人际关系。Debug猫的出现为他的创业生活增添了一份意外的惊喜，也象征着好运的开始。\n\n这个阶段的关键发展包括：\n1. 技术突破：成功解决了关键性能问题\n2. 团队建设：开始组建核心团队\n3. 个人成长：学会在压力下保持乐观\n4. 人际关系：深化了重要的友情纽带\n\n展望未来，Xavier需要继续保持这种积极的态度，同时更多关注团队建设和产品市场适配性。他的故事正在朝着一个有趣的方向发展。",
-        "timestamp": "2024-12-25T07:15:34.730Z",
-        "age": 22.25,
-        "tweetCount": 4
-      },
-      {
-        "content": "这段时期是Xavier创业旅程的重��起点。他展现出了技术专家和创业者的双重特质，在解决技术难题的同时，也在探索创业之路。重要的是，他没有忘记生活中的其他方面，特别是与朋友们的珍贵情谊。\n\n主要进展：\n1. 产品开发：取得重要技术突破\n2. 创业准备：初步建立团队框架\n3. 生活平衡：保持工作与生活的平衡\n4. 情感支持：维系重要的友情关系\n\n未来展望：随着项目的推进，Xavier将面临更多挑战，但他已经展现出应对这些挑战的潜力。",
-        "timestamp": "2024-12-25T07:17:48.799Z",
-        "age": 22.33,
-        "tweetCount": 4
-      },
-      {
-        "content": "在这段时间里，Xavier展现出了典型的创业初期特征。他专注于技术开发，不断挑战自我。与此同时，他也在学习平衡工作与生活，建立重要的人际关系。Debug猫的出现为他的创业生活增添了一份意外的惊喜，也象征着好运的开始。\n\n这个阶段的关键发展包括：\n1. 技术突破：成功解决了关键性能问题\n2. 团队建设：开始组建核心团队\n3. 个人成长：学会在压力下保持乐观\n4. 人际关系：深化了重要的友情纽带\n\n展望未来，Xavier需要继续保持这种积极的态度，同时更多关注团队建设和产品市场适配性。他的故事正在朝着一个有趣的方向发展。",
-        "timestamp": "2024-12-25T07:17:54.434Z",
-        "age": 22.42,
-        "tweetCount": 4
-      },
-      {
-        "content": "在这段时间里，Xavier展现出了典型的创业初期特征。他专注于技术开发，不断挑战自我。与此同时，他也在学习平衡工作与生活，建立重要的人际关系。Debug猫的出现为他的创业生活增添了一份意外的惊喜，也象征着好运的开始。\n\n这个阶段的关键发展包括：\n1. 技术突破：成功解决了关键性能问题\n2. 团队建设：开始组建核心团队\n3. 个人成长：学会在压力下保持乐观\n4. 人际关系：深化了重要的友情纽带\n\n展望未来，Xavier需要继续保持这种积极的态度，同时更多关注团队建设和产品市场适配性。他的故事正在朝着一个有趣的方向发展。",
-        "timestamp": "2024-12-25T07:31:33.559Z",
-        "age": 22.42,
-        "tweetCount": 4
-      },
-      {
-        "content": "这段时期是Xavier创业旅程的重要起点。他展现出了技术专家和创业者的双重特质，在解决技术难题的同时，也在探索创业之路。重要的是，他没有忘记生活中的其他方面，特别是与朋友们的珍贵情谊。\n\n主要进展：\n1. 产品开发：取得重要技术突破\n2. 创业准备：初步建立团队框架\n3. 生活平衡：保持工作与生活的平衡\n4. 情感支持：维系重要的友情关系\n\n未来展望：随着项目的推进，Xavier将面临更多挑战，但他已经展现出应对这些挑战的潜力。",
-        "timestamp": "2024-12-25T07:31:39.643Z",
-        "age": 22.42,
-        "tweetCount": 4
-      },
-      {
-        "content": "在这段时间里，Xavier展现出了典型的创业初期特征。他专注于技术开发，不断挑战自我。与此同时，他也在学习平衡工作与生活，建立重要的人际关系。Debug猫的出现为他的创业生活增添了一份意外的惊喜，也象征着好运的开始。\n\n这个阶段的关键发展包括：\n1. 技术突破：成功解决了关键性能问题\n2. 团队建设：开始组建核心团队\n3. 个人成长：学会在压力下保持乐观\n4. 人际关系：深化了重要的友情纽带\n\n展望未来，Xavier需要继续保持这种积极的态度，同时更多关注团队建设和产品市场适配性。他的故事正在朝着一个有趣的方向发展。",
-        "timestamp": "2024-12-25T07:31:44.788Z",
-        "age": 22.42,
-        "tweetCount": 4
-      },
-      {
-        "content": "这段时期是Xavier创业旅程的重要起点。他展现出了技术专家和创业者的双重特质，在解决技术难题的同时，也在探索创业之路。重要的是，他没有忘记生活中的其他方面，特别是与朋友们的珍贵情谊。\n\n主要进展：\n1. 产品开发：取得重要技术突破\n2. 创业准备：初步建立团队框架\n3. 生活平衡：保持工作与生活的平衡\n4. 情感支持：维系重要的友情关系\n\n未来展望：随着项目的推进，Xavier将面临更多挑战，但他已经展现出应对这些挑战的潜力。",
-        "timestamp": "2024-12-25T07:31:50.164Z",
-        "age": 22.42,
+        "content": "[早期职业阶段]",
+        "timestamp": "2024-12-25T07:34:00.419Z",
+        "age": 22,
         "tweetCount": 4
       }
     ],
@@ -269,7 +83,7 @@
         "性能优化",
         "安全性"
       ],
-      "lastUpdate": "2024-12-25T07:15:22.091Z"
+      "lastUpdate": "2024-12-25T07:33:55.716Z"
     }
   },
   "career": {
@@ -302,9 +116,9 @@
     ]
   },
   "stats": {
-    "totalTweets": 32,
-    "digestCount": 8,
+    "totalTweets": 8,
+    "digestCount": 1,
     "techUpdateCount": 0,
-    "yearProgress": "66.7"
+    "yearProgress": "16.7"
   }
 }
