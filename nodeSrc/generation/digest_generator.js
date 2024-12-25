@@ -4,7 +4,7 @@ const fs = require('fs').promises;
 const path = require('path');
 
 class DigestGenerator {
-    constructor(client, model, digestInterval = 2, isProduction = false) {
+    constructor(client, model, digestInterval = 4, isProduction = false) {
         this.logger = new Logger('digest');
         this.ai = new AICompletion(client, model);
         this.digestInterval = digestInterval;
@@ -29,7 +29,7 @@ class DigestGenerator {
 
 展望未来，Xavier需要继续保持这种积极的态度，同时更多关注团队建设和产品市场适配性。他的故事正在朝着一个有趣的方向发展。`,
 
-                `这段时期是Xavier创业旅程的重要起点。他展现出了技术专家和创业者的双重特质，在解决技术难题的同时，也在探索创业之路。重要的是，他没有忘记生活中的其他方面，特别是与朋友们的珍贵情谊。
+                `这段时期是Xavier创业旅程的重��起点。他展现出了技术专家和创业者的双重特质，在解决技术难题的同时，也在探索创业之路。重要的是，他没有忘记生活中的其他方面，特别是与朋友们的珍贵情谊。
 
 主要进展：
 1. 产品开发：取得重要技术突破
@@ -49,23 +49,22 @@ class DigestGenerator {
                 interval: this.digestInterval
             });
 
-            // 检查是否需要生成摘要
-            // if (totalTweets % this.digestInterval !== 0) {
-            //     return null;
-            // }
-
             // 获取最近的推文
             const recentTweets = await this._getRecentTweets();
             
-            // 生成摘要
-            const digest = await this._generateDigest(recentTweets, currentAge);
+            // 计算当前年龄（包括新增的推文）
+            const calculatedAge = this._calculateAge(totalTweets + newTweets.length);
             
-            // 保存摘要
-            await this._saveDigest(digest, currentAge, timestamp);
+            // 生成摘要
+            const digest = await this._generateDigest(recentTweets, calculatedAge);
+            
+            // 保存摘要和更新年龄
+            await this._saveDigest(digest, calculatedAge, timestamp);
 
             this.logger.info('Generated new digest', {
-                age: currentAge,
-                tweetCount: recentTweets.length
+                age: calculatedAge,
+                tweetCount: recentTweets.length,
+                totalTweets: totalTweets + newTweets.length
             });
 
             return digest;
@@ -73,6 +72,13 @@ class DigestGenerator {
             this.logger.error('Error in digest generation', error);
             throw error;
         }
+    }
+
+    _calculateAge(totalTweets) {
+        const tweetsPerYear = 48; // 每年48条推文
+        const yearsPassed = totalTweets / tweetsPerYear;
+        const startAge = 22;
+        return Number((startAge + yearsPassed).toFixed(2));
     }
 
     async _getRecentTweets() {
@@ -111,12 +117,13 @@ class DigestGenerator {
             // 添加新摘要到 story.digests
             storyData.story.digests.push({
                 ...digest,
-                age: currentAge,
+                age: Number(currentAge.toFixed(2)),
                 timestamp
             });
 
-            // 更新统计信息
+            // 更新统计信息和年龄
             storyData.stats.digestCount = storyData.story.digests.length;
+            storyData.metadata.currentAge = Number(currentAge.toFixed(2));
 
             // 保存更新
             await fs.writeFile(
@@ -126,7 +133,7 @@ class DigestGenerator {
             );
 
             this.logger.info('Saved new digest', {
-                age: currentAge,
+                age: Number(currentAge.toFixed(2)),
                 timestamp
             });
         } catch (error) {

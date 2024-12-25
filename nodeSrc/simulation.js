@@ -21,7 +21,7 @@ class XavierSimulation {
         this.config = {
             minInterval: 1 * 1000,    // 最小间隔5秒
             maxInterval: 2 * 1000,   // 最大间隔10秒
-            maxTweetsPerDay: 48,      // 每天最大推文数
+            maxTweetsPerDay: 4800,      // 每天最大推文数
             tweetsPerScene: 4,        // 每个场景4条推文
             scenesPerBatch: 3,        // 每批3个场��（固定12条推文）
             isRunning: false
@@ -103,7 +103,7 @@ class XavierSimulation {
                 allTweets = [...allTweets, ...tweets];
 
                 // 短暂暂停，避免生成太快
-                await new Promise(resolve => setTimeout(resolve, 1000));
+                await new Promise(resolve => setTimeout(resolve, 10));
             }
 
             // 检查是否需要生成摘要

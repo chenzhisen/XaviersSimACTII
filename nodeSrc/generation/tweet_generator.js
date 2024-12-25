@@ -3,6 +3,7 @@ const { GithubOperations } = require('../storage/github_operations');
 const { Logger } = require('../utils/logger');
 const fs = require('fs').promises;
 const path = require('path');
+const Introduction = require('../data/Introduction.json');
 
 class TweetGenerator {
     constructor(client, model, isProduction = false) {
@@ -11,20 +12,9 @@ class TweetGenerator {
         this.githubOps = new GithubOperations(isProduction);
         this.isProduction = isProduction;
         
-        // 故事配置
-        this.storyConfig = {
-            protagonist: {
-                name: 'Xavier',
-                identity: '程序员/创业者/$XVI创始人',
-                startAge: 22,
-                endAge: 72
-            },
-            yearlyPace: {
-                tweetsPerYear: 48,
-                scenesPerYear: 12,
-                tweetsPerScene: 4
-            }
-        };
+        // 加载故事背景
+        this.storyConfig = Introduction.story;
+        this.protagonist = Introduction.protagonist;
 
         // Windows 路径配置
         this.paths = {
@@ -73,10 +63,10 @@ class TweetGenerator {
             }
 
             return {
-                currentAge: summary.currentAge || this.storyConfig.protagonist.startAge,
-                totalTweets: summary.tweets?.length || 0,
-                lastDigest: summary.lastDigest || null,
-                yearProgress: this._calculateYearProgress(summary.tweets?.length || 0)
+                currentAge: Number(summary.metadata.currentAge.toFixed(2)),
+                totalTweets: summary.story.tweets.length,
+                lastDigest: summary.story.digests[summary.story.digests.length - 1]?.content || null,
+                yearProgress: this._calculateYearProgress(summary.story.tweets.length)
             };
         } catch (error) {
             this.logger.error('Error getting current summary', error);
@@ -196,7 +186,7 @@ class TweetGenerator {
             // 添加新推文到 story.tweets
             const newTweets = tweets.map(tweet => ({
                 ...tweet,
-                age: currentAge,
+                age: Number(currentAge.toFixed(2)),
                 timestamp: new Date().toISOString()
             }));
             
@@ -210,7 +200,7 @@ class TweetGenerator {
             const newAge = this._calculateAge(storyData.stats.totalTweets);
             
             // 更新元数据
-            storyData.metadata.currentAge = newAge;
+            storyData.metadata.currentAge = Number(newAge.toFixed(2));
             storyData.metadata.lastUpdate = new Date().toISOString();
             storyData.metadata.currentPhase = this._calculatePhase(newAge);
 
@@ -223,7 +213,7 @@ class TweetGenerator {
             
             this.logger.info('Saved new tweets', {
                 count: tweets.length,
-                currentAge: newAge,
+                currentAge: Number(newAge.toFixed(2)),
                 totalTweets: storyData.stats.totalTweets
             });
 
@@ -236,10 +226,9 @@ class TweetGenerator {
 
     _calculateAge(totalTweets) {
         const yearsPassed = totalTweets / this.ageConfig.tweetsPerYear;
-        const newAge = Number((this.ageConfig.startAge + yearsPassed).toFixed(2));
-        
-        // 确保不超过结束年龄
-        return Math.min(newAge, this.ageConfig.endAge);
+        const newAge = this.ageConfig.startAge + yearsPassed;
+        // 确保年龄保持2位小数并且不超过结束年龄
+        return Math.min(Number(newAge.toFixed(2)), this.ageConfig.endAge);
     }
 
     _parseTweets(response) {
@@ -301,9 +290,18 @@ Remember:
     }
 
     _getCurrentPhase(age) {
-        return Object.values(this.storyConfig.lifePhases).find(
-            phase => age >= phase.age[0] && age < phase.age[1]
-        );
+        return Object.entries(this.storyConfig.phases).find(
+            ([_, phase]) => age >= phase.age[0] && age < phase.age[1]
+        )[0];
+    }
+
+    _getPhaseContext(age) {
+        const phase = this._getCurrentPhase(age);
+        return {
+            phase,
+            focus: this.storyConfig.phases[phase].focus,
+            themes: this.storyConfig.themes
+        };
     }
 
     _getPlotContext(context) {
