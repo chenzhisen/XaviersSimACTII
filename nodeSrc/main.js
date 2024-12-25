@@ -1,115 +1,76 @@
-const { Anthropic } = require('@anthropic-ai/sdk');
+const { program } = require('commander');
+const ora = require('ora');
+const { XavierSimulation } = require('./simulation');
 const { Config } = require('./utils/config');
 const { Logger } = require('./utils/logger');
-const { TweetGenerator } = require('./generation/tweet_generator');
-const { DigestGenerator } = require('./generation/digest_generator');
-const { TechEvolutionGenerator } = require('./generation/tech_evolution_generator');
-const { AICompletion } = require('./utils/ai_completion');
+const { initializeDataStructure } = require('./utils/init_data');
 
-class XavierSimulation {
-    constructor(isProduction = false) {
+class SimulationRunner {
+    constructor() {
         this.logger = new Logger('main');
-        this.isProduction = isProduction;
-
-        // 输出 AI 配置
-        const aiConfig = Config.getAIConfig();
-        const client = ''
-
-        // 初始化生成器
-        this.tweetGenerator = new TweetGenerator(client, aiConfig.model, isProduction);
-        this.digestGenerator = new DigestGenerator(client, aiConfig.model, 12, isProduction);
-        this.techGenerator = new TechEvolutionGenerator(client, aiConfig.model, isProduction);
-
-        // 初始化状态
-        this.currentAge = 22.0;
-        this.tweetsPerYear = 96;
-        this.daysPerTweet = 384 / this.tweetsPerYear;
     }
 
-    async run() {
+    async initialize() {
         try {
-            this.logger.info('Starting simulation...');
-
-            // 步骤 1: 获取当前状态
-            console.log('Step 1: Getting current state...');
-            const [ongoingTweets, tweetsByAge] = await this.tweetGenerator.getOngoingTweets();
-            const tweetCount = ongoingTweets.length;
-            console.log(`Found ${tweetCount} existing tweets`);
-
-            // 步骤 2: 更新模拟状态
-            console.log('Step 2: Updating simulation state...');
-            const { currentDate, daysSinceStart } = this._updateSimulationState(ongoingTweets);
-            console.log(`Current age: ${this.currentAge.toFixed(2)}, Days since start: ${daysSinceStart}`);
-
-            // 步骤 3: 生成技术进化
-            console.log('Step 3: Generating tech evolution...');
-            const techEvolution = await this.techGenerator.generateTechEvolution();
-            if (!techEvolution) {
-                throw new Error('Failed to generate tech evolution');
-            }
-            console.log('Tech evolution generated successfully');
-
-            // 步骤 4: 检查并生成摘要
-            console.log('Step 4: Checking and generating digest...');
-            const digest = await this.digestGenerator.checkAndGenerateDigest(
-                ongoingTweets,
-                this.currentAge,
-                currentDate,
-                tweetCount,
-                techEvolution
-            );
-            console.log('Digest check completed');
-
-            // 步骤 5: 生成新推文
-            console.log('Step 5: Generating new tweet...');
-            const tweet = await this.tweetGenerator.generateTweet(
-                digest,
-                this.currentAge,
-                techEvolution,
-                tweetCount
-            );
-
-            if (!tweet) {
-                throw new Error('Failed to generate tweet');
-            }
-            console.log('New tweet generated');
-
-            // 步骤 6: 保存推文
-            console.log('Step 6: Saving tweet...');
-            const success = await this.tweetGenerator.saveTweet(tweet);
-            if (!success) {
-                throw new Error('Failed to save tweet');
-            }
-            console.log('Tweet saved successfully');
-
-            this.logger.info('Simulation completed successfully', {
-                age: this.currentAge,
-                tweetCount: tweetCount + 1
-            });
-
-            return { tweet, digest, techEvolution };
-
+            // 初始化配置
+            Config.init();
+            
+            // 初始化数据结构
+            await initializeDataStructure();
+            
+            this.logger.info('Initialization completed');
+            return true;
         } catch (error) {
-            this.logger.error('Simulation failed', error);
-            console.error('Error details:', {
-                step: error.step,
-                message: error.message,
-                stack: error.stack
-            });
-            throw error;
+            this.logger.error('Initialization failed', error);
+            return false;
         }
     }
 
-    _updateSimulationState(ongoingTweets) {
-        const tweetCount = ongoingTweets.length;
-        const daysSinceStart = tweetCount * this.daysPerTweet;
-        const currentDate = new Date('2025-01-01');
-        currentDate.setDate(currentDate.getDate() + daysSinceStart);
+    async run(options) {
+        const spinner = ora('Starting simulation...').start();
         
-        this.currentAge = 22.0 + (daysSinceStart / 384);
-        
-        return { currentDate, daysSinceStart };
+        try {
+            const simulation = new XavierSimulation(options.production);
+            const result = await simulation.run();
+            
+            spinner.succeed('Simulation completed');
+            this.logger.info('Generated content:', {
+                tweetCount: result.tweets.length,
+                currentAge: result.currentAge,
+                hasDigest: !!result.digest
+            });
+
+            return true;
+        } catch (error) {
+            spinner.fail('Simulation failed');
+            this.logger.error('Simulation error', error);
+            return false;
+        }
     }
 }
 
-module.exports = { XavierSimulation }; 
+// 主程序
+async function main() {
+    const runner = new SimulationRunner();
+    
+    if (!await runner.initialize()) {
+        process.exit(1);
+    }
+
+    program
+        .command('run')
+        .description('Run the simulation')
+        .option('-p, --production', 'Run in production mode')
+        .action(async (options) => {
+            const success = await runner.run(options);
+            process.exit(success ? 0 : 1);
+        });
+
+    program.parse();
+}
+
+// 启动程序
+main().catch(error => {
+    console.error('Fatal error:', error);
+    process.exit(1);
+}); 

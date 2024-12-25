@@ -20,121 +20,154 @@ class TweetGenerator {
             maxTweetLength: 280
         };
 
-        // 文件路径
-        this.dataPath = path.join(__dirname, '..', 'data');
-        this.simPath = path.join(this.dataPath, this.isProduction ? 'prod' : 'dev', 'XaviersSim.json');
-        
+        // 分片存储配置
+        this.storageConfig = {
+            tweetsPerFile: 1000,    // 每个文件存储1000条推文
+            yearsPerEpoch: 10,      // 每10年为一个时期
+            baseAge: 22             // 起始年龄
+        };
+
+        // 文件路径结构
+        this.paths = {
+            base: path.join(__dirname, '..', 'data', this.isProduction ? 'prod' : 'dev'),
+            get summary() {
+                return path.join(this.base, 'summary.json');  // 存储摘要信息
+            },
+            getEpochPath(epoch) {
+                return path.join(this.base, `epoch_${epoch}.json`); // 分时期存储
+            }
+        };
+
+        // 故事连贯性配置
+        this.contextConfig = {
+            recentTweets: 10,        // 最近的推文数量
+            keyEventsToInclude: 5,   // 关键事件数量
+            characterLimit: 8,        // 相关角色数量
+            summaryLength: 500       // 背景摘要长度
+        };
+
         // 初始化背景故事
         this.loadBackgroundStory();
     }
 
     async loadBackgroundStory() {
         try {
-            // 确保文件存在
-            try {
-                await fs.access(this.simPath);
-            } catch {
-                // 如果文件不存在，创建初始结构
-                await this._initializeSimFile();
-            }
-
-            const data = await fs.readFile(this.simPath, 'utf8');
-            this.backgroundStory = JSON.parse(data);
+            // 加载摘要文件
+            const summary = await this._loadOrCreateSummary();
             
-            console.log('Background story loaded:', {
-                tweetCount: this.backgroundStory.tweets.length,
-                lastAge: this.backgroundStory.tweets[this.backgroundStory.tweets.length - 1]?.age
+            // 计算当前时期
+            const currentEpoch = this._calculateEpoch(summary.currentAge);
+            
+            // 只加载最近的时期数据
+            this.backgroundStory = await this._loadRecentEpochs(currentEpoch);
+            
+            console.log('Background loaded:', {
+                currentAge: summary.currentAge,
+                currentEpoch,
+                loadedEpochs: Object.keys(this.backgroundStory).length
             });
         } catch (error) {
-            this.logger.error('Error loading background story', error);
+            this.logger.error('Error loading background', error);
             throw error;
         }
     }
 
-    async _initializeSimFile() {
-        const initialData = {
-            tweets: [],
-            metadata: {
-                protagonist: 'Xavier',
-                currentAge: 22.0,
-                totalTweets: 0,
-                lastUpdate: new Date().toISOString(),
-                plotPoints: []
-            }
-        };
-
-        await fs.writeFile(
-            this.simPath,
-            JSON.stringify(initialData, null, 2),
-            'utf8'
-        );
-    }
-
-    async generateTweetScene(digest, currentAge, tweetCount) {
+    async _loadOrCreateSummary() {
         try {
-            const context = await this._prepareContext(digest, tweetCount);
-            const prompt = this._buildScenePrompt(context);
-            
-            const response = await this.ai.getCompletion(
-                'You are continuing Xavier\'s story.',
-                prompt
-            );
-
-            const tweets = this._parseTweets(response);
-            
-            // 创建推文对象
-            const tweetObjects = tweets.map((text, index) => ({
-                id: `tweet_${Date.now()}_${index}`,
-                text: text.slice(0, this.storyConfig.maxTweetLength),
-                age: currentAge,
-                timestamp: new Date().toISOString(),
-                metadata: {
-                    tweet_number: tweetCount + index + 1,
-                    scene_number: Math.floor((tweetCount + index) / this.storyConfig.tweetsPerScene),
-                    story_day: Math.floor((tweetCount + index) / (this.storyConfig.tweetsPerScene * this.storyConfig.scenesPerDay))
-                }
-            }));
-
-            // 保存到背景故事
-            await this._saveToBackgroundStory(tweetObjects);
-
-            return tweetObjects;
-        } catch (error) {
-            this.logger.error('Error generating tweet scene', error);
-            throw error;
+            const data = await fs.readFile(this.paths.summary, 'utf8');
+            return JSON.parse(data);
+        } catch {
+            const initial = {
+                currentAge: this.storageConfig.baseAge,
+                totalTweets: 0,
+                epochs: [],
+                keyPlotPoints: [],
+                lastUpdate: new Date().toISOString()
+            };
+            await fs.writeFile(this.paths.summary, JSON.stringify(initial, null, 2));
+            return initial;
         }
+    }
+
+    async _loadRecentEpochs(currentEpoch) {
+        const epochs = {};
+        
+        // 只加载当前和前一个时期的数据
+        for (let epoch = currentEpoch - 1; epoch <= currentEpoch; epoch++) {
+            if (epoch >= 0) {
+                try {
+                    const path = this.paths.getEpochPath(epoch);
+                    const data = await fs.readFile(path, 'utf8');
+                    epochs[epoch] = JSON.parse(data);
+                } catch {
+                    epochs[epoch] = { tweets: [], metadata: {} };
+                }
+            }
+        }
+        
+        return epochs;
+    }
+
+    _calculateEpoch(age) {
+        return Math.floor((age - this.storageConfig.baseAge) / this.storageConfig.yearsPerEpoch);
     }
 
     async _saveToBackgroundStory(newTweets) {
         try {
-            // 添加新推文
-            this.backgroundStory.tweets.push(...newTweets);
+            // 加载摘要
+            const summary = await this._loadOrCreateSummary();
             
-            // 更新元数据
-            this.backgroundStory.metadata.currentAge = newTweets[newTweets.length - 1].age;
-            this.backgroundStory.metadata.totalTweets = this.backgroundStory.tweets.length;
-            this.backgroundStory.metadata.lastUpdate = new Date().toISOString();
-
-            // 提取并更新关键情节点
-            const plotPoints = this._extractPlotPoints(newTweets);
-            if (plotPoints.length > 0) {
-                this.backgroundStory.metadata.plotPoints.push(...plotPoints);
+            // 计算时期
+            const currentEpoch = this._calculateEpoch(newTweets[0].age);
+            
+            // 加载当前时期文件
+            const epochPath = this.paths.getEpochPath(currentEpoch);
+            let epochData;
+            try {
+                const data = await fs.readFile(epochPath, 'utf8');
+                epochData = JSON.parse(data);
+            } catch {
+                epochData = {
+                    tweets: [],
+                    metadata: {
+                        epoch: currentEpoch,
+                        startAge: this.storageConfig.baseAge + (currentEpoch * this.storageConfig.yearsPerEpoch),
+                        endAge: this.storageConfig.baseAge + ((currentEpoch + 1) * this.storageConfig.yearsPerEpoch),
+                        plotPoints: []
+                    }
+                };
             }
 
-            // 保存到文件
-            await fs.writeFile(
-                this.simPath,
-                JSON.stringify(this.backgroundStory, null, 2),
-                'utf8'
-            );
+            // 添加新推文
+            epochData.tweets.push(...newTweets);
+            
+            // 更新摘要
+            summary.currentAge = newTweets[newTweets.length - 1].age;
+            summary.totalTweets += newTweets.length;
+            
+            // 提取关键情节点
+            const plotPoints = this._extractPlotPoints(newTweets);
+            if (plotPoints.length > 0) {
+                epochData.metadata.plotPoints.push(...plotPoints);
+                // 只保存重要的情节点到摘要
+                summary.keyPlotPoints.push(...plotPoints.filter(p => 
+                    p.text.includes('重要') || p.text.includes('转折')
+                ));
+            }
 
-            console.log('Background story updated:', {
+            // 保存文件
+            await Promise.all([
+                fs.writeFile(epochPath, JSON.stringify(epochData, null, 2)),
+                fs.writeFile(this.paths.summary, JSON.stringify(summary, null, 2))
+            ]);
+
+            console.log('Story updated:', {
+                epoch: currentEpoch,
                 newTweets: newTweets.length,
-                totalTweets: this.backgroundStory.tweets.length,
-                currentAge: this.backgroundStory.metadata.currentAge
+                totalTweets: summary.totalTweets
             });
         } catch (error) {
-            this.logger.error('Error saving to background story', error);
+            this.logger.error('Error saving story', error);
             throw error;
         }
     }
@@ -158,27 +191,33 @@ class TweetGenerator {
     }
 
     _buildScenePrompt(context) {
-        const relevantBackground = this._getRelevantBackground(context);
+        return `Story Context:
+Current Age: ${context.current_age}
+Story Day: ${context.story_day}
 
-        return `Background Story Context:
-${relevantBackground}
+Story Summary:
+${context.story_summary}
 
-Current story context:
-Character: Xavier, ${context.current_age} years old
-Story progress: Day ${context.story_day}, Scene ${context.scene_number}
+Recent Key Events:
+${context.key_events.map(e => `- Age ${e.age}: ${e.description}`).join('\n')}
 
-Recent story developments:
-${context.recent_tweets.map(t => t.text).join('\n')}
+Active Characters:
+${Object.entries(context.characters)
+    .map(([name, info]) => `- ${name}: ${info.role} (Last appeared: Age ${info.lastSeen})`)
+    .join('\n')}
 
-Latest story summary:
+Recent Developments:
+${context.recent_developments.map(t => t.text).join('\n')}
+
+Latest Story Digest:
 ${context.latest_digest?.content || 'Story beginning...'}
 
-Write a mini-scene as ${this.storyConfig.tweetsPerScene} connected tweets. The scene should:
-1. Continue naturally from Xavier's previous adventures
-2. Reference established characters and relationships
-3. Build on existing story elements
-4. Create new developments and intrigue
-5. Use appropriate hashtags
+Write a mini-scene as ${this.storyConfig.tweetsPerScene} connected tweets that:
+1. Maintains story continuity with previous events
+2. Develops established character relationships
+3. Advances the overall narrative
+4. Creates emotional engagement
+5. Plants seeds for future developments
 
 Format:
 TWEET 1: [First tweet content]
@@ -186,12 +225,12 @@ TWEET 2: [Second tweet content]
 TWEET 3: [Third tweet content]
 TWEET 4: [Fourth tweet content]
 
-Guidelines:
-- Each tweet must be under 280 characters
-- Maintain consistency with background story
-- Reference previous relationships and events
-- Create emotional resonance
-- End with anticipation for next scene`;
+Remember:
+- Reference past events naturally
+- Keep character personalities consistent
+- Create anticipation for what comes next
+- Use established relationships
+- Stay true to the story's themes`;
     }
 
     _getRelevantBackground(context) {
@@ -399,7 +438,7 @@ ${this._formatRelationships(relevantChars)}`;
         // 选择与当前情境相关的事件
         try {
             return this.storyBackground.events
-                .filter(event => Math.abs(event.age - context.current_age) <= 0.5) // 选择半年内的事件
+                .filter(event => Math.abs(event.age - context.current_age) <= 0.5) // 选���半年内的事件
                 .map(event => event.title);
         } catch (error) {
             this.logger.error('Error selecting relevant events', error);
@@ -454,17 +493,118 @@ ${this._formatRelationships(relevantChars)}`;
     }
 
     async _prepareContext(digest, tweetCount) {
-        const [recentTweets, _] = await this.getOngoingTweets();
-        const lastTweets = recentTweets.slice(-5);
+        // 获取当前时期
+        const currentAge = this.storyConfig.startAge + 
+            (tweetCount / (this.storyConfig.tweetsPerScene * this.storyConfig.scenesPerDay * 365));
+        const currentEpoch = this._calculateEpoch(currentAge);
+
+        // 1. 获取最近的故事发展
+        const recentTweets = await this._getRecentTweets(currentEpoch);
+
+        // 2. 获取关键情节点
+        const keyEvents = await this._getKeyEvents(currentAge);
+
+        // 3. 获取相关角色
+        const relevantCharacters = this._getRelevantCharacters(recentTweets);
+
+        // 4. 生成当前故事阶段摘要
+        const storySummary = this._generatePhaseSummary(currentAge, recentTweets, keyEvents);
 
         return {
-            current_age: this.storyConfig.startAge +
-                (tweetCount / (this.storyConfig.tweetsPerScene * this.storyConfig.scenesPerDay * 365)),
+            current_age: currentAge,
             story_day: Math.floor(tweetCount / (this.storyConfig.tweetsPerScene * this.storyConfig.scenesPerDay)),
-            scene_number: Math.floor(tweetCount / this.storyConfig.tweetsPerScene),
-            latest_digest: digest,
-            recent_tweets: lastTweets
+            recent_developments: recentTweets,
+            key_events: keyEvents,
+            characters: relevantCharacters,
+            story_summary: storySummary,
+            latest_digest: digest
         };
+    }
+
+    async _getRecentTweets(currentEpoch) {
+        const tweets = [];
+        
+        // 从当前和前一个时期获取最近的推文
+        for (let epoch = currentEpoch - 1; epoch <= currentEpoch; epoch++) {
+            if (epoch >= 0 && this.backgroundStory[epoch]) {
+                tweets.push(...this.backgroundStory[epoch].tweets);
+            }
+        }
+
+        // 返回最近的N条推文
+        return tweets
+            .slice(-this.contextConfig.recentTweets)
+            .map(t => ({
+                text: t.text,
+                age: t.age,
+                timeGap: t.metadata.story_day
+            }));
+    }
+
+    async _getKeyEvents(currentAge) {
+        try {
+            const summary = await this._loadOrCreateSummary();
+            
+            // 筛选关键事件
+            return summary.keyPlotPoints
+                .filter(event => event.age <= currentAge)  // 只包含当前年龄之前的事件
+                .slice(-this.contextConfig.keyEventsToInclude)  // 取最近的几个关键事件
+                .map(event => ({
+                    description: event.point,
+                    age: event.age,
+                    impact: event.text.includes('重要') ? 'major' : 'minor'
+                }));
+        } catch (error) {
+            this.logger.error('Error getting key events', error);
+            return [];
+        }
+    }
+
+    _generatePhaseSummary(currentAge, recentTweets, keyEvents) {
+        // 生成当前阶段的故事摘要
+        const ageBracket = Math.floor(currentAge / 5) * 5;
+        const phaseDescription = this._getPhaseDescription(ageBracket);
+        
+        return `Current Life Phase (Age ${ageBracket}-${ageBracket + 5}):
+${phaseDescription}
+
+Recent Themes:
+${this._extractThemes(recentTweets).join(', ')}
+
+Key Developments:
+${keyEvents.map(e => e.description).join('\n')}`;
+    }
+
+    _getPhaseDescription(ageBracket) {
+        const phaseDescriptions = {
+            20: "Early career and finding direction",
+            25: "Career growth and relationship development",
+            30: "Professional establishment and personal growth",
+            35: "Mid-career challenges and life balance",
+            // ... 其他年龄段描述
+        };
+        return phaseDescriptions[ageBracket] || "Continuing life journey";
+    }
+
+    _getRelevantCharacters(recentTweets) {
+        const relevantCharacters = {};
+        recentTweets.forEach(tweet => {
+            Object.keys(this.storyBackground.characters).forEach(char => {
+                if (tweet.text.includes(char)) {
+                    relevantCharacters[char] = this.storyBackground.characters[char];
+                }
+            });
+        });
+        return relevantCharacters;
+    }
+
+    _extractThemes(recentTweets) {
+        const themes = new Set();
+        recentTweets.forEach(tweet => {
+            const themesInTweet = tweet.text.match(/#(\w+Theme)/g) || [];
+            themesInTweet.forEach(theme => themes.add(theme.slice(1)));
+        });
+        return Array.from(themes);
     }
 
     _groupTweetsByAge(tweets) {
