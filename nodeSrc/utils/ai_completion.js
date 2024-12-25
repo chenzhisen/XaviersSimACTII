@@ -40,28 +40,67 @@ class AICompletion {
 
         // 添加日志路径
         this.logPath = path.resolve(__dirname, '..', 'data', 'ai_logs');
+        this.consoleLogPath = path.join(this.logPath, 'console');
+    }
+
+    async _logToConsoleAndFile(level, message, data = {}) {
+        // 生成带时间戳的日志内容
+        const timestamp = new Date().toISOString();
+        const logEntry = {
+            timestamp,
+            level,
+            message,
+            data
+        };
+
+        // 控制台输出（带颜色）
+        const colors = {
+            info: 'blue',
+            success: 'green',
+            warning: 'yellow',
+            error: 'red'
+        };
+        console.log(chalk[colors[level] || 'white'](message, data));
+
+        try {
+            // 确保日志目录存在
+            await fs.mkdir(this.consoleLogPath, { recursive: true });
+
+            // 生成日志文件名（按日期分文件）
+            const date = new Date().toISOString().split('T')[0];
+            const logFile = path.join(this.consoleLogPath, `console_${date}.log`);
+
+            // 追加日志内容
+            await fs.appendFile(
+                logFile,
+                JSON.stringify(logEntry) + '\n',
+                'utf8'
+            );
+        } catch (error) {
+            console.error('Error saving console log:', error);
+        }
     }
 
     async getCompletion(systemPrompt, userPrompt) {
         try {
             let result;
             if (this.options.useLocalSimulation) {
-                console.log(chalk.yellow('Using local simulation'));
+                await this._logToConsoleAndFile('warning', 'Using local simulation');
                 result = await this._getLocalSimulation();
             } else {
-                console.log(chalk.blue('Calling OpenAI API'));
+                await this._logToConsoleAndFile('info', 'Calling OpenAI API');
                 result = await this._getAICompletion(systemPrompt, userPrompt);
             }
 
-            console.log(chalk.green('Generated content:', {
+            await this._logToConsoleAndFile('success', 'Generated content', {
                 mode: this.options.useLocalSimulation ? 'local' : 'api',
                 tweetsCount: result.length,
                 firstTweet: result[0]?.text?.substring(0, 50) + '...'
-            }));
+            });
 
             return result;
         } catch (error) {
-            console.log(chalk.red('AI completion failed:', error));
+            await this._logToConsoleAndFile('error', 'AI completion failed', error);
             throw error;
         }
     }
@@ -69,15 +108,15 @@ class AICompletion {
     async _getAICompletion(systemPrompt, userPrompt) {
         try {
             if (!this.client) {
-                console.log(chalk.yellow('No AI client available, using local simulation'));
+                await this._logToConsoleAndFile('warning', 'No AI client available, using local simulation');
                 return this._getLocalSimulation();
             }
 
-            console.log(chalk.blue('Making API request:', {
+            await this._logToConsoleAndFile('info', 'Making API request', {
                 model: this.model,
                 systemPrompt: systemPrompt?.substring(0, 50) + '...',
                 userPrompt: userPrompt?.substring(0, 50) + '...'
-            }));
+            });
 
             const response = await this.client.chat.completions.create({
                 model: this.model,
@@ -97,10 +136,10 @@ class AICompletion {
                 success: true
             });
 
-            console.log(chalk.green('API response received:', {
+            await this._logToConsoleAndFile('success', 'API response received', {
                 status: 'success',
                 content: response.choices[0].message.content?.substring(0, 50) + '...'
-            }));
+            });
 
             const tweets = this._parseAIResponse(response.choices[0].message.content);
             return tweets;
@@ -115,11 +154,11 @@ class AICompletion {
                 success: false
             });
 
-            console.log(chalk.red('AI API call failed:', {
+            await this._logToConsoleAndFile('error', 'AI API call failed', {
                 error: error.message,
                 model: this.model
-            }));
-            console.log(chalk.yellow('Falling back to local simulation'));
+            });
+            await this._logToConsoleAndFile('warning', 'Falling back to local simulation');
             return this._getLocalSimulation();
         }
     }
@@ -183,7 +222,7 @@ class AICompletion {
             '生活场景': [
                 [
                     "1: 今天遇到一个超可爱的场景！楼下咖啡店的猫咪趴在我笔记本上，死活不让我写代码。😂 #CatLife",
-                    "2: 它对着屏幕上的光标又抓又挠，搞得我哭笑不得。最后只能一只手撸猫，一只手敲代码。多任务处理能力++",
+                    "2: 它对着屏幕上的光标又抓又挠，搞得我���笑不得。最后只能一只手撸猫，一只手敲代码。多任务处理能力++",
                     "3: 结果！这个小家伙居然帮我发现了��个bug！它踩键盘时触发了一个边界情况。说猫不懂编程？😅",
                     "4: 决定给它取名\"Debug\"，以后就是我们团队的首席测试喵了。投资人说要有好运气，也许这就是了？🐱 #StartupLife"
                 ]
