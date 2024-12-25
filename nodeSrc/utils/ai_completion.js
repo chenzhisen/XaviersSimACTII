@@ -11,7 +11,7 @@ class AICompletion {
             this.client = client;
             this.model = model;
         } else {
-            this.model = aiConfig.model || 'gpt-4';
+            this.model = aiConfig.model;
             this.client = new OpenAI({
                 apiKey: aiConfig.apiKey,
                 baseURL: aiConfig.baseUrl
@@ -26,33 +26,61 @@ class AICompletion {
 
     async getCompletion(systemPrompt, userPrompt, options = {}) {
         try {
-          
-
-            const response = await this.client.chat.completions.create({
+            console.log('Sending request:', {
                 model: this.model,
-                messages: [
-                    {
-                        role: "system",
-                        content:
-                            "You are Grok, a chatbot inspired by the Hitchhiker's Guide to the Galaxy.",
-                    },
-                    {
-                        role: "user",
-                        content:
-                            "What is the meaning of life, the universe, and everything?",
-                    },
-                ],
+                systemPrompt: systemPrompt?.slice(0, 50) + '...',
+                userPrompt: userPrompt?.slice(0, 50) + '...'
             });
 
-            console.log('AI Response:', response);
+            // 重试机制
+            const maxRetries = 3;
+            const retryDelay = 5000; // 5秒
+            let attempt = 0;
 
-            return response.choices[0].message.content;
+            while (attempt < maxRetries) {
+                try {
+                    const response = await this.client.chat.completions.create({
+                        model: this.model,
+                        messages: [
+                            { role: 'system', content: systemPrompt },
+                            { role: 'user', content: userPrompt }
+                        ],
+                        temperature: options.temperature || 0.7,
+                        max_tokens: options.max_tokens || 1000
+                    });
+
+                    console.log('AI Response received:', {
+                        status: 'success',
+                        hasChoices: !!response.choices,
+                        contentLength: response.choices?.[0]?.message?.content?.length
+                    });
+
+                    return response.choices[0].message.content;
+
+                } catch (error) {
+                    attempt++;
+                    console.error(`Attempt ${attempt} failed:`, {
+                        error: error.message,
+                        status: error.status,
+                        type: error.type
+                    });
+
+                    if (attempt === maxRetries) {
+                        throw error;
+                    }
+
+                    // 等待后重试
+                    await new Promise(resolve => setTimeout(resolve, retryDelay));
+                }
+            }
+
         } catch (error) {
             this.logger.error('Error in AI completion', error);
             console.error('Detailed error:', {
                 name: error.name,
                 message: error.message,
                 status: error.status,
+                type: error.type,
                 response: error.response
             });
             throw error;
