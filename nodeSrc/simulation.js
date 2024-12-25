@@ -62,6 +62,16 @@ class XavierSimulation {
             // 获取当前状态
             const summary = await this.tweetGenerator.getCurrentSummary();
             
+            // 检查是否已完成
+            if (summary.isCompleted) {
+                this.logger.info('Story has completed', {
+                    finalAge: summary.currentAge,
+                    totalTweets: summary.totalTweets
+                });
+                this.stop();
+                return null;
+            }
+
             // 检查每日限额
             if (!this._checkDailyLimit(summary.totalTweets)) {
                 this.logger.info('Daily tweet limit reached, waiting for next day');

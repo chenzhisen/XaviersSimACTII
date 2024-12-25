@@ -31,6 +31,13 @@ class TweetGenerator {
             dataDir: path.resolve(__dirname, '..', 'data'),
             mainFile: path.resolve(__dirname, '..', 'data', 'XaviersSim.json')
         };
+
+        // 年龄限制配置
+        this.ageConfig = {
+            startAge: 22,
+            endAge: 72,
+            tweetsPerYear: 48
+        };
     }
 
     async getCurrentSummary() {
@@ -51,6 +58,18 @@ class TweetGenerator {
                     this.logger.error('Error reading file', error);
                     throw error;
                 }
+            }
+
+            // 检查是否达到年龄上限
+            if (summary.currentAge >= this.ageConfig.endAge) {
+                this.logger.info('Story has reached end age', {
+                    currentAge: summary.currentAge,
+                    endAge: this.ageConfig.endAge
+                });
+                return {
+                    ...summary,
+                    isCompleted: true
+                };
             }
 
             return {
@@ -216,10 +235,11 @@ class TweetGenerator {
     }
 
     _calculateAge(totalTweets) {
-        const tweetsPerYear = 48; // 每年48条推文
-        const yearsPassed = totalTweets / tweetsPerYear;
-        const startAge = 22;
-        return Number((startAge + yearsPassed).toFixed(2));
+        const yearsPassed = totalTweets / this.ageConfig.tweetsPerYear;
+        const newAge = Number((this.ageConfig.startAge + yearsPassed).toFixed(2));
+        
+        // 确保不超过结束年龄
+        return Math.min(newAge, this.ageConfig.endAge);
     }
 
     _parseTweets(response) {
