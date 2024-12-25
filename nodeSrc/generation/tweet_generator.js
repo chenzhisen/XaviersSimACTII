@@ -133,25 +133,219 @@ ${this._formatRelationships(relevantChars)}`;
 
     // 辅助方法用于解析背景故事
     _extractCharacters(story) {
-        // 从故事中提取人物信息
-        const characters = {};
-        // 实现提取逻辑
-        return characters;
+        const characters = {
+            'Xavier': {
+                role: '主角',
+                traits: ['富有创造力', '对AI充满热情', '追求技术创新'],
+                background: '年轻的程序员和创业者'
+            }
+        };
+
+        try {
+            // 从推文中提取人物信息
+            story.tweets.forEach(tweet => {
+                // 提取@提及的人物
+                const mentions = tweet.text.match(/@(\w+)/g) || [];
+                mentions.forEach(mention => {
+                    const name = mention.slice(1);
+                    if (!characters[name]) {
+                        characters[name] = {
+                            role: '故事人物',
+                            firstMention: tweet.age,
+                            interactions: []
+                        };
+                    }
+                    characters[name].interactions.push({
+                        age: tweet.age,
+                        context: tweet.text
+                    });
+                });
+
+                // 提取引用的对话
+                const dialogues = tweet.text.match(/'([^']*)'|"([^"]*)"/g) || [];
+                if (dialogues.length > 0) {
+                    dialogues.forEach(dialogue => {
+                        // 分析对话可能涉及的人物
+                        const speakerMatch = tweet.text.match(/(\w+)[:：]/);
+                        if (speakerMatch && !characters[speakerMatch[1]]) {
+                            characters[speakerMatch[1]] = {
+                                role: '对话者',
+                                firstMention: tweet.age,
+                                dialogues: []
+                            };
+                        }
+                    });
+                }
+            });
+
+            return characters;
+        } catch (error) {
+            this.logger.error('Error extracting characters', error);
+            return characters;  // 返回基本角色信息
+        }
     }
 
     _extractLocations(story) {
-        // 提取地点信息
-        return [];
+        const locations = new Set();
+        
+        try {
+            story.tweets.forEach(tweet => {
+                // 提取位置标签
+                const locationTags = tweet.text.match(/#(\w+Location|\w+Place|\w+地|\w+区)/g) || [];
+                locationTags.forEach(tag => locations.add(tag.slice(1)));
+
+                // 提取常见地点词
+                const locationWords = tweet.text.match(/在([\u4e00-\u9fa5]+[区街路店园院])/g) || [];
+                locationWords.forEach(loc => locations.add(loc.slice(1)));
+            });
+
+            return Array.from(locations);
+        } catch (error) {
+            this.logger.error('Error extracting locations', error);
+            return [];
+        }
     }
 
     _extractEvents(story) {
-        // 提取重要事件
-        return [];
+        const events = [];
+        
+        try {
+            let currentEvent = null;
+            let eventTweets = [];
+
+            story.tweets.forEach(tweet => {
+                // 检测重要事件的开始
+                const isNewEvent = tweet.text.includes('重要') || 
+                                 tweet.text.includes('突破') ||
+                                 tweet.text.includes('终于') ||
+                                 tweet.text.match(/#[\u4e00-\u9fa5]*事件/);
+
+                if (isNewEvent) {
+                    // 保存前一个事件
+                    if (currentEvent) {
+                        events.push({
+                            title: currentEvent,
+                            age: eventTweets[0].age,
+                            tweets: eventTweets.map(t => t.text)
+                        });
+                    }
+                    
+                    // 开始新事件
+                    currentEvent = tweet.text.slice(0, 50);
+                    eventTweets = [tweet];
+                } else if (currentEvent) {
+                    eventTweets.push(tweet);
+                }
+            });
+
+            return events;
+        } catch (error) {
+            this.logger.error('Error extracting events', error);
+            return [];
+        }
     }
 
     _extractRelationships(story) {
-        // 提取人物关系
-        return {};
+        const relationships = {};
+        
+        try {
+            const characters = Object.keys(this._extractCharacters(story));
+            
+            characters.forEach(char => {
+                relationships[char] = {
+                    friends: new Set(),
+                    mentions: new Set(),
+                    interactions: []
+                };
+            });
+
+            story.tweets.forEach(tweet => {
+                // 分析提及的人物关系
+                characters.forEach(char => {
+                    if (tweet.text.includes(char)) {
+                        // 寻找关系词
+                        const relationWords = ['朋友', '同事', '伙伴', '搭档', '师兄', '师妹'];
+                        relationWords.forEach(word => {
+                            if (tweet.text.includes(`${char}${word}`)) {
+                                relationships[char].friends.add(
+                                    tweet.text.match(new RegExp(`([\u4e00-\u9fa5]+)${word}`))[1]
+                                );
+                            }
+                        });
+
+                        // 记录互动
+                        relationships[char].interactions.push({
+                            age: tweet.age,
+                            context: tweet.text
+                        });
+                    }
+                });
+            });
+
+            // 转换Set为数组
+            Object.keys(relationships).forEach(char => {
+                relationships[char].friends = Array.from(relationships[char].friends);
+                relationships[char].mentions = Array.from(relationships[char].mentions);
+            });
+
+            return relationships;
+        } catch (error) {
+            this.logger.error('Error extracting relationships', error);
+            return {};
+        }
+    }
+
+    _selectRelevantCharacters(context) {
+        // 根据当前情境选择相关角色
+        const relevantChars = {};
+        const recentTweets = context.recent_tweets || [];
+        
+        try {
+            // 从最近的推文中提取相关人物
+            recentTweets.forEach(tweet => {
+                Object.keys(this.storyBackground.characters).forEach(char => {
+                    if (tweet.text.includes(char)) {
+                        relevantChars[char] = this.storyBackground.characters[char];
+                    }
+                });
+            });
+
+            return relevantChars;
+        } catch (error) {
+            this.logger.error('Error selecting relevant characters', error);
+            return {};
+        }
+    }
+
+    _selectRelevantEvents(context) {
+        // 选择与当前情境相关的事件
+        try {
+            return this.storyBackground.events
+                .filter(event => Math.abs(event.age - context.current_age) <= 0.5) // 选择半年内的事件
+                .map(event => event.title);
+        } catch (error) {
+            this.logger.error('Error selecting relevant events', error);
+            return [];
+        }
+    }
+
+    _formatRelationships(characters) {
+        // 格式化人物关系
+        try {
+            return Object.entries(characters)
+                .map(([name, info]) => {
+                    const relations = this.storyBackground.relationships[name];
+                    if (!relations) return '';
+                    
+                    const friends = relations.friends.join(', ');
+                    return `${name} -> ${friends ? `朋友: ${friends}` : '暂无密切关系'}`;
+                })
+                .filter(Boolean)
+                .join('\n');
+        } catch (error) {
+            this.logger.error('Error formatting relationships', error);
+            return '';
+        }
     }
 
     async getOngoingTweets() {
