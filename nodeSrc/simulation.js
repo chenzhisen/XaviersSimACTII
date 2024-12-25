@@ -23,7 +23,7 @@ class XavierSimulation {
             maxInterval: 10 * 1000,   // 最大间隔10秒
             maxTweetsPerDay: 48,      // 每天最大推文数
             tweetsPerScene: 4,        // 每个场景4条推文
-            scenesPerBatch: 3,        // 每批3个场景
+            scenesPerBatch: 3,        // 每批3个场��（固定12条推文）
             isRunning: false
         };
     }
@@ -81,7 +81,18 @@ class XavierSimulation {
                 return;
             }
 
-            // 生成多个场景
+            // 检查剩余推文数量是否足够一个完整批次
+            const remainingTweets = this.config.maxTweetsPerDay - (summary.totalTweets % this.config.maxTweetsPerDay);
+            if (remainingTweets < this.config.tweetsPerScene * this.config.scenesPerBatch) {
+                this.logger.info('Not enough remaining tweets for a full batch', {
+                    remainingTweets,
+                    requiredTweets: this.config.tweetsPerScene * this.config.scenesPerBatch
+                });
+                await new Promise(resolve => setTimeout(resolve, this._getTimeToNextDay()));
+                return;
+            }
+
+            // 生成固定数量的场景（3个场景，共12条推文）
             let allTweets = [];
             for (let i = 0; i < this.config.scenesPerBatch; i++) {
                 const tweets = await this.tweetGenerator.generateTweetScene(
