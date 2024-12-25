@@ -55,20 +55,94 @@ const INITIAL_DATA = {
             family: [],
             friends: [],
             colleagues: [],
-            mentors: []
+            mentors: [],
+            romantic: {
+                status: 'single',
+                milestones: [],
+                currentRelationship: null,
+                pastRelationships: [],
+                preferences: {
+                    lookingFor: [
+                        '知性且独立',
+                        '有共同话题',
+                        '理解创业压力',
+                        '相互支持成长'
+                    ],
+                    dealBreakers: [
+                        '过分物质',
+                        '不理解工作压力',
+                        '缺乏个人追求'
+                    ]
+                }
+            }
         },
-        interests: [
-            '编程',
-            '区块链技术',
-            '创业',
-            '投资'
-        ],
-        traits: [
-            '技术驱动',
-            '创新思维',
-            '持续学习',
-            '追求卓越'
-        ]
+        family_life: {
+            status: 'single',
+            marriage: {
+                isMarried: false,
+                plans: {
+                    timing: '30-35岁',
+                    priorities: [
+                        '事业稳定后',
+                        '遇到合适的人',
+                        '具备经济基础'
+                    ]
+                }
+            },
+            children: {
+                hasChildren: false,
+                plans: {
+                    timing: '32-37岁',
+                    thoughts: [
+                        '希望给孩子最好的教育',
+                        '平衡事业与家庭',
+                        '传承价值观和知识'
+                    ]
+                }
+            },
+            values: {
+                familyPriorities: [
+                    '家庭和谐',
+                    '共同成长',
+                    '相互理解',
+                    '优质教育'
+                ],
+                parentingStyle: [
+                    '开放沟通',
+                    '鼓励探索',
+                    '重视教育',
+                    '情感支持'
+                ]
+            }
+        },
+        lifestyle: {
+            workLifeBalance: {
+                current: '以工作为重',
+                goals: [
+                    '逐步平衡工作与生活',
+                    '保持健康作息',
+                    '留出家庭时间'
+                ]
+            },
+            interests: [
+                '编程',
+                '区块链技术',
+                '创业',
+                '投资',
+                '阅读',
+                '健身',
+                '旅行',
+                '美食'
+            ],
+            traits: [
+                '技术驱动',
+                '创新思维',
+                '持续学习',
+                '追求卓越',
+                '重视家庭',
+                '感情专一'
+            ]
+        }
     },
     stats: {
         totalTweets: 0,

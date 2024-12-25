@@ -2,9 +2,9 @@
   "metadata": {
     "protagonist": "Xavier",
     "startAge": 22,
-    "currentAge": 22.08,
+    "currentAge": 22.17,
     "currentPhase": "early_career",
-    "lastUpdate": "2024-12-25T09:17:15.247Z",
+    "lastUpdate": "2024-12-25T09:17:27.115Z",
     "version": "1.0.0"
   },
   "story": {
@@ -32,12 +32,48 @@
         "id": "tweet_1735118235246_mf6p8jezd",
         "age": 22.08,
         "timestamp": "2024-12-25T09:17:15.247Z"
+      },
+      {
+        "text": "TWEET 1: Joining a brainstorming session, my ideas clash like magnets sparking creative debates. The $XVI market surge discussions intermingle with dreams of coding innovations. This early_carrer phase is the techno-dream I've been waiting for. #techlife #innovationgoals",
+        "id": "tweet_1735118247114_jy9l0lej9",
+        "age": 22.17,
+        "timestamp": "2024-12-25T09:17:27.115Z"
+      },
+      {
+        "text": "TWEET 2: Celebrating a small victory, I share the news with my family. Mom's eyes light up as I explain blockchain tech over dinner, connecting our worlds in a new digital language. The bridge between my personal roots and professional aspirations strengthens with each shared success. #familytech",
+        "id": "tweet_1735118247114_fraxot7do",
+        "age": 22.17,
+        "timestamp": "2024-12-25T09:17:27.115Z"
+      },
+      {
+        "text": "TWEET 3: A challenging deadline looms, testing my coding skills and time management. Amid the overwhelm, a co-worker steps in with expertise and genuine camaraderie. Their support is the spark that fuels my determination, reminding me that growth comes from confronting obstacles head-on. #teamwork #codingchallenges",
+        "id": "tweet_1735118247114_c53gneh2i",
+        "age": 22.17,
+        "timestamp": "2024-12-25T09:17:27.115Z"
+      },
+      {
+        "text": "TWEET 4: Finally hitting \"Run\" on the finished project brings a wave of relief. Reflecting on the journey so far, I see the blend of technical expertise and personal bonds shaping not just my career but my character. As I plan for the next milestone, the possibilities with $XVI and my techie tribe feel endless. #futureahead #growthmindset",
+        "id": "tweet_1735118247114_gy1fsbq81",
+        "age": 22.17,
+        "timestamp": "2024-12-25T09:17:27.115Z"
       }
     ],
     "digests": [
       {
         "content": "Xavier is at a crossroads, seriously considering leaving college to focus on quant trading and his involvement with $XVI. This marks a significant shift in his life priorities and indicates a desire to take control of his future..",
         "timestamp": "2024-12-25T09:17:10.898Z"
+      },
+      {
+        "content": "[开头概述] 在Xavier的early career阶段，22岁的他加入了梦寐以求的科技初创公司。充满紧张兴奋的气氛中，他沉浸在无尽的代码中，公司尖端项目让他心潮澎湃。\n\n主要进展：\n1. 产品开发进展顺利\n2. 团队建设初见成效\n3. 建立了重要的业务伙伴关系\n4. 项目管理能力显著提高\n\n未来展望：Xavier将继续保持创新精神，带领团队迈向新的高度。",
+        "timestamp": "2024-12-25T09:17:15.264Z",
+        "age": 22.08,
+        "tweetCount": 4
+      },
+      {
+        "content": "[开头概述]\n\n主要进展：\n1. 市场策略逐步完善\n2. 个人领导力得到提升\n3. 团队建设初见成效\n4. 产品开发进展顺利\n\n未来展望：下一阶段将重点关注产品优化和市场拓展，期待取得更大的进展。",
+        "timestamp": "2024-12-25T09:17:27.131Z",
+        "age": 22.17,
+        "tweetCount": 4
       }
     ],
     "keyPlotPoints": [],
@@ -90,9 +126,9 @@
     ]
   },
   "stats": {
-    "totalTweets": 4,
-    "digestCount": 0,
+    "totalTweets": 8,
+    "digestCount": 3,
     "techUpdateCount": 0,
-    "yearProgress": "8.3"
+    "yearProgress": "16.7"
   }
 }
