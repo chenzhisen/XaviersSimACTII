@@ -16,8 +16,13 @@ class AICompletion {
                 this._generateScene('社交场景')
             ];
 
-            // 合并所有场景的推文
-            return scenes.map(scene => scene.join('\n')).join('\n\n');
+            // 将场景转换为推文格式
+            const tweets = scenes.flatMap(scene => scene.map((text, index) => ({
+                text,
+                id: `tweet_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
+            })));
+
+            return tweets;
         } catch (error) {
             this.logger.error('AI completion failed', error);
             throw error;
