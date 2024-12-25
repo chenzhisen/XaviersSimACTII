@@ -41,16 +41,18 @@ class TweetGenerator {
         try {
             // 确保数据目录存在
             await fs.mkdir(this.paths.dataDir, { recursive: true });
-            
+            console.log('getCurrentSummary');
             let summary;
             try {
                 // 尝试读取现有数据
                 const data = await fs.readFile(this.paths.mainFile, 'utf8');
+                console.log('data222',data);
                 summary = JSON.parse(data);
             } catch (error) {
                 if (error.code === 'ENOENT') {
                     // 文件不存在，创建新数据
                     summary = await this._initializeSummary();
+                    console.log('summary2222',summary);
                 } else {
                     this.logger.error('Error reading file', error);
                     throw error;
