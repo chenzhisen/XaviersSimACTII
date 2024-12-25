@@ -2,77 +2,197 @@
   "metadata": {
     "protagonist": "Xavier",
     "startAge": 22,
-    "currentAge": 22.17,
+    "currentAge": 22.48,
     "currentPhase": "early_career",
-    "lastUpdate": "2024-12-25T09:25:55.743Z",
+    "lastUpdate": "2024-12-25T09:41:05.926Z",
     "version": "1.0.0"
   },
   "story": {
     "tweets": [
       {
-        "text": "TWEET 1: Balancing code and coffee, diving into a new job at a startup. Excited for the challenges ahead and the chance to make a mark. #earlycareer #newbeginnings",
-        "id": "tweet_1735118745112_cnnhfsrcd",
+        "text": "[推文1] 每天早起，投入新的项目和挑战。早期职业生涯如同一场紧凑的马拉松，我不断奔跑，寻找机会和团队的合作。 #earlycareer #grind",
+        "id": "tweet_1735119568134_pswlzoz6h",
         "age": 22.08,
-        "timestamp": "2024-12-25T09:25:45.113Z"
+        "timestamp": "2024-12-25T09:39:28.136Z"
       },
       {
-        "text": "TWEET 2: Met a mentor, Lily, who's a #crypto enthusiast. Learning the ropes in tech while navigating the volatile world of digital currencies. Insightful discussions over late-night coding sessions.",
-        "id": "tweet_1735118745112_9d3toysrs",
+        "text": "[推文2] 工作之余，我抽出时间追逐自己的兴趣爱好。在跳舞课上释放压力，在烹饪中找到放松。生活和事业平衡着，让我更加充实和快乐。 #worklifebalance #passions",
+        "id": "tweet_1735119568134_bo152pkcw",
         "age": 22.08,
-        "timestamp": "2024-12-25T09:25:45.113Z"
+        "timestamp": "2024-12-25T09:39:28.136Z"
       },
       {
-        "text": "TWEET 3: After a tough week of bugs and setbacks, had a heart-to-heart with Lily about resilience and adaptability. Sometimes the best lessons come from failure. #growthmindset",
-        "id": "tweet_1735118745112_qk63dz0v0",
+        "text": "[推文3] 与同事们一起举办周末户外团建，我们攀岩、烧烤，建立更紧密的团队关系。在欢笑中，我意识到成长不仅发生在工作，还在生活的点点滴滴中。 #teambuilding #growth",
+        "id": "tweet_1735119568134_8lsw7sqiq",
         "age": 22.08,
-        "timestamp": "2024-12-25T09:25:45.113Z"
+        "timestamp": "2024-12-25T09:39:28.136Z"
       },
       {
-        "text": "TWEET 4: As the weekend approaches, I'm feeling a renewed sense of determination. Taking Lily's advice to heart and ready to tackle the challenges ahead. Wonder where $XVI will lead me next? #futurebound",
-        "id": "tweet_1735118745112_k4w3vta4e",
+        "text": "[推文4] 重新审视自己的价值观和目标，我开始更加注重人际关系和自我提升。青涩的我慢慢蜕变为更成熟和坚强的自己，敢于面对挑战，迎接未知。 #selfgrowth #transformation",
+        "id": "tweet_1735119568134_qh2qi4kcy",
         "age": 22.08,
-        "timestamp": "2024-12-25T09:25:45.113Z"
+        "timestamp": "2024-12-25T09:39:28.136Z"
       },
       {
-        "text": "TWEET 1: Monday morning hustle at the startup, surrounded by lines of code and the aroma of freshly brewed coffee. Excitement and nerves mingle as I prepare to dive headfirst into this new challenge. #earlycareer #techlife",
-        "id": "tweet_1735118755742_mizj294bu",
+        "text": "[推文1] 在职场忙碌的同时，我终于找到了一种工作和生活的平衡，每天早起锻炼，晚上跟朋友们吃饭聊天，感觉生活充实多了。",
+        "id": "tweet_1735119597570_7a3i022t1",
         "age": 22.17,
-        "timestamp": "2024-12-25T09:25:55.743Z"
+        "timestamp": "2024-12-25T09:39:57.571Z"
       },
       {
-        "text": "TWEET 2: Impromptu meeting with Lily, a crypto-savvy mentor who brings a new perspective to my tech world. From debugging to digital currencies, our conversations flow effortlessly, blending the realms of bytes and bitcoins. #codingnights #mentorship",
-        "id": "tweet_1735118755742_921c31m24",
+        "text": "[推文2] 经过一段时间的努力，我开始在工作中脱颖而出，团队里的同事们也开始信任我，一起合作的时候感觉更有干劲。",
+        "id": "tweet_1735119597570_l21556roh",
         "age": 22.17,
-        "timestamp": "2024-12-25T09:25:55.743Z"
+        "timestamp": "2024-12-25T09:39:57.571Z"
       },
       {
-        "text": "TWEET 3: A wave of bugs crashes my week, threatening to derail my progress. In the quiet of a late-night chat, Lily shares her own tales of overcoming setbacks, offering a beacon of hope amidst the lines of faulty code. #resilience #lessonslearned",
-        "id": "tweet_1735118755742_a2jyoqtdr",
+        "text": "[推文3] 过去的一年里，我学会了更好地管理时间、处理压力，也变得更加自信和果断。工作和生活的平衡方程式被我慢慢摸索出来。",
+        "id": "tweet_1735119597570_ez7tqzdt3",
         "age": 22.17,
-        "timestamp": "2024-12-25T09:25:55.743Z"
+        "timestamp": "2024-12-25T09:39:57.571Z"
       },
       {
-        "text": "TWEET 4: Inspired by Lily's wisdom, I embrace the weekend with newfound resolve. Each challenge now a stepping stone, I wonder where $XVI will guide me next. The future gleams with possibilities, fueled by the lessons of the past. #futureadventures #growthmindset",
-        "id": "tweet_1735118755742_oq73cvjmu",
+        "text": "[推文4] 突然有一天，我收到了一个意想不到的机会，让我可以挑战更高的职位。这个机会不仅让我激动不已，也让我意识到自己已经做好准备，去迎接更广阔的世界。",
+        "id": "tweet_1735119597570_ek2rrzoll",
         "age": 22.17,
-        "timestamp": "2024-12-25T09:25:55.743Z"
+        "timestamp": "2024-12-25T09:39:57.571Z"
+      },
+      {
+        "text": "[推文1] 在early_career的路上奋力前行，每天都充满新的挑战和机会，这种刺激让我充满活力。",
+        "id": "tweet_1735119608520_prrrkax4y",
+        "age": 22.25,
+        "timestamp": "2024-12-25T09:40:08.521Z"
+      },
+      {
+        "text": "[推文2] 虽然工作忙碌，但我不忘享受生活。周末会和朋友们去远足、看电影，保持心情愉快。",
+        "id": "tweet_1735119608520_gqo7vmj83",
+        "age": 22.25,
+        "timestamp": "2024-12-25T09:40:08.521Z"
+      },
+      {
+        "text": "[推文3] 最近接手了一个重要项目，压力山大，但我努力克服困难，展现出了自己的实力和领导才能。",
+        "id": "tweet_1735119608520_ukenwzgve",
+        "age": 22.25,
+        "timestamp": "2024-12-25T09:40:08.521Z"
+      },
+      {
+        "text": "[推文4] 终于，项目顺利完成，获得了领导的认可和团队的赞赏。成长不止于工作，更是在挑战中变得更强大。",
+        "id": "tweet_1735119608520_ro55rvgcu",
+        "age": 22.25,
+        "timestamp": "2024-12-25T09:40:08.521Z"
+      },
+      {
+        "text": "[推文1] 工作忙碌的一周结束了，终于可以放松一下，准备迎接周末的到来！#工作与生活平衡\n[推文2] 今天去参加了一场关于领导力的研讨会，收获颇丰。或许是时候挑战一下自己，追求更高的职业目标了！#成长与改变\n[推文3] 意外收到一份外派工作的机会，虽然有些犹豫，但我决定勇敢迈出这一步，去经历不一样的人生！#迎接挑战\n[推文4] 抵达新工作地点，一切都是那么新奇，让我兴奋不已！期待在这个新领域中不断成长，创造更多精彩！#勇往直前",
+        "id": "tweet_1735119622030_px8a1vqo4",
+        "age": 22.27,
+        "timestamp": "2024-12-25T09:40:22.031Z"
+      },
+      {
+        "text": "[推文1] 手握毕业证书的我，踏入了早期职业阶段。每天早出晚归，奋斗着追逐梦想的脚步，但也逐渐体会到工作与生活的微妙平衡。",
+        "id": "tweet_1735119633697_n7fkpiojo",
+        "age": 22.35,
+        "timestamp": "2024-12-25T09:40:33.698Z"
+      },
+      {
+        "text": "[推文2] 虽然忙碌的工作让我有时焦头烂额，但周末的户外活动成了我的解压良方。徒步山涧、沐浴阳光，回归自然让我找到内心的宁静。",
+        "id": "tweet_1735119633697_9qta7ttan",
+        "age": 22.35,
+        "timestamp": "2024-12-25T09:40:33.698Z"
+      },
+      {
+        "text": "[推文3] 逐渐学会时间管理和情绪调控，我开始意识到生活不仅仅是为了工作而存在。与同事共进晚餐、参加志愿活动，让我的生活更加充实多彩。",
+        "id": "tweet_1735119633697_rt1bh1eu2",
+        "age": 22.35,
+        "timestamp": "2024-12-25T09:40:33.698Z"
+      },
+      {
+        "text": "[推文4] 在工作和生活的交织中，我不断成长和进步。懂得珍惜每个当下，更懂得用心体验人生的点点滴滴。或许，这就是我逐渐走向成熟的开始。",
+        "id": "tweet_1735119633697_irfv45ao6",
+        "age": 22.35,
+        "timestamp": "2024-12-25T09:40:33.698Z"
+      },
+      {
+        "text": "[推文1] 在职场的起步阶段，每天都充满了新的挑战和机会。对未知的好奇心让我不断尝试，也助我成长。\n[推文2] 生活中，我开始学会将工作和休闲平衡起来。周末的户外徒步，让我重新认识自己，也激发了更多灵感。\n[推文3] 刚接手一项重要项目，压力山大，但也是展现自我的机会。和团队密切合作，共同攻克难题，成就感油然而生。\n[推文4] 通过工作和生活的平衡，我逐渐找到了自己的节奏。每一次挑战都是成长，每一次休闲都是修复，生活因互动和平衡而更加丰富。",
+        "id": "tweet_1735119643757_a6evjg2q7",
+        "age": 22.38,
+        "timestamp": "2024-12-25T09:40:43.758Z"
+      },
+      {
+        "text": "[推文1] 在early_career的我，正忙于迎接新挑战，努力为未来奠定基础。工作繁忙，但我学会了平衡生活和事业，享受当下的每一个时刻。",
+        "id": "tweet_1735119654643_jtls40bby",
+        "age": 22.46,
+        "timestamp": "2024-12-25T09:40:54.644Z"
+      },
+      {
+        "text": "[推文2] 今天在办公室遇到了一个难题，原以为会束手无策，结果却意外地找到了解决方案！这种突破感让我对自己有了更多信心。",
+        "id": "tweet_1735119654643_ndgyk3mhz",
+        "age": 22.46,
+        "timestamp": "2024-12-25T09:40:54.644Z"
+      },
+      {
+        "text": "[推文3] 虽然工作仍然是我的重心，但我也开始拓展自己的兴趣爱好。最近学会了烹饪，偶尔会邀请朋友过来品尝我的新菜肴，感受到不一样的快乐。",
+        "id": "tweet_1735119654643_1pq31za5q",
+        "age": 22.46,
+        "timestamp": "2024-12-25T09:40:54.644Z"
+      },
+      {
+        "text": "[推文4] 也许现在的我还在探索和成长，但我相信每一步的努力都将为未来的自己铺平道路。生活从未如此多姿多彩，我迫不及待地期待更多的冒险和挑战！",
+        "id": "tweet_1735119654643_y8n5gjacq",
+        "age": 22.46,
+        "timestamp": "2024-12-25T09:40:54.644Z"
+      },
+      {
+        "text": "[推文1] 一直在追赶梦想的步伐，感觉自己仿佛站在人生的十字路口，不知何去何从。\n[推文2] 今天公司开了个团建活动，我放下工作，跟同事们一起笑着玩着。有些许放松的瞬间，感受到了生活的美好。\n[推文3] 在工作与生活之间找到平衡，我开始更关心内心的声音，不再盲目追求成功。这种心态带给我意想不到的收获。\n[推文4] 迎来今天的每一个挑战，我都愈发淡定从容。人生不再只有目标和成就，更重要的是过程中的点点滴滴。",
+        "id": "tweet_1735119665925_fmih9w3gu",
+        "age": 22.48,
+        "timestamp": "2024-12-25T09:41:05.926Z"
       }
     ],
     "digests": [
       {
         "content": "Xavier is at a crossroads, seriously considering leaving college to focus on quant trading and his involvement with $XVI. This marks a significant shift in his life priorities and indicates a desire to take control of his future..",
-        "timestamp": "2024-12-25T09:25:41.481Z"
+        "timestamp": "2024-12-25T09:39:22.505Z"
       },
       {
-        "content": "[开头概述]\n\n主要进展：\n1. 市场策略逐步完善\n2. 项目管理能力显著提高\n3. 技术方面取得重要突破\n4. 客户基础逐步扩大\n\n未来展望：Xavier将继续保持创新精神，带领团队迈向新的高度。",
-        "timestamp": "2024-12-25T09:25:45.127Z",
+        "content": "[开头概述]\n\n主要进展：\n1. 市场策略逐步完善\n2. 项目管理能力显著提高\n3. 团队建设初见成效\n4. 建立了重要的业务伙伴关系\n\n未来展望：下一阶段将重点关注产品优化和市场拓展，期待取得更大的进展。",
+        "timestamp": "2024-12-25T09:39:28.147Z",
         "age": 22.08,
         "tweetCount": 4
       },
       {
-        "content": "这是Xavier故事的开始。作为一位计算机科学与人工智能双学位的毕业生，他怀揣着构建让AI计算像电力一样普及的梦想，开启了他的创业之旅。在硅谷/深圳这片创新热土上，他正式成立了$XVI Labs，致力于构建去中心化AI计算网络。\n\n主要进展：\n1. 技术基础：凭借区块链技术、人工智能、分布式系统等专业知识，开始构建XVI Network\n2. 创业准备：确立了\"去中心化AI计算网络\"的产品定位\n3. 核心能力：专注于分布式AI训练、去中心化计算市场、边缘计算优化等关键特性\n4. 个人成长：展现出技术驱动、创新思维、持续学习等特质\n\n未来展望：在AI与区块链技术快速发展的时代的大背景下，Xavier将专注于技术突破、产品开发、团队组建、市场验证等方向，以实现产品的技术突破和市场验证。",
-        "timestamp": "2024-12-25T09:25:55.768Z",
+        "content": "[开头概述]\n\n主要进展：\n1. 建立了重要的业务伙伴关系\n2. 个人领导力得到提升\n3. 项目管理能力显著提高\n4. 市场策略逐步完善\n\n未来展望：Xavier将继续保持创新精神，带领团队迈向新的高度。",
+        "timestamp": "2024-12-25T09:39:57.582Z",
         "age": 22.17,
+        "tweetCount": 4
+      },
+      {
+        "content": "[开头概述] Xavier处于early_career阶段，面临新挑战和机遇，充满活力，同时努力平衡工作和生活，寻找支持与共同成长的伴侣。\n\n主要进展：\n1. 团队建设初见成效\n2. 建立了重要的业务伙伴关系\n3. 客户基础逐步扩大\n4. 产品开发进展顺利\n\n未来展望：Xavier将继续保持创新精神，带领团队迈向新的高度。",
+        "timestamp": "2024-12-25T09:40:08.534Z",
+        "age": 22.25,
+        "tweetCount": 4
+      },
+      {
+        "content": "[开头概述] Xavier在early_career阶段（22-25岁）经历了忙碌的工作、个人生活的平衡、领导能力的提升、迎接挑战并追求成长的阶段。\n\n主要进展：\n1. 建立了重要的业务伙伴关系\n2. 客户基础逐步扩大\n3. 项目管理能力显著提高\n4. 市场策略逐步完善\n\n未来展望：Xavier将继续保持创新精神，带领团队迈向新的高度。",
+        "timestamp": "2024-12-25T09:40:22.042Z",
+        "age": 22.27,
+        "tweetCount": 4
+      },
+      {
+        "content": "[开头概述]\n\n主要进展：\n1. 项目管理能力显著提高\n2. 产品开发进展顺利\n3. 建立了重要的业务伙伴关系\n4. 市场策略逐步完善\n\n未来展望：Xavier将继续保持创新精神，带领团队迈向新的高度。",
+        "timestamp": "2024-12-25T09:40:33.709Z",
+        "age": 22.35,
+        "tweetCount": 4
+      },
+      {
+        "content": "[正处于事业起步阶段的Xavier（22-35岁）在工作中不断成长，同时开始关注个人生活规划，期待遇到理解创业压力、相互支持成长的伴侣。]\n\n主要进展：\n1. 项目管理能力显著提高\n2. 技术方面取得重要突破\n3. 客户基础逐步扩大\n4. 建立了重要的业务伙伴关系\n\n未来展望：下一阶段将重点关注产品优化和市场拓展，期待取得更大的进展。",
+        "timestamp": "2024-12-25T09:40:43.776Z",
+        "age": 22.38,
+        "tweetCount": 4
+      },
+      {
+        "content": "[开头概述] 在事业初期的Xavier正忙于迎接挑战，努力平衡生活和工作，享受成长过程中的每一个时刻。\n\n主要进展：\n1. 团队建设初见成效\n2. 产品开发进展顺利\n3. 建立了重要的业务伙伴关系\n4. 个人领导力得到提升\n\n未来展望：Xavier将继续保持创新精神，带领团队迈向新的高度。",
+        "timestamp": "2024-12-25T09:40:54.666Z",
+        "age": 22.46,
         "tweetCount": 4
       }
     ],
@@ -93,7 +213,7 @@
         "性能优化",
         "安全性"
       ],
-      "lastUpdate": "2024-12-25T09:25:41.481Z"
+      "lastUpdate": "2024-12-25T09:39:22.505Z"
     }
   },
   "career": {
@@ -200,9 +320,9 @@
     }
   },
   "stats": {
-    "totalTweets": 8,
-    "digestCount": 3,
+    "totalTweets": 23,
+    "digestCount": 8,
     "techUpdateCount": 0,
-    "yearProgress": "16.7"
+    "yearProgress": "47.9"
   }
 }

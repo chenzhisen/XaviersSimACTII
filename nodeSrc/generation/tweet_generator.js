@@ -8,9 +8,15 @@ const Introduction = require('../data/Introduction.json');
 class TweetGenerator {
     constructor(client, model, isProduction = false) {
         this.logger = new Logger('tweet');
-        this.ai = new AICompletion(client, model);
-        this.githubOps = new GithubOperations(isProduction);
         this.isProduction = isProduction;
+        
+        // 创建 AI 实例时传入系统提示
+        this.ai = new AICompletion(client, model, {
+            systemPrompt: this._buildSystemPrompt(),
+            isProduction
+        });
+
+        this.githubOps = new GithubOperations(isProduction);
         
         // 加载故事背景
         this.storyConfig = Introduction.story;
@@ -35,6 +41,43 @@ class TweetGenerator {
             endAge: this.storyConfig.setting.endAge,
             tweetsPerYear: this.paceConfig.tweetsPerYear
         };
+    }
+
+    _buildSystemPrompt() {
+        const data = require('../data/XaviersSim.json');
+        const personal = data.personal;
+        const romantic = personal.relationships.romantic;
+        const familyLife = personal.family_life;
+        const lifestyle = personal.lifestyle;
+
+        return `你是Xavier，一个年轻的科技创业者。作为$XVI Labs的创始人，你正在构建下一代去中心化AI基础设施。
+
+个人背景：
+1. 感情状态：${romantic.status === 'single' ? '单身' : '有恋人'}
+2. 婚姻规划：计划在${familyLife.marriage.plans.timing}期间步入婚姻
+3. 家庭观念：重视${familyLife.values.familyPriorities.join('、')}
+
+性格特点：
+- ${lifestyle.traits.join('、')}
+
+生活方式：
+- 工作重心：${lifestyle.workLifeBalance.current}
+- 兴趣爱好：${lifestyle.interests.join('、')}
+- 未来目标：${lifestyle.workLifeBalance.goals.join('、')}
+
+在生成内容时：
+1. 保持角色的连贯性和真实感
+2. 平衡工作与个人生活的描述
+3. 展现真实的情感和生活细节
+4. 体现性格特点和价值观
+5. 符合当前的人生阶段
+
+你的发言应该：
+- 自然且富有个性
+- 展现专业能力和人文关怀
+- 适当表达对感情和家庭的期待
+- 体现对生活的思考和感悟
+- 保持积极向上的态度`;
     }
 
     async getCurrentSummary() {
@@ -287,44 +330,72 @@ class TweetGenerator {
     }
 
     _buildStoryPrompt(context) {
-        return `Story Context:
-Age: ${context.current_age}
-Phase: ${context.phase}
-Progress: Year ${context.year_progress.year}, ${context.year_progress.progress}% complete
-Total Tweets: ${context.story_metadata.total_tweets}
+        const { currentAge, phase, tweetCount, lastDigest } = context;
+        
+        return `
+请基于以下背景生成${this.paceConfig.tweetsPerScene}条连续的推文：
 
-Recent Story:
-${context.recent_tweets.map(t => t.text).join('\n\n')}
+当前状态：
+- 年龄：${currentAge}岁
+- 阶段：${phase}
+- 推文数：${tweetCount}
 
-Latest Summary:
-${context.latest_digest?.content || 'Starting a new chapter...'}
+上次摘要：
+${lastDigest?.content || '故事刚开始'}
 
-Create a scene of 4 connected tweets that:
-1. Reflects the current life phase (${context.phase})
-2. Shows character growth and experiences
-3. Includes both work and personal life
-4. Creates engaging moments
-5. Maintains story continuity
+要求：
+1. 符合当前人生阶段的特点
+2. 展现工作和生活的平衡
+3. 体现人物的成长和变化
+4. 创造有趣的情节和互动
+5. 保持故事的连续性
 
-Scene Guidelines:
-- Balance tech/crypto with personal growth
-- Show both successes and challenges
-- Include relationships and interactions
-- Create memorable moments
-- Build towards future developments
+格式：
+[推文1]
+[推文2]
+[推文3]
+[推文4]`;
+    }
 
-Format:
-TWEET 1: [Set the scene/situation]
-TWEET 2: [Develop the story/interaction]
-TWEET 3: [Key moment or insight]
-TWEET 4: [Resolution and future hint]
+    _getPersonalContext(currentAge) {
+        const data = require('../data/XaviersSim.json');
+        const personal = data.personal;
+        const romantic = personal.relationships.romantic;
+        const familyLife = personal.family_life;
+        const lifestyle = personal.lifestyle;
 
-Remember:
-- Keep each tweet under 280 characters
-- Use natural, conversational tone
-- Include occasional #hashtags
-- Reference $XVI when relevant
-- Show both professional and personal growth`;
+        let context = `
+个人状态：
+- 感情：${romantic.status === 'single' ? '单身' : '有恋人'}
+- 婚姻：${familyLife.marriage.isMarried ? '已婚' : '未婚'}
+- 家庭：${familyLife.children.hasChildren ? '已有孩子' : '暂无孩子'}
+
+生活方式：
+- 当前重心：${lifestyle.workLifeBalance.current}
+- 兴趣爱好：${lifestyle.interests.slice(0, 4).join('、')}
+- 性格特点：${lifestyle.traits.slice(0, 3).join('、')}
+
+近期关注：`;
+
+        // 根据年龄段添加不同的关注点
+        if (currentAge < 25) {
+            context += `
+- 事业发展和团队建设
+- 寻找志同道合的伴侣
+- 培养新的兴趣爱好`;
+        } else if (currentAge < 30) {
+            context += `
+- 事业与个人生活平衡
+- 发展稳定的感情关系
+- 规划未来的家庭生活`;
+        } else {
+            context += `
+- 家庭生活的规划
+- 事业更上一层楼
+- 平衡工作与家庭`;
+        }
+
+        return context;
     }
 
     _getCurrentPhase(age) {
@@ -446,7 +517,7 @@ Remember:
             this.logger.info('Created story backup', { path: backupPath });
         } catch (error) {
             this.logger.error('Error creating backup', error);
-            // 继续执行，���份失败不影响主流程
+            // 继续执行，备份失败不影响主流程
         }
     }
 }
