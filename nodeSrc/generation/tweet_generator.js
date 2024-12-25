@@ -187,10 +187,13 @@ class TweetGenerator {
             storyData.stats.totalTweets = storyData.story.tweets.length;
             storyData.stats.yearProgress = this._calculateYearProgress(storyData.stats.totalTweets).progress;
             
+            // 计算新年龄
+            const newAge = this._calculateAge(storyData.stats.totalTweets);
+            
             // 更新元数据
-            storyData.metadata.currentAge = currentAge;
+            storyData.metadata.currentAge = newAge;
             storyData.metadata.lastUpdate = new Date().toISOString();
-            storyData.metadata.currentPhase = this._calculatePhase(currentAge);
+            storyData.metadata.currentPhase = this._calculatePhase(newAge);
 
             // 保存更新后的数据
             await fs.writeFile(
@@ -201,7 +204,7 @@ class TweetGenerator {
             
             this.logger.info('Saved new tweets', {
                 count: tweets.length,
-                currentAge,
+                currentAge: newAge,
                 totalTweets: storyData.stats.totalTweets
             });
 
@@ -210,6 +213,13 @@ class TweetGenerator {
             this.logger.error('Error saving tweets', error);
             throw error;
         }
+    }
+
+    _calculateAge(totalTweets) {
+        const tweetsPerYear = 48; // 每年48条推文
+        const yearsPassed = totalTweets / tweetsPerYear;
+        const startAge = 22;
+        return Number((startAge + yearsPassed).toFixed(2));
     }
 
     _parseTweets(response) {
