@@ -15,133 +15,141 @@ class TweetFetcher:
     def __init__(self):
         """初始化推特获取器"""
         self.client = TwitterClientV2()
-        self.data_dir = "twitter_data"
-        self._ensure_data_directory()
-
-    def _ensure_data_directory(self):
-        """确保数据保存目录存在"""
-        if not os.path.exists(self.data_dir):
-            os.makedirs(self.data_dir)
-            print(f"创建数据目录: {self.data_dir}")
-
-    def _get_timestamp(self):
-        """获取当前时间戳字符串"""
-        return datetime.now().strftime("%Y%m%d_%H%M%S")
-
-    def _get_iso_timestamp(self):
-        """获取ISO格式的时间戳"""
-        return datetime.now().isoformat()
-
-    def save_tweet_and_replies(self, tweet_data, replies_data):
-        """将推特及其回复�����存到本地文件
+        current_dir = os.path.dirname(os.path.abspath(__file__))
+        project_root = os.path.abspath(os.path.join(current_dir, '..', '..'))
+        data_dir = os.path.join(project_root, 'nodeSrc', 'data')
         
-        Args:
-            tweet_data (dict): 推特数据
-            replies_data (list): 回复数据列表
-        """
-        timestamp = self._get_timestamp()
-        tweet_id = tweet_data['id']
+        # 确保数据目录存在
+        os.makedirs(data_dir, exist_ok=True)
         
-        # 构建文件名：tweet_ID_时间戳.json
-        filename = os.path.join(self.data_dir, f"tweet_{tweet_id}_{timestamp}.json")
-        
-        # 准备保存的数据，使用更规范的格式
-        data = {
-            "metadata": {
-                "version": "1.0",
-                "fetch_time": self._get_iso_timestamp(),
-                "tweet_id": tweet_id,
-                "reply_count": len(replies_data)
-            },
-            "tweet": {
-                "id": tweet_data['id'],
-                "text": tweet_data.get('text', ''),
-                "created_at": tweet_data.get('created_at', ''),
-                "author_id": tweet_data.get('author_id', ''),
-                "raw_data": tweet_data  # 保存完整的原始数据
-            },
-            "replies": [
-                {
-                    "id": reply.get('id', ''),
-                    "text": reply.get('text', ''),
-                    "created_at": reply.get('created_at', ''),
-                    "author_id": reply.get('author_id', ''),
-                    "in_reply_to_user_id": reply.get('in_reply_to_user_id', ''),
-                    "raw_data": reply  # 保存完整的原始数据
-                }
-                for reply in replies_data
-            ]
-        }
-        
-        # 保存到文件，确保JSON格式化
-        with open(filename, 'w', encoding='utf-8') as f:
-            json.dump(data, f, ensure_ascii=False, indent=2)
-        print(f"已保存推特及回复到文件: {filename}")
+        self.sent_tweets_file = os.path.join(data_dir, 'sent_tweets.json')
+        self.replies_file = os.path.join(data_dir, 'tweet_replies.json')
+        print(f"已发送推文文件路径: {self.sent_tweets_file}")
+        print(f"推文回复文件路径: {self.replies_file}")
 
-    def fetch_and_save_latest_tweet(self):
-        """获取最新推特及其回复并保存"""
+    def get_latest_tweet_id(self):
+        """获取最后一条推文的ID"""
         try:
-            # 获取最新推特
-            latest_tweet = self.client.get_latest_tweet()
-            if not latest_tweet:
-                print("未找到最新推特")
-                return
+            if not os.path.exists(self.sent_tweets_file):
+                print(f"已发送推文文件不存在: {self.sent_tweets_file}")
+                return None
 
-            tweet_id = latest_tweet['id']
-            print("\n=== 最新推特信息 ===")
-            print(f"推特ID: {tweet_id}")
-            print(f"发布时间: {latest_tweet.get('created_at', '未知')}")
-            print(f"作者ID: {latest_tweet.get('author_id', '未知')}")
-            print(f"内容: {latest_tweet.get('text', '无内容')}")
-            print(f"原始数据: {json.dumps(latest_tweet, ensure_ascii=False, indent=2)}")
-            print("=" * 50)
-
-            # 获取推特的回复
-            replies = self.client.get_replies(tweet_id)
-            replies_data = replies.get('data', []) if replies else []
-            
-            if replies_data:
-                print(f"找到 {len(replies_data)} 条回复")
-            else:
-                print("未找到回复")
-
-            # 保存推特及回复
-            self.save_tweet_and_replies(latest_tweet, replies_data)
-
+            with open(self.sent_tweets_file, 'r', encoding='utf-8') as f:
+                content = f.read()
+                if not content.strip():
+                    print("已发送推文文件为空")
+                    return None
+                
+                sent_tweets = json.loads(content)
+                if not sent_tweets:
+                    print("没有已发送的推文")
+                    return None
+                
+                latest_tweet = sent_tweets[-1]
+                return latest_tweet.get('id')
         except Exception as e:
-            print(f"获取推特时发生错误: {str(e)}")
-            # 记录错误到日志文件
-            error_log = os.path.join(self.data_dir, "error_log.json")
-            try:
-                with open(error_log, 'a', encoding='utf-8') as f:
-                    error_data = {
-                        "timestamp": self._get_iso_timestamp(),
-                        "error": str(e)
+            print(f"获取最后一条推文ID时出错: {str(e)}")
+            return None
+
+    def save_replies(self, tweet_id, replies):
+        """保存推文回复"""
+        try:
+            # 读取现有回复
+            existing_replies = {}
+            if os.path.exists(self.replies_file):
+                try:
+                    with open(self.replies_file, 'r', encoding='utf-8') as f:
+                        content = f.read()
+                        if content.strip():
+                            existing_replies = json.loads(content)
+                except:
+                    pass
+
+            # 更新回复
+            if tweet_id not in existing_replies:
+                existing_replies[tweet_id] = []
+            
+            # 添加新回复，避免重复
+            existing_ids = {r['id'] for r in existing_replies[tweet_id]}
+            for reply in replies:
+                if reply['id'] not in existing_ids:
+                    reply_data = {
+                        'id': reply['id'],
+                        'author_id': reply.get('author_id'),
+                        'content': reply.get('text'),
+                        'created_at': reply.get('created_at'),
+                        'fetched_at': time.strftime('%Y-%m-%d %H:%M:%S')
                     }
-                    f.write(json.dumps(error_data, ensure_ascii=False) + "\n")
-            except Exception as log_error:
-                print(f"记录错误日志失败: {log_error}")
+                    existing_replies[tweet_id].append(reply_data)
 
-def main():
-    """主函数"""
-    fetcher = TweetFetcher()
-    interval = 3600  # 每小时执行一次
-    
-    print("启动推特获取器...")
-    print(f"数据将保存在目录: {os.path.abspath(fetcher.data_dir)}")
-    print(f"获取间隔: {interval} 秒")
-    
-    while True:
-        try:
-            print(f"\n=== {datetime.now().strftime('%Y-%m-%d %H:%M:%S')} ===")
-            print("开始获取最新推特...")
-            fetcher.fetch_and_save_latest_tweet()
+            # 使用临时文件保存
+            temp_file = self.replies_file + '.tmp'
+            with open(temp_file, 'w', encoding='utf-8') as f:
+                json.dump(existing_replies, f, ensure_ascii=False, indent=2)
             
+            # 重命名临时文件
+            if os.path.exists(self.replies_file):
+                os.replace(temp_file, self.replies_file)
+            else:
+                os.rename(temp_file, self.replies_file)
+            
+            print(f"已保存推文 {tweet_id} 的回复，共 {len(existing_replies[tweet_id])} 条")
+            return True
         except Exception as e:
-            print(f"发生错误: {str(e)}")
+            print(f"保存推文回复时出错: {str(e)}")
+            if os.path.exists(temp_file):
+                try:
+                    os.remove(temp_file)
+                except:
+                    pass
+            return False
+
+    def fetch_and_save_replies(self):
+        """获取并保存最新推文的回复"""
+        try:
+            # 获取最新推文ID
+            tweet_id = self.get_latest_tweet_id()
+            if not tweet_id:
+                print("无法获取最新推文ID")
+                return False
+
+            # 获取回复
+            print(f"正在获取推文 {tweet_id} 的回复...")
+            replies_response = self.client.get_replies(tweet_id)
             
-        print(f"等待 {interval} 秒后进行下一次获取...")
-        time.sleep(interval)
+            if not replies_response or 'data' not in replies_response:
+                print("没有找到新的回复")
+                return False
+
+            # 获取回复数据
+            replies = replies_response.get('data', [])
+            if not replies:
+                print("没有找到新的回复")
+                return False
+
+            print(f"找到 {len(replies)} 条回复")
+            
+            # 保存回复
+            return self.save_replies(tweet_id, replies)
+
+        except Exception as e:
+            print(f"获取和保存回复时出错: {str(e)}")
+            return False
+
+    def run(self, interval_seconds=300):  # 默认5分钟获取一次
+        print(f"推文回复获取程序启动，间隔 {interval_seconds} 秒")
+        while True:
+            try:
+                if self.fetch_and_save_replies():
+                    print(f"等待 {interval_seconds} 秒后获取下一批回复...")
+                else:
+                    print(f"没有新回复或获取失败，等待 {interval_seconds} 秒后重试...")
+                
+                time.sleep(interval_seconds)
+            except Exception as e:
+                print(f"运行出错: {str(e)}")
+                time.sleep(60)  # 出错后等待1分钟
 
 if __name__ == "__main__":
-    main() 
+    fetcher = TweetFetcher()
+    fetcher.run() 
