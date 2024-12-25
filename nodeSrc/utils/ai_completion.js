@@ -12,27 +12,48 @@ class AICompletion {
         if (client) {
             this.client = client;
             this.model = model;
+            this.logger.info('Using provided AI client', { model });
         } else {
             this.model = aiConfig.model;
             this.client = new OpenAI({
                 apiKey: aiConfig.apiKey,
                 baseURL: aiConfig.baseUrl
             });
+            this.logger.info('Initialized OpenAI client', {
+                model: this.model,
+                baseURL: aiConfig.baseUrl
+            });
         }
 
         this.options = {
-            useLocalSimulation: !this.client, // 如果没有客户端则使用本地模拟
+            useLocalSimulation: !this.client,
             ...options
         };
+
+        this.logger.info('AI completion initialized', {
+            useLocalSimulation: this.options.useLocalSimulation,
+            model: this.model
+        });
     }
 
     async getCompletion(systemPrompt, userPrompt) {
         try {
+            let result;
             if (this.options.useLocalSimulation) {
-                return this._getLocalSimulation();
+                this.logger.info('Using local simulation');
+                result = await this._getLocalSimulation();
             } else {
-                return this._getAICompletion(systemPrompt, userPrompt);
+                this.logger.info('Calling OpenAI API');
+                result = await this._getAICompletion(systemPrompt, userPrompt);
             }
+
+            this.logger.info('Generated content', {
+                mode: this.options.useLocalSimulation ? 'local' : 'api',
+                tweetsCount: result.length,
+                firstTweet: result[0]?.text?.substring(0, 50) + '...'
+            });
+
+            return result;
         } catch (error) {
             this.logger.error('AI completion failed', error);
             throw error;
@@ -46,6 +67,12 @@ class AICompletion {
                 return this._getLocalSimulation();
             }
 
+            this.logger.info('Making API request', {
+                model: this.model,
+                systemPrompt: systemPrompt?.substring(0, 50) + '...',
+                userPrompt: userPrompt?.substring(0, 50) + '...'
+            });
+
             const response = await this.client.chat.completions.create({
                 model: this.model,
                 messages: [
@@ -54,17 +81,27 @@ class AICompletion {
                 ]
             });
 
+            this.logger.info('API response received', {
+                status: 'success',
+                content: response.choices[0].message.content?.substring(0, 50) + '...'
+            });
+
             // 将 AI 响应转换为推文格式
             const tweets = this._parseAIResponse(response.choices[0].message.content);
             return tweets;
         } catch (error) {
-            this.logger.error('AI API call failed', error);
+            this.logger.error('AI API call failed', {
+                error: error.message,
+                model: this.model
+            });
             this.logger.info('Falling back to local simulation');
             return this._getLocalSimulation();
         }
     }
 
     _getLocalSimulation() {
+        this.logger.info('Generating local simulation content');
+        
         // 模拟 AI 生成
         const scenes = [
             this._generateScene('工作场景'),
@@ -73,10 +110,17 @@ class AICompletion {
         ];
 
         // 将场景转换为推文格式
-        return scenes.flatMap(scene => scene.map((text, index) => ({
+        const tweets = scenes.flatMap(scene => scene.map((text, index) => ({
             text,
             id: `tweet_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
         })));
+
+        this.logger.info('Local simulation completed', {
+            scenesCount: scenes.length,
+            tweetsCount: tweets.length
+        });
+
+        return tweets;
     }
 
     _generateScene(type) {
@@ -93,7 +137,7 @@ class AICompletion {
                 [
                     "1: 今天遇到一个超可爱的场景！楼下咖啡店的猫咪趴在我笔记本上，死活不让我写代码。😂 #CatLife",
                     "2: 它对着屏幕上的光标又抓又挠，搞得我哭笑不得。最后只能一只手撸猫，一只手敲代码。多任务处理能力++",
-                    "3: 结果！这个小家伙居然帮我发现了一个bug！它踩键盘时触发了一个边界情况。��说猫不懂编程？😅",
+                    "3: 结果！这个小家伙居然帮我发现了一个bug！它踩键盘时触发了一个边界��况。��说猫不懂编程？😅",
                     "4: 决定给它取名\"Debug\"，以后就是我们团队的首席测试喵了。投资人说要有好运气，也许这就是了？🐱 #StartupLife"
                 ]
             ],
