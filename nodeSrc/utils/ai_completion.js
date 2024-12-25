@@ -44,10 +44,7 @@ class AICompletion {
                 ],
             });
 
-            console.log('AI Response:', {
-                hasChoices: !!response.choices,
-                firstChoice: response.choices?.[0]
-            });
+            console.log('AI Response:', response);
 
             return response.choices[0].message.content;
         } catch (error) {
