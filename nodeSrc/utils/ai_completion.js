@@ -41,6 +41,12 @@ class AICompletion {
         // 添加日志路径
         this.logPath = path.resolve(__dirname, '..', 'data', 'ai_logs');
         this.consoleLogPath = path.join(this.logPath, 'console');
+
+        this.systemPrompt = options.systemPrompt || '';
+    }
+
+    updateSystemPrompt(newPrompt) {
+        this.systemPrompt = newPrompt;
     }
 
     async _logToConsoleAndFile(level, message, data = {}) {
@@ -81,16 +87,20 @@ class AICompletion {
         }
     }
 
-    async getCompletion(systemPrompt, userPrompt) {
+    async getCompletion(systemMessage, userMessage) {
         try {
-            let result;
             if (this.options.useLocalSimulation) {
-                await this._logToConsoleAndFile('warning', 'Using local simulation');
-                result = await this._getLocalSimulation();
-            } else {
-                await this._logToConsoleAndFile('info', 'Calling OpenAI API');
-                result = await this._getAICompletion(systemPrompt, userPrompt);
+                return this._getLocalResponse(userMessage);
             }
+
+            const messages = [
+                { role: 'system', content: this.systemPrompt || systemMessage },
+                { role: 'user', content: userMessage }
+            ];
+
+            let result;
+            await this._logToConsoleAndFile('info', 'Calling OpenAI API');
+            result = await this._getAICompletion(messages);
 
             await this._logToConsoleAndFile('success', 'Generated content', {
                 mode: this.options.useLocalSimulation ? 'local' : 'api',
@@ -105,7 +115,7 @@ class AICompletion {
         }
     }
 
-    async _getAICompletion(systemPrompt, userPrompt) {
+    async _getAICompletion(messages) {
         try {
             if (!this.client) {
                 await this._logToConsoleAndFile('warning', 'No AI client available, using local simulation');
@@ -114,24 +124,21 @@ class AICompletion {
 
             await this._logToConsoleAndFile('info', 'Making API request', {
                 model: this.model,
-                systemPrompt: systemPrompt?.substring(0, 50) + '...',
-                userPrompt: userPrompt?.substring(0, 50) + '...'
+                systemPrompt: this.systemPrompt?.substring(0, 50) + '...',
+                userPrompt: messages[messages.length - 1].content?.substring(0, 50) + '...'
             });
 
             const response = await this.client.chat.completions.create({
                 model: this.model,
-                messages: [
-                    { role: 'system', content: systemPrompt },
-                    { role: 'user', content: userPrompt }
-                ]
+                messages: messages
             });
 
             // 保存交互记录
             await this._saveInteraction({
                 timestamp: new Date().toISOString(),
                 model: this.model,
-                systemPrompt,
-                userPrompt,
+                systemPrompt: this.systemPrompt,
+                userPrompt: messages[messages.length - 1].content,
                 response: response.choices[0].message.content,
                 success: true
             });
@@ -148,8 +155,8 @@ class AICompletion {
             await this._saveInteraction({
                 timestamp: new Date().toISOString(),
                 model: this.model,
-                systemPrompt,
-                userPrompt,
+                systemPrompt: this.systemPrompt,
+                userPrompt: messages[messages.length - 1].content,
                 error: error.message,
                 success: false
             });
@@ -216,14 +223,14 @@ class AICompletion {
                     "1: 凌晨3点，第108次修改代码。这个bug太难找了，但我知道答案就在眼前。泡一杯咖啡，继续战斗。#coding #startup",
                     "2: 等等！突然发现一个有趣的pattern，如果把这个算法改成递归...手有点抖，这可能是个突破口！",
                     "3: 成功了！！！重构后性能提升300%。看着终端里的测试全部通过，这感觉比喝了十杯咖啡还让人兴奋！",
-                    "4: 有人说创业是场马拉松，但对我来说，每一个这样的时刻都让这段旅程值得。明天继续，$XVI的未来就在代码中。"
+                    "4: 有人说创业是场马拉松，但对我来说，每一个这样的时刻都让这段旅程值得。明天���续，$XVI的未来就在代码中。"
                 ]
             ],
             '生活场景': [
                 [
                     "1: 今天遇到一个超可爱的场景！楼下咖啡店的猫咪趴在我笔记本上，死活不让我写代码。😂 #CatLife",
-                    "2: 它对着屏幕上的光标又抓又挠，搞得我���笑不得。最后只能一只手撸猫，一只手敲代码。多任务处理能力++",
-                    "3: 结果！这个小家伙居然帮我发现了��个bug！它踩键盘时触发了一个边界情况。说猫不懂编程？😅",
+                    "2: 它对着屏幕上的光标又抓又挠，搞得我笑不得。最后只能一只手撸猫，一只手敲代码。多任务处理能力++",
+                    "3: 结果！这个小家伙居然帮我发现了个bug！它踩键盘时触发了一个边界情况。说猫不懂编程？😅",
                     "4: 决定给它取名\"Debug\"，以后就是我们团队的首席测试喵了。投资人说要有好运气，也许这就是了？🐱 #StartupLife"
                 ]
             ],

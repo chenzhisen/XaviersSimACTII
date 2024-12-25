@@ -213,27 +213,6 @@ class TweetGenerator {
         };
     }
 
-    async generateTweetScene(digest, currentAge, tweetCount) {
-        try {
-            const context = await this._prepareContext(digest, currentAge, tweetCount);
-            const prompt = this._buildStoryPrompt(context);
-
-            // 直接获取生成的推文数组
-            const tweets = await this.ai.getCompletion(
-                'You are crafting a compelling life story through tweets.',
-                prompt
-            );
-
-            // 保存新生成的推文获取更新后的信息
-            const result = await this._saveTweets(tweets, currentAge);
-
-            return result.tweets;
-        } catch (error) {
-            this.logger.error('Error generating story scene', error);
-            throw error;
-        }
-    }
-
     async _prepareContext(digest, currentAge, tweetCount) {
         try {
             const data = await fs.readFile(this.paths.mainFile, 'utf8');
