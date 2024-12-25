@@ -48,18 +48,40 @@ class TweetStorage {
                 console.log('读取文件失败，使用新的数据结构');
             }
 
+            // 确保 tweets 是数组
+            const tweetsArray = Array.isArray(tweets) ? tweets : [tweets];
+            if (!tweetsArray.length) {
+                console.log('没有要保存的推文');
+                return {
+                    success: true,
+                    data: {
+                        new_tweets: [],
+                        total_tweets: data.tweets.length
+                    }
+                };
+            }
+
             // 准备新的推文数据
             const timestamp = moment().format('YYYYMMDD_HHmmss');
-            const newTweets = tweets.map(tweet => ({
-                id: `tweet_${timestamp}_${Math.random().toString(36).substr(2, 9)}`,
-                content: tweet,
-                age: age,
-                created_at: moment().toISOString(),
-                metadata: {
+            const newTweets = tweetsArray.map(tweet => {
+                // 处理不同的输入格式
+                const tweetContent = typeof tweet === 'string' ? tweet : 
+                                   tweet.text ? tweet.text :
+                                   tweet.content ? tweet.content :
+                                   JSON.stringify(tweet);
+
+                return {
+                    id: `tweet_${timestamp}_${Math.random().toString(36).substr(2, 9)}`,
+                    content: tweetContent,
                     age: age,
-                    timestamp: timestamp
-                }
-            }));
+                    created_at: moment().toISOString(),
+                    metadata: {
+                        age: age,
+                        timestamp: timestamp,
+                        original_data: tweet // 保存原始数据
+                    }
+                };
+            });
 
             // 添加新推文
             data.tweets.push(...newTweets);

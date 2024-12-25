@@ -2,48 +2,17 @@
   "metadata": {
     "protagonist": "Xavier",
     "startAge": 22,
-    "currentAge": 22.08,
+    "currentAge": 22,
     "currentPhase": "early_career",
-    "lastUpdate": "2024-12-25T16:35:47.485Z",
+    "lastUpdate": "2024-12-25T16:59:52.119Z",
     "version": "1.0.0"
   },
   "story": {
-    "tweets": [
-      {
-        "text": "TWEET 1: Excited to embark on this new journey with $XVI Labs, diving headfirst into the world of decentralized AI. Challenges ahead, but the thrill of innovation fuels my drive. #EarlyCareer #TechPassion",
-        "id": "tweet_1735144547483_jxj7hmnba",
-        "age": 22.08,
-        "timestamp": "2024-12-25T16:35:47.485Z"
-      },
-      {
-        "text": "TWEET 2: Just had a groundbreaking coding session, pushing the boundaries of AI integration. Amidst the lines of code, I realize the importance of perseverance and the beauty of endless possibilities. #Innovation #Progress",
-        "id": "tweet_1735144547483_nv7epzow0",
-        "age": 22.08,
-        "timestamp": "2024-12-25T16:35:47.485Z"
-      },
-      {
-        "text": "TWEET 3: Caught up with an old friend over coffee, sharing laughs and memories. Reminded me that amidst the tech chaos, human connections are the true grounding force. Balancing work and relationships is key to a fulfilling life. #Friendship #LifeBalance",
-        "id": "tweet_1735144547483_fpocxahu0",
-        "age": 22.08,
-        "timestamp": "2024-12-25T16:35:47.485Z"
-      },
-      {
-        "text": "TWEET 4: As the day winds down, I reflect on today's wins and losses. Each step, big or small, paves the path to a brighter tomorrow. Pumped for what's to come at $XVI Labs and beyond. The adventure has just begun. #FutureGrowth #StayDriven",
-        "id": "tweet_1735144547483_uzedtxztp",
-        "age": 22.08,
-        "timestamp": "2024-12-25T16:35:47.485Z"
-      }
-    ],
+    "tweets": [],
     "digests": [
       {
         "content": "Xavier is at a crossroads, seriously considering leaving college to focus on quant trading and his involvement with $XVI. This marks a significant shift in his life priorities and indicates a desire to take control of his future..",
-        "timestamp": "2024-12-25T16:35:44.322Z"
-      },
-      {
-        "content": "[开头概述]\n\n主要进展：\n1. 项目管理能力显著提高\n2. 个人领导力得到提升\n3. 市场策略逐步完善\n4. 客户基础逐步扩大\n\n未来展望：下一阶段将重点关注产品优化和市场拓展，期待取得更大的进展。",
-        "timestamp": "2024-12-25T16:35:47.503Z",
-        "age": 22.08,
-        "tweetCount": 4
+        "timestamp": "2024-12-25T16:59:52.119Z"
       }
     ],
     "keyPlotPoints": [],
@@ -63,7 +32,7 @@
         "性能优化",
         "安全性"
       ],
-      "lastUpdate": "2024-12-25T16:35:44.322Z"
+      "lastUpdate": "2024-12-25T16:59:52.119Z"
     }
   },
   "career": {
@@ -170,9 +139,9 @@
     }
   },
   "stats": {
-    "totalTweets": 4,
-    "digestCount": 2,
+    "totalTweets": 0,
+    "digestCount": 0,
     "techUpdateCount": 0,
-    "yearProgress": "8.3"
+    "yearProgress": 0
   }
 }
