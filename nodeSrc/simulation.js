@@ -19,9 +19,11 @@ class XavierSimulation {
 
         // 运行配置
         this.config = {
-            minInterval: 1  * 1000,  // 最小间隔2分钟
-            maxInterval: 2  * 1000,  // 最大间隔5分钟
-            maxTweetsPerDay: 48,         // 每天最大推文数
+            minInterval: 5 * 1000,    // 最小间隔5秒
+            maxInterval: 10 * 1000,   // 最大间隔10秒
+            maxTweetsPerDay: 48,      // 每天最大推文数
+            tweetsPerScene: 4,        // 每个场景4条推文
+            scenesPerBatch: 3,        // 每批3个场景
             isRunning: false
         };
     }
@@ -79,29 +81,36 @@ class XavierSimulation {
                 return;
             }
 
-            // 生成新的场景
-            const tweets = await this.tweetGenerator.generateTweetScene(
-                summary.lastDigest,
-                summary.currentAge,
-                summary.totalTweets
-            );
+            // 生成多个场景
+            let allTweets = [];
+            for (let i = 0; i < this.config.scenesPerBatch; i++) {
+                const tweets = await this.tweetGenerator.generateTweetScene(
+                    summary.lastDigest,
+                    summary.currentAge,
+                    summary.totalTweets + allTweets.length
+                );
+                allTweets = [...allTweets, ...tweets];
+
+                // 短暂暂停，避免生成太快
+                await new Promise(resolve => setTimeout(resolve, 1000));
+            }
 
             // 检查是否需要生成摘要
             const digest = await this.digestGenerator.checkAndGenerateDigest(
-                tweets,
+                allTweets,
                 summary.currentAge,
                 new Date(),
-                summary.totalTweets + tweets.length
+                summary.totalTweets + allTweets.length
             );
 
             this.logger.info('Story generation completed', {
-                newTweets: tweets.length,
+                newTweets: allTweets.length,
                 hasDigest: !!digest,
                 currentAge: summary.currentAge
             });
 
             return {
-                tweets,
+                tweets: allTweets,
                 digest,
                 currentAge: summary.currentAge
             };
