@@ -156,21 +156,20 @@ class TwitterClientV2:
         user_id = response.json()['data']['id']
         print(f"\n=== 用户信息 ===")
         print(f"用户ID: {user_id}")
-        print(json.dumps(response.json(), ensure_ascii=False, indent=2))
-        print("=" * 50)
-        
+     
         # 获取用户的推文
+        tweets_url = f"https://api.twitter.com/2/users/{user_id}/tweets"  # 使用f-string正确格式化URL
         response = oauth.get(
-            f"https://api.twitter.com/2/users/{user_id}/tweets",
-            params={"max_results": 100}  # 每次请求最大数量
+            tweets_url,
+            params={
+                "max_results": 100,  # 每次请求最大数量
+                "tweet.fields": "created_at,author_id"  # 添加更多字段
+            }
         )
 
         print("\n=== API请求信息 ===")
         print(f"请求URL: {response.url}")
-        print(f"状态码: {response.status_code}")
-        print(f"响应头: {json.dumps(dict(response.headers), ensure_ascii=False, indent=2)}")
-        print("=" * 50)
-
+   
         if response.status_code != 200:
             print(f"获取推文失败: {response.status_code} {response.text}")
             return None
@@ -178,8 +177,7 @@ class TwitterClientV2:
         print("\n=== 响应数据 ===")
         response_json = response.json()
         print(json.dumps(response_json, ensure_ascii=False, indent=2))
-        print("=" * 50)
-
+     
         if 'data' in response_json:
             print(f"\n找到 {len(response_json['data'])} 条推文")
             for i, tweet in enumerate(response_json['data'], 1):
@@ -228,7 +226,7 @@ class TwitterClientV2:
         batch_size = 5  # 基本版：每15分钟5个请求
         for i in range(0, len(tweets), batch_size):
             batch = tweets[i:i + batch_size]
-            print(f"\n处理第 {i//batch_size + 1} 批��共 {(len(tweets) + batch_size - 1)//batch_size} 批")
+            print(f"\n处理第 {i//batch_size + 1} 批共 {(len(tweets) + batch_size - 1)//batch_size} 批")
             
             for tweet in batch:
                 success = self.delete_tweet(tweet['id'])
@@ -250,8 +248,8 @@ class TwitterClientV2:
             print("未找到推文或获取推文失败")
             return None
 
-        # 返回最新的推文
-        return tweets[-1]
+        # 返回最新的推文（数组第一个元素）
+        return tweets[0]  # Twitter API返回的推文是按时间倒序排列的
 
 
 # 示例用法
