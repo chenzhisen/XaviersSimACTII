@@ -68,10 +68,11 @@ class DigestGenerator {
 
             // 保存摘要
             if (digest) {
-                await this._saveDigest(digest, currentAge, timestamp);
+                const calculatedAge = this._calculateAge(totalTweets);
+                await this._saveDigest(digest, calculatedAge, timestamp);
                 console.log(chalk.green('Digest generated and saved:', {
-                    age: currentAge,
-                    tweetCount: validTweets.length
+                    age: calculatedAge,
+                    tweetCount: totalTweets
                 }));
             }
 
@@ -244,7 +245,7 @@ class DigestGenerator {
                 .join('\n\n');
 
             return `
-作为一个故事摘要生成器，请为以下推文生成一个详细的中文摘要。
+作为一个故事摘要生成器，请为以下推文���成一个详细的中文摘要。
 这些推文描述了Xavier在${phase}阶段（${currentAge}岁）的经历。
 
 推文内容：
