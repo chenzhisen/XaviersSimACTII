@@ -16,6 +16,13 @@ class TweetGenerator {
         this.storyConfig = Introduction.story;
         this.protagonist = Introduction.protagonist;
 
+        // 年龄和进度配置
+        this.paceConfig = {
+            tweetsPerYear: 48,
+            scenesPerYear: 12,
+            tweetsPerScene: 4
+        };
+
         // Windows 路径配置
         this.paths = {
             dataDir: path.resolve(__dirname, '..', 'data'),
@@ -24,9 +31,9 @@ class TweetGenerator {
 
         // 年龄限制配置
         this.ageConfig = {
-            startAge: 22,
+            startAge: this.storyConfig.setting.startAge,
             endAge: 72,
-            tweetsPerYear: 48
+            tweetsPerYear: this.paceConfig.tweetsPerYear
         };
     }
 
@@ -106,7 +113,7 @@ class TweetGenerator {
     }
 
     _calculateYearProgress(tweetCount) {
-        const tweetsPerYear = this.storyConfig.yearlyPace.tweetsPerYear;
+        const tweetsPerYear = this.paceConfig.tweetsPerYear;
         return {
             year: Math.floor(tweetCount / tweetsPerYear),
             progress: ((tweetCount % tweetsPerYear) / tweetsPerYear * 100).toFixed(1)
@@ -225,7 +232,7 @@ class TweetGenerator {
     }
 
     _calculateAge(totalTweets) {
-        const yearsPassed = totalTweets / this.ageConfig.tweetsPerYear;
+        const yearsPassed = totalTweets / this.paceConfig.tweetsPerYear;
         const newAge = this.ageConfig.startAge + yearsPassed;
         // 确保年龄保持2位小数并且不超过结束年龄
         return Math.min(Number(newAge.toFixed(2)), this.ageConfig.endAge);
