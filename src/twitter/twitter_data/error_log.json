@@ -1,0 +1,2 @@
+{"timestamp": "2024-12-25T23:41:54.274851", "error": "cannot access local variable 'response' where it is not associated with a value"}
+{"timestamp": "2024-12-25T23:43:17.129559", "error": "'TwitterClientV2' object has no attribute 'get_latest_tweet'"}

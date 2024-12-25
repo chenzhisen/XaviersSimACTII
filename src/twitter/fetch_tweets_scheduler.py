@@ -3,10 +3,13 @@ import os
 import time
 import json
 from datetime import datetime
-from twitter_client import TwitterClientV2
 
 # 添加项目根目录到系统路径
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
+current_dir = os.path.dirname(os.path.abspath(__file__))
+project_root = os.path.abspath(os.path.join(current_dir, '..', '..'))
+sys.path.insert(0, project_root)
+
+from src.twitter.twitter_client import TwitterClientV2
 
 class TweetFetcher:
     def __init__(self):
@@ -30,7 +33,7 @@ class TweetFetcher:
         return datetime.now().isoformat()
 
     def save_tweet_and_replies(self, tweet_data, replies_data):
-        """将推特及其回复保存到本地文件
+        """将推特及其回复�����存到本地文件
         
         Args:
             tweet_data (dict): 推特数据
@@ -74,19 +77,6 @@ class TweetFetcher:
         with open(filename, 'w', encoding='utf-8') as f:
             json.dump(data, f, ensure_ascii=False, indent=2)
         print(f"已保存推特及回复到文件: {filename}")
-        
-        # 同时更新最新数据的软链接
-        latest_link = os.path.join(self.data_dir, f"latest_tweet_{tweet_id}.json")
-        if os.path.exists(latest_link):
-            try:
-                os.remove(latest_link)
-            except Exception:
-                pass
-        try:
-            os.symlink(filename, latest_link)
-            print(f"已更新最新数据链接: {latest_link}")
-        except Exception as e:
-            print(f"创建软链接失败: {e}")
 
     def fetch_and_save_latest_tweet(self):
         """获取最新推特及其回复并保存"""
@@ -98,8 +88,13 @@ class TweetFetcher:
                 return
 
             tweet_id = latest_tweet['id']
-            print(f"\n获取到最新推特，ID: {tweet_id}")
-            print(f"推特内容: {latest_tweet.get('text', '无内容')}")
+            print("\n=== 最新推特信息 ===")
+            print(f"推特ID: {tweet_id}")
+            print(f"发布时间: {latest_tweet.get('created_at', '未知')}")
+            print(f"作者ID: {latest_tweet.get('author_id', '未知')}")
+            print(f"内容: {latest_tweet.get('text', '无内容')}")
+            print(f"原始数据: {json.dumps(latest_tweet, ensure_ascii=False, indent=2)}")
+            print("=" * 50)
 
             # 获取推特的回复
             replies = self.client.get_replies(tweet_id)

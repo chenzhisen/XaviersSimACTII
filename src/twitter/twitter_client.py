@@ -1,6 +1,13 @@
 from requests_oauthlib import OAuth1Session
 import os
 import json
+import sys
+
+# 添加项目根目录到系统路径
+current_dir = os.path.dirname(os.path.abspath(__file__))
+project_root = os.path.abspath(os.path.join(current_dir, '..', '..'))
+sys.path.insert(0, project_root)
+
 from src.utils.config import Config
 import requests
 from time import sleep
@@ -147,6 +154,10 @@ class TwitterClientV2:
             return None
             
         user_id = response.json()['data']['id']
+        print(f"\n=== 用户信息 ===")
+        print(f"用户ID: {user_id}")
+        print(json.dumps(response.json(), ensure_ascii=False, indent=2))
+        print("=" * 50)
         
         # 获取用户的推文
         response = oauth.get(
@@ -154,11 +165,33 @@ class TwitterClientV2:
             params={"max_results": 100}  # 每次请求最大数量
         )
 
+        print("\n=== API请求信息 ===")
+        print(f"请求URL: {response.url}")
+        print(f"状态码: {response.status_code}")
+        print(f"响应头: {json.dumps(dict(response.headers), ensure_ascii=False, indent=2)}")
+        print("=" * 50)
+
         if response.status_code != 200:
             print(f"获取推文失败: {response.status_code} {response.text}")
             return None
 
-        return response.json().get('data', [])
+        print("\n=== 响应数据 ===")
+        response_json = response.json()
+        print(json.dumps(response_json, ensure_ascii=False, indent=2))
+        print("=" * 50)
+
+        if 'data' in response_json:
+            print(f"\n找到 {len(response_json['data'])} 条推文")
+            for i, tweet in enumerate(response_json['data'], 1):
+                print(f"\n推文 {i}:")
+                print(f"ID: {tweet.get('id', 'N/A')}")
+                print(f"内容: {tweet.get('text', 'N/A')}")
+                print(f"创建时间: {tweet.get('created_at', 'N/A')}")
+                print("-" * 30)
+        else:
+            print("未找到推文数据")
+
+        return response_json.get('data', [])
 
     def delete_tweet(self, tweet_id):
         """删除推文
@@ -195,7 +228,7 @@ class TwitterClientV2:
         batch_size = 5  # 基本版：每15分钟5个请求
         for i in range(0, len(tweets), batch_size):
             batch = tweets[i:i + batch_size]
-            print(f"\n处理第 {i//batch_size + 1} 批，共 {(len(tweets) + batch_size - 1)//batch_size} 批")
+            print(f"\n处理第 {i//batch_size + 1} 批��共 {(len(tweets) + batch_size - 1)//batch_size} 批")
             
             for tweet in batch:
                 success = self.delete_tweet(tweet['id'])
