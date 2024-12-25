@@ -79,21 +79,25 @@ class DigestGenerator {
     }
 
     _buildPrompt(tweets, currentAge, currentDate, techEvolution) {
-        return `Current age: ${currentAge}
-Current date: ${currentDate.toISOString()}
+        return `Current story progress:
+Age: ${currentAge}
+Year: ${currentDate.getFullYear()}
 
-Recent tweets:
+Recent story developments:
 ${tweets.map(t => t.text).join('\n')}
 
 Technology context:
 ${JSON.stringify(techEvolution, null, 2)}
 
-Analyze the recent story developments and generate a digest that includes:
-1. Summary of key events and themes
-2. Character development and relationships
-3. Potential future story directions
+Analyze the recent story developments and create a narrative digest that includes:
+1. Story Summary: Key events and developments in Xavier's journey
+2. Character Development: How Xavier is growing and changing
+3. Relationships: Important connections and interactions
+4. Technology Integration: How tech advances affect the story
+5. Themes & Motifs: Recurring ideas and symbols
+6. Future Setup: Potential story directions and upcoming developments
 
-Format as a clear narrative structure.`;
+Format as a clear narrative structure that maintains story continuity.`;
     }
 
     _countSignificantEvents(tweets) {

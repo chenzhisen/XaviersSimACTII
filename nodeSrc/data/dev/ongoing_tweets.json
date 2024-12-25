@@ -1,24 +1,42 @@
-[
-  {
-    "id": "tweet_1735091475988",
-    "text": "As I reflect on the past, I am reminded of the countless innovations and advancements that have shaped our world today. From the rise of AI to the possibilities of space exploration, it is truly a remarkable time to be alive. Stay curious, stay innovative, and let's continue to p",
-    "age": 22,
-    "timestamp": "2024-12-25T01:51:15.988Z",
-    "metadata": {
-      "tweet_number": 1,
-      "has_digest": true,
-      "has_tech": true
+{
+  "tweets": [
+    {
+      "id": "tweet_1",
+      "text": "咖啡厅的角落，我盯着笔记本屏幕发呆。三年时间，多少个日日夜夜的代码，就这样被一封邮件否定了。'很抱歉，这个项目我们不能继续了...' #创业 #生活",
+      "age": 22.0,
+      "timestamp": "2025-01-01T09:00:00Z",
+      "metadata": {
+        "tweet_number": 1,
+        "story_day": 0,
+        "has_digest": false
+      }
+    },
+    {
+      "id": "tweet_2",
+      "text": "邻桌传来欢声笑语，让失意的心更添几分苦涩。正准备离开，一个声音突然响起:'介意我坐这里吗？这儿的光线很适合画画。'抬头，对上了一双明亮的眼睛。",
+      "age": 22.0,
+      "timestamp": "2025-01-01T12:00:00Z",
+      "metadata": {
+        "tweet_number": 2,
+        "story_day": 0,
+        "has_digest": false
+      }
     }
-  },
-  {
-    "id": "tweet_1735092102876",
-    "text": "As we journey into the future, the intersection of technology and human potential continues to inspire and push boundaries. From the convergence of AI and robotics to the limitless opportunities in sustainable energy, our collective evolution knows no bounds. Let's embrace the un",
-    "age": 22.010416666666668,
-    "timestamp": "2024-12-25T02:01:42.876Z",
-    "metadata": {
-      "tweet_number": 2,
-      "has_digest": true,
-      "has_tech": true
-    }
+  ],
+  "story_metadata": {
+    "protagonist": "Xavier",
+    "current_age": 22.0,
+    "story_day": 0,
+    "total_tweets": 2,
+    "main_plot_points": [
+      "创业项目失败",
+      "咖啡厅邂逅",
+      "人生转折的开始"
+    ],
+    "current_themes": [
+      "挫折与希望",
+      "机遇与相遇",
+      "生活的转机"
+    ]
   }
-]
+}
