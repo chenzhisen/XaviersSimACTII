@@ -47,7 +47,7 @@ class XavierSimulation {
                 await new Promise(resolve => setTimeout(resolve, waitTime));
             } catch (error) {
                 this.logger.error('Error in simulation loop', error);
-                await new Promise(resolve => setTimeout(resolve, 30000)); // 错误后等待30秒
+                await new Promise(resolve => setTimeout(resolve, 3000)); // 错误后等待30秒
             }
         }
     }

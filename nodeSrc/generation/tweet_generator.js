@@ -193,10 +193,13 @@ class TweetGenerator {
             const totalTweets = storyData.story.tweets.length + tweets.length;
             const newAge = this._calculateAge(totalTweets);
             
+            // 确保年龄不超过上限
+            const safeAge = Math.min(newAge, this.ageConfig.endAge);
+            
             // 添加新推文到 story.tweets
             const newTweets = tweets.map(tweet => ({
                 ...tweet,
-                age: Number(newAge.toFixed(2)),
+                age: Number(safeAge.toFixed(2)),
                 timestamp: new Date().toISOString()
             }));
             
@@ -207,9 +210,9 @@ class TweetGenerator {
             storyData.stats.yearProgress = this._calculateYearProgress(totalTweets).progress;
             
             // 更新元数据
-            storyData.metadata.currentAge = Number(newAge.toFixed(2));
+            storyData.metadata.currentAge = Number(safeAge.toFixed(2));
             storyData.metadata.lastUpdate = new Date().toISOString();
-            storyData.metadata.currentPhase = this._getCurrentPhase(newAge);
+            storyData.metadata.currentPhase = this._getCurrentPhase(safeAge);
 
             // 保存更新后的数据
             await fs.writeFile(
@@ -220,14 +223,14 @@ class TweetGenerator {
             
             this.logger.info('Saved new tweets', {
                 count: tweets.length,
-                currentAge: Number(newAge.toFixed(2)),
+                currentAge: Number(safeAge.toFixed(2)),
                 totalTweets,
                 newTweets: newTweets.length
             });
 
             return {
                 tweets: newTweets,
-                currentAge: newAge,
+                currentAge: safeAge,
                 totalTweets
             };
         } catch (error) {
@@ -303,9 +306,15 @@ Remember:
     }
 
     _getCurrentPhase(age) {
-        return Object.entries(this.storyConfig.phases).find(
-            ([_, phase]) => age >= phase.age[0] && age < phase.age[1]
-        )[0];
+        // 确保年龄不超过最大值
+        const safeAge = Math.min(age, this.ageConfig.endAge);
+
+        // 按年龄范围返回对应阶段
+        if (safeAge < 32) return 'early_career';
+        if (safeAge < 42) return 'growth_phase';
+        if (safeAge < 52) return 'peak_phase';
+        if (safeAge < 62) return 'mature_phase';
+        return 'wisdom_phase';
     }
 
     _getPhaseContext(age) {
