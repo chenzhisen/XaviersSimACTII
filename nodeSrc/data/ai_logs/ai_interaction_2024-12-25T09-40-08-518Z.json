@@ -1,8 +1,0 @@
-{
-  "timestamp": "2024-12-25T09:40:08.518Z",
-  "model": "openai/gpt-3.5-turbo",
-  "systemPrompt": "You are crafting a compelling life story through tweets.",
-  "userPrompt": "\n请基于以下背景生成4条连续的推文：\n\n当前状态：\n- 年龄：undefined岁\n- 阶段：early_career\n- 推文数：undefined\n\n上次摘要：\n故事刚开始\n\n要求：\n1. 符合当前人生阶段的特点\n2. 展现工作和生活的平衡\n3. 体现人物的成长和变化\n4. 创造有趣的情节和互动\n5. 保持故事的连续性\n\n格式：\n[推文1]\n[推文2]\n[推文3]\n[推文4]",
-  "response": "[推文1] 在early_career的路上奋力前行，每天都充满新的挑战和机会，这种刺激让我充满活力。\n\n[推文2] 虽然工作忙碌，但我不忘享受生活。周末会和朋友们去远足、看电影，保持心情愉快。\n\n[推文3] 最近接手了一个重要项目，压力山大，但我努力克服困难，展现出了自己的实力和领导才能。\n\n[推文4] 终于，项目顺利完成，获得了领导的认可和团队的赞赏。成长不止于工作，更是在挑战中变得更强大。",
-  "success": true
-}

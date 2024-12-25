@@ -9,7 +9,7 @@ class TweetGenerator {
     constructor(client, model, isProduction = false) {
         this.logger = new Logger('tweet');
         this.isProduction = isProduction;
-        
+
         // 创建 AI 实例时传入系统提示
         this.ai = new AICompletion(client, model, {
             systemPrompt: this._buildSystemPrompt(),
@@ -17,7 +17,7 @@ class TweetGenerator {
         });
 
         this.githubOps = new GithubOperations(isProduction);
-        
+
         // 加载故事背景
         this.storyConfig = Introduction.story;
         this.protagonist = Introduction.protagonist;
@@ -89,13 +89,13 @@ class TweetGenerator {
             try {
                 // 尝试读取现有数据
                 const data = await fs.readFile(this.paths.mainFile, 'utf8');
-              
+
                 summary = JSON.parse(data);
             } catch (error) {
                 if (error.code === 'ENOENT') {
                     // 文件不存在，创建新数据
                     summary = await this._initializeSummary();
-                    console.log('summary2222',summary);
+                    console.log('summary2222', summary);
                 } else {
                     this.logger.error('Error reading file', error);
                     throw error;
@@ -155,7 +155,7 @@ class TweetGenerator {
                 JSON.stringify(initialData, null, 2),
                 'utf8'
             );
-            
+
             this.logger.info('Initialized new story file', {
                 path: this.paths.mainFile
             });
@@ -179,16 +179,16 @@ class TweetGenerator {
         try {
             const context = await this._prepareContext(digest, currentAge, tweetCount);
             const prompt = this._buildStoryPrompt(context);
-            
+
             // 直接获取生成的推文数组
             const tweets = await this.ai.getCompletion(
                 'You are crafting a compelling life story through tweets.',
                 prompt
             );
-            
+
             // 保存新生成的推文并获取更新后的信息
             const result = await this._saveTweets(tweets, currentAge);
-            
+
             return result.tweets;
         } catch (error) {
             this.logger.error('Error generating story scene', error);
@@ -200,18 +200,18 @@ class TweetGenerator {
         try {
             const data = await fs.readFile(this.paths.mainFile, 'utf8');
             const storyData = JSON.parse(data);
-                        
+
             // 获取最近的推文
             const recentTweets = storyData.story.tweets.slice(-5) || [];
-            
+
             // 获取最新摘要
-            const latestDigest = storyData.story.digests.length > 0 
+            const latestDigest = storyData.story.digests.length > 0
                 ? storyData.story.digests[storyData.story.digests.length - 1]
                 : null;
 
             // 计算当前阶段
             const phase = this._calculatePhase(currentAge);
-            
+
             return {
                 current_age: currentAge,
                 tweet_count: tweetCount,
@@ -243,7 +243,7 @@ class TweetGenerator {
         try {
             const data = await fs.readFile(this.paths.mainFile, 'utf8');
             const storyData = JSON.parse(data);
-            
+
             // 检查是否已达到年龄上限
             if (storyData.metadata.currentAge >= this.storyConfig.setting.endAge) {
                 this.logger.info('Story has reached end age, no more tweets will be saved');
@@ -257,23 +257,23 @@ class TweetGenerator {
             // 计算新的总推文数和年龄
             const totalTweets = storyData.story.tweets.length + tweets.length;
             const newAge = this._calculateAge(totalTweets);
-            
+
             // 确保年龄不超过上限
             const safeAge = Math.min(newAge, this.storyConfig.setting.endAge);
-            
+
             // 添加新推文到 story.tweets
             const newTweets = tweets.map(tweet => ({
                 ...tweet,
                 age: Number(safeAge.toFixed(2)),
                 timestamp: new Date().toISOString()
             }));
-            
+
             storyData.story.tweets.push(...newTweets);
-            
+
             // 更新统计信息
             storyData.stats.totalTweets = totalTweets;
             storyData.stats.yearProgress = this._calculateYearProgress(totalTweets).progress;
-            
+
             // 更新元数据
             storyData.metadata.currentAge = Number(safeAge.toFixed(2));
             storyData.metadata.lastUpdate = new Date().toISOString();
@@ -285,7 +285,7 @@ class TweetGenerator {
                 JSON.stringify(storyData, null, 2),
                 'utf8'
             );
-            
+
             this.logger.info('Saved new tweets', {
                 count: tweets.length,
                 currentAge: Number(safeAge.toFixed(2)),
@@ -306,7 +306,7 @@ class TweetGenerator {
 
     _calculateAge(totalTweets) {
         if (totalTweets === 0) return this.ageConfig.startAge;
-        
+
         const yearsPassed = totalTweets / this.paceConfig.tweetsPerYear;
         const newAge = this.ageConfig.startAge + yearsPassed;
         return Math.min(Number(newAge.toFixed(2)), this.storyConfig.setting.endAge);
@@ -321,7 +321,7 @@ class TweetGenerator {
                 .join('\n')
                 .replace(/^\d+:\s*/, '')
                 .trim();
-            
+
             return {
                 text,
                 id: `tweet_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
@@ -329,34 +329,47 @@ class TweetGenerator {
         });
     }
 
+
     _buildStoryPrompt(context) {
-        const { currentAge, phase, tweetCount, lastDigest } = context;
-        
-        return `
-请基于以下背景生成${this.paceConfig.tweetsPerScene}条连续的推文：
+        return `Story Context:
+Age: ${context.current_age}
+Phase: ${context.phase}
+Progress: Year ${context.year_progress.year}, ${context.year_progress.progress}% complete
+Total Tweets: ${context.story_metadata.total_tweets}
 
-当前状态：
-- 年龄：${currentAge}岁
-- 阶段：${phase}
-- 推文数：${tweetCount}
+Recent Story:
+${context.recent_tweets.map(t => t.text).join('\n\n')}
 
-上次摘要：
-${lastDigest?.content || '故事刚开始'}
+Latest Summary:
+${context.latest_digest?.content || 'Starting a new chapter...'}
 
-要求：
-1. 符合当前人生阶段的特点
-2. 展现工作和生活的平衡
-3. 体现人物的成长和变化
-4. 创造有趣的情节和互动
-5. 保持故事的连续性
+Create a scene of 4 connected tweets that:
+1. Reflects the current life phase (${context.phase})
+2. Shows character growth and experiences
+3. Includes both work and personal life
+4. Creates engaging moments
+5. Maintains story continuity
 
-格式：
-[推文1]
-[推文2]
-[推文3]
-[推文4]`;
+Scene Guidelines:
+- Balance tech/crypto with personal growth
+- Show both successes and challenges
+- Include relationships and interactions
+- Create memorable moments
+- Build towards future developments
+
+Format:
+TWEET 1: [Set the scene/situation]
+TWEET 2: [Develop the story/interaction]
+TWEET 3: [Key moment or insight]
+TWEET 4: [Resolution and future hint]
+
+Remember:
+- Keep each tweet under 280 characters
+- Use natural, conversational tone
+- Include occasional #hashtags
+- Reference $XVI when relevant
+- Show both professional and personal growth`;
     }
-
     _getPersonalContext(currentAge) {
         const data = require('../data/XaviersSim.json');
         const personal = data.personal;
@@ -425,7 +438,7 @@ ${lastDigest?.content || '故事刚开始'}
 
         // 选择当前主题
         const activeThemes = this._selectThemes(currentPhase, yearProgress);
-        
+
         return {
             currentPhase,
             currentFocus: this._selectFocus(currentPhase, yearProgress),
@@ -481,7 +494,7 @@ ${lastDigest?.content || '故事刚开始'}
         return tweets
             .filter(tweet => {
                 // 检查是否包含关键词
-                return Object.values(keywordPatterns).some(pattern => 
+                return Object.values(keywordPatterns).some(pattern =>
                     pattern.test(tweet.text)
                 );
             })
