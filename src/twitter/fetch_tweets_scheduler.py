@@ -28,49 +28,58 @@ class TweetFetcher:
         print(f"推文回复文件路径: {self.replies_file}")
 
     def get_latest_tweet_id(self):
-        """获取最后一条推文的ID"""
+        """获取最后一条推文的ID和完整信息"""
         try:
             if not os.path.exists(self.sent_tweets_file):
                 print(f"已发送推文文件不存在: {self.sent_tweets_file}")
-                return None
+                return None, None
 
             with open(self.sent_tweets_file, 'r', encoding='utf-8') as f:
                 content = f.read()
                 if not content.strip():
                     print("已发送推文文件为空")
-                    return None
+                    return None, None
                 
                 sent_tweets = json.loads(content)
                 if not sent_tweets:
                     print("没有已发送的推文")
-                    return None
+                    return None, None
                 
                 latest_tweet = sent_tweets[-1]
-                return latest_tweet.get('id')
+                return latest_tweet.get('id'), latest_tweet
         except Exception as e:
             print(f"获取最后一条推文ID时出错: {str(e)}")
-            return None
+            return None, None
 
-    def save_replies(self, tweet_id, replies):
-        """保存推文回复"""
+    def save_replies(self, tweet_id, tweet_data, replies):
+        """保存推文和回复"""
         try:
-            # 读取现有回复
-            existing_replies = {}
+            # 读取现有数据
+            existing_data = {}
             if os.path.exists(self.replies_file):
                 try:
                     with open(self.replies_file, 'r', encoding='utf-8') as f:
                         content = f.read()
                         if content.strip():
-                            existing_replies = json.loads(content)
+                            existing_data = json.loads(content)
                 except:
                     pass
 
-            # 更新回复
-            if tweet_id not in existing_replies:
-                existing_replies[tweet_id] = []
+            # 更新推文数据
+            if tweet_id not in existing_data:
+                existing_data[tweet_id] = {
+                    'tweet': {
+                        'id': tweet_data.get('id'),
+                        'content': tweet_data.get('content'),
+                        'original_id': tweet_data.get('original_id'),
+                        'sent_at': tweet_data.get('sent_at'),
+                        'updated_at': time.strftime('%Y-%m-%d %H:%M:%S')
+                    },
+                    'replies': []
+                }
             
             # 添加新回复，避免重复
-            existing_ids = {r['id'] for r in existing_replies[tweet_id]}
+            existing_ids = {r['id'] for r in existing_data[tweet_id]['replies']}
             for reply in replies:
                 if reply['id'] not in existing_ids:
                     reply_data = {
@@ -80,12 +89,12 @@ class TweetFetcher:
                         'created_at': reply.get('created_at'),
                         'fetched_at': time.strftime('%Y-%m-%d %H:%M:%S')
                     }
-                    existing_replies[tweet_id].append(reply_data)
+                    existing_data[tweet_id]['replies'].append(reply_data)
 
             # 使用临时文件保存
             temp_file = self.replies_file + '.tmp'
             with open(temp_file, 'w', encoding='utf-8') as f:
-                json.dump(existing_replies, f, ensure_ascii=False, indent=2)
+                json.dump(existing_data, f, ensure_ascii=False, indent=2)
             
             # 重命名临时文件
             if os.path.exists(self.replies_file):
@@ -93,10 +102,10 @@ class TweetFetcher:
             else:
                 os.rename(temp_file, self.replies_file)
             
-            print(f"已保存推文 {tweet_id} 的回复，共 {len(existing_replies[tweet_id])} 条")
+            print(f"已保存推文 {tweet_id} 及其回复，共 {len(existing_data[tweet_id]['replies'])} 条回复")
             return True
         except Exception as e:
-            print(f"保存推文回复时出错: {str(e)}")
+            print(f"保存推文和回复时出错: {str(e)}")
             if os.path.exists(temp_file):
                 try:
                     os.remove(temp_file)
@@ -107,10 +116,10 @@ class TweetFetcher:
     def fetch_and_save_replies(self):
         """获取并保存最新推文的回复"""
         try:
-            # 获取最新推文ID
-            tweet_id = self.get_latest_tweet_id()
-            if not tweet_id:
-                print("无法获取最新推文ID")
+            # 获取最新推文ID和完整信息
+            tweet_id, latest_tweet = self.get_latest_tweet_id()
+            if not tweet_id or not latest_tweet:
+                print("无法获取最新推文信息")
                 return False
 
             # 获取回复
@@ -129,8 +138,8 @@ class TweetFetcher:
 
             print(f"找到 {len(replies)} 条回复")
             
-            # 保存回复
-            return self.save_replies(tweet_id, replies)
+            # 保存推文和回复
+            return self.save_replies(tweet_id, latest_tweet, replies)
 
         except Exception as e:
             print(f"获取和保存回复时出错: {str(e)}")
