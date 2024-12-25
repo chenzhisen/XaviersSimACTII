@@ -4,6 +4,7 @@ const { Logger } = require('../utils/logger');
 const fs = require('fs').promises;
 const path = require('path');
 const Introduction = require('../data/Introduction.json');
+const tweetStorage = require('../utils/tweet_storage');
 
 class TweetGenerator {
     constructor(client, model, isProduction = false) {
@@ -221,7 +222,7 @@ class TweetGenerator {
             // 获取最近的推文
             const recentTweets = storyData.story.tweets.slice(-5) || [];
 
-            // 获取最新摘要
+            // 获��最新摘要
             const latestDigest = storyData.story.digests.length > 0
                 ? storyData.story.digests[storyData.story.digests.length - 1]
                 : null;
@@ -258,72 +259,14 @@ class TweetGenerator {
 
     async _saveTweets(tweets, currentAge) {
         try {
-            // 读取当前数据
-            const data = await fs.readFile(this.paths.mainFile, 'utf8');
-            const storyData = JSON.parse(data);
-
-            // 检查是否已达到年龄上限
-            if (storyData.metadata.currentAge >= this.storyConfig.setting.endAge) {
-                this.logger.info('Story has reached end age, no more tweets will be saved');
-                return {
-                    tweets: [],
-                    currentAge: this.storyConfig.setting.endAge,
-                    totalTweets: storyData.story.tweets.length
-                };
+            // 使用新的存储工具保存推文
+            const result = await tweetStorage.saveTweets(tweets, currentAge);
+            if (!result.success) {
+                throw new Error(result.error);
             }
-
-            // 计算新的总推文数和年龄
-            const totalTweets = storyData.story.tweets.length + tweets.length;
-            const newAge = this._calculateAge(totalTweets);
-
-            // 确保年龄不超过上限
-            const safeAge = Math.min(newAge, this.storyConfig.setting.endAge);
-
-            // 添加新推文到 story.tweets
-            const newTweets = tweets.map(tweet => ({
-                ...tweet,
-                age: Number(safeAge.toFixed(2)),
-                timestamp: new Date().toISOString()
-            }));
-
-            storyData.story.tweets.push(...newTweets);
-            
-            // 更新统计信息
-            storyData.stats.totalTweets = totalTweets;
-            storyData.stats.yearProgress = this._calculateYearProgress(totalTweets).progress;
-
-            // 更新元数据
-            storyData.metadata.currentAge = Number(safeAge.toFixed(2));
-            storyData.metadata.lastUpdate = new Date().toISOString();
-            storyData.metadata.currentPhase = this._getCurrentPhase(safeAge);
-
-            // 更新个人状态
-            this._updatePersonalStatus(storyData, safeAge);
-
-            // 保存更新后的数据
-            await fs.writeFile(
-                this.paths.mainFile,
-                JSON.stringify(storyData, null, 2),
-                'utf8'
-            );
-
-            this.logger.info('Saved new tweets', {
-                count: tweets.length,
-                currentAge: Number(safeAge.toFixed(2)),
-                totalTweets,
-                newTweets: newTweets.length
-            });
-
-            // 创建备份
-            await this._createBackup();
-
-            return {
-                tweets: newTweets,
-                currentAge: safeAge,
-                totalTweets
-            };
+            return result;
         } catch (error) {
-            this.logger.error('Error saving tweets', error);
+            console.error('保存推文失败:', error);
             throw error;
         }
     }
