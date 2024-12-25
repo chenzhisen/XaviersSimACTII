@@ -4,10 +4,15 @@ const { XavierSimulation } = require('./simulation');
 const { Config } = require('./utils/config');
 const { Logger } = require('./utils/logger');
 const { initializeDataStructure } = require('./utils/init_data');
+const { CommentHandler } = require('./interaction/comment_handler');
 
 class SimulationRunner {
     constructor() {
         this.logger = new Logger('main');
+        
+        // 初始化评论处理器
+        const aiConfig = Config.getAIConfig();
+        this.commentHandler = new CommentHandler(null, aiConfig.model);
     }
 
     async initialize() {
@@ -30,16 +35,14 @@ class SimulationRunner {
         const spinner = ora('Starting simulation...').start();
         
         try {
+            // 运行主要模拟
             const simulation = new XavierSimulation(options.production);
             const result = await simulation.run();
             
-            spinner.succeed('Simulation completed');
-            this.logger.info('Generated content:', {
-                tweetCount: result.tweets.length,
-                currentAge: result.currentAge,
-                hasDigest: !!result.digest
-            });
-
+            // 处理新评论
+            await this.commentHandler.handleNewComments();
+            
+            spinner.succeed('Simulation and interaction completed');
             return true;
         } catch (error) {
             spinner.fail('Simulation failed');
