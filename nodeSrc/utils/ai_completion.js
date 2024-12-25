@@ -1,32 +1,63 @@
 const { Logger } = require('./logger');
 
 class AICompletion {
-    constructor(client, model) {
+    constructor(client, model, options = {}) {
         this.logger = new Logger('ai');
         this.client = client;
         this.model = model;
+        this.options = {
+            useLocalSimulation: true,  // 默认使用本地模拟
+            ...options
+        };
     }
 
     async getCompletion(systemPrompt, userPrompt) {
         try {
-            // 模拟 AI 生成
-            const scenes = [
-                this._generateScene('工作场景'),
-                this._generateScene('生活场景'),
-                this._generateScene('社交场景')
-            ];
-
-            // 将场景转换为推文格式
-            const tweets = scenes.flatMap(scene => scene.map((text, index) => ({
-                text,
-                id: `tweet_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
-            })));
-
-            return tweets;
+            if (this.options.useLocalSimulation) {
+                return this._getLocalSimulation();
+            } else {
+                return this._getAICompletion(systemPrompt, userPrompt);
+            }
         } catch (error) {
             this.logger.error('AI completion failed', error);
             throw error;
         }
+    }
+
+    async _getAICompletion(systemPrompt, userPrompt) {
+        try {
+            const response = await this.client.chat.completions.create({
+                model: this.model,
+                messages: [
+                    { role: 'system', content: systemPrompt },
+                    { role: 'user', content: userPrompt }
+                ]
+            });
+
+            // 将 AI 响应转换为推文格式
+            const tweets = this._parseAIResponse(response.choices[0].message.content);
+            return tweets;
+        } catch (error) {
+            this.logger.error('AI API call failed', error);
+            // 如果 AI 调用失败，回退到本地模拟
+            this.logger.info('Falling back to local simulation');
+            return this._getLocalSimulation();
+        }
+    }
+
+    _getLocalSimulation() {
+        // 模拟 AI 生成
+        const scenes = [
+            this._generateScene('工作场景'),
+            this._generateScene('生活场景'),
+            this._generateScene('社交场景')
+        ];
+
+        // 将场景转换为推文格式
+        return scenes.flatMap(scene => scene.map((text, index) => ({
+            text,
+            id: `tweet_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
+        })));
     }
 
     _generateScene(type) {
@@ -43,7 +74,7 @@ class AICompletion {
                 [
                     "1: 今天遇到一个超可爱的场景！楼下咖啡店的猫咪趴在我笔记本上，死活不让我写代码。😂 #CatLife",
                     "2: 它对着屏幕上的光标又抓又挠，搞得我哭笑不得。最后只能一只手撸猫，一只手敲代码。多任务处理能力++",
-                    "3: 结果！这个小家伙居然帮我发现了一个bug！它踩键盘时触发了一个边界情况。谁说猫不懂编程？😅",
+                    "3: 结果！这个小家伙居然帮我发现了一个bug！它踩键盘时触发了一个边界情况。��说猫不懂编程？😅",
                     "4: 决定给它取名\"Debug\"，以后就是我们团队的首席测试喵了。投资人说要有好运气，也许这就是了？🐱 #StartupLife"
                 ]
             ],
@@ -58,6 +89,22 @@ class AICompletion {
         };
 
         return templates[type][0];
+    }
+
+    _parseAIResponse(content) {
+        try {
+            // 将 AI 响应文本解析为推文数组
+            const tweets = content.split('\n\n')
+                .filter(tweet => tweet.trim())
+                .map(tweet => ({
+                    text: tweet.trim(),
+                    id: `tweet_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
+                }));
+            return tweets;
+        } catch (error) {
+            this.logger.error('Error parsing AI response', error);
+            return this._getLocalSimulation();
+        }
     }
 }
 

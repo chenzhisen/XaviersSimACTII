@@ -23,7 +23,7 @@ class XavierSimulation {
             maxInterval: 2 * 1000,   // 最大间隔10秒
             maxTweetsPerDay: 4800,      // 每天最大推文数
             tweetsPerScene: 4,        // 每个场景4条推文
-            scenesPerBatch: 4,        // 每批3个场���（固定12条推文）
+            scenesPerBatch: 1,        // 每批3个场���（固定12条推文）
             isRunning: false
         };
 
