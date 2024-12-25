@@ -22,7 +22,7 @@ class DigestGenerator {
                 `在这段时间里，Xavier展现出了典型的创业初期特征。他专注于技术开发，不断挑战自我。与此同时，他也在学习平衡工作与生活，建立重要的人际关系。Debug猫的出现为他的创业生活增添了一份意外的惊喜，也象征着好运的开始。
 
 这个阶段的关键发展包括：
-1. 技术突破：成功解决了关键性能问题
+1. 技术突破：成功解决了关键性能问���
 2. 团队建设：开始组建核心团队
 3. 个人成长：学会在压力下保持乐观
 4. 人际关系：深化了重要的友情纽带
@@ -74,17 +74,15 @@ class DigestGenerator {
         }
     }
 
-    _calculateAge(totalTweets) {
-        const tweetsPerYear = 48; // 每年48条推文
-        const yearsPassed = totalTweets / tweetsPerYear;
-        const startAge = 22;
-        return Number((startAge + yearsPassed).toFixed(2));
-    }
-
     async _getRecentTweets() {
-        const data = await fs.readFile(this.paths.mainFile, 'utf8');
-        const storyData = JSON.parse(data);
-        return storyData.story.tweets.slice(-this.digestInterval);
+        try {
+            const data = await fs.readFile(this.paths.mainFile, 'utf8');
+            const storyData = JSON.parse(data);
+            return storyData.story.tweets.slice(-this.digestInterval) || [];
+        } catch (error) {
+            this.logger.error('Error getting recent tweets', error);
+            return [];
+        }
     }
 
     async _generateDigest(tweets, currentAge) {
@@ -96,9 +94,16 @@ class DigestGenerator {
         return {
             content: template,
             timestamp: new Date().toISOString(),
-            age: currentAge,
-            tweetCount: tweets.length
+            age: Number(currentAge.toFixed(2)),
+            tweetCount: tweets?.length || 0
         };
+    }
+
+    _calculateAge(totalTweets) {
+        const tweetsPerYear = 48; // 每年48条推文
+        const yearsPassed = totalTweets / tweetsPerYear;
+        const startAge = 22;
+        return Number((startAge + yearsPassed).toFixed(2));
     }
 
     _getPhase(age) {
