@@ -102,7 +102,7 @@ class TweetGenerator {
 在生成内容时：
 1. 保持角色的连贯性和真实感
 2. 平衡工作与个人生活的描述
-3. 展现真实的情感和生活细节
+3. 展��真实的情感和生活细节
 4. 体现性格特点和价值观
 5. 符合当前的人生阶段
 
@@ -304,6 +304,20 @@ class TweetGenerator {
             await fs.writeFile(
                 this.paths.mainFile,
                 JSON.stringify(storyData, null, 2),
+                'utf8'
+            );
+
+            // 额外保存一份简化的JSON文件，只包含推特数组
+            const publicTweets = storyData.story.tweets.map(tweet => ({
+                id: tweet.id || `tweet_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+                content: tweet.text || tweet.content,
+                created_at: tweet.timestamp
+            }));
+
+            const publicFilePath = path.join(this.paths.dataDir, 'tweets_public.json');
+            await fs.writeFile(
+                publicFilePath,
+                JSON.stringify(publicTweets, null, 2),
                 'utf8'
             );
 
