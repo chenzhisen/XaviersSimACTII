@@ -241,6 +241,7 @@ class TweetGenerator {
 
     async _saveTweets(tweets, currentAge) {
         try {
+            // 读取当前数据
             const data = await fs.readFile(this.paths.mainFile, 'utf8');
             const storyData = JSON.parse(data);
 
@@ -269,7 +270,7 @@ class TweetGenerator {
             }));
 
             storyData.story.tweets.push(...newTweets);
-
+            
             // 更新统计信息
             storyData.stats.totalTweets = totalTweets;
             storyData.stats.yearProgress = this._calculateYearProgress(totalTweets).progress;
@@ -278,6 +279,9 @@ class TweetGenerator {
             storyData.metadata.currentAge = Number(safeAge.toFixed(2));
             storyData.metadata.lastUpdate = new Date().toISOString();
             storyData.metadata.currentPhase = this._getCurrentPhase(safeAge);
+
+            // 更新个人状态
+            this._updatePersonalStatus(storyData, safeAge);
 
             // 保存更新后的数据
             await fs.writeFile(
@@ -293,6 +297,9 @@ class TweetGenerator {
                 newTweets: newTweets.length
             });
 
+            // 创建备份
+            await this._createBackup();
+
             return {
                 tweets: newTweets,
                 currentAge: safeAge,
@@ -302,6 +309,101 @@ class TweetGenerator {
             this.logger.error('Error saving tweets', error);
             throw error;
         }
+    }
+
+    _updatePersonalStatus(storyData, currentAge) {
+        const personal = storyData.personal;
+        const romantic = personal.relationships.romantic;
+        const familyLife = personal.family_life;
+
+        // 根据年龄更新状态
+        if (currentAge >= 27 && romantic.status === 'single') {
+            // 27岁左右开始稳定的感情关系
+            romantic.status = 'in_relationship';
+            romantic.milestones.push({
+                event: 'started_relationship',
+                age: currentAge,
+                timestamp: new Date().toISOString()
+            });
+        }
+
+        if (currentAge >= 32 && !familyLife.marriage.isMarried) {
+            // 32岁左右结婚
+            familyLife.marriage.isMarried = true;
+            familyLife.status = 'married';
+            familyLife.marriage.date = new Date().toISOString();
+            romantic.status = 'married';
+        }
+
+        if (currentAge >= 34 && !familyLife.children.hasChildren) {
+            // 34岁左右有��一个孩子
+            familyLife.children.hasChildren = true;
+            familyLife.children.count = 1;
+            familyLife.children.milestones.push({
+                event: 'first_child',
+                age: currentAge,
+                timestamp: new Date().toISOString()
+            });
+        }
+
+        // 更新工作生活平衡
+        if (currentAge >= 30) {
+            personal.lifestyle.workLifeBalance.current = '逐步平衡';
+        }
+        if (currentAge >= 35) {
+            personal.lifestyle.workLifeBalance.current = '重视家庭';
+        }
+
+        // 更新兴趣爱好
+        if (currentAge >= 28 && !personal.lifestyle.interests.includes('亲子活动')) {
+            personal.lifestyle.interests.push('亲子活动');
+        }
+
+        // 更新性格特点
+        if (currentAge >= 30 && !personal.lifestyle.traits.includes('成熟稳重')) {
+            personal.lifestyle.traits.push('成熟稳重');
+        }
+
+        // 记录重要的生活变化
+        if (!storyData.story.keyPlotPoints) {
+            storyData.story.keyPlotPoints = [];
+        }
+
+        // 检查并记录重要事件
+        this._checkAndRecordLifeEvents(storyData, currentAge);
+    }
+
+    _checkAndRecordLifeEvents(storyData, currentAge) {
+        const events = [
+            {
+                age: 27,
+                type: 'relationship',
+                title: '遇到人生伴侣',
+                description: '在事业稳定发展时期，遇到了能够互相理解和支持的伴侣。'
+            },
+            {
+                age: 32,
+                type: 'marriage',
+                title: '步入婚姻',
+                description: '与相恋多年的伴侣共同开启人生的新篇章。'
+            },
+            {
+                age: 34,
+                type: 'family',
+                title: '喜得贵子',
+                description: '迎来人生的新角色，成为一名父亲。'
+            }
+        ];
+
+        events.forEach(event => {
+            if (currentAge >= event.age && 
+                !storyData.story.keyPlotPoints.some(p => p.type === event.type)) {
+                storyData.story.keyPlotPoints.push({
+                    ...event,
+                    timestamp: new Date().toISOString()
+                });
+            }
+        });
     }
 
     _calculateAge(totalTweets) {
@@ -452,7 +554,7 @@ Remember:
             const data = await fs.readFile(this.paths.mainFile, 'utf8');
             const storyData = JSON.parse(data);
 
-            // 更新年龄和阶段
+            // 更新年龄阶段
             storyData.currentAge = currentAge;
             storyData.metadata.currentPhase = this._calculatePhase(currentAge);
 
@@ -487,7 +589,7 @@ Remember:
             milestone: /(突破|里程碑|成功|实现)/,
             relationship: /(爱情|友情|团队|伙伴)/,
             challenge: /(困难|挑战|问题|危机)/,
-            growth: /(成长|学习|进步|改变)/,
+            growth: /(成长|学习|进��|改变)/,
             achievement: /(完成|达成|获得|赢得)/
         };
 
