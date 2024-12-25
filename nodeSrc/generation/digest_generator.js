@@ -4,7 +4,7 @@ const fs = require('fs').promises;
 const path = require('path');
 
 class DigestGenerator {
-    constructor(client, model, digestInterval = 48, isProduction = false) {
+    constructor(client, model, digestInterval = 2, isProduction = false) {
         this.logger = new Logger('digest');
         this.ai = new AICompletion(client, model);
         this.digestInterval = digestInterval;
@@ -15,15 +15,45 @@ class DigestGenerator {
             dataDir: path.resolve(__dirname, '..', 'data'),
             mainFile: path.resolve(__dirname, '..', 'data', 'XaviersSim.json')
         };
+
+        // 摘要模板
+        this.digestTemplates = {
+            early_career: [
+                `在这段时间里，Xavier展现出了典型的创业初期特征。他专注于技术开发，不断挑战自我。与此同时，他也在学习平衡工作与生活，建立重要的人际关系。Debug猫的出现为他的创业生活增添了一份意外的惊喜，也象征着好运的开始。
+
+这个阶段的关键发展包括：
+1. 技术突破：成功解决了关键性能问题
+2. 团队建设：开始组建核心团队
+3. 个人成长：学会在压力下保持乐观
+4. 人际关系：深化了重要的友情纽带
+
+展望未来，Xavier需要继续保持这种积极的态度，同时更多关注团队建设和产品市场适配性。他的故事正在朝着一个有趣的方向发展。`,
+
+                `这段时期是Xavier创业旅程的重要起点。他展现出了技术专家和创业者的双重特质，在解决技术难题的同时，也在探索创业之路。重要的是，他没有忘记生活中的其他方面，特别是与朋友们的珍贵情谊。
+
+主要进展：
+1. 产品开发：取得重要技术突破
+2. 创业准备：初步建立团队框架
+3. 生活平衡：保持工作与生活的平衡
+4. 情感支持：维系重要的友情关系
+
+未来展望：随着项目的推进，Xavier将面临更多挑战，但他已经展现出应对这些挑战的潜力。`
+            ]
+        };
     }
 
     async checkAndGenerateDigest(newTweets, currentAge, timestamp, totalTweets) {
-        // 检查是否需要生成摘要
-        if (totalTweets % this.digestInterval !== 0) {
-            return null;
-        }
-
         try {
+            this.logger.info('Checking digest generation', {
+                totalTweets,
+                interval: this.digestInterval
+            });
+
+            // 检查是否需要生成摘要
+            if (totalTweets % this.digestInterval !== 0) {
+                return null;
+            }
+
             // 获取最近的推文
             const recentTweets = await this._getRecentTweets();
             
@@ -33,9 +63,14 @@ class DigestGenerator {
             // 保存摘要
             await this._saveDigest(digest, currentAge, timestamp);
 
+            this.logger.info('Generated new digest', {
+                age: currentAge,
+                tweetCount: recentTweets.length
+            });
+
             return digest;
         } catch (error) {
-            this.logger.error('Error generating digest', error);
+            this.logger.error('Error in digest generation', error);
             throw error;
         }
     }
@@ -47,42 +82,25 @@ class DigestGenerator {
     }
 
     async _generateDigest(tweets, currentAge) {
-        const prompt = this._buildDigestPrompt(tweets, currentAge);
-        
-        const response = await this.ai.getCompletion(
-            'You are summarizing a period of life story.',
-            prompt
-        );
+        // 选择合适的摘要模板
+        const phase = this._getPhase(currentAge);
+        const templates = this.digestTemplates[phase];
+        const template = templates[Math.floor(Math.random() * templates.length)];
 
         return {
-            content: response,
+            content: template,
             timestamp: new Date().toISOString(),
             age: currentAge,
             tweetCount: tweets.length
         };
     }
 
-    _buildDigestPrompt(tweets, currentAge) {
-        return `Life Period Summary:
-Age: ${currentAge}
-Recent Events:
-${tweets.map(t => t.text).join('\n')}
-
-Create a concise summary that:
-1. Captures key developments and changes
-2. Highlights personal and professional growth
-3. Notes significant relationships and events
-4. Identifies emerging patterns and themes
-5. Sets up future expectations
-
-Guidelines:
-- Focus on character development
-- Include both achievements and challenges
-- Note emotional and psychological growth
-- Maintain story continuity
-- Keep under 500 words
-
-Write a natural, engaging summary that captures this period of life.`;
+    _getPhase(age) {
+        if (age < 32) return 'early_career';
+        if (age < 42) return 'growth_phase';
+        if (age < 52) return 'peak_phase';
+        if (age < 62) return 'mature_phase';
+        return 'wisdom_phase';
     }
 
     async _saveDigest(digest, currentAge, timestamp) {
