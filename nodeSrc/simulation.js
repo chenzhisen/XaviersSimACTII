@@ -20,7 +20,7 @@ class XavierSimulation {
 
     async run() {
         try {
-            this.logger.info('Starting simulation run');
+            this.logger.info('Starting story generation');
 
             // 获取当前状态
             const summary = await this.tweetGenerator.getCurrentSummary();
@@ -40,7 +40,7 @@ class XavierSimulation {
                 summary.totalTweets + tweets.length
             );
 
-            this.logger.info('Simulation run completed', {
+            this.logger.info('Story generation completed', {
                 newTweets: tweets.length,
                 hasDigest: !!digest,
                 currentAge: summary.currentAge
@@ -53,7 +53,7 @@ class XavierSimulation {
             };
 
         } catch (error) {
-            this.logger.error('Simulation run failed', error);
+            this.logger.error('Story generation failed', error);
             throw error;
         }
     }

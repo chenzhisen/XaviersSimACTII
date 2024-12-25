@@ -4,15 +4,10 @@ const { XavierSimulation } = require('./simulation');
 const { Config } = require('./utils/config');
 const { Logger } = require('./utils/logger');
 const { initializeDataStructure } = require('./utils/init_data');
-const { CommentHandler } = require('./interaction/comment_handler');
 
 class SimulationRunner {
     constructor() {
         this.logger = new Logger('main');
-        
-        // 初始化评论处理器
-        const aiConfig = Config.getAIConfig();
-        this.commentHandler = new CommentHandler(null, aiConfig.model);
     }
 
     async initialize() {
@@ -35,14 +30,16 @@ class SimulationRunner {
         const spinner = ora('Starting simulation...').start();
         
         try {
-            // 运行主要模拟
             const simulation = new XavierSimulation(options.production);
             const result = await simulation.run();
             
-            // 处理新评论
-            await this.commentHandler.handleNewComments();
-            
-            spinner.succeed('Simulation and interaction completed');
+            spinner.succeed('Story generation completed');
+            this.logger.info('Generated content:', {
+                tweetCount: result.tweets.length,
+                currentAge: result.currentAge,
+                hasDigest: !!result.digest
+            });
+
             return true;
         } catch (error) {
             spinner.fail('Simulation failed');
@@ -62,7 +59,7 @@ async function main() {
 
     program
         .command('run')
-        .description('Run the simulation')
+        .description('Run the story simulation')
         .option('-p, --production', 'Run in production mode')
         .action(async (options) => {
             const success = await runner.run(options);
@@ -72,7 +69,6 @@ async function main() {
     program.parse();
 }
 
-// 启动程序
 main().catch(error => {
     console.error('Fatal error:', error);
     process.exit(1);
