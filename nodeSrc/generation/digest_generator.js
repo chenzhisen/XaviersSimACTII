@@ -175,6 +175,42 @@ class DigestGenerator {
             throw error;
         }
     }
+
+    _buildDigestPrompt(tweets, currentAge) {
+        try {
+            // 构建提示文本
+            const phase = this._getPhase(currentAge);
+            const tweetsText = tweets
+                .map(tweet => tweet.text)
+                .join('\n\n');
+
+            return `
+请为以下推文生成一个简短的摘要。这些推文描述了Xavier在${phase}阶段的经历。
+摘要应该包含以下内容：
+1. 这段时期的主要特点
+2. 关键发展和成就
+3. 个人成长和关系发展
+4. 未来展望
+
+推文内容：
+${tweetsText}
+
+请用中文撰写摘要，格式如下：
+[时期概述]
+
+主要进展：
+1. [进展1]
+2. [进展2]
+3. [进展3]
+4. [进展4]
+
+未来展望：[展望内容]
+`;
+        } catch (error) {
+            console.log(chalk.red('Error building digest prompt:', error));
+            throw error;
+        }
+    }
 }
 
 module.exports = { DigestGenerator }; 
