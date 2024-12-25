@@ -1,56 +1,63 @@
-const { Anthropic } = require('@anthropic-ai/sdk');
+const OpenAI = require('openai');
 const { Logger } = require('./logger');
 const { Config } = require('./config');
 
 class AICompletion {
-    constructor(client, model, baseUrl) {
+    constructor(client, model) {
         this.logger = new Logger('ai');
         const aiConfig = Config.getAIConfig();
-        if (client) {
-            console.log('client 11', client.messages);
-        }
+        
         if (client) {
             this.client = client;
-            this.model = aiConfig.model;
-            this.baseUrl = aiConfig.baseUrl;
+            this.model = model;
         } else {
-            this.model = aiConfig.model;
-            this.baseUrl = aiConfig.baseUrl;
-            this.client = new Anthropic({
+            this.model = aiConfig.model || 'gpt-4';
+            this.client = new OpenAI({
                 apiKey: aiConfig.apiKey,
-                baseURL: this.baseUrl
+                baseURL: aiConfig.baseUrl
             });
-            // console.log('AI Client initialized:', {
-            //     model: this.model,
-            //     hasClient: this.client.messages.create
-            // });
         }
-        // return this.client
+        
+        console.log('AI Client initialized:', {
+            model: this.model,
+            hasClient: !!this.client
+        });
     }
 
     async getCompletion(systemPrompt, userPrompt, options = {}) {
-        console.log('systemPrompt', systemPrompt);
-        console.log('userPrompt', userPrompt);
-
         try {
-            // console.log('this.model', this.model);
-            // const response = await this.client.messages.create({
-            //     model: this.model,
-            //     system: systemPrompt,
-            //     messages: [{ role: "user", content: "Hello, Claude" }],
-            //     temperature: options.temperature || 0.7,
-            //     max_tokens: options.max_tokens || 1000
-            // });
-            // console.log('response', response);
-            // return response.content[0].text;
-            const msg = await this.client.messages.create({
-                model:"grok-beta",
-                max_tokens: 1024,
-                messages: [{ role: "user", content: "Hello, Claude" }],
-              });
-              console.log(msg);
+          
+
+            const response = await this.client.chat.completions.create({
+                model: this.model,
+                messages: [
+                    {
+                        role: "system",
+                        content:
+                            "You are Grok, a chatbot inspired by the Hitchhiker's Guide to the Galaxy.",
+                    },
+                    {
+                        role: "user",
+                        content:
+                            "What is the meaning of life, the universe, and everything?",
+                    },
+                ],
+            });
+
+            console.log('AI Response:', {
+                hasChoices: !!response.choices,
+                firstChoice: response.choices?.[0]
+            });
+
+            return response.choices[0].message.content;
         } catch (error) {
             this.logger.error('Error in AI completion', error);
+            console.error('Detailed error:', {
+                name: error.name,
+                message: error.message,
+                status: error.status,
+                response: error.response
+            });
             throw error;
         }
     }

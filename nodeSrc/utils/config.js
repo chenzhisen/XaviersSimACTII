@@ -4,11 +4,7 @@ const path = require('path');
 class Config {
     static init() {
         dotenv.config();
-        console.log('Environment variables loaded:', {
-            ANTHROPIC_API_KEY: process.env.ANTHROPIC_API_KEY ? '***' + process.env.ANTHROPIC_API_KEY.slice(-4) : 'undefined',
-            ANTHROPIC_MODEL: process.env.ANTHROPIC_MODEL,
-            AI_BASE_URL: process.env.AI_BASE_URL
-        });
+      
         return this;
     }
 
