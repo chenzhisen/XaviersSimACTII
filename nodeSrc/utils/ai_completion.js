@@ -3,6 +3,8 @@ const OpenAI = require('openai');
 const dotenv = require('dotenv');
 const { Config } = require('./config');
 const chalk = require('chalk');
+const fs = require('fs').promises;
+const path = require('path');
 
 class AICompletion {
     constructor(client, model, options = {}) {
@@ -35,6 +37,9 @@ class AICompletion {
             useLocalSimulation: this.options.useLocalSimulation,
             model: this.model
         }));
+
+        // 添加日志路径
+        this.logPath = path.resolve(__dirname, '..', 'data', 'ai_logs');
     }
 
     async getCompletion(systemPrompt, userPrompt) {
@@ -82,21 +87,62 @@ class AICompletion {
                 ]
             });
 
+            // 保存交互记录
+            await this._saveInteraction({
+                timestamp: new Date().toISOString(),
+                model: this.model,
+                systemPrompt,
+                userPrompt,
+                response: response.choices[0].message.content,
+                success: true
+            });
+
             console.log(chalk.green('API response received:', {
                 status: 'success',
                 content: response.choices[0].message.content?.substring(0, 50) + '...'
             }));
 
-            // 将 AI 响应转换为推文格式
             const tweets = this._parseAIResponse(response.choices[0].message.content);
             return tweets;
         } catch (error) {
+            // 保存错误记录
+            await this._saveInteraction({
+                timestamp: new Date().toISOString(),
+                model: this.model,
+                systemPrompt,
+                userPrompt,
+                error: error.message,
+                success: false
+            });
+
             console.log(chalk.red('AI API call failed:', {
                 error: error.message,
                 model: this.model
             }));
             console.log(chalk.yellow('Falling back to local simulation'));
             return this._getLocalSimulation();
+        }
+    }
+
+    async _saveInteraction(data) {
+        try {
+            // 确保日志目录存在
+            await fs.mkdir(this.logPath, { recursive: true });
+
+            // 生成文件名
+            const filename = `ai_interaction_${new Date().toISOString().replace(/[:.]/g, '-')}.json`;
+            const filepath = path.join(this.logPath, filename);
+
+            // 保存交互记录
+            await fs.writeFile(
+                filepath,
+                JSON.stringify(data, null, 2),
+                'utf8'
+            );
+
+            console.log(chalk.blue('Interaction log saved:', filepath));
+        } catch (error) {
+            console.log(chalk.red('Error saving interaction log:', error));
         }
     }
 
