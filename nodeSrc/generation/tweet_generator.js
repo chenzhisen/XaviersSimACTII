@@ -46,7 +46,7 @@ class TweetGenerator {
             try {
                 // 尝试读取现有数据
                 const data = await fs.readFile(this.paths.mainFile, 'utf8');
-                console.log('data222',data);
+              
                 summary = JSON.parse(data);
             } catch (error) {
                 if (error.code === 'ENOENT') {

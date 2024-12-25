@@ -1,8 +1,0 @@
-{
-  "timestamp": "2024-12-25T08:34:39.582Z",
-  "model": "openai/gpt-3.5-turbo",
-  "systemPrompt": "You are crafting a story digest summarizing recent events.",
-  "userPrompt": "\n作为一个故事摘要生成器，请为以下推文���成一个详细的中文摘要。\n这些推文描述了Xavier在early_career阶段（22岁）的经历。\n\n推文内容：\nTWEET 1: Just landed my first job in a tech startup. Excitement and nerves kicking in as I step into the world of blockchain and AI. Let the learning begin! #NewBeginnings #EarlyCareer\n\nTWEET 2: Met a colleague, Sarah, who's a coding genius. She's offered to mentor me in coding $XVI smart contracts. Grateful for the chance to learn from the best. #TechMentor #GrowthMindset\n\nTWEET 3: After a week of late nights and endless lines of code, I finally deployed my first $XVI smart contract successfully. The feeling of accomplishment is indescribable. #CodingVictory #ProudMoment\n\nTWEET 4: Celebrated with friends at a rooftop bar. As the city lights shimmered below, I felt a sense of belonging and purpose. The future is bright, and I'm ready to embrace every challenge that comes my way. #BrightFuture #CareerGrowth\n\n请按以下格式生成摘要：\n1. 开头概述这段时期的整体特点和主要发展（2-3句话）\n2. 列出4个具体的主要进展，包括：技术/产品、团队/人际、个人成长等方面\n3. 最后加上对未来的展望（1-2句话）\n\n要求：\n- 保持积极向上的基调\n- 突出重要的转折点和成就\n- 体现人物的成长轨迹\n- 注意情���和故事性\n- 确保内容前后连贯\n\n请严格按照以下模板输出：\n[开头概述，2-3句话描述这段时期的特点]\n\n主要进展：\n1. [具体进展1]\n2. [具体进展2]\n3. [具体进展3]\n4. [具体进展4]\n\n未来展望：[1-2句话的展望]\n",
-  "response": "\n[开头概述：Xavier在early_career阶段迎接挑战，踏入区块链和人工智能世界，充满激动和紧张感。]\n\n主要进展：\n1. 获得首份科技初创公司工作，开始学习区块链和人工智能技术，开启崭新旅程。\n2. 遇见Sarah，一位编程天才同事，提供指导学习编写$XVI智能合约，展现技术成长和团队合作。\n3. 经过一周通宵编码，成功部署首个$XVI智能合约，收获成就感和自豪，体现个人成长和技术突破。\n4. 与朋友们在天台酒吧庆祝成功时，感受到归属感和使命感，展望光明未来，愿迎接挑战促成个人职业发展。\n\n未来展望：展望未来充满挑战带来增长和成就，信心满满地迈向更广阔的职业道路。",
-  "success": true
-}
