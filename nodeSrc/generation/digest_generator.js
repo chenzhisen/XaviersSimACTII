@@ -22,7 +22,7 @@ class DigestGenerator {
                 `在这段时间里，Xavier展现出了典型的创业初期特征。他专注于技术开发，不断挑战自我。与此同时，他也在学习平衡工作与生活，建立重要的人际关系。Debug猫的出现为他的创业生活增添了一份意外的惊喜，也象征着好运的开始。
 
 这个阶段的关键发展包括：
-1. 技术突破：成功解决了关键性能问���
+1. 技术突破：成功解决了关键性能问题
 2. 团队建设：开始组建核心团队
 3. 个人成长：学会在压力下保持乐观
 4. 人际关系：深化了重要的友情纽带
@@ -42,7 +42,7 @@ class DigestGenerator {
         };
     }
 
-    async checkAndGenerateDigest(newTweets, currentAge, timestamp, totalTweets) {
+    async checkAndGenerateDigest(newTweets = [], currentAge, timestamp, totalTweets) {
         try {
             this.logger.info('Checking digest generation', {
                 totalTweets,
@@ -52,19 +52,22 @@ class DigestGenerator {
             // 获取最近的推文
             const recentTweets = await this._getRecentTweets();
             
+            // 确保 recentTweets 是数组
+            const validTweets = Array.isArray(recentTweets) ? recentTweets : [];
+            
             // 计算当前年龄（包括新增的推文）
-            const calculatedAge = this._calculateAge(totalTweets + newTweets.length);
+            const calculatedAge = this._calculateAge(totalTweets + (newTweets?.length || 0));
             
             // 生成摘要
-            const digest = await this._generateDigest(recentTweets, calculatedAge);
+            const digest = await this._generateDigest(validTweets, calculatedAge);
             
             // 保存摘要和更新年龄
             await this._saveDigest(digest, calculatedAge, timestamp);
 
             this.logger.info('Generated new digest', {
                 age: calculatedAge,
-                tweetCount: recentTweets.length,
-                totalTweets: totalTweets + newTweets.length
+                tweetCount: validTweets.length,
+                totalTweets: totalTweets + (newTweets?.length || 0)
             });
 
             return digest;
@@ -78,17 +81,17 @@ class DigestGenerator {
         try {
             const data = await fs.readFile(this.paths.mainFile, 'utf8');
             const storyData = JSON.parse(data);
-            return storyData.story.tweets.slice(-this.digestInterval) || [];
+            return storyData.story?.tweets?.slice(-this.digestInterval) || [];
         } catch (error) {
             this.logger.error('Error getting recent tweets', error);
             return [];
         }
     }
 
-    async _generateDigest(tweets, currentAge) {
+    async _generateDigest(tweets = [], currentAge) {
         // 选择合适的摘要模板
         const phase = this._getPhase(currentAge);
-        const templates = this.digestTemplates[phase];
+        const templates = this.digestTemplates[phase] || this.digestTemplates.early_career;
         const template = templates[Math.floor(Math.random() * templates.length)];
 
         return {
