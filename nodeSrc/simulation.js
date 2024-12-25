@@ -23,9 +23,12 @@ class XavierSimulation {
             maxInterval: 2 * 1000,   // 最大间隔10秒
             maxTweetsPerDay: 4800,      // 每天最大推文数
             tweetsPerScene: 4,        // 每个场景4条推文
-            scenesPerBatch: 4,        // 每批3个场��（固定12条推文）
+            scenesPerBatch: 4,        // 每批3个场���（固定12条推文）
             isRunning: false
         };
+
+        // 加载故事配置
+        this.storyConfig = require('./data/Introduction.json').story;
     }
 
     async start() {
@@ -64,11 +67,12 @@ class XavierSimulation {
             // 获取当前状态
             const summary = await this.tweetGenerator.getCurrentSummary();
             
-            // 检查是否已完成
-            if (summary.isCompleted) {
+            // 检查是否完成
+            if (summary.isCompleted || summary.currentAge >= this.storyConfig.setting.endAge) {
                 this.logger.info('Story has completed', {
                     finalAge: summary.currentAge,
-                    totalTweets: summary.totalTweets
+                    totalTweets: summary.totalTweets,
+                    endAge: this.storyConfig.setting.endAge
                 });
                 this.stop();
                 return null;

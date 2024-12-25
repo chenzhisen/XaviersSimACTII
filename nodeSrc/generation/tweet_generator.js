@@ -32,7 +32,7 @@ class TweetGenerator {
         // 年龄限制配置
         this.ageConfig = {
             startAge: this.storyConfig.setting.startAge,
-            endAge: 72,
+            endAge: this.storyConfig.setting.endAge,
             tweetsPerYear: this.paceConfig.tweetsPerYear
         };
     }
@@ -58,13 +58,16 @@ class TweetGenerator {
             }
 
             // 检查是否达到年龄上限
-            if (summary.currentAge >= this.ageConfig.endAge) {
+            if (summary.metadata.currentAge >= this.storyConfig.setting.endAge) {
                 this.logger.info('Story has reached end age', {
-                    currentAge: summary.currentAge,
-                    endAge: this.ageConfig.endAge
+                    currentAge: summary.metadata.currentAge,
+                    endAge: this.storyConfig.setting.endAge
                 });
                 return {
-                    ...summary,
+                    currentAge: this.storyConfig.setting.endAge,
+                    totalTweets: summary.story.tweets.length,
+                    lastDigest: summary.story.digests[summary.story.digests.length - 1]?.content || null,
+                    yearProgress: this._calculateYearProgress(summary.story.tweets.length),
                     isCompleted: true
                 };
             }
@@ -189,12 +192,22 @@ class TweetGenerator {
             const data = await fs.readFile(this.paths.mainFile, 'utf8');
             const storyData = JSON.parse(data);
             
+            // 检查是否已达到年龄上限
+            if (storyData.metadata.currentAge >= this.storyConfig.setting.endAge) {
+                this.logger.info('Story has reached end age, no more tweets will be saved');
+                return {
+                    tweets: [],
+                    currentAge: this.storyConfig.setting.endAge,
+                    totalTweets: storyData.story.tweets.length
+                };
+            }
+
             // 计算新的总推文数和年龄
             const totalTweets = storyData.story.tweets.length + tweets.length;
             const newAge = this._calculateAge(totalTweets);
             
             // 确保年龄不超过上限
-            const safeAge = Math.min(newAge, this.ageConfig.endAge);
+            const safeAge = Math.min(newAge, this.storyConfig.setting.endAge);
             
             // 添加新推文到 story.tweets
             const newTweets = tweets.map(tweet => ({
@@ -244,7 +257,7 @@ class TweetGenerator {
         
         const yearsPassed = totalTweets / this.paceConfig.tweetsPerYear;
         const newAge = this.ageConfig.startAge + yearsPassed;
-        return Math.min(Number(newAge.toFixed(2)), this.ageConfig.endAge);
+        return Math.min(Number(newAge.toFixed(2)), this.storyConfig.setting.endAge);
     }
 
     _parseTweets(response) {
@@ -307,7 +320,7 @@ Remember:
 
     _getCurrentPhase(age) {
         // 确保年龄不超过最大值
-        const safeAge = Math.min(age, this.ageConfig.endAge);
+        const safeAge = Math.min(age, this.storyConfig.setting.endAge);
 
         // 按年龄范围返回对应阶段
         if (safeAge < 32) return 'early_career';
@@ -424,7 +437,7 @@ Remember:
             this.logger.info('Created story backup', { path: backupPath });
         } catch (error) {
             this.logger.error('Error creating backup', error);
-            // 继续执行，备份失败不影响主流程
+            // 继续执行，���份失败不影响主流程
         }
     }
 }
