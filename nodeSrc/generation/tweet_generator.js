@@ -8,15 +8,16 @@ const Introduction = require('../data/Introduction.json');
 class TweetGenerator {
     constructor(client, model, isProduction = false) {
         this.logger = new Logger('tweet');
+        this.ai = new AICompletion(client, model);
+        this.githubOps = new GithubOperations(isProduction);
         this.isProduction = isProduction;
 
-        // 创建 AI 实例时传入系统提示
-        this.ai = new AICompletion(client, model, {
-            systemPrompt: this._buildSystemPrompt(),
-            isProduction
-        });
-
-        this.githubOps = new GithubOperations(isProduction);
+        // 文件路径配置
+        this.paths = {
+            dataDir: path.resolve(__dirname, '..', 'data'),
+            mainFile: path.resolve(__dirname, '..', 'data', 'XaviersSim.json'),
+            backupDir: path.resolve(__dirname, '..', 'data', 'backups')
+        };
 
         // 加载故事背景
         this.storyConfig = Introduction.story;
@@ -29,17 +30,18 @@ class TweetGenerator {
             tweetsPerScene: 4
         };
 
-        // Windows 路径配置
-        this.paths = {
-            dataDir: path.resolve(__dirname, '..', 'data'),
-            mainFile: path.resolve(__dirname, '..', 'data', 'XaviersSim.json')
-        };
-
         // 年龄限制配置
         this.ageConfig = {
             startAge: this.storyConfig.setting.startAge,
             endAge: this.storyConfig.setting.endAge,
             tweetsPerYear: this.paceConfig.tweetsPerYear
+        };
+
+        // 备份路径配置
+        this.backupConfig = {
+            dir: path.join(__dirname, '..', 'data', 'backups'),
+            maxFiles: 5,  // 保留最近5个备份
+            interval: 24 * 60 * 60 * 1000  // 24小时
         };
     }
 
@@ -186,7 +188,7 @@ class TweetGenerator {
                 prompt
             );
 
-            // 保存新生成的推文并获取更新后的信息
+            // 保存新生成的推文获取更新后的信息
             const result = await this._saveTweets(tweets, currentAge);
 
             return result.tweets;
@@ -336,7 +338,7 @@ class TweetGenerator {
         }
 
         if (currentAge >= 34 && !familyLife.children.hasChildren) {
-            // 34岁左右有��一个孩子
+            // 34岁左右有一个孩子
             familyLife.children.hasChildren = true;
             familyLife.children.count = 1;
             familyLife.children.milestones.push({
@@ -589,7 +591,7 @@ Remember:
             milestone: /(突破|里程碑|成功|实现)/,
             relationship: /(爱情|友情|团队|伙伴)/,
             challenge: /(困难|挑战|问题|危机)/,
-            growth: /(成长|学习|进��|改变)/,
+            growth: /(成长|学习|进步|改变)/,
             achievement: /(完成|达成|获得|赢得)/
         };
 
@@ -633,6 +635,58 @@ Remember:
         } catch (error) {
             this.logger.error('Error creating backup', error);
             // 继续执行，备份失败不影响主流程
+        }
+    }
+
+    async _createBackup() {
+        try {
+            // 确保备份目录存在
+            await fs.mkdir(this.backupConfig.dir, { recursive: true });
+
+            // 生成备份文件名
+            const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+            const backupPath = path.join(
+                this.backupConfig.dir,
+                `XaviersSim_${timestamp}.json`
+            );
+
+            // 复制当前文件作为备份
+            await fs.copyFile(this.paths.mainFile, backupPath);
+
+            // 清理旧备份
+            await this._cleanupOldBackups();
+
+            this.logger.info('Created story backup', { path: backupPath });
+        } catch (error) {
+            this.logger.error('Error creating backup', error);
+            // 继续执行，备份失败不影响主流程
+        }
+    }
+
+    async _cleanupOldBackups() {
+        try {
+            // 获取所有备份文件
+            const files = await fs.readdir(this.backupConfig.dir);
+            const backups = files
+                .filter(f => f.startsWith('XaviersSim_'))
+                .map(f => ({
+                    name: f,
+                    path: path.join(this.backupConfig.dir, f),
+                    time: new Date(f.split('_')[1].split('.')[0].replace(/-/g, ':'))
+                }))
+                .sort((a, b) => b.time - a.time);  // 按时间降序排序
+
+            // 删除超出数量限制的旧备份
+            if (backups.length > this.backupConfig.maxFiles) {
+                const oldBackups = backups.slice(this.backupConfig.maxFiles);
+                for (const backup of oldBackups) {
+                    await fs.unlink(backup.path);
+                    this.logger.info('Deleted old backup', { path: backup.path });
+                }
+            }
+        } catch (error) {
+            this.logger.error('Error cleaning up old backups', error);
+            // 继续执行，清理失败不影响主流程
         }
     }
 }
