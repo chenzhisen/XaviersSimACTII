@@ -19,8 +19,8 @@ class XavierSimulation {
 
         // 运行配置
         this.config = {
-            minInterval: 5 * 1000,    // 最小间隔5秒
-            maxInterval: 10 * 1000,   // 最大间隔10秒
+            minInterval: 1 * 1000,    // 最小间隔5秒
+            maxInterval: 2 * 1000,   // 最大间隔10秒
             maxTweetsPerDay: 48,      // 每天最大推文数
             tweetsPerScene: 4,        // 每个场景4条推文
             scenesPerBatch: 3,        // 每批3个场��（固定12条推文）
