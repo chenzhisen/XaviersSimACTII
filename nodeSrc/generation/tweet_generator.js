@@ -128,28 +128,31 @@ class TweetGenerator {
 
     async _prepareContext(digest, currentAge, tweetCount) {
         try {
-            // 读取当前故事数据
             const data = await fs.readFile(this.paths.mainFile, 'utf8');
             const storyData = JSON.parse(data);
-            
+                        
             // 获取最近的推文
-            const recentTweets = (storyData.tweets || []).slice(-5);
+            const recentTweets = storyData.story.tweets.slice(-5) || [];
             
+            // 获取最新摘要
+            const latestDigest = storyData.story.digests.length > 0 
+                ? storyData.story.digests[storyData.story.digests.length - 1]
+                : null;
+
             // 计算当前阶段
             const phase = this._calculatePhase(currentAge);
             
-            // 准备上下文
             return {
                 current_age: currentAge,
                 tweet_count: tweetCount,
                 recent_tweets: recentTweets,
-                latest_digest: digest,
+                latest_digest: latestDigest?.content || 'Starting a new chapter...',
                 phase: phase,
                 year_progress: this._calculateYearProgress(tweetCount),
                 story_metadata: {
-                    protagonist: this.storyConfig.protagonist.name,
+                    protagonist: storyData.metadata.protagonist,
                     current_phase: phase,
-                    total_tweets: storyData.tweets?.length || 0
+                    total_tweets: storyData.stats.totalTweets
                 }
             };
         } catch (error) {
@@ -168,23 +171,27 @@ class TweetGenerator {
 
     async _saveTweets(tweets, currentAge) {
         try {
-            // 读取现有数据
             const data = await fs.readFile(this.paths.mainFile, 'utf8');
             const storyData = JSON.parse(data);
             
-            // 添加新推文
-            storyData.tweets = storyData.tweets || [];
-            storyData.tweets.push(...tweets.map(tweet => ({
+            // 添加新推文到 story.tweets
+            const newTweets = tweets.map(tweet => ({
                 ...tweet,
                 age: currentAge,
                 timestamp: new Date().toISOString()
-            })));
+            }));
+            
+            storyData.story.tweets.push(...newTweets);
+            
+            // 更新统计信息
+            storyData.stats.totalTweets = storyData.story.tweets.length;
+            storyData.stats.yearProgress = this._calculateYearProgress(storyData.stats.totalTweets).progress;
             
             // 更新元数据
-            storyData.currentAge = currentAge;
-            storyData.lastUpdate = new Date().toISOString();
+            storyData.metadata.currentAge = currentAge;
+            storyData.metadata.lastUpdate = new Date().toISOString();
             storyData.metadata.currentPhase = this._calculatePhase(currentAge);
-            
+
             // 保存更新后的数据
             await fs.writeFile(
                 this.paths.mainFile,
@@ -194,8 +201,11 @@ class TweetGenerator {
             
             this.logger.info('Saved new tweets', {
                 count: tweets.length,
-                currentAge
+                currentAge,
+                totalTweets: storyData.stats.totalTweets
             });
+
+            return true;
         } catch (error) {
             this.logger.error('Error saving tweets', error);
             throw error;
@@ -219,35 +229,45 @@ class TweetGenerator {
         });
     }
 
-    _buildStoryPrompt(context, plotContext) {
+    _buildStoryPrompt(context) {
         return `Story Context:
 Age: ${context.current_age}
-Life Phase: ${plotContext.currentPhase.focus}
-Current Focus: ${plotContext.currentFocus}
-Active Themes: ${plotContext.activeThemes.join(', ')}
+Phase: ${context.phase}
+Progress: Year ${context.year_progress.year}, ${context.year_progress.progress}% complete
+Total Tweets: ${context.story_metadata.total_tweets}
 
 Recent Story:
-${context.recent_tweets.map(t => t.text).join('\n')}
+${context.recent_tweets.map(t => t.text).join('\n\n')}
+
+Latest Summary:
+${context.latest_digest?.content || 'Starting a new chapter...'}
 
 Create a scene of 4 connected tweets that:
-1. Advances the life story naturally
-2. Shows character growth and insights
-3. Reflects current life phase themes
-4. Creates memorable moments
+1. Reflects the current life phase (${context.phase})
+2. Shows character growth and experiences
+3. Includes both work and personal life
+4. Creates engaging moments
 5. Maintains story continuity
 
-Scene Structure:
-TWEET 1: [Set the scene and mood]
-TWEET 2: [Develop the situation]
+Scene Guidelines:
+- Balance tech/crypto with personal growth
+- Show both successes and challenges
+- Include relationships and interactions
+- Create memorable moments
+- Build towards future developments
+
+Format:
+TWEET 1: [Set the scene/situation]
+TWEET 2: [Develop the story/interaction]
 TWEET 3: [Key moment or insight]
 TWEET 4: [Resolution and future hint]
 
-Writing Guidelines:
-- Focus on personal growth and insights
-- Show both successes and challenges
-- Include technical and financial elements
-- Create authentic character voice
-- Build towards larger story arcs`;
+Remember:
+- Keep each tweet under 280 characters
+- Use natural, conversational tone
+- Include occasional #hashtags
+- Reference $XVI when relevant
+- Show both professional and personal growth`;
     }
 
     _getCurrentPhase(age) {
@@ -271,7 +291,92 @@ Writing Guidelines:
         };
     }
 
-    // ... 其他必要方法 ...
+    async _updateStoryProgress(tweets, currentAge) {
+        try {
+            const data = await fs.readFile(this.paths.mainFile, 'utf8');
+            const storyData = JSON.parse(data);
+
+            // 更新年龄和阶段
+            storyData.currentAge = currentAge;
+            storyData.metadata.currentPhase = this._calculatePhase(currentAge);
+
+            // 添加关键情节点
+            const keyMoments = this._identifyKeyMoments(tweets);
+            if (keyMoments.length > 0) {
+                storyData.keyPlotPoints = storyData.keyPlotPoints || [];
+                storyData.keyPlotPoints.push(...keyMoments.map(moment => ({
+                    ...moment,
+                    age: currentAge,
+                    timestamp: new Date().toISOString()
+                })));
+            }
+
+            // 保存更新
+            await fs.writeFile(
+                this.paths.mainFile,
+                JSON.stringify(storyData, null, 2),
+                'utf8'
+            );
+
+            return storyData;
+        } catch (error) {
+            this.logger.error('Error updating story progress', error);
+            throw error;
+        }
+    }
+
+    _identifyKeyMoments(tweets) {
+        // 识别关键情节（基于关键词和内容分析）
+        const keywordPatterns = {
+            milestone: /(突破|里程碑|成功|实现)/,
+            relationship: /(爱情|友情|团队|伙伴)/,
+            challenge: /(困难|挑战|问题|危机)/,
+            growth: /(成长|学习|进步|改变)/,
+            achievement: /(完成|达成|获得|赢得)/
+        };
+
+        return tweets
+            .filter(tweet => {
+                // 检查是否包含关键词
+                return Object.values(keywordPatterns).some(pattern => 
+                    pattern.test(tweet.text)
+                );
+            })
+            .map(tweet => ({
+                type: this._getKeyMomentType(tweet.text, keywordPatterns),
+                content: tweet.text,
+                id: tweet.id
+            }));
+    }
+
+    _getKeyMomentType(text, patterns) {
+        for (const [type, pattern] of Object.entries(patterns)) {
+            if (pattern.test(text)) return type;
+        }
+        return 'general';
+    }
+
+    async _backupStoryData() {
+        try {
+            const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+            const backupPath = path.join(
+                this.paths.dataDir,
+                'backups',
+                `story_${timestamp}.json`
+            );
+
+            // 确保备份目录存在
+            await fs.mkdir(path.dirname(backupPath), { recursive: true });
+
+            // 复制当前数据文件
+            await fs.copyFile(this.paths.mainFile, backupPath);
+
+            this.logger.info('Created story backup', { path: backupPath });
+        } catch (error) {
+            this.logger.error('Error creating backup', error);
+            // 继续执行，备份失败不影响主流程
+        }
+    }
 }
 
 module.exports = { TweetGenerator }; 

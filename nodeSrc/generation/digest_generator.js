@@ -1,118 +1,120 @@
 const { AICompletion } = require('../utils/ai_completion');
-const { GithubOperations } = require('../storage/github_operations');
 const { Logger } = require('../utils/logger');
+const fs = require('fs').promises;
+const path = require('path');
 
 class DigestGenerator {
-    constructor(client, model, tweetsPerDigest = 12, isProduction = false) {
+    constructor(client, model, digestInterval = 48, isProduction = false) {
         this.logger = new Logger('digest');
         this.ai = new AICompletion(client, model);
-        this.githubOps = new GithubOperations(isProduction);
-        
-        // 配置
-        this.tweetsPerDigest = tweetsPerDigest;
-        this.significantEventThreshold = 3;
+        this.digestInterval = digestInterval;
+        this.isProduction = isProduction;
+
+        // 文件路径配置
+        this.paths = {
+            dataDir: path.resolve(__dirname, '..', 'data'),
+            mainFile: path.resolve(__dirname, '..', 'data', 'XaviersSim.json')
+        };
     }
 
-    async checkAndGenerateDigest(tweets, currentAge, currentDate, tweetCount, techEvolution) {
+    async checkAndGenerateDigest(newTweets, currentAge, timestamp, totalTweets) {
+        // 检查是否需要生成摘要
+        if (totalTweets % this.digestInterval !== 0) {
+            return null;
+        }
+
         try {
-            const [currentDigest, sha] = await this.githubOps.getFileContent('digest.json');
+            // 获取最近的推文
+            const recentTweets = await this._getRecentTweets();
             
-            // 检查是否需要更新
-            if (!this._shouldUpdateDigest(tweets, currentDigest)) {
-                return currentDigest;
-            }
+            // 生成摘要
+            const digest = await this._generateDigest(recentTweets, currentAge);
+            
+            // 保存摘要
+            await this._saveDigest(digest, currentAge, timestamp);
 
-            // 生成新的摘要
-            const newDigest = await this._generateDigest(
-                tweets,
-                currentAge,
-                currentDate,
-                tweetCount,
-                techEvolution
-            );
-
-            // 保存新摘要
-            await this.githubOps.updateFile(
-                'digest.json',
-                newDigest,
-                `Update digest at age ${currentAge.toFixed(1)}`
-            );
-
-            return newDigest;
-
+            return digest;
         } catch (error) {
             this.logger.error('Error generating digest', error);
             throw error;
         }
     }
 
-    _shouldUpdateDigest(tweets, currentDigest) {
-        if (!currentDigest) return true;
-        if (!tweets || tweets.length === 0) return false;
-
-        const newTweetCount = tweets.length - (currentDigest.last_tweet_count || 0);
-        if (newTweetCount >= this.tweetsPerDigest) return true;
-
-        // 检查重要事件
-        const significantEvents = this._countSignificantEvents(
-            tweets.slice(-newTweetCount)
-        );
-        return significantEvents >= this.significantEventThreshold;
+    async _getRecentTweets() {
+        const data = await fs.readFile(this.paths.mainFile, 'utf8');
+        const storyData = JSON.parse(data);
+        return storyData.story.tweets.slice(-this.digestInterval);
     }
 
-    async _generateDigest(tweets, currentAge, currentDate, tweetCount, techEvolution) {
-        const recentTweets = tweets.slice(-this.tweetsPerDigest);
-        const prompt = this._buildPrompt(recentTweets, currentAge, currentDate, techEvolution);
-
+    async _generateDigest(tweets, currentAge) {
+        const prompt = this._buildDigestPrompt(tweets, currentAge);
+        
         const response = await this.ai.getCompletion(
-            'You are a story analysis system.',
+            'You are summarizing a period of life story.',
             prompt
         );
 
         return {
             content: response,
+            timestamp: new Date().toISOString(),
             age: currentAge,
-            date: currentDate.toISOString(),
-            last_tweet_count: tweetCount,
-            tech_state: techEvolution
+            tweetCount: tweets.length
         };
     }
 
-    _buildPrompt(tweets, currentAge, currentDate, techEvolution) {
-        return `Current story progress:
+    _buildDigestPrompt(tweets, currentAge) {
+        return `Life Period Summary:
 Age: ${currentAge}
-Year: ${currentDate.getFullYear()}
-
-Recent story developments:
+Recent Events:
 ${tweets.map(t => t.text).join('\n')}
 
-Technology context:
-${JSON.stringify(techEvolution, null, 2)}
+Create a concise summary that:
+1. Captures key developments and changes
+2. Highlights personal and professional growth
+3. Notes significant relationships and events
+4. Identifies emerging patterns and themes
+5. Sets up future expectations
 
-Analyze the recent story developments and create a narrative digest that includes:
-1. Story Summary: Key events and developments in Xavier's journey
-2. Character Development: How Xavier is growing and changing
-3. Relationships: Important connections and interactions
-4. Technology Integration: How tech advances affect the story
-5. Themes & Motifs: Recurring ideas and symbols
-6. Future Setup: Potential story directions and upcoming developments
+Guidelines:
+- Focus on character development
+- Include both achievements and challenges
+- Note emotional and psychological growth
+- Maintain story continuity
+- Keep under 500 words
 
-Format as a clear narrative structure that maintains story continuity.`;
+Write a natural, engaging summary that captures this period of life.`;
     }
 
-    _countSignificantEvents(tweets) {
-        // 简单实现：包含特定关键词的推文数量
-        const significantKeywords = [
-            'announcement', 'breakthrough', 'discovery',
-            'launch', 'milestone', 'partnership',
-            'achievement', 'major', 'significant'
-        ];
+    async _saveDigest(digest, currentAge, timestamp) {
+        try {
+            const data = await fs.readFile(this.paths.mainFile, 'utf8');
+            const storyData = JSON.parse(data);
 
-        return tweets.filter(tweet => 
-            significantKeywords.some(keyword => 
-                tweet.text.toLowerCase().includes(keyword)
-            )
-        ).length;
+            // 添加新摘要到 story.digests
+            storyData.story.digests.push({
+                ...digest,
+                age: currentAge,
+                timestamp
+            });
+
+            // 更新统计信息
+            storyData.stats.digestCount = storyData.story.digests.length;
+
+            // 保存更新
+            await fs.writeFile(
+                this.paths.mainFile,
+                JSON.stringify(storyData, null, 2),
+                'utf8'
+            );
+
+            this.logger.info('Saved new digest', {
+                age: currentAge,
+                timestamp
+            });
+        } catch (error) {
+            this.logger.error('Error saving digest', error);
+            throw error;
+        }
     }
 }
 

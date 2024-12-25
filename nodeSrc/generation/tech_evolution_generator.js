@@ -1,137 +1,160 @@
 const { AICompletion } = require('../utils/ai_completion');
-const { GithubOperations } = require('../storage/github_operations');
 const { Logger } = require('../utils/logger');
+const fs = require('fs').promises;
+const path = require('path');
 
 class TechEvolutionGenerator {
     constructor(client, model, isProduction = false) {
         this.logger = new Logger('tech');
         this.ai = new AICompletion(client, model);
-        this.githubOps = new GithubOperations(isProduction);
+        this.isProduction = isProduction;
+
+        this.paths = {
+            dataDir: path.resolve(__dirname, '..', 'data'),
+            mainFile: path.resolve(__dirname, '..', 'data', 'XaviersSim.json')
+        };
+
+        // 技术发展阶段
+        this.techPhases = {
+            early: {
+                focus: ['基础架构', '核心算法', '产品原型'],
+                challenges: ['技术选型', '性能优化', '安全性']
+            },
+            growth: {
+                focus: ['系统扩展', '新特性', '技术升级'],
+                challenges: ['架构重构', '团队协作', '技术债务']
+            },
+            mature: {
+                focus: ['创新突破', '技术领导', '行业标准'],
+                challenges: ['技术演进', '平台化', '生态建设']
+            }
+        };
     }
 
-    async generateTechEvolution() {
+    async generateTechUpdate(currentAge, tweetCount) {
         try {
-            console.log('TechEvolution Step 1: Getting current tech state...');
-            const [currentTech, sha] = await this.githubOps.getFileContent('tech_evolution.json');
-            console.log('Current tech state:', currentTech ? 'Found' : 'Not found');
-
-            if (!currentTech) {
-                console.log('TechEvolution Step 2a: Generating initial tech...');
-                const initialTech = await this._generateInitialTech();
-                console.log('Initial tech generated:', initialTech);
-
-                console.log('TechEvolution Step 2b: Saving initial tech...');
-                await this.githubOps.updateFile(
-                    'tech_evolution.json',
-                    initialTech,
-                    'Initial tech evolution'
-                );
-                return initialTech;
-            }
-
-            console.log('TechEvolution Step 3: Checking for update threshold...');
-            const [tweets] = await this.githubOps.getFileContent('ongoing_tweets.json');
-            const shouldUpdate = this._shouldUpdateTech(tweets, currentTech);
-            console.log('Update needed:', shouldUpdate);
-
-            if (shouldUpdate) {
-                console.log('TechEvolution Step 4a: Generating next tech epoch...');
-                const nextTech = await this._generateNextTech(currentTech, tweets);
-                console.log('Next tech epoch generated:', nextTech);
-
-                console.log('TechEvolution Step 4b: Saving next tech epoch...');
-                await this.githubOps.updateFile(
-                    'tech_evolution.json',
-                    nextTech,
-                    `Update tech evolution to year ${nextTech.year}`,
-                    sha
-                );
-                return nextTech;
-            }
-
-            console.log('TechEvolution Step 5: Returning current tech (no update needed)');
-            return currentTech;
-
+            const context = await this._prepareTechContext(currentAge);
+            const techUpdate = await this._generateUpdate(context);
+            await this._saveTechUpdate(techUpdate, currentAge);
+            return techUpdate;
         } catch (error) {
-            this.logger.error('Error generating tech evolution', error);
-            console.error('TechEvolution Error:', {
-                message: error.message,
-                phase: error.phase || 'unknown',
-                details: error.details || {}
-            });
+            this.logger.error('Error generating tech update', error);
             throw error;
         }
     }
 
-    async _generateInitialTech() {
-        console.log('Generating initial tech - Preparing prompt...');
-        const prompt = `Generate a technology evolution forecast for the year 2025, including:
-1. Mainstream technologies that are widely adopted
-2. Emerging technologies that show promise
-
-Format the response as a JSON object with:
-{
-    "year": 2025,
-    "mainstream": ["tech1", "tech2", ...],
-    "emerging": ["tech1", "tech2", ...]
-}`;
-
-        console.log('Sending prompt to AI...');
-        const response = await this.ai.getCompletion(
-            'You are a technology forecasting system.',
-            prompt
-        );
-        console.log('AI response received, parsing...');
-
+    async _prepareTechContext(currentAge) {
         try {
-            return JSON.parse(response);
+            const data = await fs.readFile(this.paths.mainFile, 'utf8');
+            const storyData = JSON.parse(data);
+
+            // 确定当前技术阶段
+            const phase = this._getTechPhase(currentAge);
+            
+            // 获取最近的技术更新
+            const recentUpdates = storyData.techUpdates?.slice(-3) || [];
+            
+            return {
+                currentAge,
+                phase,
+                focus: this.techPhases[phase].focus,
+                challenges: this.techPhases[phase].challenges,
+                recentUpdates,
+                totalTweets: storyData.tweets?.length || 0
+            };
         } catch (error) {
-            console.error('Failed to parse AI response:', error);
-            throw new Error('Invalid tech evolution format');
+            this.logger.error('Error preparing tech context', error);
+            throw error;
         }
     }
 
-    async _generateNextTech(currentTech, tweets) {
-        console.log('Generating next tech - Preparing context...');
-        const prompt = `Current technology state (${currentTech.year}):
-${JSON.stringify(currentTech, null, 2)}
-
-Recent developments:
-${tweets.slice(-5).map(t => t.text).join('\n')}
-
-Generate the next technology evolution state for year ${currentTech.year + 5}, following the same format.`;
-
-        console.log('Sending prompt to AI...');
-        const response = await this.ai.getCompletion(
-            'You are a technology forecasting system.',
-            prompt
-        );
-        console.log('AI response received, parsing...');
-
-        try {
-            return JSON.parse(response);
-        } catch (error) {
-            console.error('Failed to parse AI response:', error);
-            throw new Error('Invalid tech evolution format');
-        }
-    }
-
-    _shouldUpdateTech(tweets, currentTech) {
-        if (!tweets || tweets.length === 0) return false;
+    async _generateUpdate(context) {
+        const prompt = this._buildTechPrompt(context);
         
-        // 计算最新推文的年龄
-        const latestTweet = tweets[tweets.length - 1];
-        const yearsSinceLastUpdate = latestTweet.age - 22.0;
-        const yearsSinceCurrentTech = currentTech.year - 2025;
+        const response = await this.ai.getCompletion(
+            'You are describing technological evolution of a startup.',
+            prompt
+        );
 
-        console.log('Update check:', {
-            tweetAge: latestTweet.age,
-            yearsSinceLastUpdate,
-            yearsSinceCurrentTech
-        });
+        return {
+            content: response,
+            timestamp: new Date().toISOString(),
+            age: context.currentAge,
+            phase: context.phase,
+            focus: context.focus,
+            challenges: context.challenges
+        };
+    }
 
-        // 每5年更新一次
-        return yearsSinceLastUpdate >= yearsSinceCurrentTech + 5;
+    _buildTechPrompt(context) {
+        return `Technology Evolution Update:
+Age: ${context.currentAge}
+Phase: ${context.phase}
+Current Focus: ${context.focus.join(', ')}
+Current Challenges: ${context.challenges.join(', ')}
+
+Recent Tech Updates:
+${context.recentUpdates.map(u => u.content).join('\n\n')}
+
+Create a technology evolution update that:
+1. Describes current technical achievements
+2. Outlines ongoing challenges and solutions
+3. Shows innovation and progress
+4. Reflects the startup's growth stage
+5. Sets up future technical directions
+
+Guidelines:
+- Focus on technical depth and innovation
+- Show problem-solving approaches
+- Include both successes and challenges
+- Maintain realistic progression
+- Consider market and user needs
+
+Format the response as a detailed technical narrative that captures this phase of development.`;
+    }
+
+    async _saveTechUpdate(update, currentAge) {
+        try {
+            const data = await fs.readFile(this.paths.mainFile, 'utf8');
+            const storyData = JSON.parse(data);
+
+            // 添加新的技术更新
+            storyData.techUpdates = storyData.techUpdates || [];
+            storyData.techUpdates.push({
+                ...update,
+                age: currentAge,
+                timestamp: new Date().toISOString()
+            });
+
+            // 更新最新技术状态
+            storyData.currentTechState = {
+                phase: update.phase,
+                focus: update.focus,
+                challenges: update.challenges,
+                lastUpdate: new Date().toISOString()
+            };
+
+            // 保存更新
+            await fs.writeFile(
+                this.paths.mainFile,
+                JSON.stringify(storyData, null, 2),
+                'utf8'
+            );
+
+            this.logger.info('Saved tech update', {
+                age: currentAge,
+                phase: update.phase
+            });
+        } catch (error) {
+            this.logger.error('Error saving tech update', error);
+            throw error;
+        }
+    }
+
+    _getTechPhase(age) {
+        if (age < 32) return 'early';
+        if (age < 52) return 'growth';
+        return 'mature';
     }
 }
 
