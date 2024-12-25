@@ -159,31 +159,58 @@ class DigestGenerator {
     }
 
     _formatDigest(content) {
-        // 如果内容不符合格式要求，重新格式化
         const lines = content.split('\n').filter(line => line.trim());
         
-        let overview = lines[0] || '这段时期Xavier展现出了积极的成长态势。';
-        let developments = [];
-        let outlook = '';
+        // 默认概述模板
+        const defaultOverviews = [
+            '这段时期Xavier在创业道路上稳步前进，展现出良好的发展势头。',
+            '在这个阶段，Xavier专注于产品开发和团队建设，取得了积极进展。',
+            'Xavier的创业旅程继续演进，在技术和管理方面都有新的突破。'
+        ];
 
-        // 提取主要进展
-        for (const line of lines) {
-            if (line.includes('进展') || line.includes('发展') || line.includes('成就')) {
-                developments.push(line.replace(/^\d+[\.\、]?\s*/, ''));
-            } else if (line.includes('未来') || line.includes('展望') || line.includes('期待')) {
-                outlook = line;
+        // 默认进展模板
+        const defaultDevelopments = [
+            '技术方面取得重要突破',
+            '产品开发进展顺利',
+            '团队建设初见成效',
+            '市场策略逐步完善',
+            '建立了重要的业务伙伴关系',
+            '个人领导力得到提升',
+            '项目管理能力显著提高',
+            '客户基础逐步扩大'
+        ];
+
+        // 默认展望模板
+        const defaultOutlooks = [
+            '未来展望：随着项目的深入，Xavier将面临新的机遇和挑战，相信会有更多突破性的发展。',
+            '未来展望：下一阶段将重点关注产品优化和市场拓展，期待取得更大的进展。',
+            '未来展望：Xavier将继续保持创新精神，带领团队迈向新的高度。'
+        ];
+
+        // 从内容中提取或使用默认值
+        let overview = lines.find(line => !line.includes('进展：') && !line.includes('展望：'))
+            || defaultOverviews[Math.floor(Math.random() * defaultOverviews.length)];
+
+        // 收集所有进展点
+        let developments = lines
+            .filter(line => line.match(/^\d+[\.\、]/) || line.includes('进展'))
+            .map(line => line.replace(/^\d+[\.\、]?\s*/, ''))
+            .filter(line => line !== '持续学习和成长');
+
+        // 如果没有足够的进展点，从默认模板中随机补充
+        while (developments.length < 4) {
+            const newDev = defaultDevelopments[Math.floor(Math.random() * defaultDevelopments.length)];
+            if (!developments.includes(newDev)) {
+                developments.push(newDev);
             }
         }
 
-        // 确保有足够的进展点
-        while (developments.length < 4) {
-            developments.push('持续学习和成长');
-        }
+        // 限制只使用4个进展点
+        developments = developments.slice(0, 4);
 
-        // 如果没有找到展望，添加默认展望
-        if (!outlook) {
-            outlook = '未来展望：Xavier将继续在技术和创业道路上探索，相信会有更多突破和成长。';
-        }
+        // 获取或生成展望
+        let outlook = lines.find(line => line.includes('展望：'))
+            || defaultOutlooks[Math.floor(Math.random() * defaultOutlooks.length)];
 
         // 组装格式化的摘要
         return `${overview}\n\n主要进展：\n1. ${developments[0]}\n2. ${developments[1]}\n3. ${developments[2]}\n4. ${developments[3]}\n\n${outlook}`;
@@ -245,7 +272,7 @@ class DigestGenerator {
                 .join('\n\n');
 
             return `
-作为一个故事摘要生成器，请为以下推文���成一个详细的中文摘要。
+作为一个故事摘要生成器，请为以下推文生成一个详细的中文摘要。
 这些推文描述了Xavier在${phase}阶段（${currentAge}岁）的经历。
 
 推文内容：
@@ -260,7 +287,7 @@ ${tweetsText}
 - 保持积极向上的基调
 - 突出重要的转折点和成就
 - 体现人物的成长轨迹
-- 注意情���和故事性
+- 注意情感和故事性
 - 确保内容前后连贯
 
 请严格按照以下模板输出：

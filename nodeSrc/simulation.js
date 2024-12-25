@@ -67,7 +67,7 @@ class XavierSimulation {
 
             // 获取当前状态
             const summary = await this.tweetGenerator.getCurrentSummary();
-            console.log('summary',summary);
+       //     console.log('summary',summary);
             // 检查是否完成
             if (summary.isCompleted || summary.currentAge >= this.storyConfig.setting.endAge) {
                 this.logger.info('Story has completed', {
