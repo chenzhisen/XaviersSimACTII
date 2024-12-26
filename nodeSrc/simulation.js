@@ -41,24 +41,13 @@ class XavierSimulation {
 
     async saveTweetsToPublic(tweets) {
         try {
-            // 保存到tweets_public.json
+            // 保存到tweets_public.json（覆盖方式）
             const publicFilePath = path.join(this.dataDir, 'tweets_public.json');
             
-            // 确保文件存在
-            if (!fs.existsSync(publicFilePath)) {
-                fs.writeFileSync(publicFilePath, '[]');
-            }
-
-            // 读取现有数据
-            const existingData = JSON.parse(fs.readFileSync(publicFilePath, 'utf8'));
+            // 直接写入新数据（覆盖）
+            fs.writeFileSync(publicFilePath, JSON.stringify(tweets, null, 2));
             
-            // 添加新推文
-            existingData.push(...tweets);
-            
-            // 写入文件
-            fs.writeFileSync(publicFilePath, JSON.stringify(existingData, null, 2));
-            
-            console.log('Successfully saved tweets to public file');
+            console.log('Successfully saved tweets to public file (overwrite mode)');
         } catch (error) {
             console.error('Error saving tweets to public:', error);
             throw error;
