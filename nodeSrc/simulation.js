@@ -22,8 +22,8 @@ class XavierSimulation {
 
         // 初始化生成器，不传入客户端，让 AICompletion 自己初始化
         this.tweetGenerator = new TweetGenerator(null, null, isProduction);
-        
-        this.digestGenerator = new DigestGenerator(null, null, 4, isProduction);
+        console.log("isProduction isProductionisProductionisProduction",isProduction);
+        this.digestGenerator = new DigestGenerator(null, null, 4, {isProduction:isProduction});
 
         // 运行配置
         this.config = {

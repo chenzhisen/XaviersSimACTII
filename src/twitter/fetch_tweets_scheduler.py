@@ -18,7 +18,10 @@ class TweetFetcher:
         self.client = TwitterClientV2()
         current_dir = os.path.dirname(os.path.abspath(__file__))
         project_root = os.path.abspath(os.path.join(current_dir, '..', '..'))
-        data_dir = os.path.join(project_root, 'nodeSrc', 'data', 'dev')
+        
+        # 根据环境选择目录
+        env_dir = 'prod' if is_production else 'dev'
+        data_dir = os.path.join(project_root, 'nodeSrc', 'data', env_dir)
         
         # 确保数据目录存在
         os.makedirs(data_dir, exist_ok=True)
@@ -27,6 +30,7 @@ class TweetFetcher:
         self.replies_file = os.path.join(data_dir, 'tweet_replies.json')
         print(f"已发送推文文件路径: {self.sent_tweets_file}")
         print(f"推文回复文件路径: {self.replies_file}")
+        print(f"运行环境: {'生产环境' if is_production else '开发环境'}")
 
     def get_latest_tweet_id(self):
         """获取最后一条推文的ID和完整信息"""
