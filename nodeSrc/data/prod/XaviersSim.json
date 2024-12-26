@@ -4,52 +4,40 @@
     "startAge": 22,
     "currentAge": 22.08,
     "currentPhase": "early_career",
-    "lastUpdate": "2024-12-26T06:30:45.548Z",
+    "lastUpdate": "2024-12-26T06:35:30.274Z",
     "version": "1.0.0"
   },
   "story": {
     "tweets": [
       {
-        "text": "TWEET1\nEmbracing the winter chill, I find solace in the quiet hours of coding. The snow-covered landscape outside mirrors the blank canvas of my latest project. #WinterCoding #NewBeginnings",
-        "id": "tweet_1735194645547_z18x9pzyo",
+        "text": "TWEET1\nWinter's chill embraces the city, a stark contrast to the warmth within XIV Labs. Ideas simmering, ready to evolve and grow. #NewBeginnings",
+        "id": "tweet_1735194930272_5677ojvhm",
         "age": 22.08,
-        "timestamp": "2024-12-26T06:30:45.548Z"
+        "timestamp": "2024-12-26T06:35:30.274Z"
       },
       {
-        "text": "TWEET2\nIn the midst of debugging lines of code, a comment catches my eye. A suggestion that sparks a fresh perspective, igniting a wave of inspiration. Time to rewrite the script. #Innovation #TechJourney",
-        "id": "tweet_1735194645547_yb92ljn0v",
+        "text": "TWEET2\nResponding to insightful feedback, we're reshaping our AI infrastructure with a fresh perspective. Innovation fueled by collaboration! #Progress",
+        "id": "tweet_1735194930272_yei2gzakk",
         "age": 22.08,
-        "timestamp": "2024-12-26T06:30:45.548Z"
+        "timestamp": "2024-12-26T06:35:30.274Z"
       },
       {
-        "text": "TWEET3\nAs the days pass and the code evolves, a new chapter unfolds. The once solitary project now a collaborative masterpiece, shaped by feedback and dedication. Together, we push the boundaries of possibility. #Teamwork #AIRevolution",
-        "id": "tweet_1735194645547_ia1y7fnjz",
+        "text": "TWEET3\nAs snow flurries dance outside, our team huddles indoors, coding away. Each line executed with precision, shaping our vision into reality. #Dedication",
+        "id": "tweet_1735194930272_pxzn4czs8",
         "age": 22.08,
-        "timestamp": "2024-12-26T06:30:45.548Z"
+        "timestamp": "2024-12-26T06:35:30.274Z"
       },
       {
-        "text": "TWEET4\nWith each line of code, we inch closer to our vision. The winter days are fleeting, but the progress made endures. Excitement brews for what lies ahead, as we continue to build the foundation for a decentralized AI future. #Progress #FutureForward",
-        "id": "tweet_1735194645547_1ugnuf6lj",
+        "text": "TWEET4\nExcitement brews within XIV Labs as prototypes take form. A transformative journey unfolds, guided by passion and a shared vision. #FutureAhead",
+        "id": "tweet_1735194930272_uu8ll3m9v",
         "age": 22.08,
-        "timestamp": "2024-12-26T06:30:45.548Z"
+        "timestamp": "2024-12-26T06:35:30.274Z"
       }
     ],
     "digests": [
       {
         "content": "Xavier is at a crossroads, seriously considering leaving college to focus on quant trading and his involvement with $XVI. This marks a significant shift in his life priorities and indicates a desire to take control of his future..",
-        "timestamp": "2024-12-26T06:30:41.494Z"
-      },
-      {
-        "content": "[在Xavier early career阶段（22-23岁）中，寒冷的冬日并没有阻止他对编码的热情。他在宁静中享受着编程带来的宁静，每一行代码都让他的愿景更加清晰。]\n\n主要进展：\n1. 项目管理能力显著提高\n2. 技术方面取得重要突破\n3. 个人领导力得到提升\n4. 产品开发进展顺利\n\n未来展望：Xavier将继续保持创新精神，带领团队迈向新的高度。",
-        "timestamp": "2024-12-26T06:30:35.014Z",
-        "age": 22.25,
-        "tweetCount": 4
-      },
-      {
-        "content": "[开头概述，这段时期的特点]\n\n主要进展：\n1. 市场策略逐步完善\n2. 团队建设初见成效\n3. 产品开发进展顺利\n4. 个人领导力得到提升\n\n未来展望：下一阶段将重点关注产品优化和市场拓展，期待取得更大的进展。",
-        "timestamp": "2024-12-26T06:30:45.566Z",
-        "age": 22.08,
-        "tweetCount": 4
+        "timestamp": "2024-12-26T06:35:26.844Z"
       }
     ],
     "keyPlotPoints": [],
@@ -69,7 +57,7 @@
         "性能优化",
         "安全性"
       ],
-      "lastUpdate": "2024-12-26T06:30:41.494Z"
+      "lastUpdate": "2024-12-26T06:35:26.844Z"
     }
   },
   "career": {
@@ -177,7 +165,7 @@
   },
   "stats": {
     "totalTweets": 4,
-    "digestCount": 3,
+    "digestCount": 0,
     "techUpdateCount": 0,
     "yearProgress": "8.3"
   }
