@@ -226,31 +226,32 @@ class TweetGenerator {
             // 获取最新推文和评论
             const latestTweetAndReplies = await this._getLatestTweetAndReplies();
             
-            // 从sent_tweets.json获取最近的推文
-            const recentTweets = await this._getRecentTweets(5);
+            // 从sent_tweets.json获取最近的推文和总推文数
+            const { recentTweets, totalTweets } = await this._getTweetsInfo(5);
 
             // 获取最新摘要
             const latestDigest = storyData.story.digests.length > 0
                 ? storyData.story.digests[storyData.story.digests.length - 1]
                 : null;
 
-            // 计算当前阶段
-            const phase = this._calculatePhase(currentAge);
+            // 根据实际发送的推文数重新计算年龄和阶段
+            const calculatedAge = this._calculateAge(totalTweets);
+            const phase = this._calculatePhase(calculatedAge);
 
             // 根据评论调整故事发展
             const storyAdjustments = this._analyzeRepliesForStoryAdjustment(latestTweetAndReplies);
 
             return {
-                current_age: currentAge,
-                tweet_count: tweetCount,
+                current_age: calculatedAge,
+                tweet_count: totalTweets,
                 recent_tweets: recentTweets,
                 latest_digest: latestDigest?.content || 'Starting a new chapter...',
                 phase: phase,
-                year_progress: this._calculateYearProgress(tweetCount),
+                year_progress: this._calculateYearProgress(totalTweets),
                 story_metadata: {
                     protagonist: storyData.metadata.protagonist,
                     current_phase: phase,
-                    total_tweets: storyData.stats.totalTweets
+                    total_tweets: totalTweets
                 },
                 latest_interaction: latestTweetAndReplies,
                 story_adjustments: storyAdjustments
@@ -261,7 +262,7 @@ class TweetGenerator {
         }
     }
 
-    async _getRecentTweets(count = 5) {
+    async _getTweetsInfo(recentCount = 5) {
         try {
             const sentTweetsPath = path.join(this.paths.dataDir, 'sent_tweets.json');
             
@@ -269,28 +270,29 @@ class TweetGenerator {
             try {
                 await fs.access(sentTweetsPath);
             } catch {
-                return [];
+                return { recentTweets: [], totalTweets: 0 };
             }
 
             // 读取sent_tweets.json
             const content = await fs.readFile(sentTweetsPath, 'utf8');
             if (!content.trim()) {
-                return [];
+                return { recentTweets: [], totalTweets: 0 };
             }
 
             const sentTweets = JSON.parse(content);
+            const totalTweets = sentTweets.length;
             
-            // 获取最近的count条推文
-            const recentTweets = sentTweets.slice(-count).map(tweet => ({
-                text: tweet.content,  // 使用content作为text
+            // 获取最近的recentCount条推文
+            const recentTweets = sentTweets.slice(-recentCount).map(tweet => ({
+                text: tweet.content,
                 id: tweet.id,
                 timestamp: tweet.sent_at
             }));
 
-            return recentTweets;
+            return { recentTweets, totalTweets };
         } catch (error) {
-            this.logger.error('Error getting recent tweets', error);
-            return [];
+            this.logger.error('Error getting tweets info', error);
+            return { recentTweets: [], totalTweets: 0 };
         }
     }
 
@@ -359,7 +361,7 @@ class TweetGenerator {
                 }
             };
 
-            // 计算评论的相关性分数
+            // 计算评论的相关性分���
             analysis.relevanceScore = this._calculateRelevanceScore(analysis);
 
             return analysis;
@@ -799,8 +801,8 @@ class TweetGenerator {
         prompt += `创作要求：
 1. 评论建议具有最高优先级
 2. 必须对评论做出直接回应
-3. 让评论带来重大转折
-4. 内容��反映时间推进
+3. 让评��带来重大转折
+4. 内容要反映时间推进
 5. 考虑季节特征
 6. 4条推文要呈现连续又递进的故事\n\n`;
 
@@ -1010,7 +1012,7 @@ TWEET4
             milestone: /(突破|里程碑|成功|实现)/,
             relationship: /(爱情|友情|团队|伙伴)/,
             challenge: /(困难|挑战|问题|危机)/,
-            growth: /(成长|��习|进步|改变)/,
+            growth: /(成长|学习|进步|改变)/,
             achievement: /(完成|达成|获得|赢得)/
         };
 
