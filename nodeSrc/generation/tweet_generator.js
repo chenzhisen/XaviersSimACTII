@@ -390,7 +390,7 @@ class TweetGenerator {
     _analyzeImpact(content) {
         // 分析评论的影响程度
         const impactWords = {
-            high: ['必须', '一定要', '强烈建议', 'must', 'should', 'need to'],
+            high: ['必���', '一定要', '强烈建议', 'must', 'should', 'need to'],
             medium: ['建议', '可以', '不错', 'suggest', 'could', 'maybe'],
             low: ['或许', '可能', '试试', 'perhaps', 'might', 'try']
         };
@@ -739,6 +739,9 @@ class TweetGenerator {
         const adjustments = context.story_adjustments;
         let prompt = '';
         
+        // 计算时间流逝
+        const timeInfo = this._calculateTimeProgression(context.tweet_count);
+        
         if (adjustments) {
             const suggestions = adjustments.suggestions.map(suggestion => {
                 const { content, analysis } = suggestion;
@@ -748,13 +751,106 @@ class TweetGenerator {
             prompt = `【最高优先级：立即回应以下评论】\n\n${suggestions}\n\n处理要求：\n1. 必须立即采取行动回应评论\n2. 评论建议优先于原有剧情\n3. 让评论直接改变故事走向\n\n`;
         }
 
+        // 计算这4条推文的时间跨度
+        const timeSpans = this._calculateTweetTimeSpans(timeInfo);
+
+        prompt += `时间背景：
+- 当前时间：${timeInfo.currentTime}
+- 季节：${timeInfo.season}
+- 时间流逝：距离上一条推文已经过去了${timeInfo.timePassed}
+- 时间提示：这4条推文将跨越${timeSpans.totalSpan}的时间\n\n`;
+
+        prompt += `时间安排：
+第1条：${timeSpans.spans[0]}
+第2条：${timeSpans.spans[1]}
+第3条：${timeSpans.spans[2]}
+第4条：${timeSpans.spans[3]}\n\n`;
+
         prompt += `最近发展：\n${context.recent_tweets.map(t => `- ${t.text}`).join('\n')}\n\n`;
         prompt += `当前进展：\n${context.latest_digest?.content || '开启新的篇章...'}\n\n`;
-        prompt += `创作要求：\n1. 评论建议具有最高优先级\n2. 必须对评论做出直接回应\n3. 让评论带来重大转折\n\n`;
-        prompt += `格式要求：\n- 4条推文\n- 每条不超过280字符\n- 直接回应评论建议\n- 描述具体行动和改变`;
+        prompt += `创作要求：
+1. 评论建议具有最高优先级
+2. 必须对评论做出直接回应
+3. 让评论带来重大转折
+4. 每条推文都要体现其发生的具体时间
+5. 内容要反映时间流逝和季节特征
+6. 4条推文要呈现连续又递进的故事\n\n`;
+
+        prompt += `格式要求：
+- 4条推文
+- 每条不超过280字符
+- 直接回应评论建议
+- 描述具体行动和改变
+- 加入明确的时间信息
+- 体现时间的连续性`;
 
         return prompt;
     }
+
+    _calculateTweetTimeSpans(timeInfo) {
+        // 解析当前日期
+        const currentDate = new Date(timeInfo.currentTime);
+        const spans = [];
+        let totalDays = 0;
+
+        // 为每条推文生成时间跨度
+        for (let i = 0; i < 4; i++) {
+            const days = Math.floor(Math.random() * 2) + 1; // 1-2天
+            totalDays += days;
+            
+            const tweetDate = new Date(currentDate);
+            tweetDate.setDate(tweetDate.getDate() + totalDays);
+            
+            // 生成时间描述
+            const timeDesc = this._generateTimeDescription(tweetDate, i === 0 ? '今天' : `${totalDays}天后`);
+            spans.push(timeDesc);
+        }
+
+        return {
+            spans,
+            totalSpan: `${totalDays}天`
+        };
+    }
+
+    _generateTimeDescription(date, timeOffset) {
+        const hours = Math.floor(Math.random() * 24);
+        const timeOfDay = hours < 6 ? '凌晨' :
+                         hours < 12 ? '上午' :
+                         hours < 18 ? '下午' : '晚上';
+        
+        return `${timeOffset}${timeOfDay}，${date.toLocaleDateString('zh-CN')}`;
+    }
+
+    _calculateTimeProgression(tweetCount) {
+        // 基准时间：2024年
+        const baseYear = 2024;
+        const baseMonth = 1;
+        
+        // 计算时间流逝
+        // 假设每4条推文代表一周的时间
+        const weeksPassed = Math.floor(tweetCount / 4);
+        const currentDate = new Date(baseYear, baseMonth - 1);
+        currentDate.setDate(currentDate.getDate() + (weeksPassed * 7));
+        
+        // 获取季节
+        const month = currentDate.getMonth() + 1;
+        let season;
+        if (month >= 3 && month <= 5) season = '春季';
+        else if (month >= 6 && month <= 8) season = '夏季';
+        else if (month >= 9 && month <= 11) season = '秋季';
+        else season = '冬季';
+        
+        // 计算距离上一条推文的时间
+        const daysPassed = Math.floor(Math.random() * 3) + 1;  // 1-3天
+        const timePassedText = `${daysPassed}天`;
+        
+        return {
+            currentTime: currentDate.toLocaleDateString('zh-CN'),
+            season: season,
+            timePassed: timePassedText
+        };
+    }
+
     _getPersonalContext(currentAge) {
         const data = require('../data/XaviersSim.json');
         const personal = data.personal;
@@ -955,7 +1051,7 @@ class TweetGenerator {
                     path: path.join(this.backupConfig.dir, f),
                     time: new Date(f.split('_')[1].split('.')[0].replace(/-/g, ':'))
                 }))
-                .sort((a, b) => b.time - a.time);  // 按时���降序排序
+                .sort((a, b) => b.time - a.time);  // 按时降序排序
 
             // 删除超出数量限制的旧备份
             if (backups.length > this.backupConfig.maxFiles) {
