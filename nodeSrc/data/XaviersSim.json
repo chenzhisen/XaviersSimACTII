@@ -2,107 +2,47 @@
   "metadata": {
     "protagonist": "Xavier",
     "startAge": 22,
-    "currentAge": 22.25,
+    "currentAge": 22.08,
     "currentPhase": "early_career",
-    "lastUpdate": "2024-12-26T01:30:28.427Z",
+    "lastUpdate": "2024-12-26T01:53:45.616Z",
     "version": "1.0.0"
   },
   "story": {
     "tweets": [
       {
-        "text": "TWEET1\nI've decided to take up the suggestion and explore the possibility of studying in China. It's a thrilling opportunity that could open up new horizons. Winter adds a touch of magic to this exciting decision.",
-        "id": "tweet_1735176599795_5g3ffttl6",
+        "text": "TWEET1\nYour suggestion nudged me towards an incredible opportunity - studying in China. The winter allure here feels like stepping into a realm of endless possibilities and growth. Ready to blend tech innovation with global perspectives! #NewBeginnings #WinterAdventure",
+        "id": "tweet_1735178025614_522trp4j3",
         "age": 22.08,
-        "timestamp": "2024-12-26T01:29:59.796Z"
+        "timestamp": "2024-12-26T01:53:45.616Z"
       },
       {
-        "text": "TWEET2\nAfter thorough research and planning, I've secured admission to a prestigious university in China. The cold winter weather matches the anticipation and excitement I feel right now.",
-        "id": "tweet_1735176599795_x3oqjkc85",
+        "text": "TWEET2\nResearch and determination paved the way to my admission into a prestigious Chinese university. The winter ambiance mirrors the excitement bubbling within me, resonating with the fresh academic journey unfolding. Embracing the cold as a sign of transformation and resilience! #AcademicAdventure",
+        "id": "tweet_1735178025614_0whdu8h7i",
         "age": 22.08,
-        "timestamp": "2024-12-26T01:29:59.796Z"
+        "timestamp": "2024-12-26T01:53:45.616Z"
       },
       {
-        "text": "TWEET3\nArriving in China, the winter chill embraces me, reminding me of the courage it took to embark on this journey. The snowy landscape outside hints at the fresh start and endless learning awaiting me.",
-        "id": "tweet_1735176599795_8fac4605d",
+        "text": "TWEET3\nArriving in China, the winter's icy embrace whispers tales of courage and exploration. The snowy scenery outside mirrors the blank canvas of knowledge and experience awaiting me. Each snowflake a promise of new insights and personal growth on this educational odyssey. #WinterWisdom",
+        "id": "tweet_1735178025614_qjmvlkque",
         "age": 22.08,
-        "timestamp": "2024-12-26T01:29:59.796Z"
+        "timestamp": "2024-12-26T01:53:45.616Z"
       },
       {
-        "text": "TWEET4\nAs I settle down in my new dorm, the winter whispers of change and growth. The decision to study in China has not only broadened my knowledge but also enriched my soul. Winter symbolizes the beginning of this transformative chapter in my life.",
-        "id": "tweet_1735176599795_8b3kl3au3",
+        "text": "TWEET4\nSettling into my new dorm, the winter winds of change caress my soul with whispers of transformation. Studying in China isn't just expanding my knowledge; it's sculpting my worldview. Winter heralds the dawn of a profound chapter, where learning, innovation, and self-discovery dance hand in hand. #WinterReflections",
+        "id": "tweet_1735178025614_84jsxj5nw",
         "age": 22.08,
-        "timestamp": "2024-12-26T01:29:59.796Z"
-      },
-      {
-        "text": "TWEET1\nThank you for the suggestion! I've taken the leap to study in China, embracing the winter magic as I set off on this thrilling journey of exploration and growth. Excitement tinged with anticipation fills the air! 🌏✨",
-        "id": "tweet_1735176614297_upyu7hwks",
-        "age": 22.17,
-        "timestamp": "2024-12-26T01:30:14.298Z"
-      },
-      {
-        "text": "TWEET2\nResearch and planning have led me to secure admission at a prestigious university in China. The chill of winter mirrors my anticipation, creating a backdrop of endless possibilities and new beginnings. The cold never felt so invigorating! ❄️📚",
-        "id": "tweet_1735176614297_z1ii6aqb9",
-        "age": 22.17,
-        "timestamp": "2024-12-26T01:30:14.298Z"
-      },
-      {
-        "text": "TWEET3\nStepping foot in China, the winter chill greets me, serving as a reminder of the courage it took to pursue this path. The snowy landscape holds promises of fresh experiences and boundless knowledge waiting to be unraveled. New sights, new friendships, and new lessons lie ahead. 🌨️📝",
-        "id": "tweet_1735176614297_9ot5cgds0",
-        "age": 22.17,
-        "timestamp": "2024-12-26T01:30:14.298Z"
-      },
-      {
-        "text": "TWEET4\nSettling into my new dorm, the whispers of winter signify change and growth. This decision to study in China has not only expanded my horizons but also nourished my spirit. Winter marks the commencement of a transformative chapter in my life, where each snowflake symbolizes a new insight and every chilly breeze echoes endless possibilities. 🌬️❤️",
-        "id": "tweet_1735176614297_ydg0nz64e",
-        "age": 22.17,
-        "timestamp": "2024-12-26T01:30:14.298Z"
-      },
-      {
-        "text": "TWEET1\nThank you for the encouragement! The idea of studying in China resonated with me deeply. I've decided to embark on this journey, immersing myself in a new culture and embracing the winter season's transformative energy. Let's see where this path leads! 📚🌏",
-        "id": "tweet_1735176628426_fskne5inr",
-        "age": 22.25,
-        "timestamp": "2024-12-26T01:30:28.427Z"
-      },
-      {
-        "text": "TWEET2\nWith each step on Chinese soil, I feel the exhilarating chill of winter awakening my senses. The prospect of learning in a new environment fills me with anticipation and excitement. Every snowflake seems to hold a promise of growth and discovery. 🌨️❄️",
-        "id": "tweet_1735176628426_536j1tlf7",
-        "age": 22.25,
-        "timestamp": "2024-12-26T01:30:28.427Z"
-      },
-      {
-        "text": "TWEET3\nAs I settle into my dorm, the winter winds whisper tales of change and growth. Studying in China has already broadened my perspectives and enriched my soul. The cold air outside mirrors the fresh experiences and boundless knowledge awaiting me. Embracing this new chapter with open arms! 🌬️📚",
-        "id": "tweet_1735176628426_sd6o7vqzy",
-        "age": 22.25,
-        "timestamp": "2024-12-26T01:30:28.427Z"
-      },
-      {
-        "text": "TWEET4\nThe decision to study in China has brought me to a place of profound transformation. Winter's embrace marks the beginning of a journey filled with learning, self-discovery, and new friendships. Each snowflake that falls seems to carry the promise of a brighter, more enlightened future ahead. 🌟🇨🇳 #WinterWisdom",
-        "id": "tweet_1735176628426_tx8724j43",
-        "age": 22.25,
-        "timestamp": "2024-12-26T01:30:28.427Z"
+        "timestamp": "2024-12-26T01:53:45.616Z"
       }
     ],
     "digests": [
       {
         "content": "Xavier is at a crossroads, seriously considering leaving college to focus on quant trading and his involvement with $XVI. This marks a significant shift in his life priorities and indicates a desire to take control of his future..",
-        "timestamp": "2024-12-26T01:29:55.580Z"
+        "timestamp": "2024-12-26T01:53:40.973Z"
       },
       {
-        "content": "[开头概述，2-3句话描述这段时期的特点]\n\n主要进展：\n1. 个人领导力得到提升\n2. 市场策略逐步完善\n3. 团队建设初见成效\n4. 客户基础逐步扩大\n\n未来展望：Xavier将继续保持创新精神，带领团队迈向新的高度。",
-        "timestamp": "2024-12-26T01:29:59.809Z",
+        "content": "[开头概述]\n\n主要进展：\n1. 技术方面取得重要突破\n2. 建立了重要的业务伙伴关系\n3. 个人领导力得到提升\n4. 团队建设初见成效\n\n未来展望：随着项目的深入，Xavier将面临新的机遇和挑战，相信会有更多突破性的发展。",
+        "timestamp": "2024-12-26T01:53:45.643Z",
         "age": 22.08,
-        "tweetCount": 4
-      },
-      {
-        "content": "[Xavier在early_career阶段（22.08岁）处于事业起步阶段，单身，开始思考个人生活规划。他怀揣对事业的热忱，期待遇到知性独立的伴侣，共同支持成长。]\n\n主要进展：\n1. 产品开发进展顺利\n2. 团队建设初见成效\n3. 客户基础逐步扩大\n4. 项目管理能力显著提高\n\n未来展望：下一阶段将重点关注产品优化和市场拓展，期待取得更大的进展。",
-        "timestamp": "2024-12-26T01:30:14.324Z",
-        "age": 22.17,
-        "tweetCount": 4
-      },
-      {
-        "content": "**开头概述**：Xavier在early_career阶段积极拥抱变革，决定前往中国学习，迎接冬季的变革之旅。他心怀期待，深受新环境的激励和启发。\n\n主要进展：\n1. 团队建设初见成效\n2. 客户基础逐步扩大\n3. 市场策略逐步完善\n4. 个人领导力得到提升\n\n未来展望：随着项目的深入，Xavier将面临新的机遇和挑战，相信会有更多突破性的发展。",
-        "timestamp": "2024-12-26T01:30:28.445Z",
-        "age": 22.25,
         "tweetCount": 4
       }
     ],
@@ -123,7 +63,7 @@
         "性能优化",
         "安全性"
       ],
-      "lastUpdate": "2024-12-26T01:29:55.580Z"
+      "lastUpdate": "2024-12-26T01:53:40.973Z"
     }
   },
   "career": {
@@ -230,9 +170,9 @@
     }
   },
   "stats": {
-    "totalTweets": 12,
-    "digestCount": 4,
+    "totalTweets": 4,
+    "digestCount": 2,
     "techUpdateCount": 0,
-    "yearProgress": "25.0"
+    "yearProgress": "8.3"
   }
 }
