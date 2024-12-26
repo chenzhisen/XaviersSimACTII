@@ -128,7 +128,7 @@ class TweetGenerator {
 你的发言应该：
 - 自然且富有个性
 - 展现专业能力和人文关怀
-- 适当表达对感情和家庭的期待
+- 适当表达对感���和家庭的期待
 - 体现对生活的思考和感悟
 - 保持积极向上的态度`;
         } catch (error) {
@@ -416,7 +416,7 @@ class TweetGenerator {
         if (contentLength > 50) score += 2;
         else if (contentLength > 20) score += 1;
 
-        // 根据情绪倾向加分（优先选择积极或消极的评论，而不是中性的）
+        // 根据情绪倾向加分（优先选择积极或消极的评论，而不��中性的）
         if (analysis.analysis.mood !== 'neutral') score += 1;
 
         return score;
@@ -709,7 +709,7 @@ class TweetGenerator {
 
         // 更新性格特点
         if (currentAge >= 30 && !personal.lifestyle.traits.includes('成熟稳重')) {
-            personal.lifestyle.traits.push('成熟稳重');
+            personal.lifestyle.traits.push('成��稳重');
         }
 
         // 记录重要的生活变化
@@ -784,21 +784,6 @@ class TweetGenerator {
         const adjustments = context.story_adjustments;
         let prompt = '';
         
-        // 获取评论者
-        const commenters = new Set();  // 使用Set避免重复
-        try {
-            if (adjustments && adjustments.suggestions) {
-                // 只获取被分析的评论者
-                for (const suggestion of adjustments.suggestions) {
-                    if (suggestion.username) {
-                        commenters.add(`@${suggestion.username}`);
-                    }
-                }
-            }
-        } catch (error) {
-            console.error('Error getting commenters:', error);
-        }
-        
         // 计算时间流逝
         const timeInfo = this._calculateTimeProgression(context.tweet_count);
         
@@ -809,15 +794,6 @@ class TweetGenerator {
             }).join('\n\n');
 
             prompt = `[HIGH PRIORITY: Respond to the following comments immediately]\n\n${suggestions}\n\nRequirements:\n1. Must take immediate action to respond to comments\n2. Comment suggestions take priority over original plot\n3. Let comments drive significant story changes\n\n`;
-        }
-
-        // 添加评论者@提示
-        const commentersStr = Array.from(commenters).join(' ');
-        if (commenters.size > 0) {
-            prompt += `IMPORTANT NOTES:
-1. Each tweet MUST start with ${commentersStr}
-2. DO NOT mention (@) any other users
-3. ONLY mention the users listed above\n\n`;
         }
 
         prompt += `Time Context:
@@ -834,27 +810,26 @@ class TweetGenerator {
 4. Content should show time progression
 5. Consider seasonal elements
 6. 4 tweets should tell a continuous and progressive story
-7. DO NOT mention any users except those listed above\n\n`;
+7. DO NOT mention any users\n\n`;
 
         prompt += `Format Requirements:
 Please generate 4 tweets in the following format:
 
 TWEET1
-${commenters.size > 0 ? commentersStr + ' ' : ''}[First tweet content in English]
+[First tweet content in English]
 
 TWEET2
-${commenters.size > 0 ? commentersStr + ' ' : ''}[Second tweet content in English]
+[Second tweet content in English]
 
 TWEET3
-${commenters.size > 0 ? commentersStr + ' ' : ''}[Third tweet content in English]
+[Third tweet content in English]
 
 TWEET4
-${commenters.size > 0 ? commentersStr + ' ' : ''}[Fourth tweet content in English]
+[Fourth tweet content in English]
 
 Important Notes:
-- Each tweet MUST start with ${commentersStr}
-- DO NOT mention any other users
-- Total length of each tweet (including @usernames) must not exceed 280 characters
+- DO NOT mention any users
+- Total length of each tweet must not exceed 280 characters
 - Directly respond to comment suggestions
 - Describe specific actions and changes
 - Show time continuity
@@ -893,7 +868,7 @@ Important Notes:
         const hours = Math.floor(Math.random() * 24);
         const timeOfDay = hours < 6 ? '凌晨' :
                          hours < 12 ? '上午' :
-                         hours < 18 ? '下午' : '晚上';
+                         hours < 18 ? '下午' : '��上';
         
         return `${timeOffset}${timeOfDay}，${date.toLocaleDateString('zh-CN')}`;
     }
