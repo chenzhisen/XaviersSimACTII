@@ -394,7 +394,7 @@ class TweetGenerator {
         if (analysis.analysis.type.includes('LIFE_EVENT')) score += 2;  // 重大生活事件
         if (analysis.analysis.type.includes('RELATIONSHIP')) score += 2;  // 人际关系
 
-        // 根据关键词数量加���
+        // 根据关键词数量加分
         score += Math.min(analysis.analysis.keywords.length, 3);  // 最多加3分
 
         // 根据评论长度适当加分（避免过短的评论）
@@ -609,7 +609,7 @@ class TweetGenerator {
             storyData.stats.totalTweets = newTotalTweets;
             storyData.stats.yearProgress = this._calculateYearProgress(newTotalTweets).progress;
 
-            // 更新��数据
+            // 更新���据
             storyData.metadata.currentAge = Number(safeAge.toFixed(2));
             storyData.metadata.lastUpdate = new Date().toISOString();
             storyData.metadata.currentPhase = this._getCurrentPhase(safeAge);
@@ -774,7 +774,7 @@ class TweetGenerator {
         const commenters = new Set();  // 使用Set避免重复
         try {
             if (adjustments && adjustments.suggestions) {
-                // 只获取被引用（被分析）的评论者
+                // 只获取被分析的评论者
                 for (const suggestion of adjustments.suggestions) {
                     if (suggestion.username) {
                         commenters.add(`@${suggestion.username}`);
@@ -782,7 +782,7 @@ class TweetGenerator {
                 }
             }
         } catch (error) {
-            console.error('获取评论者时出错:', error);
+            console.error('Error getting commenters:', error);
         }
         
         // 计算时间流逝
@@ -791,55 +791,61 @@ class TweetGenerator {
         if (adjustments) {
             const suggestions = adjustments.suggestions.map(suggestion => {
                 const { content, analysis } = suggestion;
-                return `评论：${content}\n影响：${analysis.impact}\n类型：${analysis.type.join('、')}\n关键词：${analysis.keywords.join('、')}`;
+                return `Comment: ${content}\nImpact: ${analysis.impact}\nType: ${analysis.type.join(', ')}\nKeywords: ${analysis.keywords.join(', ')}`;
             }).join('\n\n');
 
-            prompt = `【最高优先级：立即回应以下评论】\n\n${suggestions}\n\n处理要求：\n1. 必须立即采取行动回应评论\n2. 评论建议优先于原有剧情\n3. 让评论直接改变故事走向\n\n`;
+            prompt = `[HIGH PRIORITY: Respond to the following comments immediately]\n\n${suggestions}\n\nRequirements:\n1. Must take immediate action to respond to comments\n2. Comment suggestions take priority over original plot\n3. Let comments drive significant story changes\n\n`;
         }
 
         // 添加评论者@提示
         const commentersStr = Array.from(commenters).join(' ');
         if (commenters.size > 0) {
-            prompt += `重要提示：每条推文都必须以 ${commentersStr} 开头！\n\n`;
+            prompt += `IMPORTANT NOTES:
+1. Each tweet MUST start with ${commentersStr}
+2. DO NOT mention (@) any other users
+3. ONLY mention the users listed above\n\n`;
         }
 
-        prompt += `时间背景：
-- 当前季节：${timeInfo.season}
-- 时间流逝：这4条推文将跨越一周时间
-- 时间提示：内容要体现季节特征和时间推进\n\n`;
+        prompt += `Time Context:
+- Current Season: ${timeInfo.season}
+- Time Span: These 4 tweets will cover a week
+- Time Note: Content should reflect seasonal changes and time progression\n\n`;
 
-        prompt += `最近发展：\n${context.recent_tweets.map(t => `- ${t.text}`).join('\n')}\n\n`;
-        prompt += `当前进展：\n${context.latest_digest?.content || '开启新的篇章...'}\n\n`;
-        prompt += `创作要求：
-1. 评论建议具有最高优先级
-2. 必须对评论做出直接回应
-3. 让评论带来重大转折
-4. 内容要反映时间推进
-5. 考虑季节特征
-6. 4条推文要呈现连续又递进的故事\n\n`;
+        prompt += `Recent Developments:\n${context.recent_tweets.map(t => `- ${t.text}`).join('\n')}\n\n`;
+        prompt += `Current Progress:\n${context.latest_digest?.content || 'Starting a new chapter...'}\n\n`;
+        prompt += `Writing Requirements:
+1. Comment suggestions have highest priority
+2. Must directly respond to comments
+3. Let comments create major turning points
+4. Content should show time progression
+5. Consider seasonal elements
+6. 4 tweets should tell a continuous and progressive story
+7. DO NOT mention any users except those listed above\n\n`;
 
-        prompt += `格式要求：
-请严格按照以下格式生成4条推文：
+        prompt += `Format Requirements:
+Please generate 4 tweets in the following format:
 
 TWEET1
-${commenters.size > 0 ? commentersStr + ' ' : ''}[第一条推文内容]
+${commenters.size > 0 ? commentersStr + ' ' : ''}[First tweet content in English]
 
 TWEET2
-${commenters.size > 0 ? commentersStr + ' ' : ''}[第二条推文内容]
+${commenters.size > 0 ? commentersStr + ' ' : ''}[Second tweet content in English]
 
 TWEET3
-${commenters.size > 0 ? commentersStr + ' ' : ''}[第三条推文内容]
+${commenters.size > 0 ? commentersStr + ' ' : ''}[Third tweet content in English]
 
 TWEET4
-${commenters.size > 0 ? commentersStr + ' ' : ''}[第四条推文内容]
+${commenters.size > 0 ? commentersStr + ' ' : ''}[Fourth tweet content in English]
 
-注意事项：
-- 每条推文必须以 ${commentersStr} 开头
-- 每条推文总长度（包括@用户名）不超过280字符
-- 直接回应评论建议
-- 描述具体行动和改变
-- 体现时间的连续性
-- 不要包含具体的日期和时间`;
+Important Notes:
+- Each tweet MUST start with ${commentersStr}
+- DO NOT mention any other users
+- Total length of each tweet (including @usernames) must not exceed 280 characters
+- Directly respond to comment suggestions
+- Describe specific actions and changes
+- Show time continuity
+- Do not include specific dates or times
+- All tweet content must be in English`;
 
         return prompt;
     }
@@ -917,7 +923,7 @@ ${commenters.size > 0 ? commentersStr + ' ' : ''}[第四条推文内容]
 
         let context = `
 个人状态：
-- 感情：${romantic.status === 'single' ? '单身' : '有恋人'}
+- ���情：${romantic.status === 'single' ? '单身' : '有恋人'}
 - 婚姻：${familyLife.marriage.isMarried ? '已婚' : '未婚'}
 - 家庭：${familyLife.children.hasChildren ? '已有孩子' : '暂无孩子'}
 
