@@ -2,9 +2,9 @@
   "metadata": {
     "protagonist": "Xavier",
     "startAge": 22,
-    "currentAge": 22.5,
+    "currentAge": 22.67,
     "currentPhase": "early_career",
-    "lastUpdate": "2024-12-26T02:10:49.299Z",
+    "lastUpdate": "2024-12-26T02:11:14.745Z",
     "version": "1.0.0"
   },
   "story": {
@@ -152,6 +152,54 @@
         "id": "tweet_1735179049298_72dnoaouf",
         "age": 23.25,
         "timestamp": "2024-12-26T02:10:49.299Z"
+      },
+      {
+        "text": "TWEET1\nYour advice sparked a journey of education in China, where winter's embrace ushers in endless wonders. Tech and culture intermingle, painting a vivid tapestry of anticipation. #GlobalEducation #WinterWonders",
+        "id": "tweet_1735179062658_whmgk98ca",
+        "age": 23.25,
+        "timestamp": "2024-12-26T02:11:02.659Z"
+      },
+      {
+        "text": "TWEET2\nSecuring admission in a prestigious Chinese university marks the fruition of our discussions. As winter deepens its hold, a thrill of excitement courses through me. Each snowflake foretells the enchanting adventure ahead.",
+        "id": "tweet_1735179062658_3splpkhi0",
+        "age": 23.25,
+        "timestamp": "2024-12-26T02:11:02.659Z"
+      },
+      {
+        "text": "TWEET3\nSetting foot in China's wintry landscape, the path ahead shimmers with boundless possibilities. Each snowy step echoes courage and resolve. This season of transformation promises growth and new beginnings with every frosty breath.",
+        "id": "tweet_1735179062658_221qfejk8",
+        "age": 23.25,
+        "timestamp": "2024-12-26T02:11:02.659Z"
+      },
+      {
+        "text": "TWEET4\nNested in my Chinese dorm, winter's winds whisper of change and evolution. Education here not only broadens the mind but also ignites a fire within. Like winter's renewal, I stand at the threshold of transformation, eager for the journey ahead. #TransformativeWinter",
+        "id": "tweet_1735179062658_one69vxg8",
+        "age": 23.25,
+        "timestamp": "2024-12-26T02:11:02.659Z"
+      },
+      {
+        "text": "TWEET1\nYour advice sparked a transformative journey to China this winter for education. Tech meets culture in a tapestry of wonders, igniting anticipation in me. Ready for growth and endless discoveries ahead. #GlobalEducation #WinterAdventure",
+        "id": "tweet_1735179074744_80h1qcp98",
+        "age": 23.25,
+        "timestamp": "2024-12-26T02:11:14.745Z"
+      },
+      {
+        "text": "TWEET2\nSecuring admission in a top Chinese university amidst winter's chill fills me with exhilaration. Each snowflake whispers of upcoming enchantments and learning experiences. The season's beauty mirrors the excitement within. #WinterExhilaration",
+        "id": "tweet_1735179074744_5u30n218a",
+        "age": 23.25,
+        "timestamp": "2024-12-26T02:11:14.745Z"
+      },
+      {
+        "text": "TWEET3\nStepping onto China's snowy landscape, the winter air carries echoes of courage and determination. Every footprint signifies transformation and new beginnings. Embracing the cold for the promise of growth and evolution. #TransformativeWinter",
+        "id": "tweet_1735179074744_6w1j73dm8",
+        "age": 23.25,
+        "timestamp": "2024-12-26T02:11:14.745Z"
+      },
+      {
+        "text": "TWEET4\nNestled in my dorm in China, winter's winds whisper of change and growth. Education here expands my mind and fuels my soul's fire. Like winter's renewal, I stand at the cusp of transformation, poised for the journey ahead. #NewBeginnings",
+        "id": "tweet_1735179074744_zh32bx3qx",
+        "age": 23.25,
+        "timestamp": "2024-12-26T02:11:14.745Z"
       }
     ],
     "digests": [
@@ -193,6 +241,18 @@
         "content": "[开头概述]\n\n主要进展：\n1. 产品开发进展顺利\n2. 团队建设初见成效\n3. 技术方面取得重要突破\n4. 建立了重要的业务伙伴关系\n\n未来展望：下一阶段将重点关注产品优化和市场拓展，期待取得更大的进展。",
         "timestamp": "2024-12-26T02:10:49.326Z",
         "age": 22.5,
+        "tweetCount": 4
+      },
+      {
+        "content": "在Xavier的早期职业阶段（22.5岁），他展开了前往中国接受教育的旅程，冬天的融入带来无尽的奇迹，科技与文化交织在一起，勾勒出令人期待的生动画卷。\n\n主要进展：\n1. 客户基础逐步扩大\n2. 建立了重要的业务伙伴关系\n3. 产品开发进展顺利\n4. 技术方面取得重要突破\n\n未来展望：随着项目的深入，Xavier将面临新的机遇和挑战，相信会有更多突破性的发展。",
+        "timestamp": "2024-12-26T02:11:02.676Z",
+        "age": 22.58,
+        "tweetCount": 4
+      },
+      {
+        "content": "[Xavier正处于 early career 阶段（22-58岁），单身，专注于事业发展但也开始思考个人生活规划。他期待遇到一个知性、独立、与其有共同话题、理解创业压力并相互支持成长的伴侣。]\n\n主要进展：\n1. 建立了重要的业务伙伴关系\n2. 项目管理能力显著提高\n3. 个人领导力得到提升\n4. 产品开发进展顺利\n\n未来展望：Xavier将继续保持创新精神，带领团队迈向新的高度。",
+        "timestamp": "2024-12-26T02:11:14.759Z",
+        "age": 22.67,
         "tweetCount": 4
       }
     ],
@@ -321,7 +381,7 @@
   },
   "stats": {
     "totalTweets": 60,
-    "digestCount": 7,
+    "digestCount": 9,
     "techUpdateCount": 0,
     "yearProgress": "25.0"
   }

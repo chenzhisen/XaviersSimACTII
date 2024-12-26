@@ -94,7 +94,7 @@ class AutoTweeter:
                 recent_contents = [t['content'] for t in sent_tweets[-100:]]
                 return content in recent_contents
         except Exception as e:
-            print(f"检查重复推文时出错: {str(e)}")
+            print(f"检��重复推文时出错: {str(e)}")
             return False
 
     def save_sent_tweet(self, tweet, tweet_id):
@@ -114,7 +114,8 @@ class AutoTweeter:
                 'id': tweet_id,
                 'content': tweet['content'],
                 'original_id': tweet.get('id'),
-                'sent_at': time.strftime('%Y-%m-%d %H:%M:%S')
+                'sent_at': time.strftime('%Y-%m-%d %H:%M:%S'),
+                'age': tweet.get('age', None)  # 添加age字段
             })
 
             # 只保留最近1000条
