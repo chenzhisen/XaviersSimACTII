@@ -102,7 +102,7 @@ class TweetGenerator {
 在生成内容时：
 1. 保持角色的连贯性和真实感
 2. 平衡工作与个人生活的描述
-3. 展��真实的情感和生活细节
+3. 展现真实的情感和生活细节
 4. 体现性格特点和价值观
 5. 符合当前的人生阶段
 
@@ -221,8 +221,8 @@ class TweetGenerator {
             // 获取最新推文和评论
             const latestTweetAndReplies = await this._getLatestTweetAndReplies();
             
-            // 获取最近的推文
-            const recentTweets = storyData.story.tweets.slice(-5) || [];
+            // 从sent_tweets.json获取最近的推文
+            const recentTweets = await this._getRecentTweets(5);
 
             // 获取最新摘要
             const latestDigest = storyData.story.digests.length > 0
@@ -253,6 +253,39 @@ class TweetGenerator {
         } catch (error) {
             this.logger.error('Error preparing context', error);
             throw error;
+        }
+    }
+
+    async _getRecentTweets(count = 5) {
+        try {
+            const sentTweetsPath = path.join(this.paths.dataDir, 'sent_tweets.json');
+            
+            // 检查文件是否存在
+            try {
+                await fs.access(sentTweetsPath);
+            } catch {
+                return [];
+            }
+
+            // 读取sent_tweets.json
+            const content = await fs.readFile(sentTweetsPath, 'utf8');
+            if (!content.trim()) {
+                return [];
+            }
+
+            const sentTweets = JSON.parse(content);
+            
+            // 获取最近的count条推文
+            const recentTweets = sentTweets.slice(-count).map(tweet => ({
+                text: tweet.content,  // 使用content作为text
+                id: tweet.id,
+                timestamp: tweet.sent_at
+            }));
+
+            return recentTweets;
+        } catch (error) {
+            this.logger.error('Error getting recent tweets', error);
+            return [];
         }
     }
 
@@ -460,7 +493,7 @@ class TweetGenerator {
     }
 
     _containsCareerContext(content) {
-        // 检查是否涉及职业发展
+        // 检查是否涉��职业发展
         return content.includes('工作') ||
                content.includes('职业') ||
                content.includes('事业') ||
@@ -619,7 +652,7 @@ class TweetGenerator {
         const romantic = personal.relationships.romantic;
         const familyLife = personal.family_life;
 
-        // 根据年龄更新状态
+        // 根据年龄更新状��
         if (currentAge >= 27 && romantic.status === 'single') {
             // 27岁左右开始稳定的感情关系
             romantic.status = 'in_relationship';
@@ -826,7 +859,7 @@ TWEET4
     }
 
     _calculateTimeProgression(tweetCount) {
-        // 基准��间：2024年
+        // 基准时间：2024年
         const baseYear = 2024;
         const baseMonth = 1;
         
