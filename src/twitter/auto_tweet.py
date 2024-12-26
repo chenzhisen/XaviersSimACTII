@@ -143,6 +143,7 @@ class AutoTweeter:
     def post_next_tweet(self):
         """发送下一条推文"""
         try:
+            # 读取待发送的推文
             tweets = self.read_tweets()
             if not tweets:
                 print("没有待发送的推文")
@@ -151,63 +152,30 @@ class AutoTweeter:
             # 获取第一条推文
             tweet = tweets[0]
             
-            # 在推文内容后添加时间戳
-            current_time = time.strftime('%Y-%m-%d %H:%M:%S')
-            tweet_content = f"{tweet['content']}\n\n{current_time}"
+            # 清理内容
+            clean_content = self._clean_tweet_content(tweet)
+
+            # 发送推文
+            response = self.client.post_tweet(clean_content)
             
-            # 检查是否是重复推文
-            if self.is_duplicate_tweet(tweet_content):
-                print(f"检测到重复推文，跳过: {tweet_content}")
+            if response and not response.startswith('Error'):
+                # 保存发送成功的推文
+                self.save_sent_tweet(tweet, response)
+                
+                # 从待发送列表中移除
                 tweets.pop(0)
                 self.save_tweets(tweets)
-                return None
-
-            try:
-                # 发送推文
-                tweet_id = self.client.post_tweet(tweet_content)
                 
-                # 如果发送成功（返回推文ID）
-                if tweet_id and isinstance(tweet_id, str) and not tweet_id.startswith('Error'):
-                    print(f"推文发送成功: {tweet_content}")
-                    print(f"推文ID: {tweet_id}")
-                    
-                    # 保存已发送的推文
-                    tweet['content'] = tweet_content  # 更新为带时间戳的内容
-                    self.save_sent_tweet(tweet, tweet_id)
-                    
-                    # 从数组中删除第一条推文
-                    tweets.pop(0)
-                    
-                    # 保存更新后的推文数组
-                    if self.save_tweets(tweets):
-                        print(f"剩余待发送推文数量: {len(tweets)}")
-                        return {'id': tweet_id}
-                    else:
-                        print("保存更新后的推文数组失败")
-                        return None
-                
-                # 如果是错误信息
-                elif isinstance(tweet_id, str) and ('Error' in tweet_id or '403' in tweet_id):
-                    print(f"发送失败: {tweet_id}")
-                    if 'duplicate content' in tweet_id.lower():
-                        print("检测到重复推文，删除并继续")
-                        tweets.pop(0)
-                        self.save_tweets(tweets)
-                    return None
-                
-                print(f"未知的返回结果: {tweet_id}")
-                return None
-                
-            except Exception as e:
-                print(f"发送推文时出错: {str(e)}")
-                if str(e).startswith('403'):
-                    print("检测到重复推文错误，删除并继续")
-                    tweets.pop(0)
-                    self.save_tweets(tweets)
-                return None
-
+                print(f"成功发送推文: {clean_content}")
+                return {'id': response}
+            
+            return None
         except Exception as e:
-            print(f"处理推文时出错: {str(e)}")
+            print(f"发送推文时出错: {str(e)}")
+            if str(e).startswith('403'):
+                print("检测到重复推文错误，删除并继续")
+                tweets.pop(0)
+                self.save_tweets(tweets)
             return None
 
     def run(self, interval_seconds=300):  # 默认5分钟发送一次
