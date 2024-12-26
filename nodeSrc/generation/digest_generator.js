@@ -11,10 +11,13 @@ class DigestGenerator {
         this.digestInterval = digestInterval;
         this.isProduction = options.isProduction || false;
 
+        // 根据环境区分数据目录
+        const envDir = this.isProduction ? 'prod' : 'dev';
+
         // 文件路径配置
         this.paths = {
-            dataDir: path.resolve(__dirname, '..', 'data'),
-            mainFile: path.resolve(__dirname, '..', 'data', 'XaviersSim.json')
+            dataDir: path.resolve(__dirname, '..', 'data', envDir),
+            mainFile: path.resolve(__dirname, '..', 'data', envDir, 'XaviersSim.json')
         };
 
         // 本地摘要模板
@@ -36,7 +39,7 @@ class DigestGenerator {
 1. 产品开发：取得重要技术突破
 2. 创业准备：初步建立团队框架
 3. 生活平衡：保持工作与生活的平衡
-4. 情感支持：维系重要的友情关系
+4. 情感支持：系重要的友情关系
 
 未来展望：随着项目的推进，Xavier将面临更多挑战，但他已经展现出应对这些挑战的潜力。`
             ]
@@ -120,7 +123,7 @@ class DigestGenerator {
 
     async _generateAIDigest(tweets, currentAge) {
         try {
-            const prompt = this._buildDigestPrompt(tweets, currentAge);
+            const prompt = await this._buildDigestPrompt(tweets, currentAge);
             const response = await this.ai.getCompletion(
                 'You are crafting a story digest summarizing recent events.',
                 prompt
@@ -264,10 +267,10 @@ class DigestGenerator {
         }
     }
 
-    _buildDigestPrompt(tweets, currentAge) {
+    async _buildDigestPrompt(tweets, currentAge) {
         try {
             const phase = this._getPhase(currentAge);
-            const personalContext = this._getPersonalContext(currentAge);
+            const personalContext = await this._getPersonalContext(currentAge);
             const tweetsText = tweets
                 .map(tweet => tweet.text)
                 .join('\n\n');
@@ -311,29 +314,50 @@ ${tweetsText}
         }
     }
 
-    _getPersonalContext(currentAge) {
-        const data = require('../data/XaviersSim.json');
-        const personal = data.personal;
-        const romantic = personal.relationships.romantic;
-        const familyLife = personal.family_life;
+    async _getPersonalContext(currentAge) {
+        try {
+            const data = JSON.parse(await fs.readFile(this.paths.mainFile, 'utf8'));
+            const personal = data.personal;
+            const romantic = personal.relationships.romantic;
+            const familyLife = personal.family_life;
+            const lifestyle = personal.lifestyle;
 
-        // 根据年龄调整关注点
-        let context = '';
-        if (currentAge < 25) {
-            context = `正处于事业起步阶段，${romantic.status === 'single' ? '单身' : '有恋人'}。
-主要关注事业发展，但也开始思考个人生活规划。
-期待遇到${romantic.preferences.lookingFor.join('、')}的伴侣。`;
-        } else if (currentAge < 30) {
-            context = `事业逐步稳定，${familyLife.marriage.isMarried ? '已婚' : '考虑婚恋'}。
-在${familyLife.marriage.plans.timing}期间计划步入婚姻。
-重视${familyLife.values.familyPriorities.slice(0, 2).join('和')}。`;
-        } else {
-            context = `事业进入成熟期，${familyLife.children.hasChildren ? '已为人父' : '考虑组建家庭'}。
-规划在${familyLife.children.plans.timing}期间要孩子。
-注重${familyLife.values.parentingStyle.slice(0, 2).join('和')}的教育理念。`;
+            let context = `
+个人状态：
+- 感情：${romantic.status === 'single' ? '单身' : '有恋人'}
+- 婚姻：${familyLife.marriage.isMarried ? '已婚' : '未婚'}
+- 家庭：${familyLife.children.hasChildren ? '已有孩子' : '暂无孩子'}
+
+生活方式：
+- 当前重心：${lifestyle.workLifeBalance.current}
+- 兴趣爱好：${lifestyle.interests.slice(0, 4).join('、')}
+- 性格特点：${lifestyle.traits.slice(0, 3).join('、')}
+
+近期关注：`;
+
+            // 根据年龄段添加不同的关注点
+            if (currentAge < 25) {
+                context += `
+- 事业发展和团队建设
+- 寻找志同道合的伴侣
+- 培养新的兴趣爱好`;
+            } else if (currentAge < 30) {
+                context += `
+- 事业与个人生活平衡
+- 发展稳定的感情关系
+- 规划未来的家庭生活`;
+            } else {
+                context += `
+- 家庭生活的规划
+- 事业更上一层楼
+- 平衡��作与家庭`;
+            }
+
+            return context;
+        } catch (error) {
+            this.logger.error('Error getting personal context', error);
+            return ''; // 返回空字符串作为默认值
         }
-
-        return context;
     }
 }
 
