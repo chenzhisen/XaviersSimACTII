@@ -104,7 +104,7 @@ class TweetFetcher:
 
     def save_replies(self, tweet_id, tweet_data, replies):
         """保存推文和回复"""
-        temp_file = self.replies_file + '.tmp'
+        temp_file = self.replies_file + '.tmp'  # 将temp_file移到try块外面
         try:
             # 读取现有数据
             existing_data = {}
@@ -114,14 +114,8 @@ class TweetFetcher:
                         content = f.read()
                         if content.strip():
                             existing_data = json.loads(content)
-                except Exception as e:
-                    print(f"读取现有回复数据时出错: {str(e)}")
-                    existing_data = {}
-
-            # 确保existing_data是字典类型
-            if not isinstance(existing_data, dict):
-                print("现有回复数据格式错误，重置为空字典")
-                existing_data = {}
+                except:
+                    pass
 
             # 更新推文数据
             if tweet_id not in existing_data:
@@ -136,14 +130,10 @@ class TweetFetcher:
                     'replies': []
                 }
             
-            # 确保replies字段是列表
-            if not isinstance(existing_data[tweet_id]['replies'], list):
-                existing_data[tweet_id]['replies'] = []
-
             # 添加新回复，避免重复
-            existing_ids = {r.get('id') for r in existing_data[tweet_id]['replies'] if isinstance(r, dict)}
+            existing_ids = {r['id'] for r in existing_data[tweet_id]['replies']}
             for reply in replies:
-                if isinstance(reply, dict) and reply.get('id') not in existing_ids:
+                if reply['id'] not in existing_ids:
                     reply_data = {
                         'id': reply['id'],
                         'author_id': reply.get('author_id'),
