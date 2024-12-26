@@ -361,7 +361,7 @@ class TweetGenerator {
                 }
             };
 
-            // 计算评论的相关性分���
+            // 计算评论的相关性分数
             analysis.relevanceScore = this._calculateRelevanceScore(analysis);
 
             return analysis;
@@ -574,19 +574,23 @@ class TweetGenerator {
             const data = await fs.readFile(this.paths.mainFile, 'utf8');
             const storyData = JSON.parse(data);
 
+            // 获取实际发送的推文总数
+            const { totalTweets: sentTotalTweets } = await this._getTweetsInfo();
+
             // 检查是否已达到年龄上限
-            if (storyData.metadata.currentAge >= this.storyConfig.setting.endAge) {
+            const calculatedAge = this._calculateAge(sentTotalTweets);
+            if (calculatedAge >= this.storyConfig.setting.endAge) {
                 this.logger.info('Story has reached end age, no more tweets will be saved');
                 return {
                     tweets: [],
                     currentAge: this.storyConfig.setting.endAge,
-                    totalTweets: storyData.story.tweets.length
+                    totalTweets: sentTotalTweets
                 };
             }
 
             // 计算新的总推文数和年龄
-            const totalTweets = storyData.story.tweets.length + tweets.length;
-            const newAge = this._calculateAge(totalTweets);
+            const newTotalTweets = sentTotalTweets + tweets.length;
+            const newAge = this._calculateAge(newTotalTweets);
 
             // 确保年龄不超过上限
             const safeAge = Math.min(newAge, this.storyConfig.setting.endAge);
@@ -601,8 +605,8 @@ class TweetGenerator {
             storyData.story.tweets.push(...newTweets);
             
             // 更新统计信息
-            storyData.stats.totalTweets = totalTweets;
-            storyData.stats.yearProgress = this._calculateYearProgress(totalTweets).progress;
+            storyData.stats.totalTweets = newTotalTweets;
+            storyData.stats.yearProgress = this._calculateYearProgress(newTotalTweets).progress;
 
             // 更新元数据
             storyData.metadata.currentAge = Number(safeAge.toFixed(2));
@@ -619,11 +623,12 @@ class TweetGenerator {
                 'utf8'
             );
 
-            // 额外保存一份简化的JSON文件，只包含推特数组
+            // 额外保存一份简化的JSON文件，包含推特数组和年龄信息
             const publicTweets = storyData.story.tweets.map(tweet => ({
                 id: tweet.id || `tweet_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
                 content: tweet.text || tweet.content,
-                created_at: tweet.timestamp
+                created_at: tweet.timestamp,
+                age: tweet.age || Number(safeAge.toFixed(2))  // 添加年龄字段
             }));
 
             const publicFilePath = path.join(this.paths.dataDir, 'tweets_public.json');
@@ -636,7 +641,7 @@ class TweetGenerator {
             this.logger.info('Saved new tweets', {
                 count: tweets.length,
                 currentAge: Number(safeAge.toFixed(2)),
-                totalTweets,
+                totalTweets: newTotalTweets,
                 newTweets: newTweets.length
             });
 
@@ -646,7 +651,7 @@ class TweetGenerator {
             return {
                 tweets: newTweets,
                 currentAge: safeAge,
-                totalTweets
+                totalTweets: newTotalTweets
             };
         } catch (error) {
             this.logger.error('Error saving tweets', error);
@@ -801,7 +806,7 @@ class TweetGenerator {
         prompt += `创作要求：
 1. 评论建议具有最高优先级
 2. 必须对评论做出直接回应
-3. 让评��带来重大转折
+3. 让评论带来重大转折
 4. 内容要反映时间推进
 5. 考虑季节特征
 6. 4条推文要呈现连续又递进的故事\n\n`;
@@ -1012,7 +1017,7 @@ TWEET4
             milestone: /(突破|里程碑|成功|实现)/,
             relationship: /(爱情|友情|团队|伙伴)/,
             challenge: /(困难|挑战|问题|危机)/,
-            growth: /(成长|学习|进步|改变)/,
+            growth: /(成���|学习|进步|改变)/,
             achievement: /(完成|达成|获得|赢得)/
         };
 
