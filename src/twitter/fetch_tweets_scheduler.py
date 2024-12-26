@@ -17,7 +17,7 @@ class TweetFetcher:
         self.client = TwitterClientV2()
         current_dir = os.path.dirname(os.path.abspath(__file__))
         project_root = os.path.abspath(os.path.join(current_dir, '..', '..'))
-        data_dir = os.path.join(project_root, 'nodeSrc', 'data')
+        data_dir = os.path.join(project_root, 'nodeSrc', 'data', 'dev')
         
         # 确保数据目录存在
         os.makedirs(data_dir, exist_ok=True)
@@ -41,11 +41,15 @@ class TweetFetcher:
                     return None, None
                 
                 sent_tweets = json.loads(content)
+                if not isinstance(sent_tweets, list):  # 确保sent_tweets是列表
+                    print("已发送推文文件格式错误，应为列表")
+                    return None, None
+                    
                 if not sent_tweets:
                     print("没有已发送的推文")
                     return None, None
                 
-                latest_tweet = sent_tweets[-1]
+                latest_tweet = sent_tweets[-1]  # 获取最后一条推文
                 return latest_tweet.get('id'), latest_tweet
         except Exception as e:
             print(f"获取最后一条推文ID时出错: {str(e)}")
@@ -100,6 +104,7 @@ class TweetFetcher:
 
     def save_replies(self, tweet_id, tweet_data, replies):
         """保存推文和回复"""
+        temp_file = self.replies_file + '.tmp'
         try:
             # 读取现有数据
             existing_data = {}
@@ -109,8 +114,14 @@ class TweetFetcher:
                         content = f.read()
                         if content.strip():
                             existing_data = json.loads(content)
-                except:
-                    pass
+                except Exception as e:
+                    print(f"读取现有回复数据时出错: {str(e)}")
+                    existing_data = {}
+
+            # 确保existing_data是字典类型
+            if not isinstance(existing_data, dict):
+                print("现有回复数据格式错误，重置为空字典")
+                existing_data = {}
 
             # 更新推文数据
             if tweet_id not in existing_data:
@@ -125,10 +136,14 @@ class TweetFetcher:
                     'replies': []
                 }
             
+            # 确保replies字段是列表
+            if not isinstance(existing_data[tweet_id]['replies'], list):
+                existing_data[tweet_id]['replies'] = []
+
             # 添加新回复，避免重复
-            existing_ids = {r['id'] for r in existing_data[tweet_id]['replies']}
+            existing_ids = {r.get('id') for r in existing_data[tweet_id]['replies'] if isinstance(r, dict)}
             for reply in replies:
-                if reply['id'] not in existing_ids:
+                if isinstance(reply, dict) and reply.get('id') not in existing_ids:
                     reply_data = {
                         'id': reply['id'],
                         'author_id': reply.get('author_id'),
@@ -140,7 +155,6 @@ class TweetFetcher:
                     existing_data[tweet_id]['replies'].append(reply_data)
 
             # 使用临时文件保存
-            temp_file = self.replies_file + '.tmp'
             with open(temp_file, 'w', encoding='utf-8') as f:
                 json.dump(existing_data, f, ensure_ascii=False, indent=2)
             
@@ -178,29 +192,39 @@ class TweetFetcher:
             print("Twitter API 响应内容:")
             print(json.dumps(replies_response, ensure_ascii=False, indent=2))
             
-            if not replies_response or 'data' not in replies_response:
+            if not isinstance(replies_response, dict):
+                print("API响应格式错误")
+                return False
+                
+            if 'data' not in replies_response:
                 print("没有找到新的回复")
                 return False
 
             # 获取回复数据
-            replies = replies_response.get('data', [])
+            replies = replies_response['data']
+            if not isinstance(replies, list):
+                print("回复数据格式错误")
+                return False
+                
             if not replies:
                 print("没有找到新的回复")
                 return False
 
             # 获取用户信息
             users = {}
-            if 'includes' in replies_response and 'users' in replies_response['includes']:
+            if isinstance(replies_response.get('includes'), dict) and isinstance(replies_response['includes'].get('users'), list):
                 for user in replies_response['includes']['users']:
-                    users[user['id']] = user.get('username', '')  # 获取用户名
-                    print(f"找到用户: {user['id']} -> @{user.get('username', '')}")
+                    if isinstance(user, dict) and 'id' in user:
+                        users[user['id']] = user.get('username', '')
+                        print(f"找到用户: {user['id']} -> @{user.get('username', '')}")
 
             # 为每个回复添加用户名
             for reply in replies:
-                author_id = reply.get('author_id')
-                if author_id in users:
-                    reply['username'] = users[author_id]
-                    print(f"回复作者: {author_id} -> @{users[author_id]}")
+                if isinstance(reply, dict):
+                    author_id = reply.get('author_id')
+                    if author_id in users:
+                        reply['username'] = users[author_id]
+                        print(f"回复作者: {author_id} -> @{users[author_id]}")
 
             print(f"找到 {len(replies)} 条回复")
             
@@ -218,7 +242,7 @@ class TweetFetcher:
                 if self.fetch_and_save_replies():
                     print(f"等待 {interval_seconds} 秒后获取下一批回复...")
                 else:
-                    print(f"没有新回复或获取失败，等�� {interval_seconds} 秒后重试...")
+                    print(f"没有新回复或获取失败，等待 {interval_seconds} 秒后重试...")
                 
                 time.sleep(interval_seconds)
             except Exception as e:
