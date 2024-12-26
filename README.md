@@ -43,15 +43,31 @@ TWITTER_ACCESS_TOKEN_SECRET=your_access_token_secret
 
 ## 使用方法
 
-### 1. 自动发送推文
+### 1. 自动发送推文 (auto_tweet.py)
 
 ```bash
-# 开发环境（默认）
+# 开发环境，测试模式（默认）
 python src/twitter/auto_tweet.py
 
-# 生产环境
+# 开发环境，实际发送
+python src/twitter/auto_tweet.py --no-dry-run
+
+# 生产环境，测试模式
 python src/twitter/auto_tweet.py --prod
+
+# 生产环境，实际发送
+python src/twitter/auto_tweet.py --prod --no-dry-run
 ```
+
+参数说明：
+- `--prod`: 使用生产环境（使用 `nodeSrc/data/prod` 目录）
+- `--no-dry-run`: 实际发送推文（默认为测试模式）
+
+运行效果：
+- 测试模式：不会实际发送推文，只会模拟发送
+- 实际发送：会真实发送推文到 Twitter
+- 开发环境：使用 `dev` 目录的数据文件
+- 生产环境：使用 `prod` 目录的数据文件
 
 ### 2. 获取推文回复
 
