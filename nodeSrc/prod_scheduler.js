@@ -2,8 +2,9 @@ const { exec } = require('child_process');
 const path = require('path');
 const fs = require('fs');
 
-// 获取项目根目录
+// 获取项目根目录和nodeSrc目录
 const projectRoot = path.resolve(__dirname, '..');
+const nodeSrcDir = path.join(projectRoot, 'nodeSrc');
 
 // 确保目录存在
 function ensureDirectoryExists(dirPath) {
@@ -15,8 +16,7 @@ function ensureDirectoryExists(dirPath) {
 // 初始化必要的目录
 function initializeDirectories() {
     const dirs = [
-        path.join(projectRoot, 'nodeSrc', 'data', 'prod'),
-        path.join(projectRoot, 'nodeSrc', 'data', 'dev'),
+        path.join(nodeSrcDir, 'data', 'prod'),
         path.join(projectRoot, 'logs')
     ];
 
@@ -26,11 +26,11 @@ function initializeDirectories() {
 function runCommand() {
     console.log('=== 开始执行生产环境命令 ===');
     console.log('时间:', new Date().toLocaleString());
-    console.log('工作目录:', projectRoot);
+    console.log('工作目录:', nodeSrcDir);
 
     // 执行npm命令
     const child = exec('npm run start:prod', {
-        cwd: projectRoot
+        cwd: nodeSrcDir  // 在nodeSrc目录下执行命令
     });
 
     // 输出信息
