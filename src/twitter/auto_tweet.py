@@ -199,7 +199,7 @@ class AutoTweeter:
                 self.save_tweets(tweets)
             return None
 
-    def run(self, interval_seconds=300):  # 默认5分钟发送一次
+    def run(self, interval_seconds=30000):  # 默认5分钟发送一次
         # 在测试模式下只等待1秒
         actual_interval = 1 if self.dry_run else interval_seconds
         print(f"自动发推程序启动，间隔 {actual_interval} 秒")
