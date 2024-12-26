@@ -353,6 +353,7 @@ class TweetGenerator {
                 content: cleanContent,  // 过滤后的内容
                 created_at: reply.created_at,  // 评论时间
                 author_id: reply.author_id,  // 评论者ID
+                username: reply.username,  // 添加用户名字段
                 analysis: {  // 评论分析结果
                     type: this._getSuggestionType(cleanContent),
                     impact: this._analyzeImpact(cleanContent),
@@ -393,7 +394,7 @@ class TweetGenerator {
         if (analysis.analysis.type.includes('LIFE_EVENT')) score += 2;  // 重大生活事件
         if (analysis.analysis.type.includes('RELATIONSHIP')) score += 2;  // 人际关系
 
-        // 根据关键词数量加分
+        // 根据关键词数量加���
         score += Math.min(analysis.analysis.keywords.length, 3);  // 最多加3分
 
         // 根据评论长度适当加分（避免过短的评论）
@@ -577,7 +578,7 @@ class TweetGenerator {
             // 获取实际发送的推文总数
             const { totalTweets: sentTotalTweets } = await this._getTweetsInfo();
 
-            // 检查是否��达到年龄上限
+            // 检查是否达到年龄上限
             const calculatedAge = this._calculateAge(sentTotalTweets);
             if (calculatedAge >= this.storyConfig.setting.endAge) {
                 this.logger.info('Story has reached end age, no more tweets will be saved');
@@ -608,7 +609,7 @@ class TweetGenerator {
             storyData.stats.totalTweets = newTotalTweets;
             storyData.stats.yearProgress = this._calculateYearProgress(newTotalTweets).progress;
 
-            // 更新元数据
+            // 更新��数据
             storyData.metadata.currentAge = Number(safeAge.toFixed(2));
             storyData.metadata.lastUpdate = new Date().toISOString();
             storyData.metadata.currentPhase = this._getCurrentPhase(safeAge);
@@ -717,14 +718,14 @@ class TweetGenerator {
             {
                 age: 32,
                 type: 'marriage',
-                title: '步入婚姻',
+                title: '结婚',
                 description: '与相恋多年的伴侣共同开启人生的新篇章。'
             },
             {
                 age: 34,
                 type: 'family',
                 title: '喜得贵子',
-                description: '迎来人生新角色，成为一名父亲。'
+                description: '迎来新角色，成为一名父亲。'
             }
         ];
 
@@ -769,6 +770,21 @@ class TweetGenerator {
         const adjustments = context.story_adjustments;
         let prompt = '';
         
+        // 获取评论者
+        const commenters = new Set();  // 使用Set避免重复
+        try {
+            if (adjustments && adjustments.suggestions) {
+                // 只获取被引用（被分析）的评论者
+                for (const suggestion of adjustments.suggestions) {
+                    if (suggestion.username) {
+                        commenters.add(`@${suggestion.username}`);
+                    }
+                }
+            }
+        } catch (error) {
+            console.error('获取评论者时出错:', error);
+        }
+        
         // 计算时间流逝
         const timeInfo = this._calculateTimeProgression(context.tweet_count);
         
@@ -779,6 +795,12 @@ class TweetGenerator {
             }).join('\n\n');
 
             prompt = `【最高优先级：立即回应以下评论】\n\n${suggestions}\n\n处理要求：\n1. 必须立即采取行动回应评论\n2. 评论建议优先于原有剧情\n3. 让评论直接改变故事走向\n\n`;
+        }
+
+        // 添加评论者@提示
+        const commentersStr = Array.from(commenters).join(' ');
+        if (commenters.size > 0) {
+            prompt += `重要提示：每条推文都必须以 ${commentersStr} 开头！\n\n`;
         }
 
         prompt += `时间背景：
@@ -800,23 +822,24 @@ class TweetGenerator {
 请严格按照以下格式生成4条推文：
 
 TWEET1
-[第一条推文内容]
+${commenters.size > 0 ? commentersStr + ' ' : ''}[第一条推文内容]
 
 TWEET2
-[第二条推文内容]
+${commenters.size > 0 ? commentersStr + ' ' : ''}[第二条推文内容]
 
 TWEET3
-[第三条推文内容]
+${commenters.size > 0 ? commentersStr + ' ' : ''}[第三条推文内容]
 
 TWEET4
-[第四条推文内容]
+${commenters.size > 0 ? commentersStr + ' ' : ''}[第四条推文内容]
 
 注意事项：
-- 每条推文不超过280字符
+- 每条推文必须以 ${commentersStr} 开头
+- 每条推文总长度（包括@用户名）不超过280字符
 - 直接回应评论建议
 - 描述具体行动和改变
 - 体现时间的连续性
-- 不要包含具体的���期和时间`;
+- 不要包含具体的日期和时间`;
 
         return prompt;
     }
