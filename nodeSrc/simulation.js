@@ -4,34 +4,64 @@ const { AICompletion } = require('./utils/ai_completion');
 const { Logger } = require('./utils/logger');
 const { Config } = require('./utils/config');
 const path = require('path');
-const fs = require('fs/promises');
+const fs = require('fs');
+const fsPromises = require('fs/promises');
 
 class XavierSimulation {
     constructor(isProduction = false) {
         this.logger = new Logger('simulation');
         this.isProduction = isProduction;
+        this.envDir = isProduction ? 'prod' : 'dev';
+        this.dataDir = path.join(__dirname, 'data', this.envDir);
+        
+        // 确保目录存在
+        if (!fs.existsSync(this.dataDir)) {
+            fs.mkdirSync(this.dataDir, { recursive: true });
+        }
 
         // 初始化生成器，不传入客户端，让 AICompletion 自己初始化
-        this.tweetGenerator = new TweetGenerator(null, null, {
-            isProduction
-        });
+        this.tweetGenerator = new TweetGenerator(null, null, isProduction);
         
-        this.digestGenerator = new DigestGenerator(null, null, 4, {
-            isProduction
-        });
+        this.digestGenerator = new DigestGenerator(null, null, 4, isProduction);
 
         // 运行配置
         this.config = {
-            minInterval: 1 * 1000,    // 最小间隔5秒
-            maxInterval: 2 * 1000,   // 最大间隔10秒
-            maxTweetsPerDay: 4800,      // 每天最大推文数
+            minInterval: 1 * 1000,    // 最小间隔1秒
+            maxInterval: 2 * 1000,    // 最大间隔2秒
+            maxTweetsPerDay: 4800,    // 每天最大推文数
             tweetsPerScene: 4,        // 每个场景4条推文
-            scenesPerBatch: 1,        // ��3个场景（固定12条推文）
+            scenesPerBatch: 1,        // 1个场景
             isRunning: false
         };
 
         // 加载故事配置
         this.storyConfig = require('./data/Introduction.json').story;
+    }
+
+    async saveTweetsToPublic(tweets) {
+        try {
+            // 保存到tweets_public.json
+            const publicFilePath = path.join(this.dataDir, 'tweets_public.json');
+            
+            // 确保文件存在
+            if (!fs.existsSync(publicFilePath)) {
+                fs.writeFileSync(publicFilePath, '[]');
+            }
+
+            // 读取现有数据
+            const existingData = JSON.parse(fs.readFileSync(publicFilePath, 'utf8'));
+            
+            // 添加新推文
+            existingData.push(...tweets);
+            
+            // 写入文件
+            fs.writeFileSync(publicFilePath, JSON.stringify(existingData, null, 2));
+            
+            console.log('Successfully saved tweets to public file');
+        } catch (error) {
+            console.error('Error saving tweets to public:', error);
+            throw error;
+        }
     }
 
     async start() {
@@ -122,16 +152,21 @@ class XavierSimulation {
             }));
 
             // 保存到tweets_public.json
-            const publicFilePath = path.join(__dirname, 'data', 'tweets_public.json');
+            const publicFilePath = path.join(this.dataDir, 'tweets_public.json');
             
-            // 确保目录存在
-            await fs.mkdir(path.dirname(publicFilePath), { recursive: true });
+            // 确保文件存在
+            if (!fs.existsSync(publicFilePath)) {
+                fs.writeFileSync(publicFilePath, '[]');
+            }
+
+            // 读取现有数据
+            const existingData = JSON.parse(fs.readFileSync(publicFilePath, 'utf8'));
             
-            await fs.writeFile(
-                publicFilePath,
-                JSON.stringify(publicTweets, null, 2),
-                'utf8'
-            );
+            // 添加新推文
+            existingData.push(...publicTweets);
+            
+            // 写入文件
+            fs.writeFileSync(publicFilePath, JSON.stringify(existingData, null, 2));
 
             // 检查是否需要生成摘要
             const digest = await this.digestGenerator.checkAndGenerateDigest(

@@ -152,13 +152,28 @@ const INITIAL_DATA = {
     }
 };
 
-async function initializeDataStructure() {
-    const dataPath = path.resolve(__dirname, '..', 'data', 'XaviersSim.json');
-    const dataDir = path.dirname(dataPath);
+async function initializeDataStructure(isProduction = false) {
+    // 根据环境选择目录
+    const envDir = isProduction ? 'prod' : 'dev';
+    const baseDataDir = path.resolve(__dirname, '..', 'data');
+    const dataDir = path.resolve(baseDataDir, envDir);
+    const dataPath = path.resolve(dataDir, 'XaviersSim.json');
     const aiLogsDir = path.resolve(dataDir, 'ai_logs');
 
+    // 需要初始化的文件列表
+    const requiredFiles = [
+        { path: path.resolve(dataDir, 'sent_tweets.json'), content: '[]' },
+        { path: path.resolve(dataDir, 'tweet_replies.json'), content: '{}' },
+        { path: path.resolve(dataDir, 'tweets_public.json'), content: '[]' },
+        { path: path.resolve(dataDir, 'ongoing_tweets.json'), content: '[]' }
+    ];
+
     try {
-        logger.info('Starting data initialization...', { cleanup: CLEANUP_CONFIG });
+        logger.info('Starting data initialization...', { 
+            cleanup: CLEANUP_CONFIG,
+            environment: isProduction ? 'production' : 'development',
+            dataDir
+        });
 
         // 根据配置清理文件
         if (CLEANUP_CONFIG.enabled) {
@@ -189,17 +204,42 @@ async function initializeDataStructure() {
             logger.info('File cleanup disabled');
         }
 
-        // 确保数据目录存在
-        await fs.mkdir(dataDir, { recursive: true });
+        // 创建必要的目录
+        const directories = [
+            dataDir,
+            aiLogsDir,
+            path.resolve(dataDir, 'backups'),
+            path.resolve(dataDir, 'tweets'),
+            path.resolve(dataDir, 'logs'),
+            path.resolve(dataDir, 'digest')
+        ];
 
-        // 创建新的数据文件
+        for (const dir of directories) {
+            await fs.mkdir(dir, { recursive: true });
+            logger.info(`Created directory: ${dir}`);
+        }
+
+        // 初始化所有必要的文件
+        for (const file of requiredFiles) {
+            try {
+                await fs.access(file.path);
+                logger.info(`File exists: ${file.path}`);
+            } catch {
+                await fs.writeFile(file.path, file.content, 'utf8');
+                logger.info(`Created file: ${file.path}`);
+            }
+        }
+
+        // 创建新的主数据文件
         await fs.writeFile(
             dataPath,
             JSON.stringify(INITIAL_DATA, null, 2),
             'utf8'
         );
 
-        logger.info('Data structure initialized successfully');
+        logger.info('Data structure initialized successfully', {
+            environment: isProduction ? 'production' : 'development'
+        });
         return true;
 
     } catch (error) {
@@ -211,5 +251,5 @@ async function initializeDataStructure() {
 module.exports = {
     initializeDataStructure,
     INITIAL_DATA,
-    CLEANUP_CONFIG  // 导出配置以便其他模块使用
+    CLEANUP_CONFIG
 }; 

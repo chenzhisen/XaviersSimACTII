@@ -12,12 +12,26 @@ class TweetGenerator {
         this.githubOps = new GithubOperations(isProduction);
         this.isProduction = isProduction;
 
+        // 根据环境区分数据目录
+        const envDir = isProduction ? 'prod' : 'dev';
+        
         // 文件路径配置
         this.paths = {
-            dataDir: path.resolve(__dirname, '..', 'data'),
-            mainFile: path.resolve(__dirname, '..', 'data', 'XaviersSim.json'),
-            backupDir: path.resolve(__dirname, '..', 'data', 'backups')
+            dataDir: path.resolve(__dirname, '..', 'data', envDir),
+            mainFile: path.resolve(__dirname, '..', 'data', envDir, 'XaviersSim.json'),
+            backupDir: path.resolve(__dirname, '..', 'data', envDir, 'backups'),
+            tweetsDir: path.resolve(__dirname, '..', 'data', envDir, 'tweets'),
+            logsDir: path.resolve(__dirname, '..', 'data', envDir, 'logs'),
+            digestDir: path.resolve(__dirname, '..', 'data', envDir, 'digest'),
+            // 修改这三个文件的路径，使其在开发环境下从dev目录读写
+            sentTweetsFile: path.resolve(__dirname, '..', 'data', envDir, 'sent_tweets.json'),
+            repliesFile: path.resolve(__dirname, '..', 'data', envDir, 'tweet_replies.json'),
+            publicTweetsFile: path.resolve(__dirname, '..', 'data', envDir, 'tweets_public.json'),
+            ongoingTweetsFile: path.resolve(__dirname, '..', 'data', envDir, 'ongoing_tweets.json')
         };
+
+        // 初始化目录结构
+        this._initializeDirectories();
 
         // 加载故事背景
         this.storyConfig = Introduction.story;
@@ -90,7 +104,7 @@ class TweetGenerator {
 
             return `你是Xavier，一个${currentAge}岁的年轻科技创业者。作为$XVI Labs的创始人，你正在构建下一代去中心化AI基础设施。
 
-个人背景：
+个���背景：
 1. 当前年龄：${currentAge}岁
 2. 感情状态：${romantic.status === 'single' ? '单身' : '有恋人'}
 3. 婚姻规划：计划在${familyLife.marriage.plans.timing}期间步入婚姻
@@ -609,7 +623,7 @@ class TweetGenerator {
             storyData.stats.totalTweets = newTotalTweets;
             storyData.stats.yearProgress = this._calculateYearProgress(newTotalTweets).progress;
 
-            // 更新���据
+            // 更新数据
             storyData.metadata.currentAge = Number(safeAge.toFixed(2));
             storyData.metadata.lastUpdate = new Date().toISOString();
             storyData.metadata.currentPhase = this._getCurrentPhase(safeAge);
@@ -885,7 +899,7 @@ Important Notes:
     }
 
     _calculateTimeProgression(tweetCount) {
-        // 基准时间：2024年
+        // 基准���间：2024年
         const baseYear = 2024;
         const baseMonth = 1;
         
@@ -923,7 +937,7 @@ Important Notes:
 
         let context = `
 个人状态：
-- ���情：${romantic.status === 'single' ? '单身' : '有恋人'}
+- 感情：${romantic.status === 'single' ? '单身' : '有恋人'}
 - 婚姻：${familyLife.marriage.isMarried ? '已婚' : '未婚'}
 - 家庭：${familyLife.children.hasChildren ? '已有孩子' : '暂无孩子'}
 
@@ -1127,6 +1141,50 @@ Important Notes:
         } catch (error) {
             this.logger.error('Error cleaning up old backups', error);
             // 继续执行，清理失败不影响主流程
+        }
+    }
+
+    async _initializeDirectories() {
+        try {
+            // 创建所有必要的目录
+            const directories = [
+                this.paths.dataDir,
+                this.paths.backupDir,
+                this.paths.tweetsDir,
+                this.paths.logsDir,
+                this.paths.digestDir,
+                path.dirname(this.paths.sentTweetsFile),
+                path.dirname(this.paths.repliesFile),
+                path.dirname(this.paths.publicTweetsFile),
+                path.dirname(this.paths.ongoingTweetsFile)
+            ];
+
+            for (const dir of directories) {
+                await fs.mkdir(dir, { recursive: true });
+                this.logger.info(`Created directory: ${dir}`);
+            }
+
+            // 初始化必要的JSON文件
+            const jsonFiles = [
+                this.paths.mainFile,
+                this.paths.sentTweetsFile,
+                this.paths.repliesFile,
+                this.paths.publicTweetsFile,
+                this.paths.ongoingTweetsFile
+            ];
+
+            for (const file of jsonFiles) {
+                try {
+                    await fs.access(file);
+                } catch {
+                    // 文件不存在，创建空的JSON文件
+                    await fs.writeFile(file, '[]', 'utf8');
+                    this.logger.info(`Created empty JSON file: ${file}`);
+                }
+            }
+        } catch (error) {
+            this.logger.error('Error creating directories', error);
+            throw error;
         }
     }
 }

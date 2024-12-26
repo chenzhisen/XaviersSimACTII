@@ -10,7 +10,7 @@ class AutoTweeter:
         self.client = TwitterClientV2()
         current_dir = os.path.dirname(os.path.abspath(__file__))
         project_root = os.path.abspath(os.path.join(current_dir, '..', '..'))
-        data_dir = os.path.join(project_root, 'nodeSrc', 'data')
+        data_dir = os.path.join(project_root, 'nodeSrc', 'data', 'dev')
         
         # 确保数据目录存在
         os.makedirs(data_dir, exist_ok=True)
@@ -74,7 +74,7 @@ class AutoTweeter:
                 os.rename(temp_file, self.tweets_file)
             return True
         except Exception as e:
-            print(f"保存推文文件出错: {str(e)}")
+            print(f"保存推文文���出错: {str(e)}")
             if os.path.exists(temp_file):
                 try:
                     os.remove(temp_file)
@@ -94,7 +94,7 @@ class AutoTweeter:
                 recent_contents = [t['content'] for t in sent_tweets[-100:]]
                 return content in recent_contents
         except Exception as e:
-            print(f"检��重复推文时出错: {str(e)}")
+            print(f"检查重复推文时出错: {str(e)}")
             return False
 
     def save_sent_tweet(self, tweet, tweet_id):

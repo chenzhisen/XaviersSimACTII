@@ -1,0 +1,196 @@
+{
+  "metadata": {
+    "protagonist": "Xavier",
+    "startAge": 22,
+    "currentAge": 22.08,
+    "currentPhase": "early_career",
+    "lastUpdate": "2024-12-26T03:25:07.946Z",
+    "version": "1.0.0"
+  },
+  "story": {
+    "tweets": [
+      {
+        "text": "TWEET1\nEmbracing the winter chill, a fresh start begins with a burst of creativity and determination. Excited for the journey ahead! ❄️ #NewBeginnings",
+        "id": "tweet_1735183498408_7ujn0ru2z",
+        "age": 22.08,
+        "timestamp": "2024-12-26T03:24:58.410Z"
+      },
+      {
+        "text": "TWEET2\nResponding to insightful feedback, I pivot towards uncharted territories, exploring innovative ways to shape the future of AI infrastructure. 🚀 #Innovation",
+        "id": "tweet_1735183498408_t6glqc5ub",
+        "age": 22.08,
+        "timestamp": "2024-12-26T03:24:58.410Z"
+      },
+      {
+        "text": "TWEET3\nAs days pass, progress unfolds like the gradual bloom of winter flowers. Each setback is a stepping stone, each success a testament to resilience. 💪 #Progress",
+        "id": "tweet_1735183498408_cbqrywqpq",
+        "age": 22.08,
+        "timestamp": "2024-12-26T03:24:58.410Z"
+      },
+      {
+        "text": "TWEET4\nReflecting on the week, I realize growth isn't just about achievements but also about the lessons learned and the connections forged. Onwards we go! 🌱 #PersonalGrowth",
+        "id": "tweet_1735183498408_edrz1qmpy",
+        "age": 22.08,
+        "timestamp": "2024-12-26T03:24:58.410Z"
+      },
+      {
+        "text": "TWEET1\nThe winter chill settles in as I embark on this new chapter, filled with excitement and determination. #NewBeginnings",
+        "id": "tweet_1735183507945_0xxbgceqg",
+        "age": 22.08,
+        "timestamp": "2024-12-26T03:25:07.946Z"
+      },
+      {
+        "text": "TWEET2\nStarting slow, laying the foundation for what's to come. Research, planning, and endless cups of hot tea to fuel the progress. #ProductiveDays",
+        "id": "tweet_1735183507945_vaj374hbp",
+        "age": 22.08,
+        "timestamp": "2024-12-26T03:25:07.946Z"
+      },
+      {
+        "text": "TWEET3\nA sudden comment suggests a new direction, sparking a shift in focus. Time to pivot, adapt, and embrace the unexpected twists that come with innovation. #Adaptability",
+        "id": "tweet_1735183507945_29gy8t1qa",
+        "age": 22.08,
+        "timestamp": "2024-12-26T03:25:07.946Z"
+      },
+      {
+        "text": "TWEET4\nThe week closes with a transformed vision, thanks to valuable insights from unexpected sources. Ready to dive deeper into uncharted territories. #InnovateAndElevate",
+        "id": "tweet_1735183507945_7e3zrzak4",
+        "age": 22.08,
+        "timestamp": "2024-12-26T03:25:07.946Z"
+      }
+    ],
+    "digests": [
+      {
+        "content": "Xavier is at a crossroads, seriously considering leaving college to focus on quant trading and his involvement with $XVI. This marks a significant shift in his life priorities and indicates a desire to take control of his future..",
+        "timestamp": "2024-12-26T03:24:54.330Z"
+      }
+    ],
+    "keyPlotPoints": [],
+    "relationships": []
+  },
+  "tech": {
+    "updates": [],
+    "currentState": {
+      "phase": "early",
+      "focus": [
+        "基础架构",
+        "核心算法",
+        "产品原型"
+      ],
+      "challenges": [
+        "技术选型",
+        "性能优化",
+        "安全性"
+      ],
+      "lastUpdate": "2024-12-26T03:24:54.330Z"
+    }
+  },
+  "career": {
+    "milestones": [],
+    "currentState": {
+      "role": "创始人/技术负责人",
+      "company": "$XVI Labs",
+      "stage": "初创期",
+      "team_size": 1
+    }
+  },
+  "personal": {
+    "relationships": {
+      "family": [],
+      "friends": [],
+      "colleagues": [],
+      "mentors": [],
+      "romantic": {
+        "status": "single",
+        "milestones": [],
+        "currentRelationship": null,
+        "pastRelationships": [],
+        "preferences": {
+          "lookingFor": [
+            "知性且独立",
+            "有共同话题",
+            "理解创业压力",
+            "相互支持成长"
+          ],
+          "dealBreakers": [
+            "过分物质",
+            "不理解工作压力",
+            "缺乏个人追求"
+          ]
+        }
+      }
+    },
+    "family_life": {
+      "status": "single",
+      "marriage": {
+        "isMarried": false,
+        "plans": {
+          "timing": "30-35岁",
+          "priorities": [
+            "事业稳定后",
+            "遇到合适的人",
+            "具备经济基础"
+          ]
+        }
+      },
+      "children": {
+        "hasChildren": false,
+        "plans": {
+          "timing": "32-37岁",
+          "thoughts": [
+            "希望给孩子最好的教育",
+            "平衡事业与家庭",
+            "传承价值观和知识"
+          ]
+        }
+      },
+      "values": {
+        "familyPriorities": [
+          "家庭和谐",
+          "共同成长",
+          "相互理解",
+          "优质教育"
+        ],
+        "parentingStyle": [
+          "开放沟通",
+          "鼓励探索",
+          "重视教育",
+          "情感支持"
+        ]
+      }
+    },
+    "lifestyle": {
+      "workLifeBalance": {
+        "current": "以工作为重",
+        "goals": [
+          "逐步平衡工作与生活",
+          "保持健康作息",
+          "留出家庭时间"
+        ]
+      },
+      "interests": [
+        "编程",
+        "区块链技术",
+        "创业",
+        "投资",
+        "阅读",
+        "健身",
+        "旅行",
+        "美食"
+      ],
+      "traits": [
+        "技术驱动",
+        "创新思维",
+        "持续学习",
+        "追求卓越",
+        "重视家庭",
+        "感情专一"
+      ]
+    }
+  },
+  "stats": {
+    "totalTweets": 4,
+    "digestCount": 0,
+    "techUpdateCount": 0,
+    "yearProgress": "8.3"
+  }
+}
