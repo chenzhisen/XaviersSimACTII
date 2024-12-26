@@ -1,8 +1,0 @@
-{
-  "timestamp": "2024-12-26T01:15:12.152Z",
-  "model": "openai/gpt-3.5-turbo",
-  "systemPrompt": "",
-  "userPrompt": "\n作为一个故事摘要生成器，请为以下推文生成一个详细的中文摘要。\n这些推文描述了Xavier在early_career阶段（22岁）的经历。\n\n个人背景：\n正处于事业起步阶段，单身。\n主要关注事业发展，但也开始思考个人生活规划。\n期待遇到知性且独立、有共同话题、理解创业压力、相互支持成长的伴侣。\n\n推文内容：\n[Begin planning my study journey to China, researching the best programs and universities to enhance my skills and knowledge in AI. Excitement building!]\n\n[Enrolling in Mandarin classes to prepare for the language immersion and cultural experience. Ready to embrace the challenge and growth ahead!]\n\n[Connecting with local communities and groups in China to expand my network and learn from their perspectives. Looking forward to building meaningful relationships and connections!]\n\n[Grateful for the opportunity to broaden my horizons and deepen my expertise. China, here I come! Ready to learn, grow, and create a brighter future with XVI Labs!]\n\n请按以下格式生成摘要：\n1. 开头概述这段时期的整体特点和主要发展（2-3句话）\n2. 列出4个具体的主要进展，包括：事业发展、个人成长、感情生活、家庭关系等方面\n3. 最后加上对未来的展望（1-2句话）\n\n要求：\n- 平衡事业与个人生活的描述\n- 体现人物的情感变化\n- 突出重要的人际关系\n- 注意家庭和感情的发展\n- 保持故事的连贯性\n\n请严格按照以下模板输出：\n[开头概述，2-3句话描述这段时期的特点]\n\n主要进展：\n1. [事业相关进展]\n2. [个人成长进展]\n3. [感情/家庭相关进展]\n4. [生活方式/兴趣相关进展]\n\n未来展望：[1-2句话的展望，包含事业和个人生活]\n",
-  "response": "\n[作为一个22岁事业起步阶段的单身青年，Xavier开始思考个人生活规划，同时专注于事业发展，期待遇到理解创业压力、相互支持成长的伴侣。]\n\n主要进展：\n1. 针对提升AI技能与知识，Xavier开始策划前往中国学习之旅，研究最佳项目和大学。他对未来充满期待！\n2. 为了语言沉浸和文化体验做准备，Xavier报名参加普通话班。他准备迎接挑战和成长！\n3. 通过与中国当地社区和团体建立联系，Xavier扩展了他的人际网络，从中学习不同的观点。他期待建立有意义的人际关系！\n4. 感恩有机会拓宽视野，深化专业知识。Xavier准备前往中国，与XVI Labs共同学习、成长，开创更加美好的未来！\n\n未来展望：Xavier期待在中国的学习之旅中不断提升自己的技能，拓展人际关系，并为XVI Labs的发展贡献心力，为个人生活带来更多意义。",
-  "success": true
-}

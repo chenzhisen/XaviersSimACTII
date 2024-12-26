@@ -102,7 +102,7 @@ class TweetGenerator {
 在生成内容时：
 1. 保持角色的连贯性和真实感
 2. 平衡工作与个人生活的描述
-3. 展��真实的情感和生活细节
+3. 展现真实的情感和生活细节
 4. 体现性格特点和价值观
 5. 符合当前的人生阶段
 
@@ -306,15 +306,18 @@ class TweetGenerator {
 
         // 分析所有回复
         const analyzedReplies = replies.map(reply => {
+            // 过滤掉 @XaviersSimACTII
+            const cleanContent = reply.content.replace(/@XaviersSimACTII/g, '').trim();
+            
             const analysis = {
-                content: reply.content,  // 原始内容
+                content: cleanContent,  // 过滤后的内容
                 created_at: reply.created_at,  // 评论时间
                 author_id: reply.author_id,  // 评论者ID
                 analysis: {  // 评论分析结果
-                    type: this._getSuggestionType(reply.content),
-                    impact: this._analyzeImpact(reply.content),
-                    mood: this._analyzeMood(reply.content),
-                    keywords: this._extractKeywords(reply.content)
+                    type: this._getSuggestionType(cleanContent),
+                    impact: this._analyzeImpact(cleanContent),
+                    mood: this._analyzeMood(cleanContent),
+                    keywords: this._extractKeywords(cleanContent)
                 }
             };
 
@@ -462,7 +465,7 @@ class TweetGenerator {
                content.includes('职业') ||
                content.includes('事业') ||
                content.includes('发展') ||
-               content.includes('晋���') ||
+               content.includes('晋升') ||
                content.includes('career') ||
                content.includes('job') ||
                content.includes('work') ||
@@ -576,7 +579,7 @@ class TweetGenerator {
                 'utf8'
             );
 
-            // 额外保存一份简化的JSON文���，只包含推特数组
+            // 额外保存一份简化的JSON文件，只包含推特数组
             const publicTweets = storyData.story.tweets.map(tweet => ({
                 id: tweet.id || `tweet_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
                 content: tweet.text || tweet.content,
@@ -952,7 +955,7 @@ class TweetGenerator {
                     path: path.join(this.backupConfig.dir, f),
                     time: new Date(f.split('_')[1].split('.')[0].replace(/-/g, ':'))
                 }))
-                .sort((a, b) => b.time - a.time);  // 按时间降序排序
+                .sort((a, b) => b.time - a.time);  // 按时���降序排序
 
             // 删除超出数量限制的旧备份
             if (backups.length > this.backupConfig.maxFiles) {
