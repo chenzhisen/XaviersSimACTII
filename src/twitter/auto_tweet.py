@@ -200,22 +200,21 @@ class AutoTweeter:
             return None
 
     def run(self, interval_seconds=30000):  # 默认5分钟发送一次
-        # 在测试模式下只等待1秒
-        actual_interval = 1 if self.dry_run else interval_seconds
-        print(f"自动发推程序启动，间隔 {actual_interval} 秒")
+        print(f"自动发推程序启动")
         print(f"运行模式: {'测试模式 (不实际发送)' if self.dry_run else '正式模式 (实际发送)'}")
-        while True:
-            try:
-                result = self.post_next_tweet()
-                if result:
-                    print(f"等待 {actual_interval} 秒后发送下一条...")
-                else:
-                    print(f"没有新推文或发送失败，等待 {actual_interval} 秒后重试...")
-                
-                time.sleep(actual_interval)
-            except Exception as e:
-                print(f"运行出错: {str(e)}")
-                time.sleep(60)  # 出错后等待1分钟
+        
+        try:
+            result = self.post_next_tweet()
+            if result:
+                print("推文发送成功")
+            else:
+                print("没有新推文或发送失败")
+            
+        except Exception as e:
+            print(f"运行出错: {str(e)}")
+            return False
+        
+        return True
 
     def _clean_tweet_content(self, tweet):
         """清理推文内容，清理任何位置的TWEET1-4"""
