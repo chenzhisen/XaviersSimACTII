@@ -1,16 +1,27 @@
-import json
+import sys
 import os
 import time
+import json
+import argparse
+from datetime import datetime
 import re
-from twitter_client import TwitterClientV2
 
+# 添加项目根目录到系统路径
+current_dir = os.path.dirname(os.path.abspath(__file__))
+project_root = os.path.abspath(os.path.join(current_dir, '..', '..'))
+sys.path.insert(0, project_root)
+
+from twitter_client import TwitterClientV2
 class AutoTweeter:
-    def __init__(self, dry_run=True):
+    def __init__(self, dry_run=True, is_production=False):
         self.dry_run = dry_run  # 是否实际发送推文
         self.client = TwitterClientV2()
         current_dir = os.path.dirname(os.path.abspath(__file__))
         project_root = os.path.abspath(os.path.join(current_dir, '..', '..'))
-        data_dir = os.path.join(project_root, 'nodeSrc', 'data', 'dev')
+        
+        # 根据环境选择目录
+        env_dir = 'prod' if is_production else 'dev'
+        data_dir = os.path.join(project_root, 'nodeSrc', 'data', env_dir)
         
         # 确保数据目录存在
         os.makedirs(data_dir, exist_ok=True)
@@ -19,6 +30,8 @@ class AutoTweeter:
         self.sent_tweets_file = os.path.join(data_dir, 'sent_tweets.json')
         print(f"推文文件路径: {self.tweets_file}")
         print(f"已发送推文文件路径: {self.sent_tweets_file}")
+        print(f"运行环境: {'生产环境' if is_production else '开发环境'}")
+        print(f"运行模式: {'测试模式 (不实际发送)' if self.dry_run else '正式模式 (实际发送)'}")
         
         # 确保 sent_tweets_file 存在
         self._ensure_sent_tweets_file()
@@ -74,7 +87,7 @@ class AutoTweeter:
                 os.rename(temp_file, self.tweets_file)
             return True
         except Exception as e:
-            print(f"保存推文文���出错: {str(e)}")
+            print(f"保存推文文件出错: {str(e)}")
             if os.path.exists(temp_file):
                 try:
                     os.remove(temp_file)
@@ -215,5 +228,13 @@ class AutoTweeter:
         return text.strip()
 
 if __name__ == "__main__":
-    tweeter = AutoTweeter()
+    parser = argparse.ArgumentParser(description='自动发送推文程序')
+    parser.add_argument('--prod', action='store_true', help='使用生产环境')
+    parser.add_argument('--no-dry-run', action='store_true', help='实际发送推文（默认为测试模式）')
+    args = parser.parse_args()
+    
+    tweeter = AutoTweeter(
+        dry_run=not args.no_dry_run,
+        is_production=args.prod
+    )
     tweeter.run() 
