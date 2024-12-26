@@ -2,17 +2,42 @@
   "metadata": {
     "protagonist": "Xavier",
     "startAge": 22,
-    "currentAge": 22,
+    "currentAge": 22.08,
     "currentPhase": "early_career",
-    "lastUpdate": "2024-12-26T06:01:29.518Z",
+    "lastUpdate": "2024-12-26T06:06:53.369Z",
     "version": "1.0.0"
   },
   "story": {
-    "tweets": [],
+    "tweets": [
+      {
+        "text": "TWEET1\nEmbracing the winter chill with a new project on the horizon. Excited for the journey ahead!",
+        "id": "tweet_1735193213368_ix8vv25ye",
+        "age": 22.08,
+        "timestamp": "2024-12-26T06:06:53.369Z"
+      },
+      {
+        "text": "TWEET2\nTaking a break from coding to admire the snowfall outside. Nature's beauty always brings a sense of calm.",
+        "id": "tweet_1735193213368_uk2gnku5x",
+        "age": 22.08,
+        "timestamp": "2024-12-26T06:06:53.369Z"
+      },
+      {
+        "text": "TWEET3\nReceived some insightful comments that sparked a fresh perspective. Time to incorporate these ideas into the project.",
+        "id": "tweet_1735193213368_qh02eoni9",
+        "age": 22.08,
+        "timestamp": "2024-12-26T06:06:53.369Z"
+      },
+      {
+        "text": "TWEET4\nAs the week comes to an end, progress has been made, ideas have evolved, and I'm one step closer to my vision. Time to recharge for the week ahead.",
+        "id": "tweet_1735193213368_pvd4d6udx",
+        "age": 22.08,
+        "timestamp": "2024-12-26T06:06:53.369Z"
+      }
+    ],
     "digests": [
       {
         "content": "Xavier is at a crossroads, seriously considering leaving college to focus on quant trading and his involvement with $XVI. This marks a significant shift in his life priorities and indicates a desire to take control of his future..",
-        "timestamp": "2024-12-26T06:01:29.518Z"
+        "timestamp": "2024-12-26T06:06:48.886Z"
       }
     ],
     "keyPlotPoints": [],
@@ -32,7 +57,7 @@
         "性能优化",
         "安全性"
       ],
-      "lastUpdate": "2024-12-26T06:01:29.518Z"
+      "lastUpdate": "2024-12-26T06:06:48.886Z"
     }
   },
   "career": {
@@ -139,9 +164,9 @@
     }
   },
   "stats": {
-    "totalTweets": 0,
+    "totalTweets": 4,
     "digestCount": 0,
     "techUpdateCount": 0,
-    "yearProgress": 0
+    "yearProgress": "8.3"
   }
 }

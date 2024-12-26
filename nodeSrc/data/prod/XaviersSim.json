@@ -2,42 +2,17 @@
   "metadata": {
     "protagonist": "Xavier",
     "startAge": 22,
-    "currentAge": 22.08,
+    "currentAge": 22,
     "currentPhase": "early_career",
-    "lastUpdate": "2024-12-26T06:05:53.039Z",
+    "lastUpdate": "2024-12-26T06:06:26.758Z",
     "version": "1.0.0"
   },
   "story": {
-    "tweets": [
-      {
-        "text": "TWEET1\nWinter brings a serene blanket of snow, mirroring the fresh start in my life. Time to embrace new beginnings and endless possibilities. #WinterWonder",
-        "id": "tweet_1735193153037_l19ra82d9",
-        "age": 22.08,
-        "timestamp": "2024-12-26T06:05:53.039Z"
-      },
-      {
-        "text": "TWEET2\nResponding to the call of change, I've delved into uncharted territories. Aiming higher, thinking bigger, with unwavering determination. #NewChapter",
-        "id": "tweet_1735193153037_h0hf29q4i",
-        "age": 22.08,
-        "timestamp": "2024-12-26T06:05:53.039Z"
-      },
-      {
-        "text": "TWEET3\nAs days blend into nights, progress becomes palpable. Each line of code, each idea polished, propelling me forward towards my vision. #InnovationJourney",
-        "id": "tweet_1735193153037_cf7hmz937",
-        "age": 22.08,
-        "timestamp": "2024-12-26T06:05:53.039Z"
-      },
-      {
-        "text": "TWEET4\nThe icy winds whisper tales of growth and resilience. With each dawn, I am one step closer to my dreams, holding onto the promise of tomorrow. #DreamBig",
-        "id": "tweet_1735193153037_d42ojjh1p",
-        "age": 22.08,
-        "timestamp": "2024-12-26T06:05:53.039Z"
-      }
-    ],
+    "tweets": [],
     "digests": [
       {
         "content": "Xavier is at a crossroads, seriously considering leaving college to focus on quant trading and his involvement with $XVI. This marks a significant shift in his life priorities and indicates a desire to take control of his future..",
-        "timestamp": "2024-12-26T06:05:49.375Z"
+        "timestamp": "2024-12-26T06:06:26.759Z"
       }
     ],
     "keyPlotPoints": [],
@@ -57,7 +32,7 @@
         "性能优化",
         "安全性"
       ],
-      "lastUpdate": "2024-12-26T06:05:49.375Z"
+      "lastUpdate": "2024-12-26T06:06:26.759Z"
     }
   },
   "career": {
@@ -164,9 +139,9 @@
     }
   },
   "stats": {
-    "totalTweets": 4,
+    "totalTweets": 0,
     "digestCount": 0,
     "techUpdateCount": 0,
-    "yearProgress": "8.3"
+    "yearProgress": 0
   }
 }
