@@ -85,6 +85,7 @@ class XavierSimulation {
 
     async runOnce() {
         try {
+            
             this.logger.info('Starting story generation');
 
             // 获取当前状态
@@ -130,7 +131,7 @@ class XavierSimulation {
                 allTweets = [...allTweets, ...tweets];
 
                 // 短暂暂停，避免生成太快
-                await new Promise(resolve => setTimeout(resolve, 10));
+                await new Promise(resolve => setTimeout(resolve, 1000));
             }
 
             // 将所有生成的推文保存到tweets_public.json
@@ -157,7 +158,8 @@ class XavierSimulation {
                 hasDigest: !!digest,
                 currentAge: summary.currentAge
             });
-
+            console.log("10s后继续");
+            await new Promise(resolve => setTimeout(resolve, 10*1000));
             return {
                 tweets: allTweets,
                 digest,
