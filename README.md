@@ -1,104 +1,108 @@
-# Xavier's Story Generator (ACT II)
-An AI-powered narrative system that chronicles Xavier's journey through social media posts from 2025 to 2075, continuing his story from ACT I (ages 18-22).
+# Xavier's Sim ACT II
 
-## Features
-- **Continuous Generation**: Posts every 30 minutes, creating 1 year of story per 2 real-world days
-- **Adaptive Storytelling**: Contextually aware content that builds on past events
-- **Character Growth**: Evolving personality and relationships over five decades
-- **Technological Integration**: Realistic progression of future technology
-- **Dynamic Interactions**: Varied post types and engagement patterns
+这是一个自动化的Twitter互动系统，用于模拟Xavier的行为并与粉丝互动。
 
-## Story Generation Workflow
+## 功能特性
 
-The system consists of three main components that work together to create a coherent narrative:
+- 自动发送推文
+- 自动获取和保存推文回复
+- 支持开发和生产环境
+- 智能回复生成
+- 用户互动管理
 
-### 1. Tweet Generator
-- Main driver of the story progression
-- Generates tweets every 30 minutes in real-time
-- 2 real-world days ≈ 1 simulated year (96 tweets/year)
-- Tracks story progression through tweet count and year
-- Ensures tweets only reference currently available technology
-- Coordinates updates to tech evolution and digest
+## 目录结构
 
-### 2. Technology Evolution
-- Generates in 5-year epochs (2025-2030, 2030-2035, etc.)
-- Updates ~6 months (48 tweets) before next epoch begins
-- Each epoch contains:
-  - Mainstream technologies (fully adopted)
-  - Emerging technologies (in development)
-  - Epoch themes (societal trends)
-- Maintains continuity by building on previous technologies
-
-### 3. Story Digest
-- Updates every ~12 tweets (about 6 hours real-time, 1.5 months simulated)
-- Also updates when 3+ significant events occur
-- Two main sections:
-  - Story So Far (summarizes recent developments)
-  - Story Direction (suggests future developments)
-- Can look ahead to upcoming technology for story planning
-
-### Generation Flow
-```mermaid
-graph LR
-    A[Start] --> B{Time for<br/>Tech Update?}
-    B -- Need Update --> C[Generate<br/>Tech Epoch]
-    B -- Skip --> D{Time for<br/>Digest?}
-    C --> D
-    D -- Need Update --> E[Update<br/>Digest]
-    D -- Skip --> F[Generate<br/>Tweet]
-    E --> F
-    F --> G[Save State]
-    G -->|Every 30min| B
-    
-    style A fill:#f9f,stroke:#333
-    style G fill:#bbf,stroke:#333
-    style F fill:#bfb,stroke:#333
+```
+.
+├── nodeSrc/
+│   ├── data/
+│   │   ├── dev/    # 开发环境数据
+│   │   └── prod/   # 生产环境数据
+│   ├── generation/ # 推文生成相关代码
+│   └── utils/      # 工具函数
+└── src/
+    └── twitter/    # Twitter API 相关代码
 ```
 
-### Key Interactions
-- Tech Evolution informs both Tweet and Digest generation
-- Digest uses current and upcoming tech to guide story
-- Tweets only use currently available technology
-- Each component maintains its own update cycle but works together for story coherence
+## 环境配置
 
-## Project Structure
-```
-XaviersSimACTII/
-├── data/                   # Story data
-│   ├── XaviersSim.json         # ACT I tweet compilation
-│   ├── digest.json             # Story digest
-│   ├── last_acti_tweets.json   # Final ACT I tweets
-│   ├── ongoing_tweets.json     # Current story threads
-│   ├── comments.json           # Thread interactions
-│   ├── simulation_state.json   # System state
-│   └── tech_evolution.json     # Technology timeline
-│
-├── src/                    # Source code
-│   ├── generation/             # Core generators
-│   │   ├── tweet_generator.py      # Tweet creation
-│   │   ├── digest_generator.py     # Story updates
-│   │   └── tech_evolution_generator.py # Tech progression
-│   │
-│   ├── storage/               # Data management
-│   │   ├── cleanup.py             # Data maintenance
-│   │   └── github_operations.py   # GitHub integration
-│   │
-│   ├── twitter/               # Platform integration
-│   │   ├── twitter_client.py      # API v1 client
-│   │   └── twitter_client_v2.py   # API v2 client
-│   │
-│   └── utils/                 # Support functions
-│       └── config.py              # Configuration
-│
-├── tests/                  # Test suite
-│   └── test_github_operations.py
-│
-├── requirements.txt        # Dependencies
-└── README.md              # Documentation
+1. 安装 Python 依赖：
+```bash
+pip install -r requirements.txt
 ```
 
-## Contributing
-Feel free to open issues or submit pull requests for improvements to the story generation system.
+2. 配置 Twitter API 凭证：
+- 在项目根目录创建 `.env` 文件
+- 添加以下配置：
+```env
+TWITTER_API_KEY=your_api_key
+TWITTER_API_SECRET=your_api_secret
+TWITTER_ACCESS_TOKEN=your_access_token
+TWITTER_ACCESS_TOKEN_SECRET=your_access_token_secret
+```
 
-## License
+## 使用方法
+
+### 1. 自动发送推文
+
+```bash
+# 开发环境（默认）
+python src/twitter/auto_tweet.py
+
+# 生产环境
+python src/twitter/auto_tweet.py --prod
+```
+
+### 2. 获取推文回复
+
+```bash
+# 开发环境（默认）
+python src/twitter/fetch_tweets_scheduler.py
+
+# 生产环境
+python src/twitter/fetch_tweets_scheduler.py --prod
+```
+
+### 3. 数据文件说明
+
+- `tweets_public.json`: 待发送的推文
+- `sent_tweets.json`: 已发送的推文记录
+- `tweet_replies.json`: 推文回复数据
+
+## 开发/生产环境
+
+系统支持两种运行环境：
+
+1. 开发环境 (dev)
+   - 数据存储在 `nodeSrc/data/dev/` 目录
+   - 用于本地测试和开发
+   - 默认启用
+
+2. 生产环境 (prod)
+   - 数据存储在 `nodeSrc/data/prod/` 目录
+   - 用于实际运行
+   - 使用 `--prod` 参数启用
+
+## 注意事项
+
+1. 确保在运行前已正确配置 Twitter API 凭证
+2. 开发环境和生产环境使用不同的数据目录，避免数据混淆
+3. 建议先在开发环境测试无误后再切换到生产环境
+4. 定期备份生产环境的数据文件
+
+## 错误处理
+
+- 如果遇到 API 限制，系统会自动等待并重试
+- 文件操作使用临时文件和原子操作确保数据安全
+- 详细的错误日志会打印到控制台
+
+## 贡献指南
+
+1. Fork 本仓库
+2. 创建特性分支
+3. 提交更改
+4. 发起 Pull Request
+
+## 许可证
+
 MIT License
