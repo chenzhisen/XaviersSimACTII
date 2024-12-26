@@ -5,7 +5,8 @@ import re
 from twitter_client import TwitterClientV2
 
 class AutoTweeter:
-    def __init__(self):
+    def __init__(self, dry_run=True):
+        self.dry_run = dry_run  # 是否实际发送推文
         self.client = TwitterClientV2()
         current_dir = os.path.dirname(os.path.abspath(__file__))
         project_root = os.path.abspath(os.path.join(current_dir, '..', '..'))
@@ -31,7 +32,7 @@ class AutoTweeter:
                 # 创建空的已发送推文文件
                 with open(self.sent_tweets_file, 'w', encoding='utf-8') as f:
                     json.dump([], f, ensure_ascii=False, indent=2)
-                print(f"已创建空的已发送推文文件: {self.sent_tweets_file}")
+                print(f"创建空的已发送推文文件: {self.sent_tweets_file}")
             except Exception as e:
                 print(f"创建已发送推文文件时出错: {str(e)}")
 
@@ -155,19 +156,25 @@ class AutoTweeter:
             # 清理内容
             clean_content = self._clean_tweet_content(tweet)
 
-            # 发送推文
-            response = self.client.post_tweet(clean_content)
+            if self.dry_run:
+                # 如果是dry run模式，生成一个模拟的推文ID
+                tweet_id = f"dry_run_{int(time.time())}_{hash(clean_content) % 10000}"
+                print(f"[Dry Run] 模拟发送推文: {clean_content}")
+                print(f"[Dry Run] 模拟推文ID: {tweet_id}")
+            else:
+                # 实际发送推文
+                tweet_id = self.client.post_tweet(clean_content)
             
-            if response and not response.startswith('Error'):
+            if tweet_id and not tweet_id.startswith('Error'):
                 # 保存发送成功的推文
-                self.save_sent_tweet(tweet, response)
+                self.save_sent_tweet(tweet, tweet_id)
                 
                 # 从待发送列表中移除
                 tweets.pop(0)
                 self.save_tweets(tweets)
                 
-                print(f"成功发送推文: {clean_content}")
-                return {'id': response}
+                print(f"{'[Dry Run] 模拟' if self.dry_run else ''} 成功发送推文: {clean_content}")
+                return {'id': tweet_id}
             
             return None
         except Exception as e:
@@ -179,16 +186,19 @@ class AutoTweeter:
             return None
 
     def run(self, interval_seconds=300):  # 默认5分钟发送一次
-        print(f"自动发推程序启动，间隔 {interval_seconds} 秒")
+        # 在测试模式下只等待1秒
+        actual_interval = 1 if self.dry_run else interval_seconds
+        print(f"自动发推程序启动，间隔 {actual_interval} 秒")
+        print(f"运行模式: {'测试模式 (不实际发送)' if self.dry_run else '正式模式 (实际发送)'}")
         while True:
             try:
                 result = self.post_next_tweet()
                 if result:
-                    print(f"等待 {interval_seconds} 秒后发送下一条...")
+                    print(f"等待 {actual_interval} 秒后发送下一条...")
                 else:
-                    print(f"没有新推文或发送失败，等待 {interval_seconds} 秒后重试...")
+                    print(f"没有新推文或发送失败，等待 {actual_interval} 秒后重试...")
                 
-                time.sleep(interval_seconds)
+                time.sleep(actual_interval)
             except Exception as e:
                 print(f"运行出错: {str(e)}")
                 time.sleep(60)  # 出错后等待1分钟
