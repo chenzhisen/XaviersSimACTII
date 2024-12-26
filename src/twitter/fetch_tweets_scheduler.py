@@ -3,6 +3,7 @@ import os
 import time
 import json
 from datetime import datetime
+import argparse
 
 # 添加项目根目录到系统路径
 current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -12,7 +13,7 @@ sys.path.insert(0, project_root)
 from src.twitter.twitter_client import TwitterClientV2
 
 class TweetFetcher:
-    def __init__(self):
+    def __init__(self, is_production=False):
         """初始化推特获取器"""
         self.client = TwitterClientV2()
         current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -240,5 +241,9 @@ class TweetFetcher:
                 time.sleep(60)  # 出错后等待1分钟
 
 if __name__ == "__main__":
-    fetcher = TweetFetcher()
+    parser = argparse.ArgumentParser(description='自动获取推文回复程序')
+    parser.add_argument('--prod', action='store_true', help='使用生产环境')
+    args = parser.parse_args()
+    
+    fetcher = TweetFetcher(is_production=args.prod)
     fetcher.run() 
