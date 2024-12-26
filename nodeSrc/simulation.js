@@ -141,22 +141,8 @@ class XavierSimulation {
                 age: tweet.age || Number(summary.currentAge.toFixed(2))
             }));
 
-            // 保存到tweets_public.json
-            const publicFilePath = path.join(this.dataDir, 'tweets_public.json');
-            
-            // 确保文件存在
-            if (!fs.existsSync(publicFilePath)) {
-                fs.writeFileSync(publicFilePath, '[]');
-            }
-
-            // 读取现有数据
-            const existingData = JSON.parse(fs.readFileSync(publicFilePath, 'utf8'));
-            
-            // 添加新推文
-            existingData.push(...publicTweets);
-            
-            // 写入文件
-            fs.writeFileSync(publicFilePath, JSON.stringify(existingData, null, 2));
+            // 直接保存新推文（覆盖模式）
+            await this.saveTweetsToPublic(publicTweets);
 
             // 检查是否需要生成摘要
             const digest = await this.digestGenerator.checkAndGenerateDigest(
