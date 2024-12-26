@@ -1,0 +1,147 @@
+{
+  "metadata": {
+    "protagonist": "Xavier",
+    "startAge": 22,
+    "currentAge": 22,
+    "currentPhase": "early_career",
+    "lastUpdate": "2024-12-26T07:39:48.169Z",
+    "version": "1.0.0"
+  },
+  "story": {
+    "tweets": [],
+    "digests": [
+      {
+        "content": "Xavier is at a crossroads, seriously considering leaving college to focus on quant trading and his involvement with $XVI. This marks a significant shift in his life priorities and indicates a desire to take control of his future..",
+        "timestamp": "2024-12-26T07:39:48.169Z"
+      }
+    ],
+    "keyPlotPoints": [],
+    "relationships": []
+  },
+  "tech": {
+    "updates": [],
+    "currentState": {
+      "phase": "early",
+      "focus": [
+        "基础架构",
+        "核心算法",
+        "产品原型"
+      ],
+      "challenges": [
+        "技术选型",
+        "性能优化",
+        "安全性"
+      ],
+      "lastUpdate": "2024-12-26T07:39:48.169Z"
+    }
+  },
+  "career": {
+    "milestones": [],
+    "currentState": {
+      "role": "创始人/技术负责人",
+      "company": "$XVI Labs",
+      "stage": "初创期",
+      "team_size": 1
+    }
+  },
+  "personal": {
+    "relationships": {
+      "family": [],
+      "friends": [],
+      "colleagues": [],
+      "mentors": [],
+      "romantic": {
+        "status": "single",
+        "milestones": [],
+        "currentRelationship": null,
+        "pastRelationships": [],
+        "preferences": {
+          "lookingFor": [
+            "知性且独立",
+            "有共同话题",
+            "理解创业压力",
+            "相互支持成长"
+          ],
+          "dealBreakers": [
+            "过分物质",
+            "不理解工作压力",
+            "缺乏个人追求"
+          ]
+        }
+      }
+    },
+    "family_life": {
+      "status": "single",
+      "marriage": {
+        "isMarried": false,
+        "plans": {
+          "timing": "30-35岁",
+          "priorities": [
+            "事业稳定后",
+            "遇到合适的人",
+            "具备经济基础"
+          ]
+        }
+      },
+      "children": {
+        "hasChildren": false,
+        "plans": {
+          "timing": "32-37岁",
+          "thoughts": [
+            "希望给孩子最好的教育",
+            "平衡事业与家庭",
+            "传承价值观和知识"
+          ]
+        }
+      },
+      "values": {
+        "familyPriorities": [
+          "家庭和谐",
+          "共同成长",
+          "相互理解",
+          "优质教育"
+        ],
+        "parentingStyle": [
+          "开放沟通",
+          "鼓励探索",
+          "重视教育",
+          "情感支持"
+        ]
+      }
+    },
+    "lifestyle": {
+      "workLifeBalance": {
+        "current": "以工作为重",
+        "goals": [
+          "逐步平衡工作与生活",
+          "保持健康作息",
+          "留出家庭时间"
+        ]
+      },
+      "interests": [
+        "编程",
+        "区块链技术",
+        "创业",
+        "投资",
+        "阅读",
+        "健身",
+        "旅行",
+        "美食"
+      ],
+      "traits": [
+        "技术驱动",
+        "创新思维",
+        "持续学习",
+        "追求卓越",
+        "重视家庭",
+        "感情专一"
+      ]
+    }
+  },
+  "stats": {
+    "totalTweets": 0,
+    "digestCount": 0,
+    "techUpdateCount": 0,
+    "yearProgress": 0
+  }
+}
