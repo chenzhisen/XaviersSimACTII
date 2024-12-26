@@ -102,7 +102,7 @@ class TweetGenerator {
 在生成内容时：
 1. 保持角色的连贯性和真实感
 2. 平衡工作与个人生活的描述
-3. 展现真实的情感和生活细节
+3. 展��真实的情感和生活细节
 4. 体现性格特点和价值观
 5. 符合当前的人生阶段
 
@@ -390,7 +390,7 @@ class TweetGenerator {
     _analyzeImpact(content) {
         // 分析评论的影响程度
         const impactWords = {
-            high: ['必���', '一定要', '强烈建议', 'must', 'should', 'need to'],
+            high: ['必须', '一定要', '强烈建议', 'must', 'should', 'need to'],
             medium: ['建议', '可以', '不错', 'suggest', 'could', 'maybe'],
             low: ['或许', '可能', '试试', 'perhaps', 'might', 'try']
         };
@@ -751,20 +751,10 @@ class TweetGenerator {
             prompt = `【最高优先级：立即回应以下评论】\n\n${suggestions}\n\n处理要求：\n1. 必须立即采取行动回应评论\n2. 评论建议优先于原有剧情\n3. 让评论直接改变故事走向\n\n`;
         }
 
-        // 计算这4条推文的时间跨度
-        const timeSpans = this._calculateTweetTimeSpans(timeInfo);
-
         prompt += `时间背景：
-- 当前时间：${timeInfo.currentTime}
-- 季节：${timeInfo.season}
-- 时间流逝：距离上一条推文已经过去了${timeInfo.timePassed}
-- 时间提示：这4条推文将跨越${timeSpans.totalSpan}的时间\n\n`;
-
-        prompt += `时间安排：
-第1条：${timeSpans.spans[0]}
-第2条：${timeSpans.spans[1]}
-第3条：${timeSpans.spans[2]}
-第4条：${timeSpans.spans[3]}\n\n`;
+- 当前季节：${timeInfo.season}
+- 时间流逝：这4条推文将跨越一周时间
+- 时间提示：内容要体现季节特征和时间推进\n\n`;
 
         prompt += `最近发展：\n${context.recent_tweets.map(t => `- ${t.text}`).join('\n')}\n\n`;
         prompt += `当前进展：\n${context.latest_digest?.content || '开启新的篇章...'}\n\n`;
@@ -772,17 +762,31 @@ class TweetGenerator {
 1. 评论建议具有最高优先级
 2. 必须对评论做出直接回应
 3. 让评论带来重大转折
-4. 每条推文都要体现其发生的具体时间
-5. 内容要反映时间流逝和季节特征
+4. 内容要反映时间推进
+5. 考虑季节特征
 6. 4条推文要呈现连续又递进的故事\n\n`;
 
         prompt += `格式要求：
-- 4条推文
-- 每条不超过280字符
+请严格按照以下格式生成4条推文：
+
+TWEET1
+[第一条推文内容]
+
+TWEET2
+[第二条推文内容]
+
+TWEET3
+[第三条推文内容]
+
+TWEET4
+[第四条推文内容]
+
+注意事项：
+- 每条推文不超过280字符
 - 直接回应评论建议
 - 描述具体行动和改变
-- 加入明确的时间信息
-- 体现时间的连续性`;
+- 体现时间的连续性
+- 不要包含具体的日期和时间`;
 
         return prompt;
     }
@@ -822,7 +826,7 @@ class TweetGenerator {
     }
 
     _calculateTimeProgression(tweetCount) {
-        // 基准时间：2024年
+        // 基准��间：2024年
         const baseYear = 2024;
         const baseMonth = 1;
         
