@@ -230,7 +230,7 @@ class TweetFetcher:
             print(f"获取和保存回复时出错: {str(e)}")
             return False
 
-    def run(self, interval_seconds=300):  # 默认5分钟获取一次
+    def run(self, interval_seconds=60):  # 默认5分钟获取一次
         print(f"推文回复获取程序启动，间隔 {interval_seconds} 秒")
         while True:
             try:
