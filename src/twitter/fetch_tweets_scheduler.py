@@ -28,7 +28,7 @@ class TweetFetcher:
         print(f"推文回复文件路径: {self.replies_file}")
 
     def get_latest_tweet_id(self):
-        """获取最后一条推文的ID和完整信息"""
+        """获取最后一条推文的ID和完整信���"""
         try:
             if not os.path.exists(self.sent_tweets_file):
                 print(f"已发送推文文件不存在: {self.sent_tweets_file}")
@@ -50,6 +50,56 @@ class TweetFetcher:
         except Exception as e:
             print(f"获取最后一条推文ID时出错: {str(e)}")
             return None, None
+
+    def get_commenters(self, tweet_id=None):
+        """获取指定推文的评论者信息，如果不指定推文ID则获取最新推文的评论者
+        
+        Returns:
+            list: 包含评论者信息的列表，每个元素是一个字典，包含 author_id 和 username
+        """
+        try:
+            if not os.path.exists(self.replies_file):
+                print("回复文件不存在")
+                return []
+
+            with open(self.replies_file, 'r', encoding='utf-8') as f:
+                content = f.read()
+                if not content.strip():
+                    print("回复文件为空")
+                    return []
+                
+                replies_data = json.loads(content)
+                
+            if tweet_id is None:
+                # 如果没有指定推文ID，获取最新的推文ID
+                latest_id, _ = self.get_latest_tweet_id()
+                if not latest_id:
+                    return []
+                tweet_id = latest_id
+
+            if tweet_id not in replies_data:
+                print(f"未找到推文 {tweet_id} 的回复")
+                return []
+
+            commenters = []
+            seen_authors = set()  # 用于去重
+            
+            for reply in replies_data[tweet_id]['replies']:
+                author_id = reply.get('author_id')
+                username = reply.get('username')
+                
+                if author_id and author_id not in seen_authors:
+                    seen_authors.add(author_id)
+                    commenters.append({
+                        'author_id': author_id,
+                        'username': username
+                    })
+            
+            return commenters
+            
+        except Exception as e:
+            print(f"获取评论者信息时出错: {str(e)}")
+            return []
 
     def save_replies(self, tweet_id, tweet_data, replies):
         """保存推文和回复"""
@@ -85,6 +135,7 @@ class TweetFetcher:
                     reply_data = {
                         'id': reply['id'],
                         'author_id': reply.get('author_id'),
+                        'username': reply.get('username'),
                         'content': reply.get('text'),
                         'created_at': reply.get('created_at'),
                         'fetched_at': time.strftime('%Y-%m-%d %H:%M:%S')
@@ -135,6 +186,18 @@ class TweetFetcher:
             if not replies:
                 print("没有找到新的回复")
                 return False
+
+            # 获取用户信息
+            users = {}
+            if 'includes' in replies_response and 'users' in replies_response['includes']:
+                for user in replies_response['includes']['users']:
+                    users[user['id']] = user.get('username')
+
+            # 为每个回复添加用户名
+            for reply in replies:
+                author_id = reply.get('author_id')
+                if author_id in users:
+                    reply['username'] = users[author_id]
 
             print(f"找到 {len(replies)} 条回复")
             
