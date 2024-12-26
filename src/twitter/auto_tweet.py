@@ -205,31 +205,13 @@ class AutoTweeter:
                 time.sleep(60)  # 出错后等待1分钟
 
     def _clean_tweet_content(self, tweet):
-        """清理推文内容，去除前缀和时间戳"""
+        """清理推文内容，清理任何位置的TWEET1-4"""
         # 获取推文内容
         text = tweet.get('content', '')
         
-        # 去除TWEET数字前缀
-        text = re.sub(r'^TWEET\d+\n', '', text)
+        # 清理任何位置的TWEET1-4（包括前后的换行和空格）
+        text = re.sub(r'[\n\s]*TWEET[1-4][\n\s]*', '', text)
         
-        # 去除可能的时间戳格式
-        time_patterns = [
-            r'\d{4}-\d{2}-\d{2}',  # YYYY-MM-DD
-            r'\d{2}:\d{2}:\d{2}',  # HH:MM:SS
-            r'\d{2}:\d{2}',        # HH:MM
-            r'上午|下午|晚上|凌晨',    # 时间段
-            r'今天|明天|后天',        # 相对日期
-            r'\d+天后',             # X天后
-            r'\d+月\d+日',          # MM月DD日
-            r'\d+年\d+月\d+日'      # YYYY年MM月DD日
-        ]
-        
-        # 去除每个时间模式
-        for pattern in time_patterns:
-            text = re.sub(pattern, '', text)
-        
-        # 清理多余的空白字符
-        text = re.sub(r'\s+', ' ', text)
         return text.strip()
 
 if __name__ == "__main__":
