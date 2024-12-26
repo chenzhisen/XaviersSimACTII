@@ -1,6 +1,10 @@
-requests
-python-dotenv
-openai
-tweepy
-PyGithub
-schedule
+requests==2.27.1
+python-dotenv==0.19.2
+pandas==1.1.5
+numpy==1.19.5
+openai==0.8.0
+tweepy==3.10.0
+PyGithub==1.55
+schedule==1.1.0
+urllib3==1.26.6
+certifi==2021.5.30
