@@ -577,7 +577,7 @@ class TweetGenerator {
             // 获取实际发送的推文总数
             const { totalTweets: sentTotalTweets } = await this._getTweetsInfo();
 
-            // 检查是否已达到年龄上限
+            // 检查是否��达到年龄上限
             const calculatedAge = this._calculateAge(sentTotalTweets);
             if (calculatedAge >= this.storyConfig.setting.endAge) {
                 this.logger.info('Story has reached end age, no more tweets will be saved');
@@ -620,21 +620,6 @@ class TweetGenerator {
             await fs.writeFile(
                 this.paths.mainFile,
                 JSON.stringify(storyData, null, 2),
-                'utf8'
-            );
-
-            // 额外保存一份简化的JSON文件，包含推特数组和年龄信息
-            const publicTweets = storyData.story.tweets.map(tweet => ({
-                id: tweet.id || `tweet_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
-                content: tweet.text || tweet.content,
-                created_at: tweet.timestamp,
-                age: tweet.age || Number(safeAge.toFixed(2))  // 添加年龄字段
-            }));
-
-            const publicFilePath = path.join(this.paths.dataDir, 'tweets_public.json');
-            await fs.writeFile(
-                publicFilePath,
-                JSON.stringify(publicTweets, null, 2),
                 'utf8'
             );
 
@@ -831,7 +816,7 @@ TWEET4
 - 直接回应评论建议
 - 描述具体行动和改变
 - 体现时间的连续性
-- 不要包含具体的日期和时间`;
+- 不要包含具体的���期和时间`;
 
         return prompt;
     }
@@ -1017,7 +1002,7 @@ TWEET4
             milestone: /(突破|里程碑|成功|实现)/,
             relationship: /(爱情|友情|团队|伙伴)/,
             challenge: /(困难|挑战|问题|危机)/,
-            growth: /(成���|学习|进步|改变)/,
+            growth: /(成长|学习|进步|改变)/,
             achievement: /(完成|达成|获得|赢得)/
         };
 

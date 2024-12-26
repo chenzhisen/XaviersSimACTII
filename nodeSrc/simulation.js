@@ -3,6 +3,8 @@ const { DigestGenerator } = require('./generation/digest_generator');
 const { AICompletion } = require('./utils/ai_completion');
 const { Logger } = require('./utils/logger');
 const { Config } = require('./utils/config');
+const path = require('path');
+const fs = require('fs/promises');
 
 class XavierSimulation {
     constructor(isProduction = false) {
@@ -24,7 +26,7 @@ class XavierSimulation {
             maxInterval: 2 * 1000,   // 最大间隔10秒
             maxTweetsPerDay: 4800,      // 每天最大推文数
             tweetsPerScene: 4,        // 每个场景4条推文
-            scenesPerBatch: 1,        // 每批3个场景（固定12条推文）
+            scenesPerBatch: 1,        // ��3个场景（固定12条推文）
             isRunning: false
         };
 
@@ -110,6 +112,26 @@ class XavierSimulation {
                 // 短暂暂停，避免生成太快
                 await new Promise(resolve => setTimeout(resolve, 10));
             }
+
+            // 将所有生成的推文保存到tweets_public.json
+            const publicTweets = allTweets.map(tweet => ({
+                id: tweet.id || `tweet_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+                content: (tweet.text || tweet.content).replace(/^TWEET[1-4]\n/, ''),
+                created_at: tweet.timestamp || new Date().toISOString(),
+                age: tweet.age || Number(summary.currentAge.toFixed(2))
+            }));
+
+            // 保存到tweets_public.json
+            const publicFilePath = path.join(__dirname, 'data', 'tweets_public.json');
+            
+            // 确保目录存在
+            await fs.mkdir(path.dirname(publicFilePath), { recursive: true });
+            
+            await fs.writeFile(
+                publicFilePath,
+                JSON.stringify(publicTweets, null, 2),
+                'utf8'
+            );
 
             // 检查是否需要生成摘要
             const digest = await this.digestGenerator.checkAndGenerateDigest(
