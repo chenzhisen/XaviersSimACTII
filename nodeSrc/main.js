@@ -1,5 +1,12 @@
 const { program } = require('commander');
-const ora = require('ora');
+let spinner;
+
+async function initSpinner() {
+    const ora = (await import('ora')).default;
+    spinner = ora('正在初始化...');
+    return spinner;
+}
+
 const XavierSimulation = require('./simulation');
 const { Config } = require('./utils/config');
 const { Logger } = require('./utils/logger');
@@ -28,7 +35,8 @@ class SimulationRunner {
     }
 
     async run(options) {
-        const spinner = ora('Starting simulation...').start();
+        spinner = await initSpinner();
+        spinner.start();
         console.log('run options',options);
         try {
             this.simulation = new XavierSimulation(options.production);
@@ -65,6 +73,8 @@ class SimulationRunner {
 
 // 主程序
 async function main() {
+    spinner = await initSpinner();
+    spinner.start();
     const runner = new SimulationRunner();
     
     program
