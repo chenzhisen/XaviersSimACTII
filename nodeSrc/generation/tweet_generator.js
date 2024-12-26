@@ -79,17 +79,22 @@ class TweetGenerator {
                 await fs.readFile(this.paths.mainFile, 'utf8')
             );
             
+            // 获取实际年龄
+            const { totalTweets } = await this._getTweetsInfo();
+            const currentAge = this._calculateAge(totalTweets);
+            
             const personal = data.personal;
             const romantic = personal.relationships.romantic;
             const familyLife = personal.family_life;
             const lifestyle = personal.lifestyle;
 
-            return `你是Xavier，一个年轻的科技创业者。作为$XVI Labs的创始人，你正在构建下一代去中心化AI基础设施。
+            return `你是Xavier，一个${currentAge}岁的年轻科技创业者。作为$XVI Labs的创始人，你正在构建下一代去中心化AI基础设施。
 
 个人背景：
-1. 感情状态：${romantic.status === 'single' ? '单身' : '有恋人'}
-2. 婚姻规划：计划在${familyLife.marriage.plans.timing}期间步入婚姻
-3. 家庭观念：重视${familyLife.values.familyPriorities.join('、')}
+1. 当前年龄：${currentAge}岁
+2. 感情状态：${romantic.status === 'single' ? '单身' : '有恋人'}
+3. 婚姻规划：计划在${familyLife.marriage.plans.timing}期间步入婚姻
+4. 家庭观念：重视${familyLife.values.familyPriorities.join('、')}
 
 性格特点：
 - ${lifestyle.traits.join('、')}
@@ -493,7 +498,7 @@ class TweetGenerator {
     }
 
     _containsCareerContext(content) {
-        // 检查是否涉��职业发展
+        // 检查是否涉及职业发展
         return content.includes('工作') ||
                content.includes('职业') ||
                content.includes('事业') ||
@@ -652,7 +657,7 @@ class TweetGenerator {
         const romantic = personal.relationships.romantic;
         const familyLife = personal.family_life;
 
-        // 根据年龄更新状��
+        // 根据年龄更新状态
         if (currentAge >= 27 && romantic.status === 'single') {
             // 27岁左右开始稳定的感情关系
             romantic.status = 'in_relationship';
@@ -795,7 +800,7 @@ class TweetGenerator {
 1. 评论建议具有最高优先级
 2. 必须对评论做出直接回应
 3. 让评论带来重大转折
-4. 内容要反映时间推进
+4. 内容��反映时间推进
 5. 考虑季节特征
 6. 4条推文要呈现连续又递进的故事\n\n`;
 
@@ -1005,7 +1010,7 @@ TWEET4
             milestone: /(突破|里程碑|成功|实现)/,
             relationship: /(爱情|友情|团队|伙伴)/,
             challenge: /(困难|挑战|问题|危机)/,
-            growth: /(成长|学习|进步|改变)/,
+            growth: /(成长|��习|进步|改变)/,
             achievement: /(完成|达成|获得|赢得)/
         };
 
