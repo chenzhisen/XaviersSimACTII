@@ -68,7 +68,7 @@ npm install
 npm run init
 
 # 运行程序（开发模式）
-npm start -- run --continuous
+npm run start:dev
 ```
 
 ### 生产环境
@@ -78,7 +78,7 @@ npm start -- run --continuous
 npm run init:prod
 
 # 运行程序（生产模式）
-npm run start:prod -- run --continuous
+npm run start:prod
 ```
 
 ## 数据文件
@@ -150,6 +150,6 @@ npm run start:prod -- run --continuous
 ## 注意事项
 
 1. 确保 Node.js 版本 >= 14.0.0
-2. 开发环境和生产环境使用不同的数据目录
+2. 开发环境和生产环境使用不同的数据记录
 3. 定期检查和清理日志文件
 4. 保持数据文件的备份 

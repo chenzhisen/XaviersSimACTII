@@ -29,7 +29,7 @@ class SimulationRunner {
 
     async run(options) {
         const spinner = ora('Starting simulation...').start();
-        
+        console.log('run options',options);
         try {
             this.simulation = new XavierSimulation(options.production);
             

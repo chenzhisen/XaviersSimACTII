@@ -9,6 +9,7 @@ const fsPromises = require('fs/promises');
 
 class XavierSimulation {
     constructor(isProduction = false) {
+        console.log('XavierSimulation constructor',isProduction);
         this.logger = new Logger('simulation');
         this.isProduction = isProduction;
         this.envDir = isProduction ? 'prod' : 'dev';
