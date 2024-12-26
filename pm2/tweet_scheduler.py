@@ -64,13 +64,10 @@ def main(is_production=False):
     schedule.every().hour.at(":00").do(run_auto_tweet, is_production)
     
     schedule.every().hour.at(":30").do(run_auto_tweet, is_production)
-    schedule.every().hour.at(":04").do(run_auto_tweet, is_production)
-    schedule.every().hour.at(":02").do(run_auto_tweet, is_production)
-    schedule.every().hour.at(":06").do(run_auto_tweet, is_production)
-    schedule.every().hour.at(":08").do(run_auto_tweet, is_production)
+   
    
     # 立即执行一次
-    run_auto_tweet(is_production)
+   # run_auto_tweet(is_production)
     
     # 持续运行
     while True:
