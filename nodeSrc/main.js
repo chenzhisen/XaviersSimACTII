@@ -11,13 +11,13 @@ class SimulationRunner {
         this.simulation = null;
     }
 
-    async initialize() {
+    async initialize(options = {}) {
         try {
             // 初始化配置
             Config.init();
             
             // 初始化数据结构
-            await initializeDataStructure();
+            await initializeDataStructure(options.production);
             
             this.logger.info('Initialization completed');
             return true;
@@ -67,16 +67,15 @@ class SimulationRunner {
 async function main() {
     const runner = new SimulationRunner();
     
-    if (!await runner.initialize()) {
-        process.exit(1);
-    }
-
     program
         .command('run')
         .description('Run the story simulation')
         .option('-p, --production', 'Run in production mode')
         .option('-c, --continuous', 'Run continuously')
         .action(async (options) => {
+            if (!await runner.initialize(options)) {
+                process.exit(1);
+            }
             const success = await runner.run(options);
             if (!options.continuous) {
                 process.exit(success ? 0 : 1);
