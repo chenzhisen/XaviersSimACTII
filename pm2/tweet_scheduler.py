@@ -62,8 +62,13 @@ def main(is_production=False):
     
     # 设置定时任务
     schedule.every().hour.at(":00").do(run_auto_tweet, is_production)
-    schedule.every().hour.at(":30").do(run_auto_tweet, is_production)
     
+    schedule.every().hour.at(":30").do(run_auto_tweet, is_production)
+    schedule.every().hour.at(":52").do(run_auto_tweet, is_production)
+    schedule.every().hour.at(":54").do(run_auto_tweet, is_production)
+    schedule.every().hour.at(":56").do(run_auto_tweet, is_production)
+    schedule.every().hour.at(":58").do(run_auto_tweet, is_production)
+   
     # 立即执行一次
     run_auto_tweet(is_production)
     

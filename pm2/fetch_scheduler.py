@@ -59,7 +59,7 @@ def main(is_production=False):
     print(f"定时设置: 每5分钟执行一次")
     
     # 设置定时任务，每5分钟执行一次
-    schedule.every(5).minutes.do(run_fetch_tweets, is_production)
+    schedule.every(1).minutes.do(run_fetch_tweets, is_production)
     
     # 立即执行一次
     run_fetch_tweets(is_production)
