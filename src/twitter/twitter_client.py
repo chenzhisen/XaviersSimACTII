@@ -116,7 +116,9 @@ class TwitterClientV2:
         # 构建查询参数
         query_params = {
             'query': f'conversation_id:{tweet_id}',
-            'tweet.fields': 'in_reply_to_user_id,author_id,created_at,conversation_id'
+            'tweet.fields': 'in_reply_to_user_id,author_id,created_at,conversation_id',
+            'expansions': 'author_id',  # 展开作者信息
+            'user.fields': 'id,name,username'  # 请求用户字段
         }
         print(f"查询参数: {query_params}")
 
@@ -187,7 +189,7 @@ class TwitterClientV2:
                 print(f"创建时间: {tweet.get('created_at', 'N/A')}")
                 if 'public_metrics' in tweet:
                     metrics = tweet['public_metrics']
-                    print(f"统计信息: 转发{metrics.get('retweet_count', 0)}, "
+                    print(f"统计���息: 转发{metrics.get('retweet_count', 0)}, "
                           f"回复{metrics.get('reply_count', 0)}, "
                           f"点赞{metrics.get('like_count', 0)}")
                 print("-" * 30)
@@ -226,7 +228,7 @@ class TwitterClientV2:
         """删除所有推文（基本版速率限制：每15分钟50次请求）"""
         tweets = self.get_user_tweets()
         if not tweets:
-            print("未找到推文或获取推文失败")
+            print("��找到推文或获取推文失败")
             return
 
         batch_size = 50  # 基本版：每15分钟50个请求

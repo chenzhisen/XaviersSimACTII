@@ -28,7 +28,7 @@ class TweetFetcher:
         print(f"推文回复文件路径: {self.replies_file}")
 
     def get_latest_tweet_id(self):
-        """获取最后一条推文的ID和完整信���"""
+        """获取最后一条推文的ID和完整信息"""
         try:
             if not os.path.exists(self.sent_tweets_file):
                 print(f"已发送推文文件不存在: {self.sent_tweets_file}")
@@ -55,7 +55,7 @@ class TweetFetcher:
         """获取指定推文的评论者信息，如果不指定推文ID则获取最新推文的评论者
         
         Returns:
-            list: 包含评论者信息的列表，每个元素是一个字典，包含 author_id 和 username
+            list: 包含评论者用户名的列表，格式为 @username
         """
         try:
             if not os.path.exists(self.replies_file):
@@ -88,12 +88,9 @@ class TweetFetcher:
                 author_id = reply.get('author_id')
                 username = reply.get('username')
                 
-                if author_id and author_id not in seen_authors:
+                if author_id and author_id not in seen_authors and username:
                     seen_authors.add(author_id)
-                    commenters.append({
-                        'author_id': author_id,
-                        'username': username
-                    })
+                    commenters.append(f"@{username}")
             
             return commenters
             
@@ -177,6 +174,10 @@ class TweetFetcher:
             print(f"正在获取推文 {tweet_id} 的回复...")
             replies_response = self.client.get_replies(tweet_id)
             
+            # 输出完整的API响应
+            print("Twitter API 响应内容:")
+            print(json.dumps(replies_response, ensure_ascii=False, indent=2))
+            
             if not replies_response or 'data' not in replies_response:
                 print("没有找到新的回复")
                 return False
@@ -191,13 +192,15 @@ class TweetFetcher:
             users = {}
             if 'includes' in replies_response and 'users' in replies_response['includes']:
                 for user in replies_response['includes']['users']:
-                    users[user['id']] = user.get('username')
+                    users[user['id']] = user.get('username', '')  # 获取用户名
+                    print(f"找到用户: {user['id']} -> @{user.get('username', '')}")
 
             # 为每个回复添加用户名
             for reply in replies:
                 author_id = reply.get('author_id')
                 if author_id in users:
                     reply['username'] = users[author_id]
+                    print(f"回复作者: {author_id} -> @{users[author_id]}")
 
             print(f"找到 {len(replies)} 条回复")
             
@@ -215,7 +218,7 @@ class TweetFetcher:
                 if self.fetch_and_save_replies():
                     print(f"等待 {interval_seconds} 秒后获取下一批回复...")
                 else:
-                    print(f"没有新回复或获取失败，等待 {interval_seconds} 秒后重试...")
+                    print(f"没有新回复或获取失败，等�� {interval_seconds} 秒后重试...")
                 
                 time.sleep(interval_seconds)
             except Exception as e:
