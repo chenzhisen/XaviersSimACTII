@@ -56,9 +56,9 @@ def run_fetch_tweets(is_production=False):
 def main(is_production=False):
     print(f"抓取推文定时任务启动")
     print(f"运行环境: {'生产环境' if is_production else '开发环境'}")
-    print(f"定时设置: 每5分钟执行一次")
+    print(f"定时设置: 每分钟执行一次")
     
-    # 设置定时任务，每5分钟执行一次
+    # 设置定时任务，每分钟执行一次
     schedule.every(1).minutes.do(run_fetch_tweets, is_production)
     
     # 立即执行一次
