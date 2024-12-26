@@ -218,6 +218,9 @@ class TweetGenerator {
             const data = await fs.readFile(this.paths.mainFile, 'utf8');
             const storyData = JSON.parse(data);
 
+            // 获取最新推文和评论
+            const latestTweetAndReplies = await this._getLatestTweetAndReplies();
+            
             // 获取最近的推文
             const recentTweets = storyData.story.tweets.slice(-5) || [];
 
@@ -228,6 +231,9 @@ class TweetGenerator {
 
             // 计算当前阶段
             const phase = this._calculatePhase(currentAge);
+
+            // 根据评论调整故事发展
+            const storyAdjustments = this._analyzeRepliesForStoryAdjustment(latestTweetAndReplies);
 
             return {
                 current_age: currentAge,
@@ -240,11 +246,274 @@ class TweetGenerator {
                     protagonist: storyData.metadata.protagonist,
                     current_phase: phase,
                     total_tweets: storyData.stats.totalTweets
-                }
+                },
+                latest_interaction: latestTweetAndReplies,
+                story_adjustments: storyAdjustments
             };
         } catch (error) {
             this.logger.error('Error preparing context', error);
             throw error;
+        }
+    }
+
+    async _getLatestTweetAndReplies() {
+        try {
+            // 读取最新推文
+            const sentTweetsPath = path.join(this.paths.dataDir, 'sent_tweets.json');
+            const repliesPath = path.join(this.paths.dataDir, 'tweet_replies.json');
+
+            let latestTweet = null;
+            let replies = [];
+
+            // 获取最新推文
+            if (await this._fileExists(sentTweetsPath)) {
+                const sentTweetsData = await fs.readFile(sentTweetsPath, 'utf8');
+                const sentTweets = JSON.parse(sentTweetsData);
+                if (sentTweets.length > 0) {
+                    latestTweet = sentTweets[sentTweets.length - 1];
+                }
+            }
+
+            // 获取该推文的回复
+            if (latestTweet && await this._fileExists(repliesPath)) {
+                const repliesData = await fs.readFile(repliesPath, 'utf8');
+                const allReplies = JSON.parse(repliesData);
+                if (allReplies[latestTweet.id]) {
+                    replies = allReplies[latestTweet.id].replies || [];
+                }
+            }
+
+            return {
+                tweet: latestTweet,
+                replies: replies
+            };
+        } catch (error) {
+            this.logger.error('Error getting latest tweet and replies', error);
+            return { tweet: null, replies: [] };
+        }
+    }
+
+    _analyzeRepliesForStoryAdjustment(latestTweetAndReplies) {
+        if (!latestTweetAndReplies?.tweet || !latestTweetAndReplies?.replies?.length) {
+            return null;
+        }
+
+        const replies = latestTweetAndReplies.replies;
+        let adjustments = {
+            suggestions: [],  // 存储每条评论的完整分析
+            raw_suggestions: []  // 保存所有原始评论
+        };
+
+        // 分析所有回复
+        const analyzedReplies = replies.map(reply => {
+            const analysis = {
+                content: reply.content,  // 原始内容
+                created_at: reply.created_at,  // 评论时间
+                author_id: reply.author_id,  // 评论者ID
+                analysis: {  // 评论分析结果
+                    type: this._getSuggestionType(reply.content),
+                    impact: this._analyzeImpact(reply.content),
+                    mood: this._analyzeMood(reply.content),
+                    keywords: this._extractKeywords(reply.content)
+                }
+            };
+
+            // 计算评论的相关性分数
+            analysis.relevanceScore = this._calculateRelevanceScore(analysis);
+
+            return analysis;
+        });
+
+        // 按相关性分数排序并选取前3条
+        const selectedReplies = analyzedReplies
+            .sort((a, b) => b.relevanceScore - a.relevanceScore)
+            .slice(0, 3);
+
+        // 保存选中的评论
+        adjustments.suggestions = selectedReplies;
+        adjustments.raw_suggestions = selectedReplies.map(r => r.content);
+
+        return adjustments;
+    }
+
+    _calculateRelevanceScore(analysis) {
+        let score = 0;
+
+        // 根据影响程度加分
+        if (analysis.analysis.impact === 'high') score += 3;
+        else if (analysis.analysis.impact === 'medium') score += 2;
+        else score += 1;
+
+        // 根据类型加分
+        if (analysis.analysis.type.includes('TECH')) score += 2;  // 技术相关
+        if (analysis.analysis.type.includes('CAREER')) score += 2;  // 职业发展
+        if (analysis.analysis.type.includes('LIFE_EVENT')) score += 2;  // 重大生活事件
+        if (analysis.analysis.type.includes('RELATIONSHIP')) score += 2;  // 人际关系
+
+        // 根据关键词数量加分
+        score += Math.min(analysis.analysis.keywords.length, 3);  // 最多加3分
+
+        // 根据评论长度适当加分（避免过短的评论）
+        const contentLength = analysis.content.length;
+        if (contentLength > 50) score += 2;
+        else if (contentLength > 20) score += 1;
+
+        // 根据情绪倾向加分（优先选择积极或消极的评论，而不是中性的）
+        if (analysis.analysis.mood !== 'neutral') score += 1;
+
+        return score;
+    }
+
+    _getSuggestionType(content) {
+        // 分析评论类型
+        const types = [];
+        
+        if (this._containsAnyTechTerms(content)) {
+            types.push('TECH');
+        }
+        if (this._containsRelationshipContext(content)) {
+            types.push('RELATIONSHIP');
+        }
+        if (this._containsCareerContext(content)) {
+            types.push('CAREER');
+        }
+        if (this._containsLifeEventContext(content)) {
+            types.push('LIFE_EVENT');
+        }
+
+        return types.length > 0 ? types : ['GENERAL'];
+    }
+
+    _analyzeImpact(content) {
+        // 分析评论的影响程度
+        const impactWords = {
+            high: ['必须', '一定要', '强烈建议', 'must', 'should', 'need to'],
+            medium: ['建议', '可以', '不错', 'suggest', 'could', 'maybe'],
+            low: ['或许', '可能', '试试', 'perhaps', 'might', 'try']
+        };
+
+        for (const [level, words] of Object.entries(impactWords)) {
+            if (words.some(word => content.includes(word))) {
+                return level;
+            }
+        }
+
+        return 'medium';  // 默认中等影响
+    }
+
+    _extractKeywords(content) {
+        // 提取关键词
+        const keywords = [];
+        
+        // 技术相关
+        if (content.includes('ai') || content.includes('人工智能')) keywords.push('AI');
+        if (content.includes('研究') || content.includes('research')) keywords.push('RESEARCH');
+        if (content.includes('项目') || content.includes('project')) keywords.push('PROJECT');
+        
+        // 人际关系
+        if (content.includes('爱情') || content.includes('love')) keywords.push('LOVE');
+        if (content.includes('家庭') || content.includes('family')) keywords.push('FAMILY');
+        if (content.includes('朋友') || content.includes('friend')) keywords.push('FRIEND');
+        
+        // 职业发展
+        if (content.includes('工作') || content.includes('work')) keywords.push('WORK');
+        if (content.includes('创业') || content.includes('startup')) keywords.push('STARTUP');
+        if (content.includes('公司') || content.includes('company')) keywords.push('COMPANY');
+        
+        // 生活变化
+        if (content.includes('改变') || content.includes('change')) keywords.push('CHANGE');
+        if (content.includes('冒险') || content.includes('adventure')) keywords.push('ADVENTURE');
+        if (content.includes('旅行') || content.includes('travel')) keywords.push('TRAVEL');
+
+        return keywords;
+    }
+
+    _containsAnyTechTerms(content) {
+        // 检查是否包含技术相关内容
+        return content.includes('ai') || 
+               content.includes('技术') || 
+               content.includes('研究') || 
+               content.includes('开发') ||
+               content.includes('项目') ||
+               content.includes('学习') ||
+               content.includes('tech') ||
+               content.includes('research') ||
+               content.includes('development') ||
+               content.includes('coding');
+    }
+
+    _containsRelationshipContext(content) {
+        // 检查是否涉及人际关系
+        return content.includes('朋友') ||
+               content.includes('家人') ||
+               content.includes('关系') ||
+               content.includes('感情') ||
+               content.includes('相处') ||
+               content.includes('friend') ||
+               content.includes('family') ||
+               content.includes('relationship') ||
+               content.includes('love') ||
+               content.includes('partner');
+    }
+
+    _containsCareerContext(content) {
+        // 检查是否涉及职业发展
+        return content.includes('工作') ||
+               content.includes('职业') ||
+               content.includes('事业') ||
+               content.includes('发展') ||
+               content.includes('晋���') ||
+               content.includes('career') ||
+               content.includes('job') ||
+               content.includes('work') ||
+               content.includes('promotion') ||
+               content.includes('business');
+    }
+
+    _containsLifeEventContext(content) {
+        // 检查是否涉及生活变化
+        return content.includes('改变') ||
+               content.includes('搬家') ||
+               content.includes('旅行') ||
+               content.includes('决定') ||
+               content.includes('尝试') ||
+               content.includes('change') ||
+               content.includes('move') ||
+               content.includes('travel') ||
+               content.includes('decision') ||
+               content.includes('try');
+    }
+
+    _analyzeMood(content) {
+        // 这里只做简单的情绪判断，主要依靠 AI 理解完整语境
+        if (content.includes('不') || 
+            content.includes('别') || 
+            content.includes('停') || 
+            content.includes('don\'t') || 
+            content.includes('stop') || 
+            content.includes('no')) {
+            return 'negative';
+        }
+        
+        if (content.includes('要') || 
+            content.includes('去') || 
+            content.includes('试试') || 
+            content.includes('可以') || 
+            content.includes('should') || 
+            content.includes('try') || 
+            content.includes('can')) {
+            return 'positive';
+        }
+
+        return 'neutral';
+    }
+
+    async _fileExists(filePath) {
+        try {
+            await fs.access(filePath);
+            return true;
+        } catch {
+            return false;
         }
     }
 
@@ -307,7 +576,7 @@ class TweetGenerator {
                 'utf8'
             );
 
-            // 额外保存一份简化的JSON文件，只包含推特数组
+            // 额外保存一份简化的JSON文���，只包含推特数组
             const publicTweets = storyData.story.tweets.map(tweet => ({
                 id: tweet.id || `tweet_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
                 content: tweet.text || tweet.content,
@@ -422,7 +691,7 @@ class TweetGenerator {
                 age: 34,
                 type: 'family',
                 title: '喜得贵子',
-                description: '迎来人生的新角色，成为一名父亲。'
+                description: '迎来人生新角色，成为一名父亲。'
             }
         ];
 
@@ -464,44 +733,24 @@ class TweetGenerator {
 
 
     _buildStoryPrompt(context) {
-        return `Story Context:
-Age: ${context.current_age}
-Phase: ${context.phase}
-Progress: Year ${context.year_progress.year}, ${context.year_progress.progress}% complete
-Total Tweets: ${context.story_metadata.total_tweets}
+        const adjustments = context.story_adjustments;
+        let prompt = '';
+        
+        if (adjustments) {
+            const suggestions = adjustments.suggestions.map(suggestion => {
+                const { content, analysis } = suggestion;
+                return `评论：${content}\n影响：${analysis.impact}\n类型：${analysis.type.join('、')}\n关键词：${analysis.keywords.join('、')}`;
+            }).join('\n\n');
 
-Recent Story:
-${context.recent_tweets.map(t => t.text).join('\n\n')}
+            prompt = `【最高优先级：立即回应以下评论】\n\n${suggestions}\n\n处理要求：\n1. 必须立即采取行动回应评论\n2. 评论建议优先于原有剧情\n3. 让评论直接改变故事走向\n\n`;
+        }
 
-Latest Summary:
-${context.latest_digest?.content || 'Starting a new chapter...'}
+        prompt += `最近发展：\n${context.recent_tweets.map(t => `- ${t.text}`).join('\n')}\n\n`;
+        prompt += `当前进展：\n${context.latest_digest?.content || '开启新的篇章...'}\n\n`;
+        prompt += `创作要求：\n1. 评论建议具有最高优先级\n2. 必须对评论做出直接回应\n3. 让评论带来重大转折\n\n`;
+        prompt += `格式要求：\n- 4条推文\n- 每条不超过280字符\n- 直接回应评论建议\n- 描述具体行动和改变`;
 
-Create a scene of 4 connected tweets that:
-1. Reflects the current life phase (${context.phase})
-2. Shows character growth and experiences
-3. Includes both work and personal life
-4. Creates engaging moments
-5. Maintains story continuity
-
-Scene Guidelines:
-- Balance tech/crypto with personal growth
-- Show both successes and challenges
-- Include relationships and interactions
-- Create memorable moments
-- Build towards future developments
-
-Format:
-TWEET 1: [Set the scene/situation]
-TWEET 2: [Develop the story/interaction]
-TWEET 3: [Key moment or insight]
-TWEET 4: [Resolution and future hint]
-
-Remember:
-- Keep each tweet under 280 characters
-- Use natural, conversational tone
-- Include occasional #hashtags
-- Reference $XVI when relevant
-- Show both professional and personal growth`;
+        return prompt;
     }
     _getPersonalContext(currentAge) {
         const data = require('../data/XaviersSim.json');
